@@ -4408,7 +4408,8 @@ var AdvancedAccordion = _module["default"].extend({
   },
   accordionOnClick: function accordionOnClick() {
     var collapsible = false;
-    var settings = this.getElementSettings();
+    var settings = this.getElementSettings(),
+      self = this;
     if (settings.collapsible && 'yes' === settings.collapsible) {
       collapsible = true;
     }
@@ -4431,6 +4432,9 @@ var AdvancedAccordion = _module["default"].extend({
         parent.addClass('jx-ac-inactive').removeClass('jx-ac-active');
         closed = true;
       }
+      if (!closed) {
+        self.handleScrollToContent(body);
+      }
       if (!parent.hasClass('jx-ac-last')) {
         return;
       }
@@ -4442,6 +4446,22 @@ var AdvancedAccordion = _module["default"].extend({
         parent.find('.jx-single-accordion-body').addClass('border-is-radius');
       }
     });
+  },
+  handleScrollToContent: function handleScrollToContent(selectedItem) {
+    if (this.getElementSettings('scroll_to_content') !== 'yes') {
+      return;
+    }
+    var adminBarHeight = 0;
+    if ($('#wpadminbar').length > 0) {
+      adminBarHeight = $('#wpadminbar').height();
+    }
+    var delay = this.getElementSettings('scrolling_delay'),
+      offset = this.getElementSettings('content_offset');
+    setTimeout(function () {
+      $('html, body').animate({
+        scrollTop: selectedItem.offset().top - offset.size - adminBarHeight
+      }, delay);
+    }, 200);
   }
 });
 function _default($scope) {
@@ -7339,8 +7359,12 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
 var _module = _interopRequireDefault(require("../utils/module"));
 var _i18n = require("@wordpress/i18n");
+function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
 var Form = _module["default"].extend({
   form: null,
   captchaV3Ids: [],
@@ -7385,6 +7409,11 @@ var Form = _module["default"].extend({
 
       // Prepare form data.
       var formData = new FormData(form[0]);
+      var validFormData = _this.validateFormData(formData, form);
+      if (!validFormData) {
+        form.css('opacity', 1);
+        return;
+      }
       formData.append('action', 'raven_form_frontend');
       formData.append('referrer', location.toString());
 
@@ -7399,6 +7428,36 @@ var Form = _module["default"].extend({
         success: self.doSuccess
       });
     });
+  },
+  validateFormData: function validateFormData(formData, form) {
+    var maxFileUploadSize = window.ravenTools.maxFileUploadSize;
+    if (_.isEmpty(maxFileUploadSize)) {
+      return true;
+    }
+    var _iterator = _createForOfIteratorHelper(formData.entries()),
+      _step;
+    try {
+      for (_iterator.s(); !(_step = _iterator.n()).done;) {
+        var _step$value = (0, _slicedToArray2["default"])(_step.value, 2),
+          key = _step$value[0],
+          value = _step$value[1];
+        if (value instanceof File && value.size > maxFileUploadSize) {
+          // eslint-disable-line no-undef
+          var target = form.find("input[name=\"".concat(key, "\"]")),
+            field = target.parents('.raven-field-group');
+          field.find('small').remove();
+          field.removeClass('raven-field-invalid');
+          field.addClass('raven-field-invalid');
+          field.append("<small class=\"raven-form-text\">".concat((0, _i18n.__)('This file size is not allowed.', 'jupiterx-core'), "</small>"));
+          return false;
+        }
+      }
+    } catch (err) {
+      _iterator.e(err);
+    } finally {
+      _iterator.f();
+    }
+    return true;
   },
   checkSaveState: function checkSaveState() {
     if (!this.isEdit) {
@@ -7799,7 +7858,7 @@ function _default($scope) {
   });
 }
 
-},{"../utils/module":9,"@babel/runtime/helpers/interopRequireDefault":96,"@wordpress/i18n":114,"intl-tel-input":118}],44:[function(require,module,exports){
+},{"../utils/module":9,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/slicedToArray":103,"@wordpress/i18n":114,"intl-tel-input":118}],44:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -9392,6 +9451,7 @@ var NavMenu = _module["default"].extend({
     this.inPageMenuClick();
     this.inPageMenuScroll();
     this.mobileMenuScroll();
+    this.mobileMenuPageRedirection();
     this.setMegaMenuWidth();
     this.stretchElement = new elementorModules.frontend.tools.StretchElement({
       element: this.elements.$mobileMenu,
@@ -9535,6 +9595,21 @@ var NavMenu = _module["default"].extend({
     for (var i = 0; i < overlays.length; i++) {
       _loop(i);
     }
+  },
+  mobileMenuPageRedirection: function mobileMenuPageRedirection() {
+    var itemWithChildern = this.elements.$mobileMenu.find('.menu-item-has-children'),
+      itemLink = itemWithChildern.find('> .raven-link-item'),
+      subArrow = itemLink.find('> .sub-arrow');
+    if (itemWithChildern.length === 0 || itemLink.length === 0) {
+      return;
+    }
+    subArrow.on('click', function (event) {
+      var target = $(event.currentTarget);
+      if (!target.parent().hasClass('highlighted')) {
+        return;
+      }
+      event.preventDefault();
+    });
   },
   inPageMenuClick: function inPageMenuClick() {
     var self = this;

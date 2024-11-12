@@ -554,7 +554,7 @@ class Tab_Style {
 						[
 							'name' => 'layout',
 							'operator' => 'in',
-							'value' => [ 'horizontal', 'vertical' ],
+							'value' => [ 'horizontal', 'vertical', 'offcanvas' ],
 						],
 					],
 				],
@@ -566,6 +566,16 @@ class Tab_Style {
 				'name'     => 'submenu_item_typography',
 				'scheme'   => '3',
 				'selector' => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.raven-submenu-item span.link-label',
+				'condition'  => [ 'layout!' => 'offcanvas' ],
+			]
+		);
+
+		$widget->add_group_control( 'typography',
+			[
+				'name'     => 'submenu_item_offcanvas_typography',
+				'scheme'   => '3',
+				'selector' => '{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.raven-submenu-item span.link-label',
+				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
 		);
 
@@ -597,7 +607,40 @@ class Tab_Style {
 				'selectors'  => [
 					'{{WRAPPER}} nav.raven-adnav-menu-horizontal ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-vertical ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-offcanvas ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
 				],
+				'condition'  => [ 'layout!' => 'offcanvas' ],
+			]
+		);
+
+		$widget->add_responsive_control( 'submenu_item_offcanvas_text_alignment',
+			[
+				'label'        => esc_html__( 'Alignment', 'jupiterx-core' ),
+				'type'         => 'choose',
+				'toggle'       => false,
+				'prefix_class' => 'raven%s-nav-menu-align-',
+				'options'      => [
+					'flex-start'    => [
+						'title' => is_rtl() ? esc_html__( 'Right', 'jupiterx-core' ) : esc_html__( 'Left', 'jupiterx-core' ),
+						'icon'  => is_rtl() ? 'eicon-text-align-right' : 'eicon-text-align-left',
+					],
+					'center'  => [
+						'title' => esc_html__( 'Center', 'jupiterx-core' ),
+						'icon'  => 'eicon-text-align-center',
+					],
+					'flex-end'   => [
+						'title' => is_rtl() ? esc_html__( 'Left', 'jupiterx-core' ) : esc_html__( 'Right', 'jupiterx-core' ),
+						'icon'  => is_rtl() ? 'eicon-text-align-left' : 'eicon-text-align-right',
+					],
+					'space-between' => [
+						'title' => esc_html__( 'Justify', 'jupiterx-core' ),
+						'icon'  => 'eicon-text-align-justify',
+					],
+				],
+				'selectors'  => [
+					'{{WRAPPER}} nav.raven-adnav-menu-offcanvas ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
+				],
+				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
 		);
 
@@ -615,6 +658,7 @@ class Tab_Style {
 				'render_type' => 'ui',
 				'selectors'   => [
 					'{{WRAPPER}}' => '--submenu-spacing: {{SIZE}}',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'margin-bottom: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -635,6 +679,19 @@ class Tab_Style {
 				'selectors'  => [
 					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.raven-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
+				'condition'  => [ 'layout!' => 'offcanvas' ],
+			]
+		);
+
+		$widget->add_responsive_control( 'submenu_item_offcanvas_padding',
+			[
+				'label'      => esc_html__( 'Padding', 'jupiterx-core' ),
+				'type'       => 'dimensions',
+				'size_units' => [ 'px', '%' ],
+				'selectors'  => [
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.raven-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
 		);
 
@@ -667,7 +724,7 @@ class Tab_Style {
 
 		$widget->add_control( 'submenu_item_divider_type',
 			[
-				'label'   => esc_html__( 'Border Type', 'jupiterx-core' ),
+				'label'   => esc_html__( 'Type', 'jupiterx-core' ),
 				'type'    => 'select',
 				'default' => 'none',
 				'options' => [
@@ -682,6 +739,7 @@ class Tab_Style {
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
 					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
 					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:first-of-type)' => 'border-top-style: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
 				],
 			]
 		);
@@ -695,6 +753,7 @@ class Tab_Style {
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
 					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
 					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:first-of-type)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
 				],
 				'condition' => [
 					'submenu_item_divider_type!' => 'none',
@@ -704,7 +763,7 @@ class Tab_Style {
 
 		$widget->add_responsive_control( 'submenu_item_divider_width',
 			[
-				'label'      => esc_html__( 'Border Width', 'jupiterx-core' ),
+				'label'      => esc_html__( 'Width', 'jupiterx-core' ),
 				'type'       => 'slider',
 				'size_units' => [ 'px' ],
 				'default'    => [ 'size' => 5 ],
@@ -718,6 +777,7 @@ class Tab_Style {
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:first-of-type)' => 'border-top-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
 				],
 				'condition'  => [
 					'submenu_item_divider_type!' => 'none',
@@ -742,7 +802,7 @@ class Tab_Style {
 						'label' => esc_html__( 'Border Width', 'jupiterx-core' ),
 					],
 				],
-				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li.menu-item a.raven-submenu-item',
+				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li.menu-item a.raven-submenu-item',
 			]
 		);
 
@@ -753,7 +813,7 @@ class Tab_Style {
 				'size_units' => [ 'px', '%' ],
 				'default'    => [ 'unit' => 'px' ],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li.menu-item a.raven-submenu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li.menu-item a.raven-submenu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -762,7 +822,7 @@ class Tab_Style {
 			[
 				'name'      => 'submenu_box_shadow',
 				'separator' => 'before',
-				'selector'  => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li.menu-item a.raven-submenu-item',
+				'selector'  => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li.menu-item a.raven-submenu-item',
 			]
 		);
 
@@ -785,9 +845,26 @@ class Tab_Style {
 					'value' => '3',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
 				],
+				'condition'  => [ 'layout!' => 'offcanvas' ],
+			]
+		);
+
+		$widget->add_control( 'submenu_item_offcanvas_color',
+			[
+				'label'   => esc_html__( 'Text Color', 'jupiterx-core' ),
+				'type'    => 'color',
+				'scheme'  => [
+					'type' => 'color',
+					'value' => '3',
+				],
+				'selectors' => [
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
+				],
+				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
 		);
 
@@ -797,9 +874,21 @@ class Tab_Style {
 				'type'      => 'color',
 				'default'   => '#111111',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
 				],
+				'condition'  => [ 'layout!' => 'offcanvas' ],
+			]
+		);
+
+		$widget->add_control( 'submenu_item_offcanvas_background_color',
+			[
+				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
+				'type'      => 'color',
+				'selectors' => [
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
+				],
+				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
 		);
 
@@ -822,9 +911,26 @@ class Tab_Style {
 					'value' => '4',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
 				],
+				'condition'  => [ 'layout!' => 'offcanvas' ],
+			]
+		);
+
+		$widget->add_control( 'hover_submenu_offcanvas_item_color',
+			[
+				'label'   => esc_html__( 'Text Color', 'jupiterx-core' ),
+				'type'    => 'color',
+				'scheme'  => [
+					'type'  => 'color',
+					'value' => '4',
+				],
+				'selectors' => [
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
+				],
+				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
 		);
 
@@ -833,7 +939,7 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li > a:hover:not(.active-link)' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a:hover:not(.active-link)' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a:hover:not(.active-link)' => 'background-color: {{VALUE}};',
 				],
 			]
@@ -858,9 +964,26 @@ class Tab_Style {
 					'value' => '4',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
 				],
+				'condition'  => [ 'layout!' => 'offcanvas' ],
+			]
+		);
+
+		$widget->add_control( 'active_submenu_offcanvas_item_color',
+			[
+				'label'   => esc_html__( 'Text Color', 'jupiterx-core' ),
+				'type'    => 'color',
+				'scheme'  => [
+					'type'  => 'color',
+					'value' => '4',
+				],
+				'selectors' => [
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
+				],
+				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
 		);
 
@@ -869,7 +992,7 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.active-link' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.active-link' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.active-link' => 'background-color: {{VALUE}};',
 				],
 			]

@@ -986,11 +986,16 @@ class Product_Gallery extends Base_Widget {
 	private function get_thumbnail( $image, $settings ) {
 		$image_src = Group_Control_Image_Size::get_attachment_image_src( $image, 'image', $settings );
 
+		$image_data = [
+			'id' => $image,
+			'url' => $image_src,
+		];
+
 		$image_tag = sprintf(
 			'<img class="%4$s" src="%1$s" title="%2$s" alt="%3$s" %5$s />',
 			esc_attr( $image_src ),
 			Control_Media::get_image_title( $image ),
-			Control_Media::get_image_alt( $image ),
+			Control_Media::get_image_alt( $image_data ),
 			'raven-product-gallery-stack-image',
 			$this->get_image_size( $image, $settings )
 		);
@@ -1031,17 +1036,26 @@ class Product_Gallery extends Base_Widget {
 
 		$image = wp_get_attachment_image_src( $image, 'full' );
 
+		if ( ! isset( $image[0] ) ) {
+			return '';
+		}
+
 		return $image[0];
 	}
 
+	/**
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 */
 	private function get_image_size( $image, $settings ) {
 		$size      = $settings['image_size'];
 		$dimension = [];
 
+		$image_attachment_src = wp_get_attachment_image_src( $image, 'full' );
+
 		$original_image = [
-			'data-src' => wp_get_attachment_image_src( $image, 'full' )[0],
-			'data-large_image_width' => wp_get_attachment_image_src( $image, 'full' )[1],
-			'data-large_image_height' => wp_get_attachment_image_src( $image, 'full' )[2],
+			'data-src' => isset( $image_attachment_src[0] ) ? $image_attachment_src[0] : '',
+			'data-large_image_width' => isset( $image_attachment_src[1] ) ? $image_attachment_src[1] : '',
+			'data-large_image_height' => isset( $image_attachment_src[2] ) ? $image_attachment_src[2] : '',
 		];
 
 		if ( 'custom' === $size ) {

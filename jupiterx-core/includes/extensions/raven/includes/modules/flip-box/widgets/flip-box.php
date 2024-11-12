@@ -207,7 +207,7 @@ class Flip_Box extends Base_Widget {
 				],
 				'separator' => 'before',
 				'condition' => [
-					'background_a_image[id]!' => '',
+					'background_front_image[id]!' => '',
 				],
 			]
 		);
@@ -366,7 +366,7 @@ class Flip_Box extends Base_Widget {
 				],
 				'separator' => 'before',
 				'condition' => [
-					'background_b_image[id]!' => '',
+					'background_back_image[id]!' => '',
 				],
 			]
 		);

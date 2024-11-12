@@ -29,7 +29,7 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
   function addButton() {
     // Jupiterx condition button.
     var btn = $('#jupiterx-editor-condition-show-conditions-button').html();
-    if ('active' === elementor.config.jx_editor_top_bar) {
+    if ('active' === elementor.config.jx_editor_top_bar || 'default' === elementor.config.jx_editor_top_bar) {
       var editorHeader = $('.MuiBox-root'),
         trigger = editorHeader.find('button[aria-label="Save Options"]');
       trigger.parent().prev().addClass('layout_builder_publish_button');
@@ -53,7 +53,7 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
         }, 300);
       });
     }
-    if ('active' !== elementor.config.jx_editor_top_bar) {
+    if ('inactive' === elementor.config.jx_editor_top_bar) {
       // Place button in menu.
       $(btn).insertBefore('#elementor-panel-footer-sub-menu-item-save-template');
       $('#jupiterx-editor-conditions-trigger').on('click', openModal);
@@ -347,7 +347,7 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
         elementor.config.jx_conditions = true;
       }
     });
-    if ('active' === elementor.config.jx_editor_top_bar) {
+    if ('active' === elementor.config.jx_editor_top_bar || 'default' === elementor.config.jx_editor_top_bar) {
       var editorHeader = $('.MuiBox-root'),
         trigger = editorHeader.find('.MuiButtonGroup-root').last().find('button').first();
       trigger.on('click', function () {

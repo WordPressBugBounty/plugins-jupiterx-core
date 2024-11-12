@@ -15027,6 +15027,10 @@ body.rtl .elementor-widget-raven-slider .elementor-swiper-button-prev {
 .raven-social-login-wrap .raven-facebook-wrapper #jupiterx-raven-social-login-widget-facebook.btn {
   color: #ffffff;
 }
+.raven-social-login-wrap .raven-google-wrapper > div > div > div[role=button] > div > div {
+  width: auto;
+  height: auto;
+}
 .raven-social-login-wrap .g_id_signin iframe {
   max-width: unset !important;
 }

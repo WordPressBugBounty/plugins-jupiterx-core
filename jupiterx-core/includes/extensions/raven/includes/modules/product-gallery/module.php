@@ -395,11 +395,16 @@ class Module extends Module_Base {
 	private function get_thumbnail( $image, $settings ) {
 		$image_src = Group_Control_Image_Size::get_attachment_image_src( $image, 'image', $settings );
 
+		$image_data = [
+			'id' => $image,
+			'url' => $image_src,
+		];
+
 		$image_tag = sprintf(
 			'<img class="%4$s" src="%1$s" title="%2$s" alt="%3$s" %5$s />',
 			esc_attr( $image_src ),
 			Control_Media::get_image_title( $image ),
-			Control_Media::get_image_alt( $image ),
+			Control_Media::get_image_alt( $image_data ),
 			'raven-product-gallery-stack-image',
 			$this->get_image_size( $image, $settings )
 		);

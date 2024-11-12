@@ -45,7 +45,7 @@ class Twitter {
 	public function register_admin_fields( $settings ) {
 		$settings->add_section( 'raven', 'raven_twitter_api_key', [
 			'callback' => function() {
-				echo '<hr><h2>' . esc_html__( 'Twitter API Details', 'jupiterx-core' ) . '</h2>';
+				echo '<hr><h2>' . esc_html__( 'X API Details', 'jupiterx-core' ) . '</h2>';
 			},
 			'fields' => [
 				'raven_twitter_api_key' => [

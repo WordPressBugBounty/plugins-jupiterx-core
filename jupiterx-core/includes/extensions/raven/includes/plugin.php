@@ -1146,7 +1146,7 @@ final class Plugin {
 		$new_settings['jx_conditions']        = false;
 		$new_settings['jx_nonce']             = wp_create_nonce( 'jupiterx_control_panel' );
 		$new_settings['jx_assets_url']        = self::$plugin_assets_url;
-		$new_settings['jx_editor_top_bar']    = get_option( 'elementor_experiment-editor_v2' );
+		$new_settings['jx_editor_top_bar']    = get_option( 'elementor_experiment-editor_v2', 'default' );
 		$new_settings['jx_editor_first_load'] = false;
 
 		$template_id    = filter_input( INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT );
@@ -1557,6 +1557,7 @@ final class Plugin {
 				'wcAjaxAddToCart' => get_option( 'woocommerce_enable_ajax_add_to_cart', '' ),
 				'disableAjaxToCartInArchive' => apply_filters( 'jupiterx_disable_ajax_add_to_cart_in_archive', true ),
 			],
+			'maxFileUploadSize' => wp_max_upload_size(),
 		];
 	}
 

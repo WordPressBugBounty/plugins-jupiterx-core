@@ -1789,8 +1789,6 @@ abstract class Base extends Skin_Base {
 
 		$pagination_type = $this->get_instance_value( 'pagination_type' );
 
-		error_log(print_r($pagination_type, true));
-
 		switch ( $pagination_type ) {
 			case 'load_more':
 				$this->render_load_more();

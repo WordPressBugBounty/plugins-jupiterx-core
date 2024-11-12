@@ -99,6 +99,10 @@ class Frontend {
 			}
 		}
 
+		if ( empty( $current ) && isset( $wp_query->query['view-order'] ) ) {
+			$current = 'orders';
+		}
+
 		if ( empty( $current ) ) {
 			$current = 'dashboard';
 		}

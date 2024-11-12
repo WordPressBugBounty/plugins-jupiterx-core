@@ -609,7 +609,7 @@ class Social_Login extends Form {
 		$this->start_controls_section(
 			'style_section_twitter',
 			[
-				'label' => __( 'Twitter', 'jupiterx-core' ),
+				'label' => __( 'X', 'jupiterx-core' ),
 				'tab'   => 'style',
 			]
 		);
@@ -821,6 +821,7 @@ class Social_Login extends Form {
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors'  => [
 					'{{WRAPPER}} .raven-google-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .raven-google-wrapper > div > div > div[role="button"]' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; height: auto;',
 				],
 			]
 		);
@@ -1035,6 +1036,7 @@ class Social_Login extends Form {
 				],
 				'selectors'  => [
 					'{{WRAPPER}} .icon-wrapper' => 'width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .raven-google-wrapper > div > div > div[role="button"] > div > div' => 'width: {{SIZE}}{{UNIT}} !important;',
 				],
 			]
 		);
@@ -1054,6 +1056,7 @@ class Social_Login extends Form {
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors'  => [
 					'{{WRAPPER}} .icon-wrapper' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .raven-google-wrapper > div > div > div[role="button"]' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}; height: auto;',
 				],
 			]
 		);
@@ -1066,6 +1069,7 @@ class Social_Login extends Form {
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors'  => [
 					'{{WRAPPER}} .icon-wrapper' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .raven-google-wrapper > div > div > div[role="button"] > div > div' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -1139,6 +1143,8 @@ class Social_Login extends Form {
 				'toggle'     => true,
 				'selectors'  => [
 					'{{WRAPPER}} .raven-social-single-wrapper' => 'flex-direction: {{icon_position}}',
+					'{{WRAPPER}} .raven-google-wrapper > div > div > div[role="button"] > div' => 'flex-direction: {{icon_position}}',
+					'{{WRAPPER}} .raven-google-wrapper > div > div > div[role="button"]' => 'height: auto',
 				],
 			]
 		);
@@ -1173,6 +1179,7 @@ class Social_Login extends Form {
 				'toggle'     => true,
 				'selectors'  => [
 					'{{WRAPPER}} .icon-wrapper' => 'text-align : {{icon_alignment}};',
+					'{{WRAPPER}} .raven-google-wrapper > div > div > div[role="button"] > div > div' => 'justify-content : {{icon_alignment}}; display: flex;',
 				],
 			]
 		);
@@ -1189,7 +1196,7 @@ class Social_Login extends Form {
 			[
 				'name'     => 'border_icons',
 				'label'    => __( 'Border', 'jupiterx-core' ),
-				'selector' => '{{WRAPPER}} .icon-wrapper',
+				'selector' => '{{WRAPPER}} .icon-wrapper, {{WRAPPER}} .raven-google-wrapper > div > div > div[role="button"] > div > div',
 			]
 		);
 
@@ -1208,6 +1215,7 @@ class Social_Login extends Form {
 				'size_units' => [ 'px', '%', 'em' ],
 				'selectors'  => [
 					'{{WRAPPER}} .icon-wrapper' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} .raven-google-wrapper > div > div > div[role="button"] > div > div' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);

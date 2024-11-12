@@ -310,6 +310,58 @@ class Advanced_Accordion extends Base_Widget {
 		);
 
 		$this->add_control(
+			'scroll_to_content',
+			[
+				'label' => esc_html__( 'Scrolling to the Content', 'jupiterx-core' ),
+				'type' => Controls_Manager::SWITCHER,
+				'label_on' => esc_html__( 'Yes', 'jupiterx-core' ),
+				'label_off' => esc_html__( 'No', 'jupiterx-core' ),
+				'return_value' => 'yes',
+				'default' => 'false',
+				'separator' => 'before',
+				'frontend_available' => true,
+			]
+		);
+
+		$this->add_control(
+			'content_offset',
+			[
+				'label' => esc_html__( 'Scrolling offset (px)', 'jupiterx-core' ),
+				'type'  => Controls_Manager::SLIDER,
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 100,
+					],
+				],
+				'default' => [
+					'unit' => 'px',
+					'size' => 0,
+				],
+				'condition' => [
+					'scroll_to_content' => 'yes',
+				],
+				'frontend_available' => true,
+			]
+		);
+
+		$this->add_control(
+			'scrolling_delay',
+			[
+				'label'   => esc_html__( 'Scroll animation speed (ms)', 'jupiterx-core' ),
+				'type'    => Controls_Manager::NUMBER,
+				'default' => 500,
+				'min'     => 100,
+				'max'     => 2000,
+				'step'    => 10,
+				'condition' => [
+					'scroll_to_content' => 'yes',
+				],
+				'frontend_available' => true,
+			]
+		);
+
+		$this->add_control(
 			'item_html_tag',
 			[
 				'label' => esc_html__( 'Title HTML Tag', 'jupiterx-core' ),

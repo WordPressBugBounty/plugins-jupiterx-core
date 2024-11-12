@@ -2,8 +2,8 @@
 Contributors: artbees
 Tags: jupiter, jupiterx
 Requires at least: 5.6
-Tested up to: 6.6
-Stable tag: 4.7.8
+Tested up to: 6.7
+Stable tag: 4.8.5
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -29,6 +29,17 @@ It's worth mentioning that, some of the features are disabled for the Jupiter X 
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= 4.8.5 =
+* Fixed issues in Social Login widget.
+* Fixed issues in Advanced Menu widget.
+* Fixed issues in My Account widget.
+* Fixed UI issues in Layout Builder.
+* Fixed missing Alt Text in Product Gallery widget.
+* Fixed page change on sub-menu close issue in Navigation Menu widget.
+* Improved file upload in Form widget with max file size restriction.
+* Added Overlay feature to Flip Box widget.
+* Added scrolling to content feature in Advanced Accordion widget.
+
 = 4.7.8 =
 * Improved Shopping Cart widget to be compatible with WooCommerce's `Ajax add to cart` setting.
 * Removed `waypoints.js` library dependency from the widgets.
