@@ -22,6 +22,18 @@ class Icon extends Base_Widget {
 		return 'raven-element-icon raven-element-icon-icon';
 	}
 
+	public function get_style_depends() {
+		return [
+			'e-animation-grow',
+			'e-animation-shrink',
+			'e-animation-pulse',
+			'e-animation-pop',
+			'e-animation-grow-rotate',
+			'e-animation-wobble-skew',
+			'e-animation-buzz-out',
+		];
+	}
+
 	protected function register_controls() {
 		$this->register_section_content();
 		$this->register_section_settings();

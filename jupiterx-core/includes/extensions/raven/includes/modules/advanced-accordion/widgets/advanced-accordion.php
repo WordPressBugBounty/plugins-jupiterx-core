@@ -13,8 +13,8 @@ use Elementor\Group_Control_Background;
 use Elementor\Group_Control_Border;
 use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
-use Elementor\Core\Schemes\Color as Color;
-use Elementor\Core\Schemes\Typography as Typo;
+use Elementor\Core\Kits\Documents\Tabs\Global_Colors;
+use Elementor\Core\Kits\Documents\Tabs\Global_Typography;
 use JupiterX_Core\Raven\Controls\Group\Box_Style;
 use Elementor\Plugin;
 use JupiterX_Core\Raven\Utils;
@@ -605,8 +605,10 @@ class Advanced_Accordion extends Base_Widget {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'toggle_label_typography',
-				'scheme'   => Typo::TYPOGRAPHY_1,
 				'selector' => '{{WRAPPER}} #jupiterx-advanced-accordion-wrapper .jx-ac-inactive .jx-ac-title',
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
 			]
 		);
 
@@ -652,12 +654,11 @@ class Advanced_Accordion extends Base_Widget {
 			[
 				'label'  => esc_html__( 'Text Color', 'jupiterx-core' ),
 				'type'   => Controls_Manager::COLOR,
-				'scheme' => [
-					'type'  => Color::get_type(),
-					'value' => Color::COLOR_3,
-				],
 				'selectors' => [
 					'{{WRAPPER}} #jupiterx-advanced-accordion-wrapper .jx-ac-inactive:hover .jx-ac-title' => 'color: {{VALUE}}',
+				],
+				'global' => [
+					'default' => Global_Colors::COLOR_TEXT,
 				],
 			]
 		);
@@ -666,8 +667,10 @@ class Advanced_Accordion extends Base_Widget {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'toggle_label_typography_hover',
-				'scheme'   => Typo::TYPOGRAPHY_1,
 				'selector' => '{{WRAPPER}} #jupiterx-advanced-accordion-wrapper .jx-ac-inactive:hover .jx-ac-title',
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
 			]
 		);
 
@@ -725,8 +728,10 @@ class Advanced_Accordion extends Base_Widget {
 			Group_Control_Typography::get_type(),
 			[
 				'name'     => 'toggle_label_typography_active',
-				'scheme'   => Typo::TYPOGRAPHY_1,
 				'selector' => '{{WRAPPER}} #jupiterx-advanced-accordion-wrapper .jx-ac-active .jx-ac-title',
+				'global' => [
+					'default' => Global_Typography::TYPOGRAPHY_PRIMARY,
+				],
 			]
 		);
 

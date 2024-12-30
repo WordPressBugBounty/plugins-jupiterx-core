@@ -1,10 +1,10 @@
-@charset "UTF-8";
 @font-face {
   font-family: "jupiterx";
   src: url("../fonts/jupiterx.eot");
   src: url("../fonts/jupiterx.eot?#iefix") format("eot"), url("../fonts/jupiterx.woff2") format("woff2"), url("../fonts/jupiterx.woff") format("woff"), url("../fonts/jupiterx.ttf") format("truetype"), url("../fonts/jupiterx.svg#jupiterx") format("svg");
 }
-[class^=jupiterx-icon-]:before,
+
+[class^="jupiterx-icon-"]:before,
 [class*=" jupiterx-icon-"]:before {
   font-family: "jupiterx";
   font-style: normal;
@@ -20,81 +20,81 @@
 }
 
 .jupiterx-icon-creative-market:before {
-  content: "";
+  content: "\EA01";
 }
 
 .jupiterx-icon-long-arrow:before {
-  content: "";
+  content: "\EA02";
 }
 
 .jupiterx-icon-search-1:before {
-  content: "";
+  content: "\EA03";
 }
 
 .jupiterx-icon-search-2:before {
-  content: "";
+  content: "\EA04";
 }
 
 .jupiterx-icon-search-3:before {
-  content: "";
+  content: "\EA05";
 }
 
 .jupiterx-icon-search-4:before {
-  content: "";
+  content: "\EA06";
 }
 
 .jupiterx-icon-share-email:before {
-  content: "";
+  content: "\EA07";
 }
 
 .jupiterx-icon-shopping-cart-1:before {
-  content: "";
+  content: "\EA08";
 }
 
 .jupiterx-icon-shopping-cart-10:before {
-  content: "";
+  content: "\EA09";
 }
 
 .jupiterx-icon-shopping-cart-2:before {
-  content: "";
+  content: "\EA0A";
 }
 
 .jupiterx-icon-shopping-cart-3:before {
-  content: "";
+  content: "\EA0B";
 }
 
 .jupiterx-icon-shopping-cart-4:before {
-  content: "";
+  content: "\EA0C";
 }
 
 .jupiterx-icon-shopping-cart-5:before {
-  content: "";
+  content: "\EA0D";
 }
 
 .jupiterx-icon-shopping-cart-6:before {
-  content: "";
+  content: "\EA0E";
 }
 
 .jupiterx-icon-shopping-cart-7:before {
-  content: "";
+  content: "\EA0F";
 }
 
 .jupiterx-icon-shopping-cart-8:before {
-  content: "";
+  content: "\EA10";
 }
 
 .jupiterx-icon-shopping-cart-9:before {
-  content: "";
+  content: "\EA11";
 }
 
 .jupiterx-icon-zillow:before {
-  content: "";
+  content: "\EA12";
 }
 
 .jupiterx-icon-zomato:before {
-  content: "";
+  content: "\EA13";
 }
 
 .jupiterx-icon-rocket-solid:before {
-  content: "";
+  content: "\EA14";
 }

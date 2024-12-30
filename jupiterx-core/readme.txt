@@ -3,7 +3,7 @@ Contributors: artbees
 Tags: jupiter, jupiterx
 Requires at least: 5.6
 Tested up to: 6.7
-Stable tag: 4.8.5
+Stable tag: 4.8.6
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -29,6 +29,12 @@ It's worth mentioning that, some of the features are disabled for the Jupiter X 
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= 4.8.6 =
+* Fixed issues of incompatibility with Elementor 3.26.0.
+* Fixed Security issue on Popup Template Export.
+* Fixed post excerpt issue on post & advanced posts widgets.
+* Fixed color parent item in navigation menu.
+
 = 4.8.5 =
 * Fixed issues in Social Login widget.
 * Fixed issues in Advanced Menu widget.

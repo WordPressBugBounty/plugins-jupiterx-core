@@ -12,7 +12,7 @@ use Elementor\Group_Control_Box_Shadow;
 use Elementor\Group_Control_Typography;
 use JupiterX_Core\Raven\Base\Base_Widget;
 use JupiterX_Core\Raven\Controls\Group\Box_Style;
-use Elementor\Core\Schemes\Color as Scheme_Color;
+use Elementor\Core\Kits\Documents\Tabs\Global_Colors;
 use Elementor\Modules\DynamicTags\Module as TagsModule;
 use Elementor\Plugin as Elementor;
 
@@ -37,6 +37,10 @@ class Image_Comparison extends Base_Widget {
 
 	public function get_script_depends() {
 		return [ 'jupiterx-core-raven-juxtapose' ];
+	}
+
+	public function get_style_depends() {
+		return [ 'e-swiper', 'swiper' ];
 	}
 
 	protected function register_controls() {
@@ -895,9 +899,8 @@ class Image_Comparison extends Base_Widget {
 				'selector' => '{{WRAPPER}} .jx-controller:hover',
 				'fields_options' => [
 					'color' => [
-						'scheme' => [
-							'type' => Scheme_Color::get_type(),
-							'value' => Scheme_Color::COLOR_2,
+						'global' => [
+							'default' => Global_Colors::COLOR_SECONDARY,
 						],
 					],
 				],

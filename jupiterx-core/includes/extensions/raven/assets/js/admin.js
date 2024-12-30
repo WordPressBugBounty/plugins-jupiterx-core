@@ -16,7 +16,8 @@
         var self = this;
         $(this).removeClass('success').removeClass('error').addClass('loading');
         wp.ajax.post('raven_sync_libraries', {
-          library: 'presets'
+          library: 'presets',
+          nonce: window.jupiterxOptions.nonce
         }).done(function () {
           $(self).removeClass('loading').addClass('success');
         }).fail(function () {

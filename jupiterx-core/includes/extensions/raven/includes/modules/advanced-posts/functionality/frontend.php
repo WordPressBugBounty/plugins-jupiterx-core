@@ -535,7 +535,7 @@ class Frontend {
 
 		$custom_excerpt = isset( $this->settings['custom_excerpt'] ) ? $this->settings['custom_excerpt'] : 'yes';
 
-		if ( 'yes' !== $custom_excerpt ) {
+		if ( 'yes' === $custom_excerpt ) {
 			return '<div class="raven-post-excerpt">' . get_the_excerpt() . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 		}
 

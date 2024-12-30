@@ -435,6 +435,7 @@ final class JupiterX_Popups {
 			[
 				'action' => 'jupiterx_export_popup',
 				'template_id' => $post->ID,
+				'nonce' => wp_create_nonce( 'jupiterx_export_popup' ),
 			],
 			admin_url( 'admin-ajax.php' )
 		);
@@ -473,21 +474,29 @@ final class JupiterX_Popups {
 	 * @since 3.7.0
 	 */
 	public function export_popup_action() {
+		if ( empty( $_GET['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ) ), 'jupiterx_export_popup' ) ) { // phpcs:ignore
+			return;
+		}
+
+		if ( ! current_user_can( 'edit_posts' ) ) {
+			return;
+		}
+
 		if ( empty( $_GET['action'] ) ) { // phpcs:ignore
 			return;
 		}
 
-		$action = htmlspecialchars( $_GET['action'] ); // phpcs:ignore
+		$action = sanitize_text_field( wp_unslash( $_GET['action'] ) );
 
 		if ( 'jupiterx_export_popup' !== $action ) {
 			return;
 		}
 
-		$popup_id = ! empty( $_GET['template_id'] ) ? htmlspecialchars( $_GET['template_id'] ) : ''; // phpcs:ignore
-
-		if ( empty( $popup_id ) ) {
+		if ( empty( $_GET['template_id'] ) ) { // phpcs:ignore
 			return;
 		}
+
+		$popup_id = sanitize_text_field( wp_unslash( $_GET['template_id'] ) );
 
 		$data = $this->popup_export_data( $popup_id );
 

@@ -2,8 +2,11 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 var _i18n = require("@wordpress/i18n");
+
 (function ($) {
   var Variations = {
     init: function init() {
@@ -18,35 +21,43 @@ var _i18n = require("@wordpress/i18n");
         imagesId = imagesId.join(',');
         idInput.val(imagesId.trim()).trigger('change');
       };
+
       var manageToRemoveImageId = function manageToRemoveImageId(id, inputId) {
         var imagesId = inputId.val();
         imagesId = imagesId.split(',');
         var toRemove = imagesId.indexOf(id);
+
         if (toRemove > -1) {
           imagesId.splice(toRemove, 1);
         }
+
         if (imagesId.length <= 1) {
           inputId.parent().find('.jupiterx-variation-gallery-button').val((0, _i18n.__)('Upload Gallery Images', 'jupiterx-core'));
         }
+
         imagesId = imagesId.join(',');
         inputId.val(imagesId.trim()).trigger('change');
       };
+
       var removeButton = function removeButton() {
         $('.jx-remove-gallery-item').off().on('click', function () {
           var id = $(this).parent().attr('data-id'),
-            inputId = $(this).parent().parent().parent().find('.variation-gallery-images-id');
+              inputId = $(this).parent().parent().parent().find('.variation-gallery-images-id');
           manageToRemoveImageId(id, inputId);
           $(this).parent().remove();
         });
       };
+
       var manageAddNewImages = function manageAddNewImages(info, idInput, galleryWrapper) {
         manageToAddImagesId(info.id, idInput);
+
         if ('' === info.url) {
           return;
         }
+
         var wrapper = document.createElement('span'),
-          remover = document.createElement('a'),
-          image = document.createElement('img');
+            remover = document.createElement('a'),
+            image = document.createElement('img');
         wrapper.setAttribute('class', 'jupiterx-product-variation-gallery-single-image-wrapper');
         wrapper.setAttribute('data-id', info.id);
         remover.setAttribute('class', 'jx-remove-gallery-item tips');
@@ -57,6 +68,7 @@ var _i18n = require("@wordpress/i18n");
         galleryWrapper.append(wrapper);
         removeButton();
       };
+
       var enableSorting = function enableSorting() {
         $('.jupiterx-gallery-images-preview').sortable({
           placeholder: 'ui-sortable-placeholder wc-metabox-sortable-placeholder',
@@ -70,39 +82,46 @@ var _i18n = require("@wordpress/i18n");
           }
         });
       };
+
       jQuery(document).ready(function () {
         var wpMediaUploader;
         $(document).ajaxComplete(function () {
           $('.jupiterx-variation-gallery-wrap').each(function () {
             var galleryHtml = $(this).html(),
-              selfWrapper = $(this).parent(),
-              isAppend = selfWrapper.find('.upload_image').children().hasClass('jupiterx-variation-gallery-wrap-replaced');
+                selfWrapper = $(this).parent(),
+                isAppend = selfWrapper.find('.upload_image').children().hasClass('jupiterx-variation-gallery-wrap-replaced');
+
             if (!isAppend) {
               selfWrapper.find('.upload_image').append('<p class="form-field jupiterx-variation-gallery-wrap-replaced">' + galleryHtml + '</p>');
             }
+
             $(this).remove();
           });
           $('.jupiterx-variation-gallery-button').off().click(function (e) {
             e.preventDefault();
             var galleryWrapper = $(this).parent().find('.jupiterx-gallery-images-preview'),
-              parent = $(this).parent().parent(),
-              imagesId = $(this).parent().find('.variation-gallery-images-id'),
-              defaultAttachmentIds = imagesId.val().split(','),
-              imageQuery = wp.media.query({
-                post__in: defaultAttachmentIds,
-                orderby: 'post__in'
-              });
+                parent = $(this).parent().parent(),
+                imagesId = $(this).parent().find('.variation-gallery-images-id'),
+                defaultAttachmentIds = imagesId.val().split(','),
+                imageQuery = wp.media.query({
+              post__in: defaultAttachmentIds,
+              orderby: 'post__in'
+            });
+
             if (wpMediaUploader) {
               wpMediaUploader.off().on('select', function () {
                 var attachments = wpMediaUploader.state().get('selection').toJSON();
+
                 for (var i = 0; i < attachments.length; i++) {
                   manageAddNewImages(attachments[i], imagesId, galleryWrapper);
                 }
+
                 parent.find('.jupiterx-variation-gallery-button').val((0, _i18n.__)('Change Image', 'jupiterx-core'));
               });
               wpMediaUploader.open();
               return;
             }
+
             wpMediaUploader = wp.media.frames.file_frame = wp.media({
               title: (0, _i18n.__)('Choose or Upload an Image', 'jupiterx-core'),
               button: {
@@ -116,13 +135,14 @@ var _i18n = require("@wordpress/i18n");
             });
             wpMediaUploader.on('select', function () {
               var attachments = wpMediaUploader.state().get('selection').toJSON();
+
               for (var i = 0; i < attachments.length; i++) {
                 manageAddNewImages(attachments[i], imagesId, galleryWrapper);
               }
-              parent.find('.jupiterx-variation-gallery-button').val((0, _i18n.__)('Change Image', 'jupiterx-core'));
-            });
 
-            // Open the media frame.
+              parent.find('.jupiterx-variation-gallery-button').val((0, _i18n.__)('Change Image', 'jupiterx-core'));
+            }); // Open the media frame.
+
             wpMediaUploader.open();
           });
           removeButton();

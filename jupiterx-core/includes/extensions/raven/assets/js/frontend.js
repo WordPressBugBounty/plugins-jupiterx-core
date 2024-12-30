@@ -2,27 +2,36 @@
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
 (function ($) {
   var RavenFrontend = function RavenFrontend() {
     var checkWidgetIsActive = function checkWidgetIsActive(widget) {
       var activeElements = window.ravenTools.activeElements;
+
       if ((0, _typeof2["default"])(window.ravenTools.activeElements) === 'object') {
         activeElements = Object.values(window.ravenTools.activeElements);
       }
+
       return !!activeElements.includes(widget);
     };
+
     var addGlobalBodyTypography = function addGlobalBodyTypography() {
       var _globalTypography$fon, _globalTypography$lin;
+
       // Check if ravenTools exists and has globalTypography defined.
       if (!window.ravenTools || !window.ravenTools.globalTypography) {
         return;
       }
+
       var globalTypography = window.ravenTools.globalTypography;
-      if (globalTypography.fontFamily || (_globalTypography$fon = globalTypography.fontSize) !== null && _globalTypography$fon !== void 0 && _globalTypography$fon.size || (_globalTypography$lin = globalTypography.lineHeight) !== null && _globalTypography$lin !== void 0 && _globalTypography$lin.size || globalTypography.color) {
+
+      if (globalTypography.fontFamily || ((_globalTypography$fon = globalTypography.fontSize) === null || _globalTypography$fon === void 0 ? void 0 : _globalTypography$fon.size) || ((_globalTypography$lin = globalTypography.lineHeight) === null || _globalTypography$lin === void 0 ? void 0 : _globalTypography$lin.size) || globalTypography.color) {
         $('body .jupiterx-site').addClass('jupiterx-global-style');
       }
     };
+
     var widgets = {
       'raven-button.default': checkWidgetIsActive('button') && require('./widgets/button')["default"],
       'raven-product-add-to-cart.default': checkWidgetIsActive('add-to-cart') && require('./widgets/add-to-cart')["default"],
@@ -82,28 +91,38 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
       'raven-shopping-cart.default': checkWidgetIsActive('shopping-cart') && require('./widgets/shopping-cart')["default"],
       'raven-circle-progress.default': checkWidgetIsActive('circle-progress') && require('./widgets/circle-progress')["default"]
     };
+
     function elementorInit() {
       for (var widget in widgets) {
         elementorFrontend.hooks.addAction("frontend/element_ready/".concat(widget), widgets[widget]);
-      }
+      } // Lunch motion effects.
 
-      // Lunch motion effects.
+
       new (require('./utils/motion-effects/luncher')["default"])();
+
       if (typeof elementorPro === 'undefined' && typeof window.elementor !== 'undefined' && $('.elementor').length > 0) {
         var fullPageEditor = require('./utils/full-page-editor');
+
         fullPageEditor.handleFullPageEditorBtn();
         fullPageEditor.handleHeaderBtns();
-      }
+      } // Add global body typography.
 
-      // Add global body typography.
+
       addGlobalBodyTypography();
+
       require('./utils/wrapper-link');
+
       require('./widgets/column');
+
       require('./popup/popup')["default"].init();
+
       require('./utils/tooltip');
+
       require('./utils/animated-gradient');
+
       require('./utils/header');
     }
+
     this.Module = require('./utils/module');
     this.utils = {
       Masonry: require('./utils/masonry'),
@@ -113,11 +132,14 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
       SmoothScroll: require('./utils/smoothscroll-polyfill'),
       GoogleLogin: require('./widgets/social-login')
     };
+
     this.init = function () {
       $(window).on('elementor/frontend/init', elementorInit);
     };
+
     this.init();
   };
+
   window.ravenFrontend = new RavenFrontend();
 })(jQuery);
 
@@ -125,242 +147,262 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
 "use strict";
 
 var $ = jQuery;
+
 window.jupiterxPopupSettings = function ($popup, settings, triggers) {
   var $window = $(window),
-    $document = $(document),
-    popupSettings = settings,
-    popupTriggers = triggers,
-    id = popupSettings.id,
-    popupId = popupSettings.jupiterx_popup_id,
-    editMode = Boolean(elementorFrontend.isEditMode());
+      $document = $(document),
+      popupSettings = settings,
+      popupTriggers = triggers,
+      id = popupSettings.id,
+      popupId = popupSettings.jupiterx_popup_id,
+      editMode = Boolean(elementorFrontend.isEditMode());
   var ajaxContentLoaded = false;
   var inactivityTimeout;
   var isUTMMatch;
+
   this.init = function () {
     var _popupTriggers$on_dat,
-      _popupTriggers$time_r,
-      _this = this,
-      _popupTriggers$on_scr,
-      _popupTriggers$on_scr2,
-      _popupTriggers$show_a,
-      _popupTriggers$show_a2,
-      _popupTriggers$url_re,
-      _popupTriggers$user_b,
-      _popupTriggers$user_b2,
-      _popupTriggers$user_d,
-      _popupTriggers$user_r,
-      _popupTriggers$user_t,
-      _popupTriggers$utm_ca,
-      _popupTriggers$utm_co,
-      _popupTriggers$utm_so,
-      _popupTriggers$utm_te,
-      _popupTriggers$utm_me;
+        _popupTriggers$time_r,
+        _this = this,
+        _popupTriggers$on_scr,
+        _popupTriggers$on_scr2,
+        _popupTriggers$on_scr3,
+        _popupTriggers$show_a,
+        _popupTriggers$show_a2,
+        _popupTriggers$url_re,
+        _popupTriggers$user_b,
+        _popupTriggers$user_b2,
+        _popupTriggers$user_d,
+        _popupTriggers$user_r,
+        _popupTriggers$user_t,
+        _popupTriggers$utm_ca,
+        _popupTriggers$utm_co,
+        _popupTriggers$utm_so,
+        _popupTriggers$utm_te,
+        _popupTriggers$utm_me;
+
     if (editMode || $('.jupiterx-popup').length > 1 && this.handleAvoidMultiplePopups()) {
       return false;
     }
+
     this.handlePopupCloseActionLocalStorage();
     this.handleButtonWidgetClick();
     this.handlePopupLocalStorage();
+
     if (window.localStorage.getItem('jupiterx_popup_closed_permanently_' + popupId) === 'true' || window.localStorage.getItem('jupiterx_popup_closed_permanently_' + id) === 'true') {
       return;
     }
-    this.handlePopupAction();
 
-    // Custom selector.
+    this.handlePopupAction(); // Custom selector.
+
     if (popupSettings.custom_selector) {
       this.onCustomSelector(popupSettings.custom_selector);
     }
+
     this.initOpenEvent();
     this.initCloseEvent();
+
     if (popupTriggers.length === 0) {
       this.removeEntranceAnimationClass();
-    }
-
-    // On date.
+    } // On date.
     // eslint-disable-next-line camelcase
+
+
     if (popupTriggers.on_date) {
       var currentDate = new Date();
       var triggerDate = new Date(popupTriggers.on_date.control * 1000);
+
       if (currentDate.toDateString() !== triggerDate.toDateString()) {
         return;
       }
+
       if (Object.keys(popupTriggers).length === 1 && Object.keys(popupTriggers)[0] === 'on_date') {
         this.showPopup();
       }
-    }
-
-    // On date range.
+    } // On date range.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$on_dat = popupTriggers.on_date_range) !== null && _popupTriggers$on_dat !== void 0 && _popupTriggers$on_dat.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$on_dat = popupTriggers.on_date_range) === null || _popupTriggers$on_dat === void 0 ? void 0 : _popupTriggers$on_dat.control) {
       var _currentDate = new Date();
+
       var startDate = new Date(popupTriggers.on_date_range.control.start_date * 1000);
       var endDate = new Date(popupTriggers.on_date_range.control.end_date * 1000);
+
       if (!(_currentDate >= startDate && _currentDate <= endDate)) {
         return;
       }
+
       if (Object.keys(popupTriggers).length === 1 && Object.keys(popupTriggers)[0] === 'on_date_range') {
         this.showPopup();
       }
-    }
-
-    // On time range.
+    } // On time range.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$time_r = popupTriggers.time_range) !== null && _popupTriggers$time_r !== void 0 && _popupTriggers$time_r.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$time_r = popupTriggers.time_range) === null || _popupTriggers$time_r === void 0 ? void 0 : _popupTriggers$time_r.control) {
       // Get the current time in the specified timezone.
       var currentTime = new Date().toLocaleTimeString('en-US', {
         timeZone: popupTriggers.time_range.control.timezone
-      });
+      }); // Convert the start time and due time to Date objects with the current date.
 
-      // Convert the start time and due time to Date objects with the current date.
       var _startDate = new Date(new Date().toLocaleDateString() + ' ' + popupTriggers.time_range.control.start_time).getTime();
-      var dueDate = new Date(new Date().toLocaleDateString() + ' ' + popupTriggers.time_range.control.due_time).getTime();
 
-      // Convert the current time to a Unix timestamp.
+      var dueDate = new Date(new Date().toLocaleDateString() + ' ' + popupTriggers.time_range.control.due_time).getTime(); // Convert the current time to a Unix timestamp.
+
       var currentTimestamp = new Date(new Date().toLocaleDateString() + ' ' + currentTime).getTime();
+
       if (!(_startDate <= currentTimestamp && currentTimestamp <= dueDate)) {
         return;
-      }
+      } // Trigger when only time range is used OR on date and time range are used together OR on date range and time range are used together.
 
-      // Trigger when only time range is used OR on date and time range are used together OR on date range and time range are used together.
+
       if (Object.keys(popupTriggers).length === 1 && Object.keys(popupTriggers).includes('time_range') || Object.keys(popupTriggers).length === 2 && Object.keys(popupTriggers).includes('time_range') && Object.keys(popupTriggers).includes('on_date') || Object.keys(popupTriggers).length === 2 && Object.keys(popupTriggers).includes('time_range') && Object.keys(popupTriggers).includes('on_date_range')) {
         this.showPopup();
       }
-    }
-
-    // On Page Exit Intent.
+    } // On Page Exit Intent.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && popupTriggers.on_page_exit_intent) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : popupTriggers.on_page_exit_intent) {
       this.removeEntranceAnimationClass();
       $document.mouseleave(function () {
         _this.showPopup();
       });
-    }
-
-    // On Page load.
+    } // On Page load.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && popupTriggers.on_page_load) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : popupTriggers.on_page_load) {
       setTimeout(function () {
         _this.showPopup();
       }, popupTriggers.on_page_load.control * 1000);
-    }
-
-    // On Scroll.
+    } // On Scroll.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$on_scr = popupTriggers.on_scroll) !== null && _popupTriggers$on_scr !== void 0 && (_popupTriggers$on_scr = _popupTriggers$on_scr.control) !== null && _popupTriggers$on_scr !== void 0 && _popupTriggers$on_scr.direction) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$on_scr = popupTriggers.on_scroll) === null || _popupTriggers$on_scr === void 0 ? void 0 : (_popupTriggers$on_scr2 = _popupTriggers$on_scr.control) === null || _popupTriggers$on_scr2 === void 0 ? void 0 : _popupTriggers$on_scr2.direction) {
       this.removeEntranceAnimationClass();
       this.onScroll();
-    }
-
-    // On Scroll Element.
+    } // On Scroll Element.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$on_scr2 = popupTriggers.on_scroll_to_element) !== null && _popupTriggers$on_scr2 !== void 0 && _popupTriggers$on_scr2.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$on_scr3 = popupTriggers.on_scroll_to_element) === null || _popupTriggers$on_scr3 === void 0 ? void 0 : _popupTriggers$on_scr3.control) {
       this.removeEntranceAnimationClass();
       this.onScrollElement();
-    }
-
-    // After X Page Views.
+    } // After X Page Views.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$show_a = popupTriggers.show_after_x_page_views) !== null && _popupTriggers$show_a !== void 0 && _popupTriggers$show_a.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$show_a = popupTriggers.show_after_x_page_views) === null || _popupTriggers$show_a === void 0 ? void 0 : _popupTriggers$show_a.control) {
       this.onAfterXPageViews();
-    }
-
-    // After X Visits.
+    } // After X Visits.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$show_a2 = popupTriggers.show_after_x_visits) !== null && _popupTriggers$show_a2 !== void 0 && _popupTriggers$show_a2.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$show_a2 = popupTriggers.show_after_x_visits) === null || _popupTriggers$show_a2 === void 0 ? void 0 : _popupTriggers$show_a2.control) {
       this.onAfterXVisits();
-    }
-
-    // URL Referrer.
+    } // URL Referrer.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$url_re = popupTriggers.url_referrer) !== null && _popupTriggers$url_re !== void 0 && _popupTriggers$url_re.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$url_re = popupTriggers.url_referrer) === null || _popupTriggers$url_re === void 0 ? void 0 : _popupTriggers$url_re.control) {
       this.urlReferrer();
-    }
-
-    // User browser language.
+    } // User browser language.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$user_b = popupTriggers.user_browser_language) !== null && _popupTriggers$user_b !== void 0 && _popupTriggers$user_b.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$user_b = popupTriggers.user_browser_language) === null || _popupTriggers$user_b === void 0 ? void 0 : _popupTriggers$user_b.control) {
       this.userBrowserLanguage();
-    }
-
-    // User browser.
+    } // User browser.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$user_b2 = popupTriggers.user_browser) !== null && _popupTriggers$user_b2 !== void 0 && _popupTriggers$user_b2.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$user_b2 = popupTriggers.user_browser) === null || _popupTriggers$user_b2 === void 0 ? void 0 : _popupTriggers$user_b2.control) {
       this.userBrowser();
-    }
-
-    // User device.
+    } // User device.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$user_d = popupTriggers.user_device) !== null && _popupTriggers$user_d !== void 0 && _popupTriggers$user_d.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$user_d = popupTriggers.user_device) === null || _popupTriggers$user_d === void 0 ? void 0 : _popupTriggers$user_d.control) {
       if (this.userDevice(popupTriggers.user_device.control, popupTriggers.user_device.operator)) {
         this.showPopup();
       }
-    }
-
-    // User role.
+    } // User role.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$user_r = popupTriggers.user_role) !== null && _popupTriggers$user_r !== void 0 && _popupTriggers$user_r.result && popupTriggers.user_role.result === true) {
+
+
+    if ((popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$user_r = popupTriggers.user_role) === null || _popupTriggers$user_r === void 0 ? void 0 : _popupTriggers$user_r.result) && popupTriggers.user_role.result === true) {
       this.showPopup();
-    }
-
-    // User type.
+    } // User type.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$user_t = popupTriggers.user_type) !== null && _popupTriggers$user_t !== void 0 && _popupTriggers$user_t.result && popupTriggers.user_type.result === true) {
+
+
+    if ((popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$user_t = popupTriggers.user_type) === null || _popupTriggers$user_t === void 0 ? void 0 : _popupTriggers$user_t.result) && popupTriggers.user_type.result === true) {
       this.showPopup();
-    }
-
-    // UTM Campaign.
+    } // UTM Campaign.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$utm_ca = popupTriggers.utm_campaign) !== null && _popupTriggers$utm_ca !== void 0 && _popupTriggers$utm_ca.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$utm_ca = popupTriggers.utm_campaign) === null || _popupTriggers$utm_ca === void 0 ? void 0 : _popupTriggers$utm_ca.control) {
       isUTMMatch = this.utmUrl(popupTriggers.utm_campaign, 'utm_campaign');
+
       if (isUTMMatch) {
         this.showPopup();
       }
-    }
-
-    // UTM Content.
+    } // UTM Content.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$utm_co = popupTriggers.utm_content) !== null && _popupTriggers$utm_co !== void 0 && _popupTriggers$utm_co.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$utm_co = popupTriggers.utm_content) === null || _popupTriggers$utm_co === void 0 ? void 0 : _popupTriggers$utm_co.control) {
       isUTMMatch = this.utmUrl(popupTriggers.utm_content, 'utm_content');
+
       if (isUTMMatch) {
         this.showPopup();
       }
-    }
-
-    // UTM Source.
+    } // UTM Source.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$utm_so = popupTriggers.utm_source) !== null && _popupTriggers$utm_so !== void 0 && _popupTriggers$utm_so.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$utm_so = popupTriggers.utm_source) === null || _popupTriggers$utm_so === void 0 ? void 0 : _popupTriggers$utm_so.control) {
       isUTMMatch = this.utmUrl(popupTriggers.utm_source, 'utm_source');
+
       if (isUTMMatch) {
         this.showPopup();
       }
-    }
-
-    // UTM Term.
+    } // UTM Term.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$utm_te = popupTriggers.utm_term) !== null && _popupTriggers$utm_te !== void 0 && _popupTriggers$utm_te.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$utm_te = popupTriggers.utm_term) === null || _popupTriggers$utm_te === void 0 ? void 0 : _popupTriggers$utm_te.control) {
       isUTMMatch = this.utmUrl(popupTriggers.utm_term, 'utm_term');
+
       if (isUTMMatch) {
         this.showPopup();
       }
-    }
-
-    // UTM Term.
+    } // UTM Term.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && (_popupTriggers$utm_me = popupTriggers.utm_medium) !== null && _popupTriggers$utm_me !== void 0 && _popupTriggers$utm_me.control) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$utm_me = popupTriggers.utm_medium) === null || _popupTriggers$utm_me === void 0 ? void 0 : _popupTriggers$utm_me.control) {
       isUTMMatch = this.utmUrl(popupTriggers.utm_medium, 'utm_medium');
+
       if (isUTMMatch) {
         this.showPopup();
       }
-    }
-
-    // After inactivity.
+    } // After inactivity.
     // eslint-disable-next-line camelcase
-    if (popupTriggers !== null && popupTriggers !== void 0 && popupTriggers.after_inactivity) {
+
+
+    if (popupTriggers === null || popupTriggers === void 0 ? void 0 : popupTriggers.after_inactivity) {
       this.onAfterInactivity(popupTriggers.after_inactivity.control);
     }
   };
+
   this.handleButtonWidgetClick = function () {
     var _this2 = this;
+
     $(document).on('popup-button-clicked', function (event, eventData) {
       if (parseInt(eventData.popupId) === id) {
         switch (eventData.actionType) {
@@ -368,56 +410,72 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
             _this2.hidePopup({
               constantly: popupSettings.show_once
             });
+
             break;
+
           case 'close-all-popups':
             _this2.closeAllPopups();
+
             break;
+
           case 'close-popup-permanently':
             _this2.hidePopup({
               constantly: popupSettings.show_once
             });
+
             window.localStorage.setItem('jupiterx_popup_closed_permanently_' + popupId, true);
             break;
+
           case 'close-all-popups-permanently':
             _this2.closeAllPopupsPermanently();
+
             break;
+
           default:
             break;
         }
       }
     });
   };
+
   this.handlePopupLocalStorage = function () {
     var $popupList = $('.jupiterx-popup:not(.jupiterx-popup--edit-mode)');
     $popupList.each(function (index, element) {
       var form = $(element).find('.elementor-widget-raven-form');
       var currentPopup = $(element).data('settings').id;
+
       if (form.length > 0) {
         // eslint-disable-next-line camelcase
         var _form$data = form.data('settings'),
-          popup_action = _form$data.popup_action,
-          popup_action_do_not_show_again = _form$data.popup_action_do_not_show_again;
+            popup_action = _form$data.popup_action,
+            popup_action_do_not_show_again = _form$data.popup_action_do_not_show_again; // eslint-disable-next-line camelcase
 
-        // eslint-disable-next-line camelcase
+
         if (currentPopup === id && popup_action === 'close' && _.isEmpty(popup_action_do_not_show_again)) {
           window.localStorage.removeItem('jupiterx_popup_closed_permanently_' + id);
         }
       }
     });
   };
+
   this.handlePopupAction = function () {
     var _this3 = this;
+
     elementorFrontend.on('components:init', function () {
       elementorFrontend.utils.urlActions.addAction('raven_popup_' + popupSettings.id + ':open', function (actionSettings) {
         if (parseInt(actionSettings.id) === parseInt(id)) {
           if (!actionSettings.toggle && window.localStorage.getItem('jupiterx_popup_closed_permanently_' + id) !== 'true') {
             _this3.showPopup();
+
             return;
           }
+
           if ($popup.hasClass('jupiterx-popup--hide-state') && window.localStorage.getItem('jupiterx_popup_closed_permanently_' + id) !== 'true') {
             _this3.showPopup();
+
             return;
           }
+
           if ($popup.hasClass('jupiterx-popup--show-state')) {
             _this3.hidePopup({
               constantly: false
@@ -428,14 +486,17 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       elementorFrontend.utils.urlActions.addAction('raven_popup:close', function (actionSettings, event) {
         var ravenPopupId = $(event.target).closest('.jupiterx-popup').attr('id');
         var popupNumber = 0;
+
         if (ravenPopupId) {
           popupNumber = ravenPopupId.split('-').pop();
         }
+
         if (parseInt(actionSettings.id) === parseInt(popupNumber)) {
           _this3.hidePopup({
             popupElement: $(event.target).closest('.jupiterx-popup'),
             constantly: false
           });
+
           if (actionSettings.do_not_show_again) {
             window.localStorage.setItem('jupiterx_popup_closed_permanently_' + popupNumber, true);
           }
@@ -443,21 +504,24 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       });
     });
   };
+
   this.handlePopupCloseActionLocalStorage = function () {
     var $popupList = $('.jupiterx-popup:not(.jupiterx-popup--edit-mode)');
     $popupList.each(function (index, element) {
       var elementWithHref = $(element).find('[href^="#elementor-action%3Aaction%3Draven_popup%3Aclose"]');
+
       if (elementWithHref.length > 0) {
         var _window;
-        var parentElementorId = elementWithHref.closest('[data-elementor-id]').attr('data-elementor-id');
 
-        // eslint-disable-next-line camelcase
+        var parentElementorId = elementWithHref.closest('[data-elementor-id]').attr('data-elementor-id'); // eslint-disable-next-line camelcase
+
         if (((_window = window['raven_popup_close_action_' + parentElementorId]) === null || _window === void 0 ? void 0 : _window.do_not_show_again) === '') {
           window.localStorage.removeItem('jupiterx_popup_closed_permanently_' + parentElementorId);
         }
       }
     });
   };
+
   this.closeAllPopups = function () {
     var $popupList = $('.jupiterx-popup:not(.jupiterx-popup--edit-mode)');
     $popupList.each(function () {
@@ -468,6 +532,7 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       $(document).trigger('jupiterx-popup-close-trigger', eventPopupData);
     });
   };
+
   this.closeAllPopupsPermanently = function () {
     var $popupList = $('.jupiterx-popup:not(.jupiterx-popup--edit-mode)');
     $popupList.each(function () {
@@ -479,59 +544,70 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       window.localStorage.setItem('jupiterx_popup_closed_permanently_' + $(this).data('settings').jupiterx_popup_id, true);
     });
   };
+
   this.handleAvoidMultiplePopups = function () {
     if (!popupSettings.avoid_multiple_popups) {
       return false;
     }
+
     var $popupList = $('.jupiterx-popup:not(.jupiterx-popup--edit-mode)'),
-      $reversedPopupList = $($popupList.get().reverse());
+        $reversedPopupList = $($popupList.get().reverse());
     var lastPopup, result;
     $reversedPopupList.each(function () {
       if (!$(this).data('settings').avoid_multiple_popups) {
         result = true;
         return false;
       }
+
       lastPopup = $(this).data('settings');
     });
+
     if (result) {
       return result;
     }
+
     return lastPopup.id !== popupSettings.id;
   };
+
   this.initOpenEvent = function () {
     var self = this;
     $window.on('jupiterx-popup-open-trigger', function (event) {
       var eventData = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
       var popupData = event.popupData || {},
-        popupUniqId = popupData.popupId || false;
+          popupUniqId = popupData.popupId || false;
+
       if (popupUniqId === popupId) {
         self.showPopup(popupData);
       }
-      if (!_.isEmpty(eventData) && eventData !== null && eventData !== void 0 && eventData.popupId && "jupiterx-popup-".concat(eventData.popupId) === popupId) {
+
+      if (!_.isEmpty(eventData) && (eventData === null || eventData === void 0 ? void 0 : eventData.popupId) && "jupiterx-popup-".concat(eventData.popupId) === popupId) {
         if (window.localStorage.getItem('jupiterx_popup_closed_permanently_' + eventData.popupId) === 'true') {
           return;
         }
+
         popupData.popupId = eventData.popupId;
         self.showPopup(popupData);
       }
     });
     $window.on('jupiterx-popup-close-trigger', function (event, eventData) {
       var popupUniqId = eventData.popupId,
-        constantly = eventData.constantly;
+          constantly = eventData.constantly;
+
       if (popupUniqId === popupId) {
         self.hidePopup({
           constantly: constantly
         });
       }
-    });
+    }); // eslint-disable-next-line
 
-    // eslint-disable-next-line
     $window.on('jupiterx-popup-close-form-trigger', function (event, eventData) {
       var constantly = eventData.constantly,
-        popupUniqId = eventData.popupId;
+          popupUniqId = eventData.popupId;
+
       if (constantly && popupUniqId === id) {
         window.localStorage.setItem('jupiterx_popup_closed_permanently_' + id, true);
       }
+
       if (popupUniqId === id) {
         self.hidePopup({
           constantly: constantly
@@ -539,13 +615,16 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       }
     });
   };
+
   this.initCloseEvent = function () {
     var _this4 = this;
+
     $popup.on('click', '.jupiterx-popup__close-button', function () {
       _this4.hidePopup({
         constantly: popupSettings.show_once
       });
     });
+
     if (!popupSettings.prevent_close_on_background_click) {
       $popup.on('click', '.jupiterx-popup__overlay', function () {
         _this4.hidePopup({
@@ -553,9 +632,11 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
         });
       });
     }
+
     if (!popupSettings.prevent_close_on_esc_key) {
       $document.on('keyup.jupiterxPopup', function (event) {
         var key = event.keyCode;
+
         if (27 === key) {
           _this4.hidePopup({
             constantly: popupSettings.show_once
@@ -564,104 +645,127 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       });
     }
   };
+
   this.onCustomSelector = function (selector) {
     var _this5 = this;
+
     var $selector = $(selector);
+
     if ($selector[0]) {
       $('body').on('click', selector, function (event) {
         event.preventDefault();
+
         if (window.localStorage.getItem('jupiterx_popup_closed_permanently_' + popupId) !== 'true') {
           _this5.showPopup();
         }
       });
     }
   };
+
   this.onAfterInactivity = function (delay) {
     var _this6 = this;
+
     if (window.localStorage.getItem('jupiterx_popup_closed_permanently_' + popupId) === 'true' || window.localStorage.getItem('jupiterx_popup_closed_permanently_' + id) === 'true') {
       return;
-    }
+    } // Start the timer on page load.
 
-    // Start the timer on page load.
-    this.resetTimer(delay);
 
-    // Reset the timer on user activity.
+    this.resetTimer(delay); // Reset the timer on user activity.
+
     $document.on('mousemove keydown', function () {
       _this6.resetTimer(delay);
     });
   };
+
   this.resetTimer = function (delay) {
     var _this7 = this;
+
     clearTimeout(inactivityTimeout);
     this.removeEntranceAnimationClass();
     inactivityTimeout = setTimeout(function () {
       if (window.localStorage.getItem('jupiterx_popup_closed_permanently_' + popupId) === 'true' || window.localStorage.getItem('jupiterx_popup_closed_permanently_' + id) === 'true') {
         return;
       }
+
       _this7.showPopup();
     }, delay * 1000);
   };
+
   this.onScroll = function () {
-    var _popupTriggers$on_scr3,
-      _this8 = this,
-      _popupTriggers$on_scr4;
+    var _popupTriggers$on_scr4,
+        _popupTriggers$on_scr5,
+        _this8 = this,
+        _popupTriggers$on_scr6,
+        _popupTriggers$on_scr7;
+
     // eslint-disable-next-line camelcase
-    if ((popupTriggers === null || popupTriggers === void 0 || (_popupTriggers$on_scr3 = popupTriggers.on_scroll) === null || _popupTriggers$on_scr3 === void 0 || (_popupTriggers$on_scr3 = _popupTriggers$on_scr3.control) === null || _popupTriggers$on_scr3 === void 0 ? void 0 : _popupTriggers$on_scr3.direction) === 'up') {
+    if ((popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$on_scr4 = popupTriggers.on_scroll) === null || _popupTriggers$on_scr4 === void 0 ? void 0 : (_popupTriggers$on_scr5 = _popupTriggers$on_scr4.control) === null || _popupTriggers$on_scr5 === void 0 ? void 0 : _popupTriggers$on_scr5.direction) === 'up') {
       var previousScroll = $window.scrollTop();
       $window.scroll(function () {
         var currentScroll = $window.scrollTop();
+
         if (currentScroll < previousScroll && window.localStorage.getItem('jupiterx_popup_closed_permanently_' + popupId) !== 'true') {
           _this8.showPopup();
         }
+
         previousScroll = currentScroll;
       });
-    }
+    } // eslint-disable-next-line camelcase
 
-    // eslint-disable-next-line camelcase
-    if ((popupTriggers === null || popupTriggers === void 0 || (_popupTriggers$on_scr4 = popupTriggers.on_scroll) === null || _popupTriggers$on_scr4 === void 0 || (_popupTriggers$on_scr4 = _popupTriggers$on_scr4.control) === null || _popupTriggers$on_scr4 === void 0 ? void 0 : _popupTriggers$on_scr4.direction) === 'down') {
+
+    if ((popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$on_scr6 = popupTriggers.on_scroll) === null || _popupTriggers$on_scr6 === void 0 ? void 0 : (_popupTriggers$on_scr7 = _popupTriggers$on_scr6.control) === null || _popupTriggers$on_scr7 === void 0 ? void 0 : _popupTriggers$on_scr7.direction) === 'down') {
       var isShown = false;
       $window.scroll(function () {
-        var _popupTriggers$on_scr5;
-        var scrollPosition = $window.scrollTop(),
-          pageHeight = $document.height(),
-          windowHeight = $window.height(),
-          scrollPercentage = scrollPosition / (pageHeight - windowHeight) * 100;
+        var _popupTriggers$on_scr8, _popupTriggers$on_scr9;
 
-        // eslint-disable-next-line camelcase
-        if (scrollPercentage >= (popupTriggers === null || popupTriggers === void 0 || (_popupTriggers$on_scr5 = popupTriggers.on_scroll) === null || _popupTriggers$on_scr5 === void 0 || (_popupTriggers$on_scr5 = _popupTriggers$on_scr5.control) === null || _popupTriggers$on_scr5 === void 0 ? void 0 : _popupTriggers$on_scr5.value) && !isShown && window.localStorage.getItem('jupiterx_popup_closed_permanently_' + popupId) !== 'true') {
+        var scrollPosition = $window.scrollTop(),
+            pageHeight = $document.height(),
+            windowHeight = $window.height(),
+            scrollPercentage = scrollPosition / (pageHeight - windowHeight) * 100; // eslint-disable-next-line camelcase
+
+        if (scrollPercentage >= (popupTriggers === null || popupTriggers === void 0 ? void 0 : (_popupTriggers$on_scr8 = popupTriggers.on_scroll) === null || _popupTriggers$on_scr8 === void 0 ? void 0 : (_popupTriggers$on_scr9 = _popupTriggers$on_scr8.control) === null || _popupTriggers$on_scr9 === void 0 ? void 0 : _popupTriggers$on_scr9.value) && !isShown && window.localStorage.getItem('jupiterx_popup_closed_permanently_' + popupId) !== 'true') {
           _this8.showPopup();
+
           isShown = true;
         }
       });
     }
   };
+
   this.onScrollElement = function () {
     var _this9 = this;
+
     var isShown = false;
     $window.scroll(function () {
       var scrollPosition = $window.scrollTop(),
-        targetElementOffset = $(popupTriggers.on_scroll_to_element.control).offset().top,
-        windowHeight = $window.height();
+          targetElementOffset = $(popupTriggers.on_scroll_to_element.control).offset().top,
+          windowHeight = $window.height();
+
       if (scrollPosition + windowHeight >= targetElementOffset && !isShown && window.localStorage.getItem('jupiterx_popup_closed_permanently_' + popupId) !== 'true') {
         _this9.showPopup();
+
         isShown = true;
       }
     });
   };
+
   this.onAfterXPageViews = function () {
     if (elementorFrontend.storage.get('pageViews') >= popupTriggers.show_after_x_page_views.control) {
       this.showPopup();
     }
   };
+
   this.onAfterXVisits = function () {
     if (elementorFrontend.storage.get('sessions') >= popupTriggers.show_after_x_visits.control) {
       this.showPopup();
     }
   };
+
   this.urlReferrer = function () {
     var _this10 = this;
+
     var operator = popupTriggers.url_referrer.operator,
-      control = popupTriggers.url_referrer.control;
+        control = popupTriggers.url_referrer.control;
     $window.on('load', function () {
       if (operator === 'is' && document.referrer === control || operator === 'is-not' && document.referrer !== control || operator === 'contains' && document.referrer.includes(control) || operator === 'does-not-contains' && !document.referrer.includes(control) || operator === 'starts-with' && document.referrer.startsWith(control) || operator === 'ends-with' && document.referrer.endsWith(control)) {
         if (window.localStorage.getItem('jupiterx_popup_closed_permanently_' + popupId) !== 'true') {
@@ -670,14 +774,18 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       }
     });
   };
+
   this.userBrowserLanguage = function () {
     var _this11 = this;
+
     var operator = popupTriggers.user_browser_language.operator,
-      control = popupTriggers.user_browser_language.control;
+        control = popupTriggers.user_browser_language.control;
     var browserLanguage = control;
+
     if (popupSettings.browser_language.indexOf('-') === -1) {
       browserLanguage = control.split('-')[0];
     }
+
     $window.on('load', function () {
       if (operator === 'is' && popupSettings.browser_language === browserLanguage || operator === 'is-not' && popupSettings.browser_language !== browserLanguage || operator === 'contains' && popupSettings.browser_language.includes(browserLanguage) || operator === 'does-not-contains' && !popupSettings.browser_language.includes(browserLanguage) || operator === 'starts-with' && popupSettings.browser_language.startsWith(browserLanguage) || operator === 'ends-with' && popupSettings.browser_language.endsWith(browserLanguage)) {
         if (window.localStorage.getItem('jupiterx_popup_closed_permanently_' + popupId) !== 'true') {
@@ -686,26 +794,33 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       }
     });
   };
+
   this.userBrowser = function () {
     var operator = popupTriggers.user_browser.operator,
-      control = popupTriggers.user_browser.control;
+        control = popupTriggers.user_browser.control;
     var userAgent = $window[0].navigator.userAgent.toLowerCase();
     var browserMatch = false;
+
     for (var i = 0; i < control.length; i++) {
       var controlValue = control[i].value.toLowerCase();
+
       if (userAgent.includes(controlValue)) {
         browserMatch = true;
         break;
       }
     }
+
     if (operator === 'is-any-of' && browserMatch || operator === 'is-none-of' && !browserMatch) {
       this.showPopup();
     }
   };
+
   this.userDevice = function (control, operator) {
     var deviceMatch = false;
+
     for (var i = 0; i < control.length; i++) {
       var deviceValue = control[i].value.toLowerCase();
+
       if (deviceValue === 'mobile') {
         if (this.isMobile()) {
           deviceMatch = true;
@@ -722,93 +837,121 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
           break;
         }
       }
-    }
+    } // Check the operator condition.
 
-    // Check the operator condition.
+
     if (operator === 'is-any-of' && deviceMatch) {
       return true;
     } else if (operator === 'is-none-of' && !deviceMatch) {
       return true;
     }
+
     return false;
   };
+
   this.utmUrl = function (conditions, utmParam) {
     var urlParams = new URLSearchParams(window.location.search.toLowerCase());
     var value = urlParams.get(utmParam);
+
     if (!value) {
       return false;
     }
+
     var controlValue = conditions.control.toLowerCase();
     return this.utmCondition(controlValue, value, conditions.operator);
   };
+
   this.utmCondition = function (controlValue, value, operator) {
     switch (operator) {
       case 'is':
         return value === controlValue;
+
       case 'is-not':
         return value !== controlValue;
+
       case 'contains':
         return value.includes(controlValue);
+
       case 'does-not-contains':
         return !value.includes(controlValue);
+
       case 'starts-with':
         return value.startsWith(controlValue);
+
       case 'ends-with':
         return value.endsWith(controlValue);
+
       default:
         return false;
     }
   };
+
   this.isMobile = function () {
     var userAgent = window.navigator.userAgent.toLowerCase(),
-      mobileKeywords = ['mobile', 'android', 'iphone'];
+        mobileKeywords = ['mobile', 'android', 'iphone'];
+
     for (var i = 0; i < mobileKeywords.length; i++) {
       if (userAgent.indexOf(mobileKeywords[i]) > -1) {
         return true;
       }
     }
+
     if (window.screen.width < 768) {
       return true;
     }
+
     return false;
   };
+
   this.isTablet = function () {
     var userAgent = window.navigator.userAgent.toLowerCase(),
-      tabletKeywords = ['ipad', 'tablet'];
+        tabletKeywords = ['ipad', 'tablet'];
+
     for (var i = 0; i < tabletKeywords.length; i++) {
       if (userAgent.indexOf(tabletKeywords[i]) > -1) {
         return true;
       }
     }
+
     if (window.screen.width >= 768 && window.screen.width < 1024) {
       return true;
     }
+
     return false;
   };
+
   this.handleConvertToolbar = function (action) {
     var containerElement = $('.jupiterx-popup__container', $popup),
-      hasAdminBar = $('#wpadminbar').length > 0;
+        hasAdminBar = $('#wpadminbar').length > 0;
     var height = containerElement.height();
     var animationDuration = 1.2;
+
     if (hasAdminBar) {
       height += $('#wpadminbar').height();
     }
+
     if (popupSettings.animation_duration.size) {
       animationDuration = popupSettings.animation_duration.size;
     }
+
     if (action === 'show') {
       if ($popup.hasClass('jupiterx-popup--hide-state')) {
         $popup.toggleClass('jupiterx-popup--hide-state jupiterx-popup--show-state');
         height = containerElement.height();
+
         if (hasAdminBar) {
           height += $('#wpadminbar').height();
         }
+
         $popup.toggleClass('jupiterx-popup--show-state jupiterx-popup--hide-state');
       }
+
       var currentPopupTop = '0px';
+
       if (hasAdminBar) {
         currentPopupTop = $('#wpadminbar').height() + 'px';
       }
+
       containerElement.css('top', "-".concat(height, "px"));
       var bodyPaddingTop = parseInt($('body').css('padding-top')) + height;
       $('body').animate({
@@ -819,6 +962,7 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       }, animationDuration * 1000);
       return;
     }
+
     $('body').animate({
       'padding-top': 0
     }, animationDuration * 1000);
@@ -829,30 +973,38 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       $popup.toggleClass('jupiterx-popup--show-state jupiterx-popup--hide-state');
     });
   };
+
   this.showPopup = function (data) {
     var popupData = data || {};
+
     if (editMode) {
       return false;
     }
+
     if (popupSettings.show_once) {
       this.handleShowAgainDelay(popupData);
       return;
     }
+
     this.showPopupContent(popupData);
   };
+
   this.showContainer = function (data) {
     var popupData = data || {};
     var popupDefaultData = {
-        forceLoad: popupSettings.force_loading || false
-      },
-      $content = $('.jupiterx-popup__container-content', $popup);
+      forceLoad: popupSettings.force_loading || false
+    },
+        $content = $('.jupiterx-popup__container-content', $popup);
     popupData = jQuery.extend(popupDefaultData, popupData);
+
     if (popupData.forceLoad) {
       ajaxContentLoaded = false;
     }
+
     if (ajaxContentLoaded) {
       return false;
     }
+
     popupData = jQuery.extend(popupData, {
       popup_id: id
     });
@@ -862,42 +1014,49 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       data: popupData
     }).always(function (response) {
       var successType = response.type,
-        content = response.content || '';
+          content = response.content || '';
       $popup.removeClass('jupiterx-popup--loading-state');
+
       if ('error' === successType) {
         var message = response.message;
         $content.html('<h3>' + message + '</h3>');
       }
+
       if ('success' === successType) {
         $content.html(content);
         ajaxContentLoaded = true;
       }
     });
   };
+
   this.showPopupContent = function (popupData) {
     var _this12 = this;
+
     if (popupSettings.convert_to_header_toolbar && popupSettings.vertical_position === 'top') {
       this.handleConvertToolbar('show');
     }
+
     if ($popup.hasClass('jupiterx-popup--hide-state')) {
       $popup.toggleClass('jupiterx-popup--hide-state jupiterx-popup--show-state');
+
       if (popupSettings.entrance_animation) {
         $('.jupiterx-popup__container', $popup).addClass('animated ' + popupSettings.entrance_animation);
       }
     }
+
     if (popupSettings.prevent_scrolling) {
       $('body').addClass('jupiterx-popup-prevent-scroll');
-    }
+    } // Show close button after a delay.
 
-    // Show close button after a delay.
+
     if (popupSettings.close_button_delay && popupSettings.close_button) {
       $('.jupiterx-popup__close-button', $popup).hide();
       setTimeout(function () {
         $('.jupiterx-popup__close-button', $popup).show();
       }, popupSettings.close_button_delay * 1000);
-    }
+    } // Automatically close after a delay.
 
-    // Automatically close after a delay.
+
     if (popupSettings.close_automatically) {
       setTimeout(function () {
         _this12.hidePopup({
@@ -905,41 +1064,49 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
         });
       }, popupSettings.close_automatically * 1000);
     }
+
     if (popupSettings.use_ajax) {
       this.showContainer(popupData);
     }
   };
+
   this.hidePopup = function (data) {
     var popup = $popup;
+
     if (data.popupElement) {
       popup = data.popupElement;
     }
+
     var popupData = data || {},
-      $content = $('.jupiterx-popup__container-content', popup),
-      constantly = popupData.constantly || false,
-      ravenPopupSettings = popup.data('settings');
+        $content = $('.jupiterx-popup__container-content', popup),
+        constantly = popupData.constantly || false,
+        ravenPopupSettings = popup.data('settings');
+
     if (popup.hasClass('jupiterx-popup--show-state')) {
       if (ravenPopupSettings.entrance_animation && !(ravenPopupSettings.convert_to_header_toolbar && ravenPopupSettings.vertical_position === 'top')) {
         this.removeEntranceAnimationClass();
       }
+
       if (ravenPopupSettings.exit_animation && ravenPopupSettings.exit_animation !== 'none' && !(ravenPopupSettings.convert_to_header_toolbar && ravenPopupSettings.vertical_position === 'top')) {
         // Replace In with Out in animation name.
         var exitAnimation = ravenPopupSettings.exit_animation.replace('In', 'Out');
         $('.jupiterx-popup__container', popup).addClass('animate__animated animate__' + exitAnimation);
         var popupAnimationDuration = 1.2;
+
         if (ravenPopupSettings.animation_duration.size) {
           popupAnimationDuration = ravenPopupSettings.animation_duration.size;
-        }
+        } // Remove animation class after it's done.
 
-        // Remove animation class after it's done.
+
         setTimeout(function () {
-          $('.jupiterx-popup__container', popup).removeClass('animate__animated animate__' + exitAnimation);
+          $('.jupiterx-popup__container', popup).removeClass('animate__animated animate__' + exitAnimation); // Handle disable page scrolling.
 
-          // Handle disable page scrolling.
           if (ravenPopupSettings.prevent_scrolling) {
             $('body').removeClass('jupiterx-popup-prevent-scroll');
           }
+
           popup.toggleClass('jupiterx-popup--show-state jupiterx-popup--hide-state');
+
           if (ravenPopupSettings.use_ajax && ravenPopupSettings.force_loading) {
             $content.html('');
           }
@@ -950,41 +1117,53 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
         } else {
           popup.toggleClass('jupiterx-popup--show-state jupiterx-popup--hide-state');
         }
+
         if (ravenPopupSettings.use_ajax && ravenPopupSettings.force_loading) {
           $content.html('');
         }
       }
     }
+
     if (popupSettings.prevent_scrolling && !$('.jupiterx-popup--show-state')[0]) {
       $('body').removeClass('jupiterx-popup-prevent-scroll');
     }
+
     if (constantly) {
       this.handleShowAgainDelay(popupData, true);
     }
+
     this.handlePauseVideo();
   };
+
   this.handleShowAgainDelay = function (popupData) {
     var _this13 = this;
+
     var hideAction = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
     var nowDate = Date.now(),
-      showAgainDelay = popupSettings.show_again_delay;
+        showAgainDelay = popupSettings.show_again_delay;
     var showAgainDate = 0 !== showAgainDelay ? nowDate + showAgainDelay : 'none';
+
     if ('none' !== showAgainDate) {
       if (window.localStorage.getItem('jupiterx_popup_showed_' + popupId) !== 'true' || +window.localStorage.getItem('jupiterx_popup_show_again_' + popupId) < Date.now()) {
         window.localStorage.setItem('jupiterx_popup_showed_' + popupId, false);
       }
+
       var showAgainInterval = setInterval(function () {
         if (hideAction) {
           window.localStorage.setItem('jupiterx_popup_show_again_' + popupId, showAgainDate);
           window.localStorage.setItem('jupiterx_popup_showed_' + popupId, true);
         }
+
         if (!window.localStorage.getItem('jupiterx_popup_show_again_' + popupId) && $popup.hasClass('jupiterx-popup--hide-state')) {
           window.localStorage.setItem('jupiterx_popup_show_again_' + popupId, Date.now());
           window.localStorage.setItem('jupiterx_popup_showed_' + popupId, false);
         }
+
         if (+window.localStorage.getItem('jupiterx_popup_show_again_' + popupId) < Date.now() && window.localStorage.getItem('jupiterx_popup_showed_' + popupId) === 'false' && window.localStorage.getItem('jupiterx_popup_closed_permanently_' + popupId) !== 'true') {
           clearInterval(showAgainInterval);
+
           _this13.showPopupContent(popupData);
+
           showAgainDate = Date.now() + showAgainDelay;
           window.localStorage.setItem('jupiterx_popup_show_again_' + popupId, showAgainDate);
           window.localStorage.setItem('jupiterx_popup_showed_' + popupId, true);
@@ -992,20 +1171,25 @@ window.jupiterxPopupSettings = function ($popup, settings, triggers) {
       }, 1000);
     }
   };
+
   this.handlePauseVideo = function () {
     var video = $('.jupiterx-popup__container-content video', $popup);
+
     if (video.length > 0) {
       video.each(function () {
         $(this)[0].pause();
       });
     }
+
     video = $('.jupiterx-popup__container-content iframe.raven-video-mejs-player', $popup);
+
     if (video.length > 0) {
       video.each(function () {
         $(this)[0].player.media.pause();
       });
     }
   };
+
   this.removeEntranceAnimationClass = function () {
     $('.jupiterx-popup__container', $popup).removeClass('animated ' + popupSettings.entrance_animation);
   };
@@ -1018,33 +1202,40 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 require("./popup-settings");
+
 var $ = jQuery;
+
 var JupiterxPopup = function JupiterxPopup() {
   function init() {
     var $popupList = $('.jupiterx-popup:not(.jupiterx-popup--edit-mode)'),
-      editMode = Boolean(elementorFrontend.isEditMode());
+        editMode = Boolean(elementorFrontend.isEditMode());
+
     if (!editMode) {
       $popupList.each(function () {
         var $popup = $(this),
-          settings = $popup.data('settings'),
-          triggers = $popup.data('trigger');
+            settings = $popup.data('settings'),
+            triggers = $popup.data('trigger');
         elementorFrontend.storage.set("jupiterx_popup_".concat(settings.id), settings);
         var instance = null;
         instance = new window.jupiterxPopupSettings($popup, settings, triggers);
         instance.init();
       });
     }
+
     if (!elementorFrontend.isEditMode() && !elementorFrontend.isWPPreviewMode()) {
       setViewsAndSessions($(this));
     }
   }
+
   function setViewsAndSessions() {
     var pageViews = elementorFrontend.storage.get('pageViews') || 0;
     elementorFrontend.storage.set('pageViews', pageViews + 1);
     var activeSession = elementorFrontend.storage.get('activeSession', {
       session: true
     });
+
     if (!activeSession) {
       elementorFrontend.storage.set('activeSession', true, {
         session: true
@@ -1053,11 +1244,14 @@ var JupiterxPopup = function JupiterxPopup() {
       elementorFrontend.storage.set('sessions', sessions + 1);
     }
   }
+
   return {
     init: init
   };
 };
+
 var _default = JupiterxPopup();
+
 exports["default"] = _default;
 
 },{"./popup-settings":2}],4:[function(require,module,exports){
@@ -1068,26 +1262,33 @@ var AnimatedGradientBg = {
     if (!$scope.hasClass('raven-animated-gradient-yes')) {
       return;
     }
+
     if ($scope.hasClass('elementor-widget-raven-button')) {
       $scope = $scope.find('.raven-button-overlay');
     }
+
     var element = '';
+
     if ($scope.hasClass('elementor-widget-raven-heading')) {
       element = $scope.find('.raven-heading-title-inner');
+
       if (!element.hasClass('raven-heading-title-inner')) {
         element = $scope.find('.raven-heading-title');
       }
+
       $scope = element;
     }
+
     if ($scope.hasClass('elementor-widget-raven-text-marquee')) {
       $scope = $scope.find('.raven-marquee-text-item');
     }
+
     var color = $scope.data('color'),
-      angle = $scope.data('angle'),
-      gradientColor = 'linear-gradient( ' + angle + ',' + color + ' )',
-      speed = $scope.data('speed'),
-      background = $scope.data('background-size'),
-      animation = $scope.data('animation-name');
+        angle = $scope.data('angle'),
+        gradientColor = 'linear-gradient( ' + angle + ',' + color + ' )',
+        speed = $scope.data('speed'),
+        background = $scope.data('background-size'),
+        animation = $scope.data('animation-name');
     $scope.css('background-image', gradientColor);
     $scope.css('animation-duration', speed);
     $scope.css('background-size', background);
@@ -1105,6 +1306,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 /*!
  * Detectr.js
  * @author Rogerio Taques (rogerio.taques@gmail.com)
@@ -1114,21 +1316,22 @@ exports["default"] = void 0;
  * which is called css_browser_selector and seems
  * to be discontinued. (http://rafael.adm.br/css_browser_selector/).
  */
-
 var DetectrJs = function detecterjs($) {
   var version = '1.8.1';
-
   /**
    * Whenever .trim() isn't supported, makes it be.
    */
+
   if (typeof String.prototype.trim !== 'function') {
     // eslint-disable-next-line no-extend-native
     String.prototype.trim = function trim() {
       return this.replace(/^\s+|\s+$/g, '');
     };
   }
+
   var doc = $.document;
   var element = doc.documentElement;
+
   var detectr = function detectr(userAgent) {
     var ua = userAgent.toLowerCase();
     var winWidth = $.outerWidth || element.clientWidth;
@@ -1138,7 +1341,6 @@ var DetectrJs = function detecterjs($) {
     var safari = 'safari';
     var opera = 'opera';
     var mobile = 'mobile';
-
     /**
      * Checks if given string is present on the userAgent.
      *
@@ -1146,20 +1348,21 @@ var DetectrJs = function detecterjs($) {
      * @param string  str
      * @return {boolean}
      */
+
     var is = function is(str) {
       return ua.indexOf(str) > -1;
     };
-
     /**
      * The core feature ...
      */
+
+
     var detect = function detect() {
       var rendered = [];
       var implementation = doc.implementation;
       var webkitVersion = /applewebkit\/(\d{1,})/.test(ua) ? RegExp.$1 : false;
-      var sysVersion = '';
+      var sysVersion = ''; // *** Detecting browsers ***
 
-      // *** Detecting browsers ***
       switch (true) {
         // internet explorer
         case is('msie') && !is('opera') && !is('webtv') || is('trident') || is('edge'):
@@ -1170,257 +1373,267 @@ var DetectrJs = function detecterjs($) {
           } else {
             sysVersion = /msie\s(\d+)/.test(ua) ? ' ie' + RegExp.$1 : '';
           }
+
           rendered.push('ie' + sysVersion);
           break;
-
         // iron
+
         case is('iron/') || is('iron'):
           sysVersion = /iron\/(\d+)/.test(ua) ? ' iron' + RegExp.$1 : '';
           rendered.push(webkit + ' iron' + sysVersion);
           break;
-
         // android
+
         case is('android') && is('u;') && (!is('chrome') || is('chrome') && webkitVersion && webkitVersion <= 534):
           // according to some researches android stock (native) browsers never went above applewebkit/534.x,
           // then, we can suppose user is using a native browser in android when the UA contains "android",
           // "mobile" and "U;" strings
           // @see: (http://stackoverflow.com/questions/14403766/how-to-detect-the-stock-android-browser)
-
           rendered.push('android-browser');
           break;
-
         // google chrome
+
         case is('chrome/') || is('chrome'):
           sysVersion = /chrome\/(\d+)/.test(ua) ? ' chrome' + RegExp.$1 : '';
           rendered.push(webkit + ' chrome' + sysVersion);
           break;
-
         // firefox
+
         case is('firefox/') || is('firefox'):
           sysVersion = /firefox\/(\d+)/.test(ua) ? ' firefox' + RegExp.$1 : '';
           rendered.push(gecko + ' firefox' + sysVersion);
           break;
-
         // opera
+
         case is('opera/') || is('opera'):
           sysVersion = /version(\s|\/)(\d+)/.test(ua) || /opera(\s|\/)(\d+)/.test(ua) ? ' ' + opera + RegExp.$2 : '';
           rendered.push(opera + sysVersion);
           break;
-
         // konqueror
+
         case is('konqueror'):
           rendered.push(mobile + ' konqueror');
           break;
-
         // blackberry
+
         case is('blackberry') || is('bb'):
           rendered.push(mobile + ' blackberry');
+
           if (is('bb')) {
             sysVersion = /bb(\d{1,2})(;{0,1})/.test(ua) ? 'bb' + RegExp.$1 : '';
             rendered.push(sysVersion);
           }
-          break;
 
+          break;
         // safari
+
         case is('safari/') || is('safari'):
           sysVersion = /version\/(\d+)/.test(ua) || /safari\/(\d+)/.test(ua) ? ' ' + safari + RegExp.$1 : '';
           rendered.push(webkit + ' ' + safari + sysVersion);
           break;
-
         // applewebkit
+
         case is('applewebkit/') || is('applewebkit'):
           sysVersion = /applewebkit\/(\d+)/.test(ua) ? ' ' + webkit + RegExp.$1 : '';
           rendered.push(webkit + ' ' + sysVersion);
           break;
-
         // gecko || mozilla
+
         case is('gecko') || is('mozilla/'):
           rendered.push(gecko);
           break;
+
         default:
           break;
-      }
+      } // *** Detecting O.S ***
 
-      // *** Detecting O.S ***
+
       switch (true) {
         // ios
         case is('iphone') || is('ios'):
-          sysVersion = /iphone\sos\s(\d{1,2})/.test(ua) ? ' ios' + RegExp.$1 : '';
-
-          // For some reason when it's iOS8, userAgent comes like OS 10_10
+          sysVersion = /iphone\sos\s(\d{1,2})/.test(ua) ? ' ios' + RegExp.$1 : ''; // For some reason when it's iOS8, userAgent comes like OS 10_10
           // what returns a wrong version, then we need to match it against
           // another value
+
           if (sysVersion === ' ios10') {
             var vv = /(\d{1,2})/.test(sysVersion) ? RegExp.$1 : 0;
             var vd = /\sversion\/(\d{1,2})/.test(ua) ? RegExp.$1 : '';
+
             if (parseInt(vv, 10) > parseInt(vd, 10)) {
               sysVersion = ' ios' + vd;
             }
           }
+
           rendered.push('ios' + sysVersion);
           break;
-
         // macintosh
+
         case is('mac') || is('macintosh') || is('darwin'):
           sysVersion = /mac\sos\sx\s(\d{1,2}_\d{1,2})/.test(ua) ? ' osx' + RegExp.$1 : '';
           rendered.push('mac' + sysVersion);
           break;
-
         // windows
-        case is('windows') || is('win'):
-          sysVersion = /windows\s(nt\s{0,1})(\d{1,2}\.\d)/.test(ua) ? '' + RegExp.$2 : '';
 
-          // defining windows version
+        case is('windows') || is('win'):
+          sysVersion = /windows\s(nt\s{0,1})(\d{1,2}\.\d)/.test(ua) ? '' + RegExp.$2 : ''; // defining windows version
+
           switch (sysVersion) {
             case '5.0':
               sysVersion = ' win2k';
               break;
+
             case '5.01':
               sysVersion = ' win2k sp1';
               break;
+
             case '5.1':
             case '5.2':
               sysVersion = ' xp';
               break;
+
             case '6.0':
               sysVersion = ' vista';
               break;
+
             case '6.1':
               sysVersion = ' win7';
               break;
+
             case '6.2':
               sysVersion = ' win8';
               break;
+
             case '6.3':
               sysVersion = ' win8_1';
               break;
+
             case '6.4':
               sysVersion = ' win10';
               break;
+
             default:
               sysVersion = ' nt nt' + sysVersion;
           }
+
           rendered.push('windows' + sysVersion);
           break;
-
         // webtv
+
         case is('webtv'):
           rendered.push('webtv');
           break;
-
         // freebsd
+
         case is('freebsd'):
           rendered.push('freebsd');
           break;
-
         // android
+
         case is('android') || is('linux') && is('mobile'):
           rendered.push('android');
           break;
-
         // linux
+
         case is('linux') || is('x11'):
           rendered.push('linux');
           break;
+
         default:
           break;
-      }
+      } // *** Detecting platform ***
 
-      // *** Detecting platform ***
+
       switch (true) {
         // 64 bits
         case is('wow64') || is('x64'):
           rendered.push('x64');
           break;
-
         // arm
+
         case is('arm'):
           rendered.push('arm');
           break;
-
         // 32 bits
+
         default:
           rendered.push('x32');
-      }
+      } // *** Detecting devices ***
 
-      // *** Detecting devices ***
+
       switch (true) {
         case is('j2me'):
           rendered.push(mobile + ' j2me');
           break;
+
         case /(iphone|ipad|ipod)/.test(ua):
           rendered.push(mobile + ' ' + RegExp.$1);
           break;
+
         case is('mobile'):
           rendered.push(mobile);
           break;
+
         default:
           break;
-      }
+      } // *** Detecting touchable devices ***
 
-      // *** Detecting touchable devices ***
+
       if (/touch/.test(ua)) {
         rendered.push('touch');
-      }
+      } // *** Assume that it supports javascript by default ***
 
-      // *** Assume that it supports javascript by default ***
-      rendered.push('js');
 
-      // *** Detect if SVG images are supported ***
-      rendered.push(implementation !== undefined && typeof implementation.hasFeature === 'function' && implementation.hasFeature('http://www.w3.org/TR/SVG11/feature#Image', '1.1') ? 'svg' : 'no-svg');
+      rendered.push('js'); // *** Detect if SVG images are supported ***
 
-      // *** Detect retina display ***
-      rendered.push($.devicePixelRatio !== undefined && $.devicePixelRatio > 1 ? 'retina' : 'no-retina');
+      rendered.push(implementation !== undefined && typeof implementation.hasFeature === 'function' && implementation.hasFeature('http://www.w3.org/TR/SVG11/feature#Image', '1.1') ? 'svg' : 'no-svg'); // *** Detect retina display ***
 
-      // *** Detecting orientation ***
+      rendered.push($.devicePixelRatio !== undefined && $.devicePixelRatio > 1 ? 'retina' : 'no-retina'); // *** Detecting orientation ***
+
       rendered.push(winWidth < winHeight ? 'portrait' : 'landscape');
       return rendered;
-    };
+    }; // retrieve current classes attached
 
-    // retrieve current classes attached
-    var currentClassNames = doc.documentElement.className.split(' ');
 
-    // convert 'detect' from function to array
+    var currentClassNames = doc.documentElement.className.split(' '); // convert 'detect' from function to array
     // and avoid unnecessary processing
-    detect = detect();
 
-    // concat all detected classes to the existing ones and make sure they are unique
+    detect = detect(); // concat all detected classes to the existing ones and make sure they are unique
     // this prevent wiping pre-existing classes attached by different processes.
+
     currentClassNames = currentClassNames.concat(detect);
     currentClassNames = currentClassNames.filter(function (v, i) {
       return currentClassNames.indexOf(v) === i;
-    });
+    }); // inject the new classes set in the HTML tag.
 
-    // inject the new classes set in the HTML tag.
-    element.className = currentClassNames.join(' ').trim();
+    element.className = currentClassNames.join(' ').trim(); // return what was detected
 
-    // return what was detected
     return {
       detected: detect.join(' ').trim(),
       version: version
     };
-  };
-
-  // execute and exposes detectr.js to the browser
+  }; // execute and exposes detectr.js to the browser
   // eslint-disable-next-line
-  $.detectr = detectr($.navigator.userAgent);
 
+
+  $.detectr = detectr($.navigator.userAgent);
   /**
    * The listener engine for resize event ...
    */
+
   var resizing = function resizing() {
     $.detectr = detectr($.navigator.userAgent); // eslint-disable-line
-  };
-
-  // add an event listener for window resize
+  }; // add an event listener for window resize
   // which will asure that references will be
   // updated in case of browser resizing
+
+
   if ($.attachEvent) {
     $.attachEvent('onresize', resizing);
   } else if ($.addEventListener) {
     $.addEventListener('resize', resizing, true);
   }
 };
+
 DetectrJs(window);
 var _default = DetectrJs;
 exports["default"] = _default;
@@ -1429,9 +1642,8 @@ exports["default"] = _default;
 'use strict';
 
 var fullPageEditor = {};
-var $ = jQuery;
+var $ = jQuery; // we need this function globally
 
-// we need this function globally
 window.ravenChangeDocument = function changeDocument(elementorId) {
   $('.elementor').find('.raven-document-handle-parent').remove();
   window.elementorCommon.api.internal('panel/state-loading');
@@ -1442,41 +1654,53 @@ window.ravenChangeDocument = function changeDocument(elementorId) {
     return window.elementorCommon.api.internal('panel/state-ready');
   });
 };
+
 fullPageEditor.handleFullPageEditorBtn = function handleFullPageEditorBtn() {
   $('.elementor').each(function () {
     if ($(this).find('.raven-document-handle-parent').length > 0 && $(this).find('.raven-document-handle-parent').children().length > 0) {
       return;
     }
+
     if ($(this).hasClass('elementor-edit-area-active')) {
       return;
     }
+
     var currentTargetName = this.dataset.elementorTitle;
+
     if (typeof currentTargetName === 'undefined') {
       return;
     }
+
     var newElementorId = $(this).attr('data-elementor-id');
     var ravenDocumentHandler = '<div class="raven-document-handle" onclick="window.ravenChangeDocument( ' + newElementorId + ' )"><i class="fas fa-edit"></i>Edit ' + currentTargetName + '</div>';
     $(this).prepend('<div class="raven-document-handle-parent" style="display:none;"></div>');
     $(this).find('.raven-document-handle-parent').append(ravenDocumentHandler);
   });
 };
+
 fullPageEditor.handleHeaderBtns = function () {
   var elementOffset = 0;
+
   if ($('main').length) {
     elementOffset = $('main').offset().top;
   }
+
   $(document).on('mouseenter', 'header', function () {
     if (elementOffset > 0) {
       return;
     }
+
     var clonedMainBtn = $('main .raven-document-handle-parent .raven-document-handle').clone().addClass('fixed-top-btn');
+
     if (clonedMainBtn.length === 0) {
       return;
     }
+
     if ($('header .elementor').find('.raven-document-handle-parent').length === 0) {
       $('header .elementor').prepend('<div class="raven-document-handle-parent"></div>');
       $('header .elementor .raven-document-handle-parent').prepend(clonedMainBtn);
     }
+
     if ($('header .elementor').find('.raven-document-handle-parent').length > 0) {
       $('header .elementor .raven-document-handle-parent').append(clonedMainBtn);
     }
@@ -1485,12 +1709,15 @@ fullPageEditor.handleHeaderBtns = function () {
     if ($('main .raven-document-handle-parent .raven-document-handle').length === 0) {
       return;
     }
+
     if (elementOffset > 0) {
       return;
     }
+
     $('header .elementor .raven-document-handle-parent .raven-document-handle.fixed-top-btn').remove();
   });
 };
+
 module.exports = fullPageEditor;
 
 },{}],7:[function(require,module,exports){
@@ -1501,17 +1728,21 @@ var JupiterxHeader = {
   overlayContent: false,
   headerInstance: function headerInstance($scope) {
     var header = $scope.parents('.jupiterx-header'),
-      body = $scope.parents('body'),
-      headerSettings = header.data('jupiterx-settings');
+        body = $scope.parents('body'),
+        headerSettings = header.data('jupiterx-settings');
+
     if (header.length < 1) {
       return;
     }
+
     var elementor_header_behavior = headerSettings.elementor_header_behavior,
-      elementor_header_overlay_content = headerSettings.elementor_header_overlay_content;
+        elementor_header_overlay_content = headerSettings.elementor_header_overlay_content;
+
     if ('normal' !== elementor_header_behavior) {
       // eslint-disable-line
       JupiterxHeader.handleHeaderBehavior(headerSettings, header, body);
     }
+
     if ('yes' === elementor_header_overlay_content) {
       // eslint-disable-line
       JupiterxHeader.hadnleOverlayContent(body);
@@ -1523,7 +1754,9 @@ var JupiterxHeader = {
     if (JupiterxHeader.headerBehavior) {
       return;
     }
+
     JupiterxHeader.headerBehavior = true;
+
     if (elementor_header_behavior === 'sticky') {
       // eslint-disable-line
       // eslint-disable-next-line no-undef
@@ -1534,6 +1767,7 @@ var JupiterxHeader = {
         });
       }
     }
+
     if (elementor_header_behavior === 'fixed') {
       // eslint-disable-line
       JupiterxHeader.handleFixedHeader(headerSettings, header, body);
@@ -1541,31 +1775,37 @@ var JupiterxHeader = {
   },
   handleFixedHeader: function handleFixedHeader(headerSettings, header, body) {
     var elementor_header_fixed_position = headerSettings.elementor_header_fixed_position,
-      jupiterxSite = body.find('.jupiterx-site'),
-      outerHeight = header.outerHeight();
+        jupiterxSite = body.find('.jupiterx-site'),
+        outerHeight = header.outerHeight();
     var fixedPosition = elementor_header_fixed_position || 'top'; // eslint-disable-line
 
     body.addClass('jupiterx-header-fixed');
     header.addClass('jupiterx-header-custom');
+
     if (fixedPosition === 'bottom') {
       jupiterxSite.css("padding-".concat(fixedPosition), outerHeight);
       body.addClass('jupiterx-header-bottom');
       return;
     }
+
     header.css('position', 'fixed');
     jupiterxSite.css("padding-".concat(fixedPosition), outerHeight);
     var topValue = outerHeight;
     var offset = body.offset();
+
     if (body.hasClass('admin-bar')) {
       topValue = offset.top;
     }
+
     header.css('top', topValue);
   },
   handleStickyHeader: function handleStickyHeader(position, headerSettings, header, body) {
     var headerHeight = header.height();
+
     if (position > headerHeight) {
       body.addClass('jupiterx-header-stick');
       var $customHeader = $('.jupiterx-header.jupiterx-header-sticky-custom.jupiterx-header-custom > .elementor:last-of-type:not(:first-of-type)');
+
       if ($customHeader.length && $customHeader.height() > 0) {
         header.height($customHeader.height());
       }
@@ -1575,7 +1815,9 @@ var JupiterxHeader = {
         return style && style.replace(/height[^;]+;?/g, '');
       });
     }
+
     var offset = JupiterxHeader.getOffset(headerSettings);
+
     if (position > offset) {
       body.addClass('jupiterx-header-sticked');
     } else {
@@ -1584,23 +1826,24 @@ var JupiterxHeader = {
   },
   getOffset: function getOffset(headerSettings) {
     var currentDevice = elementorFrontend.getCurrentDeviceMode(),
-      elementor_header_sticky_offset = headerSettings.elementor_header_sticky_offset,
-      offsetValue = elementor_header_sticky_offset || 0;
-
-    // eslint-disable-line
+        elementor_header_sticky_offset = headerSettings.elementor_header_sticky_offset,
+        offsetValue = elementor_header_sticky_offset || 0; // eslint-disable-line
 
     if ('desktop' === currentDevice) {
       return offsetValue;
     }
+
     if (headerSettings["elementor_header_sticky_offset_".concat(currentDevice)]) {
       return headerSettings["elementor_header_sticky_offset_".concat(currentDevice)];
     }
+
     return offsetValue;
   },
   hadnleOverlayContent: function hadnleOverlayContent(body) {
     if (JupiterxHeader.overlayContent) {
       return;
     }
+
     JupiterxHeader.overlayContent = true;
     body.addClass('jupiterx-header-overlapped');
   }
@@ -1613,11 +1856,14 @@ elementorFrontend.hooks.addAction('frontend/element_ready/global', function ($sc
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _module = _interopRequireDefault(require("./module"));
+
 var Masonry = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -1636,9 +1882,11 @@ var Masonry = _module["default"].extend({
   run: function run() {
     var settings = this.getSettings();
     var selector = ".elementor-element-".concat(this.getID(), " ").concat(settings.masonryContainer);
+
     if (savvior.grids[selector]) {
       delete savvior.grids[selector];
     }
+
     savvior.init(selector, {
       'screen and (min-width: 1025px)': {
         columnClasses: settings.columnClass,
@@ -1658,6 +1906,7 @@ var Masonry = _module["default"].extend({
     if (!items) {
       return;
     }
+
     var settings = this.getSettings();
     var selector = ".elementor-element-".concat(this.getID(), " ").concat(settings.masonryContainer);
     var itemsNode = [];
@@ -1669,11 +1918,13 @@ var Masonry = _module["default"].extend({
       var $item = $(item);
       itemsNode.push($item[0]);
     });
+
     if (savvior.grids[selector]) {
       savvior.addItems(selector, itemsNode, savviorOptions);
     }
   }
 });
+
 var _default = Masonry;
 exports["default"] = _default;
 
@@ -1693,18 +1944,22 @@ var Module = elementorModules.frontend.handlers.Base.extend({
   },
   getControlID: function getControlID(controlID) {
     var skin = this.getElementSettings('_skin');
+
     if (!skin) {
       return controlID;
     }
+
     return "".concat(skin, "_").concat(controlID);
   },
   scrollToContainer: function scrollToContainer($element) {
     var $top = $element.offset().top - 50;
     var headerHeight = $('header').height();
     var bodySelector = document.querySelector('body');
+
     if (bodySelector.classList.contains('jupiterx-header-fixed') || bodySelector.classList.contains('jupiterx-header-sticked')) {
       $top = $element.offset().top - headerHeight - 50;
     }
+
     window.scroll({
       top: $top,
       behavior: 'smooth'
@@ -1713,6 +1968,7 @@ var Module = elementorModules.frontend.handlers.Base.extend({
   initEditorListeners: function initEditorListeners() {
     var self = this;
     elementorModules.frontend.handlers.Base.prototype.initEditorListeners.apply(this, arguments);
+
     if (self.onSectionActivated) {
       self.editorListeners.push({
         event: 'section:activated',
@@ -1721,10 +1977,12 @@ var Module = elementorModules.frontend.handlers.Base.extend({
           if (section.model.id !== self.getID()) {
             return;
           }
+
           self.onSectionActivated(activeSection, section);
         }
       });
     }
+
     if (self.onEditorClosed) {
       self.editorListeners.push({
         event: 'set:page:editor',
@@ -1733,6 +1991,7 @@ var Module = elementorModules.frontend.handlers.Base.extend({
           if (currentPageView.model.id !== self.getID()) {
             return;
           }
+
           currentPageView.model.once('editor:close', function () {
             self.onEditorClosed();
           });
@@ -1763,27 +2022,39 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 /**
  * Gets the action options passed from Effect and calculates changes, then applies them on element style.
  */
 var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
   (0, _inherits2["default"])(Actions, _elementorModules$Mod);
+
   var _super = _createSuper(Actions);
+
   function Actions() {
     (0, _classCallCheck2["default"])(this, Actions);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(Actions, [{
     key: "onInit",
     value: function onInit() {
@@ -1801,61 +2072,54 @@ var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
         opacity: '',
         'will-change': ''
       });
-    }
+    } // Interaction: scroll.
 
-    // Interaction: scroll.
   }, {
     key: "translateX",
     value: function translateX(actionData, passedPercents) {
       actionData.axis = 'x';
       actionData.unit = 'px';
       this.transform('translateX', passedPercents, actionData);
-    }
+    } // Interaction: scroll.
 
-    // Interaction: scroll.
   }, {
     key: "translateY",
     value: function translateY(actionData, passedPercents) {
       actionData.axis = 'y';
       actionData.unit = 'px';
       this.transform('translateY', passedPercents, actionData);
-    }
+    } // Interaction: mouseMove ("translateXY" is the alias used for "mouseTrack").
 
-    // Interaction: mouseMove ("translateXY" is the alias used for "mouseTrack").
   }, {
     key: "translateXY",
     value: function translateXY(actionData, passedPercentsX, passedPercentsY) {
       this.translateX(actionData, passedPercentsX);
       this.translateY(actionData, passedPercentsY);
-    }
+    } // It is not a direct effect and only used in calculation of "tilt" effect.
 
-    // It is not a direct effect and only used in calculation of "tilt" effect.
   }, {
     key: "rotateX",
     value: function rotateX(actionData, passedPercents) {
       actionData.axis = 'x';
       actionData.unit = 'deg';
       this.transform('rotateX', passedPercents, actionData);
-    }
+    } // It is not a direct effect and only used in calculation of "tilt" effect.
 
-    // It is not a direct effect and only used in calculation of "tilt" effect.
   }, {
     key: "rotateY",
     value: function rotateY(actionData, passedPercents) {
       actionData.axis = 'y';
       actionData.unit = 'deg';
       this.transform('rotateY', passedPercents, actionData);
-    }
+    } // Interaction: scroll.
 
-    // Interaction: scroll.
   }, {
     key: "rotateZ",
     value: function rotateZ(actionData, passedPercents) {
       actionData.unit = 'deg';
       this.transform('rotateZ', passedPercents, actionData);
-    }
+    } // Interaction: mouseMove.
 
-    // Interaction: mouseMove.
   }, {
     key: "tilt",
     value: function tilt(actionData, passedPercentsX, passedPercentsY) {
@@ -1865,9 +2129,8 @@ var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
       };
       this.rotateX(data, passedPercentsY);
       this.rotateY(data, 100 - passedPercentsX);
-    }
+    } // Interaction: scroll.
 
-    // Interaction: scroll.
   }, {
     key: "opacity",
     value: function opacity(actionData, passedPercents) {
@@ -1878,9 +2141,8 @@ var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
         opacity: opacity,
         'will-change': 'opacity'
       });
-    }
+    } // Interaction: scroll.
 
-    // Interaction: scroll.
   }, {
     key: "blur",
     value: function blur(actionData, passedPercents) {
@@ -1888,9 +2150,8 @@ var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
       var level = actionData.intensity;
       var blur = level - level * movePoint / 100;
       this.updateRulePart('filter', 'blur', blur + 'px');
-    }
+    } // Interaction: scroll.
 
-    // Interaction: scroll.
   }, {
     key: "scale",
     value: function scale(actionData, passedPercents) {
@@ -1903,6 +2164,7 @@ var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
       if (actionData.direction) {
         passedPercents = 100 - passedPercents;
       }
+
       this.updateRulePart('transform', action, this.getStep(passedPercents, actionData) + actionData.unit);
     }
   }, {
@@ -1910,38 +2172,52 @@ var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
     value: function getDirectionMovePoint(passedPercents, direction, range) {
       if (passedPercents < range.start) {
         var _movePoint = this.getMovePointFromPassedPercents(range.start, passedPercents);
+
         switch (direction) {
           case 'out-in':
             return 0;
+
           case 'in-out':
             return 100;
+
           case 'out-in-out':
             return _movePoint;
+
           case 'in-out-in':
             return 100 - _movePoint;
         }
       }
+
       if (passedPercents < range.end) {
         var _movePoint2 = this.getMovePointFromPassedPercents(range.end - range.start, passedPercents - range.start);
+
         switch (direction) {
           case 'out-in':
             return _movePoint2;
+
           case 'in-out':
             return 100 - _movePoint2;
+
           case 'out-in-out':
             return 100;
+
           case 'in-out-in':
             return 0;
         }
       }
+
       var movePoint = this.getMovePointFromPassedPercents(100 - range.end, 100 - passedPercents);
+
       switch (direction) {
         case 'out-in':
           return 100;
+
         case 'in-out':
           return 0;
+
         case 'out-in-out':
           return movePoint;
+
         case 'in-out-in':
           return 100 - movePoint;
       }
@@ -1958,6 +2234,7 @@ var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
       if ('element' === this.getSettings('effectTarget')) {
         return -(passedPercents - 50) * options.intensity;
       }
+
       var movableRange = this.getSettings('dimensions.movable' + options.axis.toUpperCase());
       return -(movableRange * passedPercents / 100);
     }
@@ -1967,10 +2244,12 @@ var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
       if (!this.rulesVariables[ruleName]) {
         this.rulesVariables[ruleName] = {};
       }
+
       if (!this.rulesVariables[ruleName][key]) {
         this.rulesVariables[ruleName][key] = true;
         this.updateRule(ruleName);
       }
+
       var cssVarKey = "--".concat(key);
       this.$element[0].style.setProperty(cssVarKey, value);
     }
@@ -1986,19 +2265,22 @@ var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
     key: "concatTransformCSSProperties",
     value: function concatTransformCSSProperties(ruleName) {
       var value = '';
+
       if ('transform' === ruleName) {
         jQuery.each(this.CSSTransformVariables, function (_, variableKey) {
           var variableName = variableKey;
+
           if (variableKey.startsWith('flip')) {
             variableKey = variableKey.replace('flip', 'scale');
-          }
+          } // Adding default value because of the hover state. if there is no default the transform will break.
 
-          // Adding default value because of the hover state. if there is no default the transform will break.
+
           var defaultUnit = variableKey.startsWith('rotate') || variableKey.startsWith('skew') ? 'deg' : 'px';
           var defaultValue = variableKey.startsWith('scale') ? 1 : 0 + defaultUnit;
           value += "".concat(variableKey, "(var(--e-transform-").concat(variableName, ", ").concat(defaultValue, "))");
         });
       }
+
       return value;
     }
   }, {
@@ -2014,17 +2296,22 @@ var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
     key: "setCSSTransformVariables",
     value: function setCSSTransformVariables(elementSettings) {
       var _this = this;
+
       this.CSSTransformVariables = [];
       jQuery.each(elementSettings, function (settingKey, settingValue) {
         var transformKeyMatches = settingKey.match(/_transform_(.+?)_effect/m);
+
         if (transformKeyMatches && settingValue) {
           if ('perspective' === transformKeyMatches[1]) {
             _this.CSSTransformVariables.unshift(transformKeyMatches[1]);
+
             return;
           }
+
           if (_this.CSSTransformVariables.includes(transformKeyMatches[1])) {
             return;
           }
+
           _this.CSSTransformVariables.push(transformKeyMatches[1]);
         }
       });
@@ -2036,18 +2323,22 @@ var Actions = /*#__PURE__*/function (_elementorModules$Mod) {
         if (actionData.viewport.start > passedPercents) {
           passedPercents = actionData.viewport.start;
         }
+
         if (actionData.viewport.end < passedPercents) {
           passedPercents = actionData.viewport.end;
         }
       }
+
       for (var _len = arguments.length, args = new Array(_len > 3 ? _len - 3 : 0), _key = 3; _key < _len; _key++) {
         args[_key - 3] = arguments[_key];
       }
+
       this[actionName].apply(this, [actionData, passedPercents].concat(args));
     }
   }]);
   return Actions;
 }(elementorModules.Module);
+
 var _default = Actions;
 exports["default"] = _default;
 
@@ -2055,38 +2346,55 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _get3 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 /**
  * Initializes motion effects by retrieving motion effects settings and
  * instantiates Effect class(in motion-effects.js) with those settings.
  */
 var EffectsHandler = /*#__PURE__*/function (_elementorModules$fro) {
   (0, _inherits2["default"])(EffectsHandler, _elementorModules$fro);
+
   var _super = _createSuper(EffectsHandler);
+
   function EffectsHandler() {
     (0, _classCallCheck2["default"])(this, EffectsHandler);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(EffectsHandler, [{
     key: "__construct",
     value: function __construct() {
       var _get2;
+
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
+
       (_get2 = (0, _get3["default"])((0, _getPrototypeOf2["default"])(EffectsHandler.prototype), "__construct", this)).call.apply(_get2, [this].concat(args));
+
       this.normalMotion = 'raven_motion_effects';
       this.backgroundMotion = 'background_' + this.normalMotion;
       this.toggle = elementorFrontend.debounce(this.toggle, 200);
@@ -2168,9 +2476,11 @@ var EffectsHandler = /*#__PURE__*/function (_elementorModules$fro) {
     key: "addCSSTransformEvents",
     value: function addCSSTransformEvents() {
       var _this = this;
+
       // Transform origin is set in two places: <Transform> section and <Motion Effect> section. The former must override the latter.
       // Remove CSS transition variable that assigned from scroll.js in order to allow the transition of the CSS-Transform.
       var motionFxScrolling = this.getElementSettings(this.normalMotion + '_scrolling');
+
       if (motionFxScrolling && !this.isTransitionEventAdded) {
         this.isTransitionEventAdded = true;
         this.elements.$container.on('mouseenter', function () {
@@ -2182,48 +2492,54 @@ var EffectsHandler = /*#__PURE__*/function (_elementorModules$fro) {
     key: "prepareOptions",
     value: function prepareOptions(name) {
       var _this2 = this;
+
       var elementSettings = this.getElementSettings();
       var effectTarget = this.normalMotion === name ? 'element' : 'background';
-      var interactions = {};
+      var interactions = {}; // Loop over settings and inspect individual Effects.
 
-      // Loop over settings and inspect individual Effects.
       jQuery.each(elementSettings, function (key, value) {
         // Running match() on the following regexp, captures "scale" in "raven_motion_effects_scale_fx" in its second index.
         var keyRegex = new RegExp('^' + name + '_(.+?)_fx');
         var keyMatches = key.match(keyRegex);
+
         if (!keyMatches || !value) {
           return;
         }
-        var options = {};
-        var effectName = keyMatches[1];
 
-        // Loop over settings again, and extract settings of this specific Effect.
+        var options = {};
+        var effectName = keyMatches[1]; // Loop over settings again, and extract settings of this specific Effect.
+
         jQuery.each(elementSettings, function (subKey, subValue) {
           var subKeyRegex = new RegExp(name + '_' + effectName + '_fx_(.+)');
           var subKeyMatches = subKey.match(subKeyRegex);
+
           if (!subKeyMatches) {
             return;
-          }
+          } // Will be one of these: "direction"/"viewport"/"intensity".
 
-          // Will be one of these: "direction"/"viewport"/"intensity".
+
           var effectSetting = subKeyMatches[1];
+
           if ('fx' === effectSetting) {
             return;
           }
+
           if ('object' === (0, _typeof2["default"])(subValue)) {
             // Both Viewport and Intensity settings are of slider type.
             // But Viewport setting contains 'sizes' key as it is a range, while Intensity setting contains 'size'.
             subValue = Object.keys(subValue.sizes).length ? subValue.sizes : subValue.size;
           }
-          options[effectSetting] = subValue;
-        });
 
-        // Fill interactions array.
+          options[effectSetting] = subValue;
+        }); // Fill interactions array.
+
         var effect = _this2.effects[effectName];
         var interactionName = effect.interaction;
+
         if (!interactions[interactionName]) {
           interactions[interactionName] = {};
         }
+
         effect.actions.forEach(function (action) {
           return interactions[interactionName][action] = options;
         });
@@ -2231,16 +2547,20 @@ var EffectsHandler = /*#__PURE__*/function (_elementorModules$fro) {
       var $element = this.$element;
       var $dimensionsElement;
       var elementType = this.getElementType();
+
       if ('element' === effectTarget && 'section' !== elementType && 'container' !== elementType) {
         $dimensionsElement = $element;
         var childElementSelector;
+
         if ('column' === elementType) {
           childElementSelector = elementorFrontend.config.legacyMode.elementWrappers ? '.elementor-column-wrap' : '.elementor-widget-wrap';
         } else {
           childElementSelector = '.elementor-widget-container';
         }
+
         $element = $element.find('> ' + childElementSelector);
       }
+
       var options = {
         effectTarget: effectTarget,
         interactions: interactions,
@@ -2259,24 +2579,30 @@ var EffectsHandler = /*#__PURE__*/function (_elementorModules$fro) {
           layer: 'elementor-motion-effects-layer'
         }
       };
+
       if (!options.range && 'fixed' === this.getCurrentDeviceSetting('_position')) {
         options.range = 'page';
       }
+
       if ('fixed' === this.getCurrentDeviceSetting('_position')) {
         options.isFixedPosition = true;
       }
+
       if ('background' === effectTarget && 'column' === this.getElementType()) {
         options.addBackgroundLayerTo = ' > .elementor-element-populated';
       }
+
       return options;
     }
   }, {
     key: "activate",
     value: function activate(name) {
       var options = this.prepareOptions(name);
+
       if (jQuery.isEmptyObject(options.interactions)) {
         return;
       }
+
       this[name] = new (require('./motion-effects')["default"])(options);
     }
   }, {
@@ -2291,20 +2617,26 @@ var EffectsHandler = /*#__PURE__*/function (_elementorModules$fro) {
     key: "toggle",
     value: function toggle() {
       var _this3 = this;
+
       var currentDeviceMode = elementorFrontend.getCurrentDeviceMode();
       var elementSettings = this.getElementSettings();
       [this.normalMotion, this.backgroundMotion].forEach(function (name) {
         var devices = elementSettings[name + '_devices'];
         var isCurrentModeActive = !devices || -1 !== devices.indexOf(currentDeviceMode);
         var isMotionEffectsSet = elementSettings[name + '_scrolling'] || elementSettings[name + '_mouse'];
+
         if (isCurrentModeActive && isMotionEffectsSet) {
           if (_this3[name]) {
             _this3.refreshInstance(name);
+
             return;
           }
+
           _this3.activate(name);
+
           return;
         }
+
         _this3.deactivate(name);
       });
     }
@@ -2312,9 +2644,11 @@ var EffectsHandler = /*#__PURE__*/function (_elementorModules$fro) {
     key: "refreshInstance",
     value: function refreshInstance(instanceName) {
       var instance = this[instanceName];
+
       if (!instance) {
         return;
       }
+
       var preparedOptions = this.prepareOptions(instanceName);
       instance.setSettings(preparedOptions);
       instance.refresh();
@@ -2323,21 +2657,27 @@ var EffectsHandler = /*#__PURE__*/function (_elementorModules$fro) {
     key: "onElementChange",
     value: function onElementChange(propertyName) {
       var _this4 = this;
+
       if (/raven_motion_effects_((scrolling)|(mouse)|(devices))$/.test(propertyName)) {
         if (this.normalMotion + '_scrolling' === propertyName) {
           this.addCSSTransformEvents();
         }
+
         this.toggle();
         return;
       }
+
       var propertyMatches = propertyName.match(".*?(".concat(this.normalMotion, "|_transform)"));
+
       if (propertyMatches) {
         var instanceName = propertyMatches[0].match('(_transform)') ? this.normalMotion : propertyMatches[0];
         this.refreshInstance(instanceName);
+
         if (!this[instanceName]) {
           this.activate(instanceName);
         }
       }
+
       if (/^_position/.test(propertyName)) {
         [this.normalMotion, this.backgroundMotion].forEach(function (instanceName) {
           _this4.refreshInstance(instanceName);
@@ -2348,6 +2688,7 @@ var EffectsHandler = /*#__PURE__*/function (_elementorModules$fro) {
     key: "onDestroy",
     value: function onDestroy() {
       var _this5 = this;
+
       (0, _get3["default"])((0, _getPrototypeOf2["default"])(EffectsHandler.prototype), "onDestroy", this).call(this);
       [this.normalMotion, this.backgroundMotion].forEach(function (name) {
         _this5.deactivate(name);
@@ -2356,6 +2697,7 @@ var EffectsHandler = /*#__PURE__*/function (_elementorModules$fro) {
   }]);
   return EffectsHandler;
 }(elementorModules.frontend.handlers.Base);
+
 var _default = EffectsHandler;
 exports["default"] = _default;
 
@@ -2363,39 +2705,58 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _assertThisInitialized2 = _interopRequireDefault(require("@babel/runtime/helpers/assertThisInitialized"));
+
 var _get2 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var BaseInteraction = /*#__PURE__*/function (_elementorModules$Vie) {
   (0, _inherits2["default"])(BaseInteraction, _elementorModules$Vie);
+
   var _super = _createSuper(BaseInteraction);
+
   function BaseInteraction() {
     var _this;
+
     (0, _classCallCheck2["default"])(this, BaseInteraction);
+
     for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
       args[_key] = arguments[_key];
     }
+
     _this = _super.call.apply(_super, [this].concat(args));
     (0, _defineProperty)((0, _assertThisInitialized2["default"])(_this), 'onInsideViewport', function () {
       _this.run();
+
       _this.animationFrameRequest = window.requestAnimationFrame(_this.onInsideViewport);
     });
     return _this;
   }
+
   (0, _createClass2["default"])(BaseInteraction, [{
     key: "__construct",
     value: function __construct(options) {
       this.motionFX = options.motionFX;
+
       if (!this.intersectionObservers) {
         this.setElementInViewportObserver();
       }
@@ -2404,17 +2765,19 @@ var BaseInteraction = /*#__PURE__*/function (_elementorModules$Vie) {
     key: "setElementInViewportObserver",
     value: function setElementInViewportObserver() {
       var _this2 = this;
+
       this.intersectionObserver = elementorModules.utils.Scroll.scrollObserver({
         callback: function callback(event) {
           if (event.isInViewport) {
             _this2.onInsideViewport();
+
             return;
           }
+
           _this2.removeAnimationFrameRequest();
         }
-      });
+      }); // Determine which element we should observe.
 
-      // Determine which element we should observe.
       var observedElement = 'page' === this.motionFX.getSettings('range') ? elementorFrontend.elements.$body[0] : this.motionFX.elements.$parent[0];
       this.intersectionObserver.observe(observedElement);
     }
@@ -2452,8 +2815,10 @@ var BaseInteraction = /*#__PURE__*/function (_elementorModules$Vie) {
   }]);
   return BaseInteraction;
 }(elementorModules.ViewModule);
+
 var _default = BaseInteraction;
 exports["default"] = _default;
+
 function _defineProperty(obj, key, value) {
   if (key in obj) {
     Object.defineProperty(obj, key, {
@@ -2465,6 +2830,7 @@ function _defineProperty(obj, key, value) {
   } else {
     obj[key] = value;
   }
+
   return obj;
 }
 
@@ -2472,26 +2838,40 @@ function _defineProperty(obj, key, value) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _get2 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _base = _interopRequireDefault(require("./base"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var MouseMoveInteraction = /*#__PURE__*/function (_BaseInteraction) {
   (0, _inherits2["default"])(MouseMoveInteraction, _BaseInteraction);
+
   var _super = _createSuper(MouseMoveInteraction);
+
   function MouseMoveInteraction() {
     (0, _classCallCheck2["default"])(this, MouseMoveInteraction);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(MouseMoveInteraction, [{
     key: "onInit",
     value: function onInit() {
@@ -2512,9 +2892,11 @@ var MouseMoveInteraction = /*#__PURE__*/function (_BaseInteraction) {
     value: function run() {
       var mousePosition = MouseMoveInteraction.mousePosition;
       var oldMousePosition = this.oldMousePosition;
+
       if (oldMousePosition.x === mousePosition.x && oldMousePosition.y === mousePosition.y) {
         return;
       }
+
       this.oldMousePosition = {
         x: mousePosition.x,
         y: mousePosition.y
@@ -2534,6 +2916,7 @@ var MouseMoveInteraction = /*#__PURE__*/function (_BaseInteraction) {
   }]);
   return MouseMoveInteraction;
 }(_base["default"]);
+
 MouseMoveInteraction.mousePosition = {};
 var _default = MouseMoveInteraction;
 exports["default"] = _default;
@@ -2542,31 +2925,45 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _base = _interopRequireDefault(require("./base"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var ScrollInteraction = /*#__PURE__*/function (_BaseInteraction) {
   (0, _inherits2["default"])(ScrollInteraction, _BaseInteraction);
+
   var _super = _createSuper(ScrollInteraction);
+
   function ScrollInteraction() {
     (0, _classCallCheck2["default"])(this, ScrollInteraction);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(ScrollInteraction, [{
     key: "run",
     value: function run() {
       if (window.scrollY === this.currentScrollFromTop) {
         return false;
       }
+
       this.onScrollMovement();
       this.currentScrollFromTop = window.scrollY;
     }
@@ -2586,6 +2983,7 @@ var ScrollInteraction = /*#__PURE__*/function (_BaseInteraction) {
     key: "updateMotionFxDimensions",
     value: function updateMotionFxDimensions() {
       var motionFXSettings = this.motionFX.getSettings();
+
       if (motionFXSettings.refreshDimensions) {
         this.motionFX.defineDimensions();
       }
@@ -2594,22 +2992,26 @@ var ScrollInteraction = /*#__PURE__*/function (_BaseInteraction) {
     key: "updateAnimation",
     value: function updateAnimation() {
       var passedRangePercents;
+
       if ('page' === this.motionFX.getSettings('range')) {
         passedRangePercents = elementorModules.utils.Scroll.getPageScrollPercentage();
         this.runCallback(passedRangePercents);
         return;
       }
+
       if (this.motionFX.getSettings('isFixedPosition')) {
         passedRangePercents = elementorModules.utils.Scroll.getPageScrollPercentage({}, window.innerHeight);
         this.runCallback(passedRangePercents);
         return;
       }
+
       passedRangePercents = elementorModules.utils.Scroll.getElementViewportPercentage(this.motionFX.elements.$parent);
       this.runCallback(passedRangePercents);
     }
   }]);
   return ScrollInteraction;
 }(_base["default"]);
+
 var _default = ScrollInteraction;
 exports["default"] = _default;
 
@@ -2617,18 +3019,28 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _get2 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 /**
  * Gets the options passed from handler, inspects the actions and
  * decides which interaction is * needed to calculate the effect
@@ -2636,11 +3048,14 @@ function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Re
  */
 var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
   (0, _inherits2["default"])(Effects, _elementorModules$Vie);
+
   var _super = _createSuper(Effects);
+
   function Effects() {
     (0, _classCallCheck2["default"])(this, Effects);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(Effects, [{
     key: "getDefaultSettings",
     value: function getDefaultSettings() {
@@ -2683,10 +3098,12 @@ var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
       this.$element.addClass(settings.classes.element);
       this.elements.$parent = this.$element.parent();
       this.elements.$parent.addClass(settings.classes.parent);
+
       if ('background' === settings.effectTarget) {
         this.$element.addClass(settings.classes.backgroundType);
         this.addBackgroundLayer();
       }
+
       this.defineDimensions();
       settings.$targetElement = 'element' === settings.effectTarget ? this.$element : this.elements.$motionFXLayer;
       this.interactions = {};
@@ -2707,6 +3124,7 @@ var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
         elementRange: $dimensionsElement.outerHeight() + window.innerHeight
       };
       this.setSettings('dimensions', dimensions);
+
       if ('background' === this.getSettings('effectTarget')) {
         this.defineBackgroundLayerDimensions();
       }
@@ -2723,6 +3141,7 @@ var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
     key: "runInteractions",
     value: function runInteractions() {
       var _this = this;
+
       var settings = this.getSettings();
       this.actions.setCSSTransformVariables(settings.elementSettings);
       this.prepareSpecialActions();
@@ -2733,12 +3152,15 @@ var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
             for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
               args[_key] = arguments[_key];
             }
+
             jQuery.each(actions, function (actionName, actionData) {
               var _this$actions;
+
               return (_this$actions = _this.actions).runAction.apply(_this$actions, [actionName, actionData].concat(args));
             });
           }
         });
+
         _this.interactions[interactionName].run();
       });
     }
@@ -2768,10 +3190,12 @@ var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
     key: "refresh",
     value: function refresh() {
       this.actions.setSettings(this.getSettings());
+
       if ('background' === this.getSettings('effectTarget')) {
         this.updateBackgroundLayerSize();
         this.defineBackgroundLayerDimensions();
       }
+
       this.actions.refresh();
       this.destroyInteractions();
       this.runInteractions();
@@ -2784,6 +3208,7 @@ var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
       var settings = this.getSettings();
       this.$element.removeClass(settings.classes.element);
       this.elements.$parent.removeClass(settings.classes.parent);
+
       if ('background' === settings.effectTarget) {
         this.$element.removeClass(settings.classes.backgroundType);
         this.removeBackgroundLayer();
@@ -2793,9 +3218,8 @@ var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
     key: "onWindowResize",
     value: function onWindowResize() {
       this.defineDimensions();
-    }
+    } // (For Background).
 
-    // (For Background).
   }, {
     key: "defineBackgroundLayerDimensions",
     value: function defineBackgroundLayerDimensions() {
@@ -2805,9 +3229,8 @@ var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
       dimensions.movableX = dimensions.layerWidth - dimensions.elementWidth;
       dimensions.movableY = dimensions.layerHeight - dimensions.elementHeight;
       this.setSettings('dimensions', dimensions);
-    }
+    } // (For Background).
 
-    // (For Background).
   }, {
     key: "addBackgroundLayer",
     value: function addBackgroundLayer() {
@@ -2822,16 +3245,14 @@ var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
       this.elements.$motionFXContainer.prepend(this.elements.$motionFXLayer);
       var $addBackgroundLayerTo = settings.addBackgroundLayerTo ? this.$element.find(settings.addBackgroundLayerTo) : this.$element;
       $addBackgroundLayerTo.prepend(this.elements.$motionFXContainer);
-    }
+    } // (For Background).
 
-    // (For Background).
   }, {
     key: "removeBackgroundLayer",
     value: function removeBackgroundLayer() {
       this.elements.$motionFXContainer.remove();
-    }
+    } // (For Background).
 
-    // (For Background).
   }, {
     key: "updateBackgroundLayerSize",
     value: function updateBackgroundLayerSize() {
@@ -2842,18 +3263,22 @@ var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
       };
       var mouseInteraction = settings.interactions.mouseMove;
       var scrollInteraction = settings.interactions.scroll;
+
       if (mouseInteraction && mouseInteraction.translateXY) {
         speed.x = mouseInteraction.translateXY.intensity * 10;
         speed.y = mouseInteraction.translateXY.intensity * 10;
       }
+
       if (scrollInteraction) {
         if (scrollInteraction.translateX) {
           speed.x = scrollInteraction.translateX.intensity * 10;
         }
+
         if (scrollInteraction.translateY) {
           speed.y = scrollInteraction.translateY.intensity * 10;
         }
       }
+
       this.elements.$motionFXLayer.css({
         width: 100 + speed.x + '%',
         height: 100 + speed.y + '%'
@@ -2862,6 +3287,7 @@ var Effects = /*#__PURE__*/function (_elementorModules$Vie) {
   }]);
   return Effects;
 }(elementorModules.ViewModule);
+
 var _default = Effects;
 exports["default"] = _default;
 
@@ -2869,51 +3295,64 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var MotionEffectsLuncher = /*#__PURE__*/function (_elementorModules$Mod) {
   (0, _inherits2["default"])(MotionEffectsLuncher, _elementorModules$Mod);
+
   var _super = _createSuper(MotionEffectsLuncher);
+
   function MotionEffectsLuncher() {
     var _this;
+
     (0, _classCallCheck2["default"])(this, MotionEffectsLuncher);
-    _this = _super.call(this);
+    _this = _super.call(this); // Hook effects handler to all elements.
 
-    // Hook effects handler to all elements.
-    elementorFrontend.elementsHandler.attachHandler('global', require('./effects/handler')["default"], null);
+    elementorFrontend.elementsHandler.attachHandler('global', require('./effects/handler')["default"], null); // Hook sticky handler to section, widget and container elements.
 
-    // Hook sticky handler to section, widget and container elements.
     elementorFrontend.elementsHandler.attachHandler('section', require('./sticky/handler')["default"], null);
     elementorFrontend.elementsHandler.attachHandler('container', require('./sticky/handler')["default"], null);
-    elementorFrontend.elementsHandler.attachHandler('widget', require('./sticky/handler')["default"], null);
+    elementorFrontend.elementsHandler.attachHandler('widget', require('./sticky/handler')["default"], null); // Run sticky script
 
-    // Run sticky script
     require('./sticky/sticky-script-manager');
+
     return _this;
   }
-  return (0, _createClass2["default"])(MotionEffectsLuncher);
+
+  return MotionEffectsLuncher;
 }(elementorModules.Module);
+
 var _default = MotionEffectsLuncher;
 exports["default"] = _default;
 
-},{"./effects/handler":11,"./sticky/handler":17,"./sticky/sticky-script-manager":18,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101}],17:[function(require,module,exports){
+},{"./effects/handler":11,"./sticky/handler":17,"./sticky/sticky-script-manager":18,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101}],17:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 var StickyHandler = elementorModules.frontend.handlers.Base.extend({
   settingPrefix: 'raven_motion_effects',
   // This constant property value must be equal to the name of function which
@@ -2927,12 +3366,15 @@ var StickyHandler = elementorModules.frontend.handlers.Base.extend({
   },
   onInit: function onInit() {
     var _this = this;
+
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
+
     if (elementorFrontend.isEditMode()) {
       elementor.listenTo(elementor.channels.deviceMode, 'change', function () {
         return _this.onDeviceModeChange();
       });
     }
+
     this.run();
   },
   run: function run(refresh) {
@@ -2940,16 +3382,20 @@ var StickyHandler = elementorModules.frontend.handlers.Base.extend({
       this.deactivate();
       return;
     }
+
     var currentDeviceMode = elementorFrontend.getCurrentDeviceMode();
     var activeDevices = this.getElementSettings(this.settingPrefix + 'sticky_on');
+
     if (-1 === activeDevices.indexOf(currentDeviceMode)) {
       this.deactivate();
       return;
     }
+
     if (true === refresh) {
       this.reactivate();
       return;
     }
+
     if (!this.isStickyInstanceActive()) {
       this.activate();
     }
@@ -2967,17 +3413,20 @@ var StickyHandler = elementorModules.frontend.handlers.Base.extend({
         spacer: 'raven-sticky__spacer'
       }
     };
+
     if (elementSettings[this.settingPrefix + 'sticky_parent']) {
       stickyOptions.parent = '.e-container, .elementor-widget-wrap, .e-con';
     }
-    var $wpAdminBar = elementorFrontend.elements.$wpAdminBar;
 
-    // If admin bar in visible, add its height to sticky offset.
+    var $wpAdminBar = elementorFrontend.elements.$wpAdminBar; // If admin bar in visible, add its height to sticky offset.
+
     if ($wpAdminBar.length && 'top' === stickyOptions.to && 'fixed' === $wpAdminBar.css('position')) {
       stickyOptions.offset += $wpAdminBar.height();
     }
+
     this.$element[this.stickyFunction](stickyOptions);
   },
+
   /**
    * Get the current active setting value for a responsive control.
    *
@@ -2988,6 +3437,7 @@ var StickyHandler = elementorModules.frontend.handlers.Base.extend({
     var elementSettings = this.getElementSettings();
     return elementorFrontend.getCurrentDeviceSetting(elementSettings, setting);
   },
+
   /**
    * Return an array of settings names for responsive control (e.g. `settings`, `setting_tablet`, `setting_mobile` ).
    *
@@ -2996,7 +3446,7 @@ var StickyHandler = elementorModules.frontend.handlers.Base.extend({
    */
   getResponsiveSettingList: function getResponsiveSettingList(setting) {
     var breakpoints = Object.keys(elementorFrontend.config.responsive.activeBreakpoints);
-    return [''].concat(breakpoints).map(function (suffix) {
+    return [''].concat((0, _toConsumableArray2["default"])(breakpoints)).map(function (suffix) {
       return suffix ? "".concat(setting, "_").concat(suffix) : setting;
     });
   },
@@ -3018,16 +3468,19 @@ var StickyHandler = elementorModules.frontend.handlers.Base.extend({
   },
   onElementChange: function onElementChange(settingKey) {
     var activeDevices = this.getElementSettings(this.settingPrefix + 'sticky_on'),
-      currentDeviceMode = elementorFrontend.getCurrentDeviceMode();
-    if (!(activeDevices !== null && activeDevices !== void 0 && activeDevices.includes(currentDeviceMode))) {
+        currentDeviceMode = elementorFrontend.getCurrentDeviceMode();
+
+    if (!(activeDevices === null || activeDevices === void 0 ? void 0 : activeDevices.includes(currentDeviceMode))) {
       return;
     }
+
     if (-1 !== [this.settingPrefix + 'sticky', this.settingPrefix + 'sticky_on'].indexOf(settingKey)) {
       this.run(true);
-    }
+    } // Settings that trigger a re-activation when changed.
 
-    // Settings that trigger a re-activation when changed.
+
     var settings = [].concat((0, _toConsumableArray2["default"])(this.getResponsiveSettingList(this.settingPrefix + 'sticky_offset')), (0, _toConsumableArray2["default"])(this.getResponsiveSettingList(this.settingPrefix + 'sticky_effects_offset')), [this.settingPrefix + 'sticky_parent']);
+
     if (-1 !== settings.indexOf(settingKey)) {
       this.reactivate();
     }
@@ -3049,8 +3502,11 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 var _stickyScript = _interopRequireDefault(require("./sticky-script"));
+
 var functionName = 'ravenSticky';
+
 (function ($) {
   // Add sticky manager function to prototype of every element.
   $.fn[functionName] = function (settings) {
@@ -3060,28 +3516,30 @@ var functionName = 'ravenSticky';
       if (!isCommand) {
         $(this).data(functionName, new _stickyScript["default"](this, settings));
         return;
-      }
+      } // If the "settings" is a command, retrieve StickyScript instance.
 
-      // If the "settings" is a command, retrieve StickyScript instance.
+
       var instance = $(this).data(functionName);
+
       if (!instance) {
         throw Error('Trying to perform the `' + settings + '` method prior to initialization');
       }
+
       if (!instance[settings]) {
         throw ReferenceError('Method `' + settings + '` not found in sticky instance');
-      }
-
-      // Apply passed "settings" to the StickyScript instance.
+      } // Apply passed "settings" to the StickyScript instance.
       // Mainly used to call destroy() function from StickyScript.
-      instance[settings].apply(instance, Array.prototype.slice.call(arguments, 1));
 
-      // Delete StickyScript instance from the element upon recieving "destroy" command.
+
+      instance[settings].apply(instance, Array.prototype.slice.call(arguments, 1)); // Delete StickyScript instance from the element upon recieving "destroy" command.
+
       if ('destroy' === settings) {
         $(this).removeData(functionName);
       }
     });
     return this;
   };
+
   window[functionName] = _stickyScript["default"];
 })(jQuery);
 
@@ -3089,12 +3547,16 @@ var functionName = 'ravenSticky';
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 /**
  * Manages sticky effects. For each element with sticky setting,
  * an instance of this class will be created.
@@ -3125,6 +3587,7 @@ var StickyScript = /*#__PURE__*/function () {
     };
     this.init();
   }
+
   (0, _createClass2["default"])(StickyScript, [{
     key: "init",
     value: function init() {
@@ -3143,8 +3606,10 @@ var StickyScript = /*#__PURE__*/function () {
     value: function initElements() {
       this.$element = $(this.element).addClass(this.settings.classes.sticky);
       this.elements.$window = $(window);
+
       if (this.settings.parent) {
         this.elements.$parent = this.$element.parent();
+
         if ('parent' !== this.settings.parent) {
           this.elements.$parent = this.elements.$parent.closest(this.settings.parent);
         }
@@ -3155,25 +3620,31 @@ var StickyScript = /*#__PURE__*/function () {
     value: function checkPosition() {
       var offset = this.settings.offset;
       var distanceFromTriggerPoint;
+
       if (this.isSticky) {
         var spacerViewportOffset = this.getElementViewportOffset(this.elements.$spacer);
         distanceFromTriggerPoint = 'top' === this.settings.to ? spacerViewportOffset.top.fromTop - offset : -spacerViewportOffset.bottom.fromBottom - offset;
+
         if (this.settings.parent) {
           this.checkParent();
         }
+
         if (distanceFromTriggerPoint > 0) {
           this.unstick();
         }
       } else {
         var elementViewportOffset = this.getElementViewportOffset(this.$element);
         distanceFromTriggerPoint = 'top' === this.settings.to ? elementViewportOffset.top.fromTop - offset : -elementViewportOffset.bottom.fromBottom - offset;
+
         if (distanceFromTriggerPoint <= 0) {
           this.stick();
+
           if (this.settings.parent) {
             this.checkParent();
           }
         }
       }
+
       this.checkEffectsPoint(distanceFromTriggerPoint);
     }
   }, {
@@ -3253,12 +3724,15 @@ var StickyScript = /*#__PURE__*/function () {
       var sides = 'height' === dimension ? ['top', 'bottom'] : ['left', 'right'];
       var elementSize = parseFloat(computedStyle[dimension]);
       var propertiesToAdd = [];
+
       if ('border-box' !== computedStyle.boxSizing) {
         propertiesToAdd.push('border', 'padding');
       }
+
       if (includeMargins) {
         propertiesToAdd.push('margin');
       }
+
       propertiesToAdd.forEach(function (property) {
         sides.forEach(function (side) {
           elementSize += parseFloat(computedStyle[property + '-' + side]);
@@ -3307,18 +3781,23 @@ var StickyScript = /*#__PURE__*/function () {
     value: function checkParent() {
       var elementOffset = this.getElementViewportOffset(this.$element);
       var isTop = 'top' === this.settings.to;
+
       if (this.isFollowingParent) {
         var isNeedUnfollowing = isTop ? elementOffset.top.fromTop > this.settings.offset : elementOffset.bottom.fromBottom < -this.settings.offset;
+
         if (isNeedUnfollowing) {
           this.unfollowParent();
         }
+
         return;
       }
+
       var parentOffset = this.getElementViewportOffset(this.elements.$parent);
       var parentStyle = window.getComputedStyle(this.elements.$parent[0]);
       var borderWidthToDecrease = parseFloat(parentStyle[isTop ? 'borderBottomWidth' : 'borderTopWidth']);
       var parentViewportDistance = isTop ? parentOffset.bottom.fromTop - borderWidthToDecrease : parentOffset.top.fromBottom + borderWidthToDecrease;
       var isNeedFollowing = isTop ? parentViewportDistance <= elementOffset.bottom.fromTop : parentViewportDistance >= elementOffset.top.fromBottom;
+
       if (isNeedFollowing) {
         this.followParent();
       }
@@ -3331,6 +3810,7 @@ var StickyScript = /*#__PURE__*/function () {
         this.isReachedEffectsPoint = false;
         return;
       }
+
       if (!this.isReachedEffectsPoint && -distanceFromTriggerPoint >= this.settings.effectsOffset) {
         this.$element.addClass(this.settings.classes.stickyEffects);
         this.isReachedEffectsPoint = true;
@@ -3362,8 +3842,10 @@ var StickyScript = /*#__PURE__*/function () {
       if (!this.isSticky) {
         return;
       }
+
       this.unstickElement();
       this.stickElement();
+
       if (this.settings.parent) {
         // Force recalculation of the relation between the element and its parent
         this.isFollowingParent = false;
@@ -3376,12 +3858,14 @@ var StickyScript = /*#__PURE__*/function () {
       if (this.isSticky) {
         this.unstick();
       }
+
       this.unbindEvents();
       this.$element.removeClass(this.settings.classes.sticky);
     }
   }]);
   return StickyScript;
 }();
+
 var _default = StickyScript;
 exports["default"] = _default;
 
@@ -3389,11 +3873,14 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _module = _interopRequireDefault(require("./module"));
+
 var PaginationModule = _module["default"].extend({
   $clickedItem: null,
   getDefaultSettings: function getDefaultSettings() {
@@ -3468,21 +3955,26 @@ var PaginationModule = _module["default"].extend({
     var classes = this.getSettings('classes');
     var selectors = this.getSettings('selectors');
     this.$element.removeClass(classes.fetching);
+
     if (this.$clickedItem) {
       this.$clickedItem.find(selectors.spinner).remove();
       this.$clickedItem.removeClass(classes.reading);
       this.$clickedItem = null;
     }
+
     this.setEnabled(true);
     this.renderNumbers();
     this.updatePrevNext();
   },
   renderNumbers: function renderNumbers() {
     var _this = this;
+
     var pages = this.getPages();
+
     if (!pages.length) {
       return;
     }
+
     var selectors = this.getSettings('selectors');
     var items = [];
     pages.forEach(function (pageNum) {
@@ -3505,18 +3997,22 @@ var PaginationModule = _module["default"].extend({
   updateActivePage: function updateActivePage(pageNum) {
     var classes = this.getSettings('classes');
     this.$element.addClass(classes.fetching);
+
     if (this.$clickedItem) {
       this.$clickedItem.addClass(classes.reading);
       this.$clickedItem.append("<span class=\"".concat(classes.spinner, "\"></span>"));
     }
+
     this.setEnabled(false);
     this.setActivePage(pageNum);
   },
   updatePrevNext: function updatePrevNext() {
     var pages = this.getPages();
+
     if (!pages.length) {
       return;
     }
+
     var classes = this.getSettings('classes');
     var activePage = this.getActivePage();
     var totalPages = this.getTotalPages();
@@ -3527,6 +4023,7 @@ var PaginationModule = _module["default"].extend({
     event.preventDefault();
     var $this = $(event.target);
     var pageNum = parseInt($this.data('page-num'));
+
     if (this.getActivePage() !== pageNum) {
       this.triggerPagination($this, pageNum);
     }
@@ -3536,6 +4033,7 @@ var PaginationModule = _module["default"].extend({
     var classes = this.getSettings('classes');
     var $this = $(event.target);
     var pageNum = this.getActivePage() - 1;
+
     if (pageNum >= 1 && !$this.hasClass(classes.disabled)) {
       this.triggerPagination($this, pageNum);
     }
@@ -3546,6 +4044,7 @@ var PaginationModule = _module["default"].extend({
     var $this = $(event.target);
     var totalPages = this.getTotalPages();
     var pageNum = this.getActivePage() + 1;
+
     if (pageNum <= totalPages && !$this.hasClass(classes.disabled)) {
       this.triggerPagination($this, pageNum);
     }
@@ -3565,78 +4064,83 @@ var PaginationModule = _module["default"].extend({
     var half = Math.floor(pagesVisible / 2);
     var start = activePage - half;
     var end = activePage + half;
+
     if (start <= 0) {
       start = 1;
       end = pagesVisible;
     }
+
     if (end > totalPages) {
       end = totalPages;
     }
+
     var i = start;
+
     while (i <= end) {
       pages.push(i);
       i++;
     }
+
     return pages;
   },
   handlePagination: function handlePagination() {
     this.renderUpdate();
   }
 });
+
 var _default = PaginationModule;
 exports["default"] = _default;
 
 },{"./module":9,"@babel/runtime/helpers/interopRequireDefault":96}],21:[function(require,module,exports){
 // https://iamdustan.github.io/smoothscroll
-/* eslint-disable */
-'use strict';
 
-// polyfill
+/* eslint-disable */
+'use strict'; // polyfill
+
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
 function polyfill() {
   // aliases
   var w = window;
-  var d = document;
+  var d = document; // return if scroll behavior is supported and polyfill is not forced
 
-  // return if scroll behavior is supported and polyfill is not forced
   if ('scrollBehavior' in d.documentElement.style && w.__forceSmoothScrollPolyfill__ !== true) {
     return;
-  }
+  } // globals
 
-  // globals
+
   var Element = w.HTMLElement || w.Element;
-  var SCROLL_TIME = 468;
+  var SCROLL_TIME = 468; // object gathering original scroll methods
 
-  // object gathering original scroll methods
   var original = {
     scroll: w.scroll || w.scrollTo,
     scrollBy: w.scrollBy,
     elementScroll: Element.prototype.scroll || scrollElement,
     scrollIntoView: Element.prototype.scrollIntoView
-  };
+  }; // define timing method
 
-  // define timing method
   var now = w.performance && w.performance.now ? w.performance.now.bind(w.performance) : Date.now;
-
   /**
    * indicates if a the current browser is made by Microsoft
    * @method isMicrosoftBrowser
    * @param {String} userAgent
    * @returns {Boolean}
    */
+
   function isMicrosoftBrowser(userAgent) {
     var userAgentPatterns = ['MSIE ', 'Trident/', 'Edge/'];
     return new RegExp(userAgentPatterns.join('|')).test(userAgent);
   }
-
   /*
    * IE has rounding bug rounding down clientHeight and clientWidth and
    * rounding up scrollHeight and scrollWidth causing false positives
    * on hasScrollableSpace
    */
-  var ROUNDING_TOLERANCE = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
 
+
+  var ROUNDING_TOLERANCE = isMicrosoftBrowser(w.navigator.userAgent) ? 1 : 0;
   /**
    * changes scroll position inside an element
    * @method scrollElement
@@ -3644,42 +4148,45 @@ function polyfill() {
    * @param {Number} y
    * @returns {undefined}
    */
+
   function scrollElement(x, y) {
     this.scrollLeft = x;
     this.scrollTop = y;
   }
-
   /**
    * returns result of applying ease math function to a number
    * @method ease
    * @param {Number} k
    * @returns {Number}
    */
+
+
   function ease(k) {
     return 0.5 * (1 - Math.cos(Math.PI * k));
   }
-
   /**
    * indicates if a smooth behavior should be applied
    * @method shouldBailOut
    * @param {Number|Object} firstArg
    * @returns {Boolean}
    */
+
+
   function shouldBailOut(firstArg) {
     if (firstArg === null || (0, _typeof2["default"])(firstArg) !== 'object' || firstArg.behavior === undefined || firstArg.behavior === 'auto' || firstArg.behavior === 'instant') {
       // first argument is not an object/null
       // or behavior is auto, instant or undefined
       return true;
     }
+
     if ((0, _typeof2["default"])(firstArg) === 'object' && firstArg.behavior === 'smooth') {
       // first argument is an object and behavior is smooth
       return false;
-    }
+    } // throw error when behavior is not supported
 
-    // throw error when behavior is not supported
+
     throw new TypeError('behavior member of ScrollOptions ' + firstArg.behavior + ' is not a valid value for enumeration ScrollBehavior.');
   }
-
   /**
    * indicates if an element has scrollable space in the provided axis
    * @method hasScrollableSpace
@@ -3687,15 +4194,17 @@ function polyfill() {
    * @param {String} axis
    * @returns {Boolean}
    */
+
+
   function hasScrollableSpace(el, axis) {
     if (axis === 'Y') {
       return el.clientHeight + ROUNDING_TOLERANCE < el.scrollHeight;
     }
+
     if (axis === 'X') {
       return el.clientWidth + ROUNDING_TOLERANCE < el.scrollWidth;
     }
   }
-
   /**
    * indicates if an element has a scrollable overflow property in the axis
    * @method canOverflow
@@ -3703,11 +4212,12 @@ function polyfill() {
    * @param {String} axis
    * @returns {Boolean}
    */
+
+
   function canOverflow(el, axis) {
     var overflowValue = w.getComputedStyle(el, null)['overflow' + axis];
     return overflowValue === 'auto' || overflowValue === 'scroll';
   }
-
   /**
    * indicates if an element can be scrolled in either axis
    * @method isScrollable
@@ -3715,56 +4225,58 @@ function polyfill() {
    * @param {String} axis
    * @returns {Boolean}
    */
+
+
   function isScrollable(el) {
     var isScrollableY = hasScrollableSpace(el, 'Y') && canOverflow(el, 'Y');
     var isScrollableX = hasScrollableSpace(el, 'X') && canOverflow(el, 'X');
     return isScrollableY || isScrollableX;
   }
-
   /**
    * finds scrollable parent of an element
    * @method findScrollableParent
    * @param {Node} el
    * @returns {Node} el
    */
+
+
   function findScrollableParent(el) {
     var isBody;
+
     do {
       el = el.parentNode;
       isBody = el === d.body;
     } while (isBody === false && isScrollable(el) === false);
+
     isBody = null;
     return el;
   }
-
   /**
    * self invoked function that, given a context, steps through scrolling
    * @method step
    * @param {Object} context
    * @returns {undefined}
    */
+
+
   function step(context) {
     var time = now();
     var value;
     var currentX;
     var currentY;
-    var elapsed = (time - context.startTime) / SCROLL_TIME;
+    var elapsed = (time - context.startTime) / SCROLL_TIME; // avoid elapsed times higher than one
 
-    // avoid elapsed times higher than one
-    elapsed = elapsed > 1 ? 1 : elapsed;
+    elapsed = elapsed > 1 ? 1 : elapsed; // apply easing to elapsed time
 
-    // apply easing to elapsed time
     value = ease(elapsed);
     currentX = context.startX + (context.x - context.startX) * value;
     currentY = context.startY + (context.y - context.startY) * value;
-    context.method.call(context.scrollable, currentX, currentY);
+    context.method.call(context.scrollable, currentX, currentY); // scroll more if we have not reached our destination
 
-    // scroll more if we have not reached our destination
     if (currentX !== context.x || currentY !== context.y) {
       w.requestAnimationFrame(step.bind(w, context));
     }
   }
-
   /**
    * scrolls window or element with a smooth behavior
    * @method smoothScroll
@@ -3773,14 +4285,15 @@ function polyfill() {
    * @param {Number} y
    * @returns {undefined}
    */
+
+
   function smoothScroll(el, x, y) {
     var scrollable;
     var startX;
     var startY;
     var method;
-    var startTime = now();
+    var startTime = now(); // define scroll context
 
-    // define scroll context
     if (el === d.body) {
       scrollable = w;
       startX = w.scrollX || w.pageXOffset;
@@ -3791,9 +4304,9 @@ function polyfill() {
       startX = el.scrollLeft;
       startY = el.scrollTop;
       method = scrollElement;
-    }
+    } // scroll looping over a frame
 
-    // scroll looping over a frame
+
     step({
       scrollable: scrollable,
       method: method,
@@ -3803,108 +4316,107 @@ function polyfill() {
       x: x,
       y: y
     });
-  }
-
-  // ORIGINAL METHODS OVERRIDES
+  } // ORIGINAL METHODS OVERRIDES
   // w.scroll and w.scrollTo
+
+
   w.scroll = w.scrollTo = function () {
     // avoid action when no arguments are passed
     if (arguments[0] === undefined) {
       return;
-    }
+    } // avoid smooth behavior if not required
 
-    // avoid smooth behavior if not required
+
     if (shouldBailOut(arguments[0]) === true) {
-      original.scroll.call(w, arguments[0].left !== undefined ? arguments[0].left : (0, _typeof2["default"])(arguments[0]) !== 'object' ? arguments[0] : w.scrollX || w.pageXOffset,
-      // use top prop, second argument if present or fallback to scrollY
+      original.scroll.call(w, arguments[0].left !== undefined ? arguments[0].left : (0, _typeof2["default"])(arguments[0]) !== 'object' ? arguments[0] : w.scrollX || w.pageXOffset, // use top prop, second argument if present or fallback to scrollY
       arguments[0].top !== undefined ? arguments[0].top : arguments[1] !== undefined ? arguments[1] : w.scrollY || w.pageYOffset);
       return;
-    }
+    } // LET THE SMOOTHNESS BEGIN!
 
-    // LET THE SMOOTHNESS BEGIN!
+
     smoothScroll.call(w, d.body, arguments[0].left !== undefined ? ~~arguments[0].left : w.scrollX || w.pageXOffset, arguments[0].top !== undefined ? ~~arguments[0].top : w.scrollY || w.pageYOffset);
-  };
+  }; // w.scrollBy
 
-  // w.scrollBy
+
   w.scrollBy = function () {
     // avoid action when no arguments are passed
     if (arguments[0] === undefined) {
       return;
-    }
+    } // avoid smooth behavior if not required
 
-    // avoid smooth behavior if not required
+
     if (shouldBailOut(arguments[0])) {
       original.scrollBy.call(w, arguments[0].left !== undefined ? arguments[0].left : (0, _typeof2["default"])(arguments[0]) !== 'object' ? arguments[0] : 0, arguments[0].top !== undefined ? arguments[0].top : arguments[1] !== undefined ? arguments[1] : 0);
       return;
-    }
+    } // LET THE SMOOTHNESS BEGIN!
 
-    // LET THE SMOOTHNESS BEGIN!
+
     smoothScroll.call(w, d.body, ~~arguments[0].left + (w.scrollX || w.pageXOffset), ~~arguments[0].top + (w.scrollY || w.pageYOffset));
-  };
+  }; // Element.prototype.scroll and Element.prototype.scrollTo
 
-  // Element.prototype.scroll and Element.prototype.scrollTo
+
   Element.prototype.scroll = Element.prototype.scrollTo = function () {
     // avoid action when no arguments are passed
     if (arguments[0] === undefined) {
       return;
-    }
+    } // avoid smooth behavior if not required
 
-    // avoid smooth behavior if not required
+
     if (shouldBailOut(arguments[0]) === true) {
       // if one number is passed, throw error to match Firefox implementation
       if (typeof arguments[0] === 'number' && arguments[1] === undefined) {
         throw new SyntaxError('Value could not be converted');
       }
-      original.elementScroll.call(this,
-      // use left prop, first number argument or fallback to scrollLeft
-      arguments[0].left !== undefined ? ~~arguments[0].left : (0, _typeof2["default"])(arguments[0]) !== 'object' ? ~~arguments[0] : this.scrollLeft,
-      // use top prop, second argument or fallback to scrollTop
+
+      original.elementScroll.call(this, // use left prop, first number argument or fallback to scrollLeft
+      arguments[0].left !== undefined ? ~~arguments[0].left : (0, _typeof2["default"])(arguments[0]) !== 'object' ? ~~arguments[0] : this.scrollLeft, // use top prop, second argument or fallback to scrollTop
       arguments[0].top !== undefined ? ~~arguments[0].top : arguments[1] !== undefined ? ~~arguments[1] : this.scrollTop);
       return;
     }
+
     var left = arguments[0].left;
-    var top = arguments[0].top;
+    var top = arguments[0].top; // LET THE SMOOTHNESS BEGIN!
 
-    // LET THE SMOOTHNESS BEGIN!
     smoothScroll.call(this, this, typeof left === 'undefined' ? this.scrollLeft : ~~left, typeof top === 'undefined' ? this.scrollTop : ~~top);
-  };
+  }; // Element.prototype.scrollBy
 
-  // Element.prototype.scrollBy
+
   Element.prototype.scrollBy = function () {
     // avoid action when no arguments are passed
     if (arguments[0] === undefined) {
       return;
-    }
+    } // avoid smooth behavior if not required
 
-    // avoid smooth behavior if not required
+
     if (shouldBailOut(arguments[0]) === true) {
       original.elementScroll.call(this, arguments[0].left !== undefined ? ~~arguments[0].left + this.scrollLeft : ~~arguments[0] + this.scrollLeft, arguments[0].top !== undefined ? ~~arguments[0].top + this.scrollTop : ~~arguments[1] + this.scrollTop);
       return;
     }
+
     this.scroll({
       left: ~~arguments[0].left + this.scrollLeft,
       top: ~~arguments[0].top + this.scrollTop,
       behavior: arguments[0].behavior
     });
-  };
+  }; // Element.prototype.scrollIntoView
 
-  // Element.prototype.scrollIntoView
+
   Element.prototype.scrollIntoView = function () {
     // avoid smooth behavior if not required
     if (shouldBailOut(arguments[0]) === true) {
       original.scrollIntoView.call(this, arguments[0] === undefined ? true : arguments[0]);
       return;
-    }
+    } // LET THE SMOOTHNESS BEGIN!
 
-    // LET THE SMOOTHNESS BEGIN!
+
     var scrollableParent = findScrollableParent(this);
     var parentRects = scrollableParent.getBoundingClientRect();
     var clientRects = this.getBoundingClientRect();
+
     if (scrollableParent !== d.body) {
       // reveal element inside parent
-      smoothScroll.call(this, scrollableParent, scrollableParent.scrollLeft + clientRects.left - parentRects.left, scrollableParent.scrollTop + clientRects.top - parentRects.top);
+      smoothScroll.call(this, scrollableParent, scrollableParent.scrollLeft + clientRects.left - parentRects.left, scrollableParent.scrollTop + clientRects.top - parentRects.top); // reveal parent in viewport unless is fixed
 
-      // reveal parent in viewport unless is fixed
       if (w.getComputedStyle(scrollableParent).position !== 'fixed') {
         w.scrollBy({
           left: parentRects.left,
@@ -3922,6 +4434,7 @@ function polyfill() {
     }
   };
 }
+
 if ((typeof exports === "undefined" ? "undefined" : (0, _typeof2["default"])(exports)) === 'object' && typeof module !== 'undefined') {
   // commonjs
   module.exports = {
@@ -3937,11 +4450,14 @@ if ((typeof exports === "undefined" ? "undefined" : (0, _typeof2["default"])(exp
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _module = _interopRequireDefault(require("./module"));
+
 var SortableModule = _module["default"].extend({
   $clickedItem: null,
   getDefaultSettings: function getDefaultSettings() {
@@ -3987,21 +4503,25 @@ var SortableModule = _module["default"].extend({
     var selectors = this.getSettings('selectors');
     this.$element.removeClass(classes.fetching);
     this.$element.find(selectors.activeItem).removeClass(classes.activeItem);
+
     if (this.$clickedItem) {
       this.$clickedItem.find(selectors.spinner).remove();
       this.$clickedItem.removeClass(classes.reading);
       this.$clickedItem.addClass(classes.activeItem);
       this.$clickedItem = null;
     }
+
     this.setEnabled(true);
   },
   updateActiveItem: function updateActiveItem(category) {
     var classes = this.getSettings('classes');
     this.$element.addClass(classes.fetching);
+
     if (this.$clickedItem) {
       this.$clickedItem.addClass(classes.reading);
       this.$clickedItem.append("<span class=\"".concat(classes.spinner, "\"></span>"));
     }
+
     this.setEnabled(false);
     this.setActiveID(category);
   },
@@ -4009,6 +4529,7 @@ var SortableModule = _module["default"].extend({
     event.preventDefault();
     var $this = $(event.target);
     var category = parseInt($this.data('category'));
+
     if (this.getActiveID() !== category) {
       this.triggerSort($this, category);
     }
@@ -4024,6 +4545,7 @@ var SortableModule = _module["default"].extend({
     this.renderUpdate();
   }
 });
+
 var _default = SortableModule;
 exports["default"] = _default;
 
@@ -4031,23 +4553,30 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 var _tippy = _interopRequireDefault(require("tippy.js"));
+
 var JupiterTooltip = {
   widgetEditorSettings: function widgetEditorSettings(widgetId) {
     var editorElements = null,
-      widgetData = {};
+        widgetData = {};
+
     if (!window.elementor.hasOwnProperty('elements')) {
       return false;
     }
+
     editorElements = window.elementor.elements;
+
     if (!editorElements.models) {
       return false;
     }
+
     var isContainer = false;
     $.each(editorElements.models, function (indexLevelOne, objLevelOne) {
       if (objLevelOne.attributes.elType === 'container') {
         isContainer = true;
       }
+
       $.each(objLevelOne.attributes.elements.models, function (indexLevelTwo, objLevelTwo) {
         $.each(objLevelTwo.attributes.elements.models, function (index, obj) {
           if (widgetId === obj.id) {
@@ -4056,6 +4585,7 @@ var JupiterTooltip = {
         });
       });
     });
+
     if (isContainer) {
       $.each(editorElements.models, function (indexLevelOne, objLevelOne) {
         $.each(objLevelOne.attributes.elements.models, function (index, obj) {
@@ -4065,6 +4595,7 @@ var JupiterTooltip = {
         });
       });
     }
+
     return {
       tooltip: widgetData.jupiter_widget_tooltip || 'false',
       tooltipDescription: widgetData.jupiter_widget_tooltip_description || 'Lorem Ipsum',
@@ -4081,36 +4612,43 @@ var JupiterTooltip = {
   },
   jupiterTooltipInstance: function jupiterTooltipInstance($scope) {
     var widgetId = $scope.data('id'),
-      widgetSelector = $scope[0],
-      editMode = Boolean(elementorFrontend.isEditMode());
+        widgetSelector = $scope[0],
+        editMode = Boolean(elementorFrontend.isEditMode());
     var tooltipSelector = widgetSelector,
-      settings = {};
+        settings = {}; // Compatibility with jet tooltip.
 
-    // Compatibility with jet tooltip.
     if ($(widgetSelector).hasClass('jet-tooltip-widget')) {
       return;
     }
+
     if (!editMode) {
       settings = $scope.data('jupiter-tooltip-settings');
     } else {
       settings = JupiterTooltip.widgetEditorSettings(widgetId);
     }
+
     if (widgetSelector._tippy) {
       widgetSelector._tippy.destroy();
     }
+
     if (!settings) {
       return false;
     }
+
     if ('undefined' === typeof settings) {
       return false;
     }
+
     if ('false' === settings.tooltip || 'undefined' === typeof settings.tooltip || '' === settings.tooltipDescription) {
       return false;
     }
+
     $scope.addClass('jupiter-tooltip-widget');
+
     if (settings.customSelector) {
       tooltipSelector = $(settings.customSelector)[0];
     }
+
     if (editMode && !$('#jupiter-tooltip-content-' + widgetId)[0]) {
       var template = $('<div>', {
         id: 'jupiter-tooltip-content-' + widgetId,
@@ -4119,6 +4657,7 @@ var JupiterTooltip = {
       template.html(settings.tooltipDescription);
       $scope.append(template);
     }
+
     (0, _tippy["default"])([tooltipSelector], {
       content: $scope.find('.jupiter-tooltip-widget__content')[0].innerHTML,
       allowHTML: true,
@@ -4141,22 +4680,26 @@ var JupiterTooltip = {
         var tippyRightArrow = $('#tippy-' + instance.id + ' .tippy-box[data-placement^=left]>.tippy-arrow');
         var tippyLeftArrow = $('#tippy-' + instance.id + ' .tippy-box[data-placement^=right]>.tippy-arrow');
         var tippyBox = $('#tippy-' + instance.id + ' .tippy-box');
+
         switch (settings.tooltipPlacement) {
           case 'top-start':
           case 'top':
           case 'top-end':
             tippyBottomArrow.css('bottom', '-' + tippyBox.css('border-bottom-width'));
             break;
+
           case 'right-start':
           case 'right':
           case 'right-end':
             tippyLeftArrow.css('left', '-' + tippyBox.css('border-left-width'));
             break;
+
           case 'bottom-start':
           case 'bottom':
           case 'bottom-end':
             tippyTopArrow.css('top', '-' + tippyBox.css('border-top-width'));
             break;
+
           case 'left-start':
           case 'left':
           case 'left-end':
@@ -4165,6 +4708,7 @@ var JupiterTooltip = {
         }
       }
     });
+
     if (editMode && widgetSelector._tippy) {
       widgetSelector._tippy.show();
     }
@@ -4174,7 +4718,7 @@ elementorFrontend.hooks.addAction('frontend/element_ready/widget', function ($sc
   new JupiterTooltip.jupiterTooltipInstance($scope);
 });
 
-},{"@babel/runtime/helpers/interopRequireDefault":96,"tippy.js":122}],24:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":96,"tippy.js":124}],24:[function(require,module,exports){
 "use strict";
 
 var WrapperLink = {
@@ -4182,11 +4726,13 @@ var WrapperLink = {
     if ($scope.data('raven-element-link')) {
       $scope.on('click.onWrapperLink', function () {
         var data = $scope.data('raven-element-link'),
-          id = $scope.data('id'),
-          anchor = document.createElement('a');
+            id = $scope.data('id'),
+            anchor = document.createElement('a');
+
         if (!/^https?:\/\//i.test(data.url)) {
           data.url = 'http://' + data.url;
         }
+
         anchor.id = 'raven-wrapper-link-' + id;
         anchor.href = data.url;
         anchor.target = data.is_external ? '_blank' : '_self';
@@ -4211,12 +4757,16 @@ elementorFrontend.hooks.addAction('frontend/element_ready/global', function ($sc
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 $ = jQuery;
+
 var AddToCart = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -4257,6 +4807,7 @@ var AddToCart = _module["default"].extend({
     this.moveResetButtonToTableBody();
     this.onResetClearButton();
     this.addDummyPriceToEditor();
+
     if (this.$element.find('.sellkit-pro-deactive').length > 0) {
       this.fixResetButtonIcon();
     }
@@ -4270,6 +4821,7 @@ var AddToCart = _module["default"].extend({
   },
   detectPlusMinus: function detectPlusMinus() {
     var _this = this;
+
     this.elements.$plusMinus.on('click', function (event) {
       var $target = $(event.currentTarget);
       var qty = $target.closest('form.cart').find('.qty');
@@ -4277,9 +4829,11 @@ var AddToCart = _module["default"].extend({
       var min = parseFloat(qty.attr('min'));
       var step = parseFloat(qty.attr('step'));
       var val = parseFloat(qty.val());
+
       if (_this.elements.$wrapper.hasClass('raven-product-grouped') && isNaN(val)) {
         val = 0;
       }
+
       if ($target.is('.plus')) {
         if (max && max <= val) {
           qty.val(max);
@@ -4323,11 +4877,14 @@ var AddToCart = _module["default"].extend({
     if (this.elements.$formResetButton.length === 0) {
       return;
     }
+
     this.elements.$formResetButton[0].addEventListener('click', function () {
       var $swatches = document.getElementsByClassName('artbees-was-content');
+
       if (!$swatches) {
         return;
       }
+
       Object.entries($swatches).forEach(function (swatch) {
         swatch[1].classList.remove('selected-attribute');
       });
@@ -4335,19 +4892,25 @@ var AddToCart = _module["default"].extend({
   },
   addDummyPriceToEditor: function addDummyPriceToEditor() {
     var _this2 = this;
+
     if (this.isVariableProduct()) {
       $('form.variations_form.cart').wc_variation_form();
     }
+
     if (!this.isElementorEditor() || !this.isVariableProduct() || this.hasDefaultAttributes()) {
       return;
     }
+
     var price = '';
+
     if (this.elements.$wrapper.data('price')) {
       price = parseFloat(this.elements.$wrapper.data('price')).toFixed(2);
     }
+
     if (!price) {
       price = 20.00;
     }
+
     var dummyPriceHTML = '<div class="raven-dummy-price woocommerce-variation-price"><span class="price"><span class="woocommerce-Price-amount amount"><bdi><span class="woocommerce-Price-currencySymbol">$</span>' + price + '</bdi></span></span></div>';
     this.elements.$singleVariationWrapper.prepend(dummyPriceHTML);
     this.elements.$variationFormHolder.change(function () {
@@ -4356,18 +4919,14 @@ var AddToCart = _module["default"].extend({
   },
   fixResetButtonIcon: function fixResetButtonIcon() {
     // Get the clear text link.
-    var clearLink = this.$element.find('#jupiterx-clear-variable-button-single-page');
+    var clearLink = this.$element.find('#jupiterx-clear-variable-button-single-page'); // Get the text content.
 
-    // Get the text content.
-    var clearText = clearLink.text();
+    var clearText = clearLink.text(); // Wrap the clear text with a span tag.
 
-    // Wrap the clear text with a span tag.
-    clearLink.wrapInner('<span>');
+    clearLink.wrapInner('<span>'); // Add an i tag before the span tag.
 
-    // Add an i tag before the span tag.
-    clearLink.find('span').before('<i class="fa fa-refresh"></i>');
+    clearLink.find('span').before('<i class="fa fa-refresh"></i>'); // Set the text content back.
 
-    // Set the text content back.
     clearLink.find('span').text(clearText);
   },
   isElementorEditor: function isElementorEditor() {
@@ -4377,15 +4936,18 @@ var AddToCart = _module["default"].extend({
     if (this.elements.$cartForm.length === 0) {
       return;
     }
+
     return this.elements.$cartForm[0].classList.contains('variations_form');
   },
   hasDefaultAttributes: function hasDefaultAttributes() {
     if (this.$element.find('.has-default-attributes').length === 0) {
       return false;
     }
+
     return true;
   }
 });
+
 function _default($scope) {
   new AddToCart({
     $element: $scope
@@ -4396,12 +4958,16 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var $ = jQuery;
+
 var AdvancedAccordion = _module["default"].extend({
   onInit: function onInit() {
     this.accordionOnClick();
@@ -4409,38 +4975,47 @@ var AdvancedAccordion = _module["default"].extend({
   accordionOnClick: function accordionOnClick() {
     var collapsible = false;
     var settings = this.getElementSettings(),
-      self = this;
+        self = this;
+
     if (settings.collapsible && 'yes' === settings.collapsible) {
       collapsible = true;
     }
+
     $('.jx-single-accordion-header').off().on('click', function () {
       var parent = $(this).parents('.jupiterx-single-advanced-accordion-wrapper'),
-        body = parent.find('.jx-single-accordion-body'),
-        display = body.css('display'),
-        items = $(this).parents('.jupiterx-advanced-accordion-wrapper').find('.jx-single-accordion-body');
+          body = parent.find('.jx-single-accordion-body'),
+          display = body.css('display'),
+          items = $(this).parents('.jupiterx-advanced-accordion-wrapper').find('.jx-single-accordion-body');
       var closed;
+
       if ('' === display || 'none' === display) {
         if (collapsible) {
           items.slideUp('fast').addClass('jx-ac-body-none').removeClass('jx-ac-body-block').parent().addClass('jx-ac-inactive').removeClass('jx-ac-active');
         }
+
         body.slideDown('fast');
         parent.addClass('jx-ac-active').removeClass('jx-ac-inactive');
         closed = false;
       }
+
       if ('block' === display && !collapsible) {
         body.slideUp('fast');
         parent.addClass('jx-ac-inactive').removeClass('jx-ac-active');
         closed = true;
       }
+
       if (!closed) {
         self.handleScrollToContent(body);
       }
+
       if (!parent.hasClass('jx-ac-last')) {
         return;
       }
+
       if (closed) {
         parent.find('.jx-single-accordion-header').removeClass('border-not-radius');
       }
+
       if (!closed) {
         parent.find('.jx-single-accordion-header').addClass('border-not-radius');
         parent.find('.jx-single-accordion-body').addClass('border-is-radius');
@@ -4451,12 +5026,15 @@ var AdvancedAccordion = _module["default"].extend({
     if (this.getElementSettings('scroll_to_content') !== 'yes') {
       return;
     }
+
     var adminBarHeight = 0;
+
     if ($('#wpadminbar').length > 0) {
       adminBarHeight = $('#wpadminbar').height();
     }
+
     var delay = this.getElementSettings('scrolling_delay'),
-      offset = this.getElementSettings('content_offset');
+        offset = this.getElementSettings('content_offset');
     setTimeout(function () {
       $('html, body').animate({
         scrollTop: selectedItem.offset().top - offset.size - adminBarHeight
@@ -4464,6 +5042,7 @@ var AdvancedAccordion = _module["default"].extend({
     }, 200);
   }
 });
+
 function _default($scope) {
   new AdvancedAccordion({
     $element: $scope
@@ -4474,15 +5053,22 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0, _defineProperty2["default"])(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 var $ = jQuery;
+
 var AdvancedNavMenu = _module["default"].extend({
   mainLayout: null,
   mobileLayout: null,
@@ -4529,15 +5115,14 @@ var AdvancedNavMenu = _module["default"].extend({
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
     this.mainLayout = this.elements.$mainNav.attr('data-layout');
     this.mobileLayout = this.elements.$mobileNav.length ? this.elements.$mobileNav.attr('data-layout') : false;
-    this.isRtl = $('body').hasClass('rtl');
-
-    // This editor check is placed to trigger "Submenu" section activation when the section is
+    this.isRtl = $('body').hasClass('rtl'); // This editor check is placed to trigger "Submenu" section activation when the section is
     // already open, but the widget rerenders without firing of 'section:activated' event.
+
     if (this.isEdit && 'section_submenu' === elementor.panel.currentView.currentPageView.activeSection) {
       this.onSectionActivated('section_submenu');
-    }
+    } // Reset styles of push effects.
 
-    // Reset styles of push effects.
+
     this.deactivateMenu();
     $(window).off('resize', this.deactivateMenu.bind(this)).on('resize', this.deactivateMenu.bind(this));
     this.widgetParents = {
@@ -4556,9 +5141,11 @@ var AdvancedNavMenu = _module["default"].extend({
   bindEvents: function bindEvents() {
     // Main menu events.
     var mainLayout = this.elements.$mainNav.attr('data-layout');
+
     if ('dropdown' === mainLayout) {
       this.elements.$toggleButton.on('click', this.toggleDropdown.bind(this));
     }
+
     if ('offcanvas' === mainLayout) {
       this.elements.$toggleButton.on('click', this.toggleMenu.bind(this));
       this.elements.$closeButton.on('click', this.toggleMenu.bind(this));
@@ -4567,24 +5154,29 @@ var AdvancedNavMenu = _module["default"].extend({
       this.elements.$body.addClass("raven-adnav-menu-effect-".concat(effect));
       this.elements.$toggleButton.on('click', this.doSideMenuEffects.bind(this));
       this.elements.$closeButton.on('click', this.doSideMenuEffects.bind(this));
-    }
+    } // Mobile menu events
 
-    // Mobile menu events
+
     var mobileLayout = this.elements.$mobileNav.attr('data-layout');
+
     if ('dropdown' === mobileLayout) {
       this.elements.$toggleButton.on('click', this.toggleDropdown.bind(this));
       return;
     }
+
     if ('side' === mobileLayout) {
       this.elements.$toggleButton.on('click', this.toggleMenu.bind(this));
       this.elements.$closeButton.on('click', this.toggleMenu.bind(this));
       this.elements.$menus.on('select.smapi', this.onSideMenuItemClick.bind(this));
+
       var _effect = this.getElementSettings('side_menu_effect');
+
       this.elements.$body.addClass("raven-adnav-menu-effect-".concat(_effect));
       this.elements.$toggleButton.on('click', this.doSideMenuEffects.bind(this));
       this.elements.$closeButton.on('click', this.doSideMenuEffects.bind(this));
       return;
     }
+
     if ('full-screen' === mobileLayout) {
       this.elements.$toggleButton.on('click', this.toggleMenu.bind(this));
       this.elements.$closeButton.on('click', this.toggleMenu.bind(this));
@@ -4592,26 +5184,27 @@ var AdvancedNavMenu = _module["default"].extend({
   },
   initMainSmartMenu: function initMainSmartMenu() {
     var _this$$element,
-      _this$$element2,
-      _this = this;
+        _this$$element2,
+        _this = this;
+
     // Options common between all layout.
     var options = {
       subIndicators: false,
       rightToLeftSubMenus: this.isRtl
-    };
+    }; // eslint-disable-next-line no-undef
 
-    // eslint-disable-next-line no-undef
-    var spaceBetween = getComputedStyle(this.$element[0]).getPropertyValue('--submenu-spacing') && (_this$$element = this.$element) !== null && _this$$element !== void 0 && _this$$element.css('--submenu-spacing') ? parseInt((_this$$element2 = this.$element) === null || _this$$element2 === void 0 ? void 0 : _this$$element2.css('--submenu-spacing')) : 0;
+    var spaceBetween = getComputedStyle(this.$element[0]).getPropertyValue('--submenu-spacing') && ((_this$$element = this.$element) === null || _this$$element === void 0 ? void 0 : _this$$element.css('--submenu-spacing')) ? parseInt((_this$$element2 = this.$element) === null || _this$$element2 === void 0 ? void 0 : _this$$element2.css('--submenu-spacing')) : 0; // Options specific to Horizontal AND Vertical layouts.
 
-    // Options specific to Horizontal AND Vertical layouts.
     if ('horizontal' === this.mainLayout || 'vertical' === this.mainLayout) {
       var currentNav = this.elements.$elementorElement,
-        overlayColor = this.getElementSettings('content_effect_content_overlay');
+          overlayColor = this.getElementSettings('content_effect_content_overlay');
+
       if ($(currentNav[0]).parents('.jupiterx-header') !== 0 && overlayColor === 'enabled' && 'horizontal' === this.mainLayout) {
         if ($('.jupiterx-main').find('.jupiterx-advanced-nav-content-effect-enabled-overlay').length === 0) {
           $('.jupiterx-main').append('<div class="jupiterx-advanced-nav-content-effect-enabled-overlay"></div>');
         }
       }
+
       options = _objectSpread(_objectSpread({}, options), {}, {
         hideTimeout: 300,
         // To prevent submenus from disappearing right upon mouseout event.
@@ -4619,8 +5212,10 @@ var AdvancedNavMenu = _module["default"].extend({
           $ul.removeClass('submenu-shown');
           setTimeout(function () {
             $ul.css('display', 'none');
+
             if ('horizontal' === _this.mainLayout) {
               _this.handleContentEffectsBlur('remove');
+
               _this.handleContentEffectsOverlay('remove');
             }
           }, 0);
@@ -4628,23 +5223,31 @@ var AdvancedNavMenu = _module["default"].extend({
         showTimeout: 0,
         showFunction: function showFunction($ul) {
           _this.setSubmenuWidth($ul, spaceBetween);
+
           _this.setSubmenuPosition($ul);
+
           $ul.css('display', 'block');
+
           if ('horizontal' === _this.mainLayout) {
             var BlurContent = _this.getElementSettings('content_effect_blur_content');
+
             if ($(currentNav[0]).parents('.jupiterx-header') !== 0 && (overlayColor === 'enabled' || BlurContent === 'enabled')) {
               if ($('.jupiterx-main').find('.jupiterx-advanced-nav-content-effect-enabled-overlay').length === 0) {
                 $('.jupiterx-main').append('<div class="jupiterx-advanced-nav-content-effect-enabled-overlay"></div>');
               }
             }
+
             if (overlayColor === 'enabled' || BlurContent === 'enabled') {
               _this.elements.$body[0].classList.add('jupiterx-advanced-nav-content-effect-enabled');
             }
           }
+
           setTimeout(function () {
             $ul.addClass('submenu-shown');
+
             if ('horizontal' === _this.mainLayout) {
               _this.handleContentEffectsBlur('add');
+
               _this.handleContentEffectsOverlay('add');
             }
           });
@@ -4653,50 +5256,61 @@ var AdvancedNavMenu = _module["default"].extend({
         subMenusMinWidth: '0',
         subMenusMaxWidth: '110vw'
       });
-    }
+    } // Options specific to Horizontal layout.
 
-    // Options specific to Horizontal layout.
+
     if ('horizontal' === this.mainLayout) {
       options = _objectSpread(_objectSpread({}, options), {}, {
         bottomToTopSubMenus: 'top' === this.getElementSettings('submenu_opening_position'),
         mainMenuSubOffsetY: spaceBetween
       });
-    }
+    } // Vertical layout.
 
-    // Vertical layout.
+
     if ('vertical' === this.mainLayout) {
       this.elements.$mainMenu.addClass('sm-vertical');
     }
+
     this.elements.$mainMenu.smartmenus(options);
   },
   handleContentEffectsOverlay: function handleContentEffectsOverlay(type) {
     var currentNav = this.elements.$elementorElement;
+
     if (!currentNav[0].classList.contains('raven-blur-content-overlay-enabled') || $(currentNav[0]).parents('.jupiterx-header').length === 0) {
       return;
     }
+
     var overlayColor = this.getElementSettings('content_effect_content_overlay');
+
     if ($(currentNav[0]).parents('.jupiterx-header') !== 0 && overlayColor === 'enabled') {
       this.elements.$body[0].classList.add('jupiterx-advanced-nav-overlay-enabled');
     }
+
     if (type === 'remove') {
       this.elements.$body[0].classList.remove('jupiterx-advanced-nav-overlay-enabled');
       $('.jupiterx-advanced-nav-content-effect-enabled-overlay').removeClass('jupiterx-advanced-nav-overlay-activated');
       return;
     }
+
     $('.jupiterx-advanced-nav-content-effect-enabled-overlay').addClass('jupiterx-advanced-nav-overlay-activated');
   },
   handleContentEffectsBlur: function handleContentEffectsBlur(type) {
     var _this$getElementSetti;
+
     var currentNav = this.elements.$elementorElement;
+
     if (!currentNav[0].classList.contains('raven-blur-content-enabled') || $(currentNav[0]).parents('.jupiterx-header').length === 0) {
       return;
     }
+
     var blurIntensity = ((_this$getElementSetti = this.getElementSettings('content_effect_blur_intensity')) === null || _this$getElementSetti === void 0 ? void 0 : _this$getElementSetti.size) || 5;
+
     if (type === 'remove') {
       $('.jupiterx-advanced-nav-content-effect-enabled-overlay').css('backdrop-filter', '');
       $('.jupiterx-advanced-nav-content-effect-enabled-overlay').removeClass('jupiterx-advanced-nav-overlay-activated');
       return;
     }
+
     $('.jupiterx-advanced-nav-content-effect-enabled-overlay').addClass('jupiterx-advanced-nav-overlay-activated');
     $('.jupiterx-advanced-nav-content-effect-enabled-overlay').css('backdrop-filter', "blur(".concat(blurIntensity, "px)"));
   },
@@ -4704,6 +5318,7 @@ var AdvancedNavMenu = _module["default"].extend({
     if (!this.elements.$mobileMenu.length) {
       return;
     }
+
     var options = {
       subIndicators: false,
       subMenusMaxWidth: '1500px',
@@ -4713,20 +5328,25 @@ var AdvancedNavMenu = _module["default"].extend({
   },
   toggleDropdown: function toggleDropdown() {
     this.elements.$toggleButton.find('.hamburger').toggleClass('is-active');
+
     if ('dropdown' === this.mainLayout) {
       this.elements.$mainNav.slideToggle(250);
       return;
     }
+
     this.dropdownFullWidth();
     this.elements.$mobileNav.slideToggle(250);
     this.dropdownFullWidth();
   },
   dropdownFullWidth: function dropdownFullWidth() {
     var _mobileNav$;
+
     var mobileNav = this.elements.$mobileNav;
+
     if (this.getElementSettings('full_width') !== 'stretch') {
       return;
     }
+
     var navLeftToBodyDist = (_mobileNav$ = mobileNav[0]) === null || _mobileNav$ === void 0 ? void 0 : _mobileNav$.getBoundingClientRect().x;
     this.elements.$mobileNav.css('width', "".concat(this.$element.closest('body')[0].getBoundingClientRect().width, "px")).css('left', "".concat(-navLeftToBodyDist, "px"));
     var elementorElement = this.elements.$elementorElement;
@@ -4736,59 +5356,71 @@ var AdvancedNavMenu = _module["default"].extend({
   },
   doSideMenuEffects: function doSideMenuEffects() {
     var _this2 = this;
-    var isOffCanvas = 'offcanvas' === this.mainLayout;
-    var effect = this.getElementSettings(isOffCanvas ? 'offcanvas_appear_effect' : 'side_menu_effect');
 
-    // If the effect is "Overlay".
+    var isOffCanvas = 'offcanvas' === this.mainLayout;
+    var effect = this.getElementSettings(isOffCanvas ? 'offcanvas_appear_effect' : 'side_menu_effect'); // If the effect is "Overlay".
+
     if ('overlay' === effect) {
       var overlayed = this.elements.$body.hasClass('raven-adnav-menu-effect-overlayed');
+
       if (!overlayed) {
         this.elements.$body.addClass('raven-adnav-menu-effect-overlayed');
         this.togglePrepareParentForPushEffect();
         return;
       }
+
       setTimeout(function () {
         _this2.elements.$body.removeClass('raven-adnav-menu-effect-overlayed');
+
         _this2.togglePrepareParentForPushEffect(false);
       }, 400);
       return;
-    }
+    } // If the effect is "Push"
 
-    // If the effect is "Push"
+
     var sideMenuOpenPosition = this.getElementSettings(isOffCanvas ? 'offcanvas_position' : 'side_menu_alignment');
     var width = parseInt(this.$element.css(isOffCanvas ? '--offcanvas-box-width' : '--menu-container-width')) || 250;
+
     if (sideMenuOpenPosition === 'right') {
       width = "-".concat(width, "px");
     }
+
     var isPushed = this.elements.$body.hasClass('raven-adnav-menu-effect-pushed');
+
     if (!isPushed) {
       var marginProp = this.isRtl ? 'margin-right' : 'margin-left';
       this.elements.$body.addClass('raven-adnav-menu-effect-pushed').css(marginProp, width);
       this.togglePrepareParentForPushEffect();
       return;
     }
+
     this.elements.$body.removeClass('raven-adnav-menu-effect-pushed').removeAttr('style');
     this.togglePrepareParentForPushEffect(false);
   },
   togglePrepareParentForPushEffect: function togglePrepareParentForPushEffect() {
     var state = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : true;
+
     if (state) {
       this.elements.$parentSegment.addClass('raven-adnav-menu-parent-segment').css('--adnav-menu-overlay-color', this.getElementSettings('offcanvas_overlay_color'));
       return;
     }
+
     this.elements.$parentSegment.removeClass('raven-adnav-menu-parent-segment');
   },
   toggleMenu: function toggleMenu() {
     var nav = 'offcanvas' === this.mainLayout ? this.elements.$mainNav : this.elements.$mobileNav;
     nav.toggleClass('raven-adnav-menu-active');
+
     if ('full-screen' === this.mobileLayout) {
       this.elements.$body.toggleClass('raven-adnav-menu-effect-overlayed');
     }
+
     if (nav.hasClass('raven-adnav-menu-active')) {
       nav.parents('.animated').addClass('raven-adnav-menu-parents-animation');
     } else {
       nav.parents('.animated').removeClass('raven-adnav-menu-parents-animation');
     }
+
     if (this.elements.$toggleButton.find('.hamburger').length !== 0) {
       this.elements.$toggleButton.find('.hamburger').toggleClass('is-active');
     }
@@ -4796,6 +5428,7 @@ var AdvancedNavMenu = _module["default"].extend({
   mobileMenuScroll: function mobileMenuScroll() {
     var overlays = document.querySelectorAll('.raven-adnav-menu-mobile.raven-adnav-menu-full-screen');
     var _clientY = null;
+
     var _loop = function _loop(i) {
       overlays[i].addEventListener('touchstart', function (event) {
         if (event.targetTouches.length === 1) {
@@ -4808,9 +5441,11 @@ var AdvancedNavMenu = _module["default"].extend({
       overlays[i].addEventListener('touchmove', function (event) {
         if (event.targetTouches.length === 1) {
           var clientY = event.targetTouches[0].clientY - _clientY;
+
           if (overlays[i].scrollTop === 0 && clientY > 0 && event.cancelable && $(event.target).parents('.raven-container').length === 0) {
             event.preventDefault();
           }
+
           if (overlays[i].scrollHeight - overlays[i].scrollTop <= overlays[i].clientHeight && clientY < 0 && event.cancelable && $(event.target).parents('.raven-container').length === 0) {
             event.preventDefault();
           }
@@ -4820,6 +5455,7 @@ var AdvancedNavMenu = _module["default"].extend({
         passive: true
       });
     };
+
     for (var i = 0; i < overlays.length; i++) {
       _loop(i);
     }
@@ -4829,43 +5465,43 @@ var AdvancedNavMenu = _module["default"].extend({
       event.stopPropagation();
     });
   },
-  /** Handle clicking on menu links that contian a hash ID to an element inside page */inPageMenuClick: function inPageMenuClick() {
+
+  /** Handle clicking on menu links that contian a hash ID to an element inside page */
+  inPageMenuClick: function inPageMenuClick() {
     var self = this;
     this.elements.$inPageMenuItems.on('click', function (e) {
       var href = $(e.currentTarget).prop('href');
-      var url = null;
+      var url = null; // URL interface throws error if constructed with incorrect URL.
 
-      // URL interface throws error if constructed with incorrect URL.
       try {
         url = new window.URL(href);
       } catch (err) {
         return;
-      }
+      } // Do nothing if the URL has no hash segment, or its unhashed segment points to another page.
 
-      // Do nothing if the URL has no hash segment, or its unhashed segment points to another page.
+
       if (!url.hash || url.pathname !== window.location.pathname) {
         return;
       }
-      e.preventDefault();
 
-      // Reset menu active states (side push, overlay, etc.).
+      e.preventDefault(); // Reset menu active states (side push, overlay, etc.).
+
       self.deactivateMenu();
       self.changeHamburgerState(false);
       window.history.pushState(null, null, url.hash);
-      var anchorTarget = $(url.hash);
+      var anchorTarget = $(url.hash); // If the target element of the hash is not present in current document, close the menu and return.
 
-      // If the target element of the hash is not present in current document, close the menu and return.
       if (anchorTarget.length === 0) {
         return;
-      }
+      } // Otherwise, scroll to the target element of the hash (with caution about sticky header, admin bar, etc.).
 
-      // Otherwise, scroll to the target element of the hash (with caution about sticky header, admin bar, etc.).
+
       var headerSettings = $('.jupiterx-header').data('jupiterx-settings');
       var behavior = headerSettings.behavior,
-        overlap = headerSettings.overlap,
-        position = headerSettings.position,
-        template = headerSettings.template,
-        stickyTemplate = headerSettings.stickyTemplate;
+          overlap = headerSettings.overlap,
+          position = headerSettings.position,
+          template = headerSettings.template,
+          stickyTemplate = headerSettings.stickyTemplate;
       var hasCustomStickyHeader = 'sticky' === behavior && (!stickyTemplate || stickyTemplate !== template);
       var isHeaderSticked = $('.jupiterx-header-sticked').length > 0;
       var tbarHieght = $('.jupiterx-tbar').outerHeight() || 0;
@@ -4875,16 +5511,20 @@ var AdvancedNavMenu = _module["default"].extend({
       scrollPosition -= adminBarHeight;
       scrollPosition -= bodyBorderWidth;
       scrollPosition -= tbarHieght;
+
       if (!isHeaderSticked && (!behavior || 'sticky' === behavior && overlap)) {
         scrollPosition -= tbarHieght;
       }
+
       if (hasCustomStickyHeader) {
         var stickyHeaderHeight = $('.jupiterx-header-custom .elementor:last-of-type').outerHeight() || 0;
         scrollPosition -= stickyHeaderHeight;
       }
+
       if (!hasCustomStickyHeader && ('sticky' === behavior || 'fixed' === behavior && 'top' === position)) {
         scrollPosition -= self.getHeaderHeight();
       }
+
       $('html, body').stop().animate({
         scrollTop: scrollPosition
       }, 500, 'swing');
@@ -4892,30 +5532,38 @@ var AdvancedNavMenu = _module["default"].extend({
   },
   getHeaderHeight: function getHeaderHeight() {
     var header = $('.jupiterx-header');
+
     if (header.length === 0) {
       return 0;
     }
+
     var _header$data = header.data('jupiterx-settings'),
-      behavior = _header$data.behavior;
+        behavior = _header$data.behavior;
+
     if (behavior === 'fixed' || behavior === 'sticky' || window.pageYOffset < header.height()) {
       return header.height();
     }
+
     return 0;
   },
   onElementChange: function onElementChange(propertyName) {
     if ('full_width' === propertyName) {
       this.dropdownFullWidth();
     }
+
     if ((propertyName.startsWith('menu_container_width') || propertyName.startsWith('offcanvas_box_width')) && this.elements.$body.hasClass('raven-adnav-menu-effect-pushed')) {
       var isOffCanvas = 'offcanvas' === this.mainLayout;
       var sideMenuOpenPosition = this.getElementSettings(isOffCanvas ? 'offcanvas_position' : 'side_menu_alignment');
       var width = parseInt(this.$element.css(isOffCanvas ? '--offcanvas-box-width' : '--menu-container-width')) || 250;
+
       if (sideMenuOpenPosition === 'right') {
         width = "-".concat(width, "px");
       }
+
       var marginProp = this.isRtl ? 'margin-right' : 'margin-left';
       this.elements.$body.css(marginProp, width);
     }
+
     if (propertyName === 'submenu_space_between') {
       this.elements.$menus.smartmenus('destroy');
       this.initMainSmartMenu();
@@ -4927,43 +5575,55 @@ var AdvancedNavMenu = _module["default"].extend({
       this.showSubMenuInterval = setInterval(this.forceShowSubmenu, 1000);
       return;
     }
+
     clearInterval(this.showSubMenuInterval);
   },
   forceShowSubmenu: function forceShowSubmenu() {
     var _subMenuLink;
+
     var allSubMenus = this.elements.$mainMenu.find('li ul.submenu');
     var subMenuLink;
     allSubMenus.each(function () {
       if (!$(this).find('li:not(.submenu-template)').length) {
         return;
       }
+
       subMenuLink = $(this).prev('a.raven-menu-item');
     });
-    if (!((_subMenuLink = subMenuLink) !== null && _subMenuLink !== void 0 && _subMenuLink.length) || 'none' !== subMenuLink.next('ul').css('display')) {
+
+    if (!((_subMenuLink = subMenuLink) === null || _subMenuLink === void 0 ? void 0 : _subMenuLink.length) || 'none' !== subMenuLink.next('ul').css('display')) {
       return;
     }
+
     this.elements.$menus.smartmenus('itemActivate', subMenuLink);
   },
   onSideMenuItemClick: function onSideMenuItemClick(e, item) {
     var $el = $(item);
+
     if ($el.closest('.raven-adnav-menu-side,.raven-adnav-menu-offcanvas').length === 0) {
       return;
     }
+
     var href = $el.attr('href');
+
     if (href.search(/^#/) !== -1 || href.trim().length === 0) {
       return;
     }
+
     this.elements.$closeButton.trigger('click');
   },
   changeHamburgerState: function changeHamburgerState(active) {
     var $hamburger = this.elements.$toggleButton.find('.hamburger');
+
     if ($hamburger.length === 0) {
       return;
     }
+
     if (!active) {
       $hamburger.removeClass('is-active');
       return;
     }
+
     $hamburger.addClass('is-active');
   },
   updateActiveListItems: function updateActiveListItems() {
@@ -4974,16 +5634,15 @@ var AdvancedNavMenu = _module["default"].extend({
   },
   setSubmenuWidth: function setSubmenuWidth($ul, spaceBetween) {
     var parentList = $ul.closest('li.menu-item');
-    var widthSource = parentList.data('width_type');
+    var widthSource = parentList.data('width_type'); // If width type is set to Custom, calculate it and bail out.
 
-    // If width type is set to Custom, calculate it and bail out.
     if ('custom' === widthSource) {
       var customWidth = parentList.data('custom_width');
       $ul.css('width', customWidth);
       return;
-    }
+    } // In vertical layout.
 
-    // In vertical layout.
+
     if ('vertical' === this.mainLayout) {
       if ('default' === widthSource) {
         $ul.css({
@@ -4992,12 +5651,14 @@ var AdvancedNavMenu = _module["default"].extend({
         });
         return;
       }
+
       var _width = this.widgetParents[widthSource].get(0).getBoundingClientRect().width - this.elements.$mainMenu.get(0).getBoundingClientRect().width - spaceBetween;
+
       $ul.css('width', "".concat(_width, "px"));
       return;
-    }
+    } // In horizontal layout.
 
-    // In horizontal layout.
+
     if ('default' === widthSource) {
       $ul.css({
         width: 'fit-content',
@@ -5005,53 +5666,63 @@ var AdvancedNavMenu = _module["default"].extend({
       });
       return;
     }
+
     var width = this.widgetParents[widthSource].get(0).getBoundingClientRect().width;
     $ul.css('width', "".concat(width, "px"));
   },
   setSubmenuPosition: function setSubmenuPosition($ul) {
-    var parentList = $ul.closest('li.menu-item');
+    var parentList = $ul.closest('li.menu-item'); // In vertical layout.
 
-    // In vertical layout.
     if ('vertical' === this.mainLayout) {
       var _this$$element3, _this$$element4;
+
       var _posType = parentList.data('submenu_pos');
+
       if (!_posType || 'center' === _posType) {
         _posType = this.isRtl ? 'left' : 'right';
-      }
+      } // eslint-disable-next-line no-undef
 
-      // eslint-disable-next-line no-undef
-      var subMenuSpacing = getComputedStyle(this.$element[0]).getPropertyValue('--submenu-spacing') && (_this$$element3 = this.$element) !== null && _this$$element3 !== void 0 && _this$$element3.css('--submenu-spacing') ? parseInt((_this$$element4 = this.$element) === null || _this$$element4 === void 0 ? void 0 : _this$$element4.css('--submenu-spacing')) : 0;
+
+      var subMenuSpacing = getComputedStyle(this.$element[0]).getPropertyValue('--submenu-spacing') && ((_this$$element3 = this.$element) === null || _this$$element3 === void 0 ? void 0 : _this$$element3.css('--submenu-spacing')) ? parseInt((_this$$element4 = this.$element) === null || _this$$element4 === void 0 ? void 0 : _this$$element4.css('--submenu-spacing')) : 0;
       var parentListWidth = parentList.get(0).getBoundingClientRect().width + subMenuSpacing;
+
       var _cssRight = 'right' === _posType ? 'unset' : parentListWidth;
+
       var _cssLeft = 'right' === _posType ? parentListWidth : 'unset';
+
       $ul.css({
         left: _cssLeft,
         right: _cssRight
       });
       return;
-    }
+    } // In horizontal layout.
 
-    // In horizontal layout.
+
     var widthSource = parentList.data('width_type');
+
     if (!['default', 'custom'].includes(widthSource)) {
       var parentX = this.widgetParents[widthSource].get(0).getBoundingClientRect().x;
       var listItemX = parentList.get(0).getBoundingClientRect().x;
       $ul.css('left', "".concat(parentX - listItemX, "px"));
       return;
     }
+
     var posType = parentList.data('submenu_pos');
     var cssRight = 'unset',
-      cssLeft = '0';
+        cssLeft = '0';
+
     if ('right' === posType) {
       cssRight = '0';
       cssLeft = 'unset';
     }
+
     if ('center' === posType) {
       var listItemWidth = parentList.get(0).getBoundingClientRect().width;
       var submenuWidth = parseInt($ul.css('width'));
       var offset = (listItemWidth - submenuWidth) / 2;
       cssLeft = "".concat(offset, "px");
     }
+
     $ul.css({
       left: cssLeft,
       right: cssRight
@@ -5059,56 +5730,73 @@ var AdvancedNavMenu = _module["default"].extend({
   },
   getParentSection: function getParentSection() {
     var parentSection = this.$element.closest('section[data-element_type="section"]');
+
     if (parentSection.length) {
       return parentSection;
     }
+
     var parentRootContainer = this.$element.parents('[data-element_type="container"]').last();
+
     if (parentRootContainer.length) {
       return parentRootContainer;
     }
+
     return undefined;
   },
   getParentColumn: function getParentColumn() {
     var parentColumn = this.$element.closest('div[data-element_type="column"]');
+
     if (parentColumn.length) {
       return parentColumn;
     }
+
     var nearestParentContainer = this.$element.closest('[data-element_type="container"]');
+
     if (nearestParentContainer.length) {
       return nearestParentContainer;
     }
+
     return undefined;
   },
   getParentContainer: function getParentContainer() {
     var parentContainer = this.$element.closest('[data-element_type="container"]');
+
     if (parentContainer.length) {
       return parentContainer;
     }
+
     var parentSection = this.$element.closest('section[data-element_type="section"]');
+
     if (parentSection.length) {
       return parentSection;
     }
+
     return undefined;
   },
   deactivateMenu: function deactivateMenu() {
     var mobileDropdown = this.elements.$mobileNav.hasClass('raven-adnav-menu-dropdown'),
-      mainMenu = this.elements.$mainNav.css('display');
+        mainMenu = this.elements.$mainNav.css('display');
+
     if (mobileDropdown && mainMenu === 'none') {
       return;
     }
+
     this.elements.$body.removeClass(['raven-adnav-menu-effect-pushed', 'raven-adnav-menu-effect-overlayed']).removeAttr('style');
     this.elements.$parentSegment.removeClass('raven-adnav-menu-parent-segment');
     this.elements.$mainNav.removeClass('raven-adnav-menu-active');
     this.elements.$mobileNav.removeClass('raven-adnav-menu-active');
     this.elements.$toggleButton.find('.hamburger').removeClass('is-active');
+
     if ('dropdown' === this.mobileLayout) {
       this.elements.$mobileNav.slideUp(250);
     }
+
     if ('dropdown' === this.mainLayout) {
       this.elements.$mainNav.slideUp(250);
     }
   }
 });
+
 function _default($scope) {
   new AdvancedNavMenu({
     $element: $scope
@@ -5119,14 +5807,20 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var _pagination = _interopRequireDefault(require("../utils/pagination"));
+
 var _sortable = _interopRequireDefault(require("../utils/sortable"));
+
 var AdvancedPosts = _module["default"].extend({
   Pagination: null,
   Sortable: null,
@@ -5179,15 +5873,18 @@ var AdvancedPosts = _module["default"].extend({
     if (this.getInstanceValue('mirror_rows') === 'yes') {
       elementorFrontend.addListenerOnce(this.$element.data('model-cid'), 'resize', this.mirrorRows.bind(this));
     }
+
     var self = this;
     window.addEventListener('resize', function () {
       setTimeout(function () {
         if (self.getInstanceValue('general_layout') === 'masonry') {
           self.masonryRun();
         }
+
         if (self.getInstanceValue('general_layout') === 'matrix') {
           self.matrixRun(500);
         }
+
         if (self.getInstanceValue('general_layout') === 'metro') {
           self.metroRun(500);
         }
@@ -5199,14 +5896,17 @@ var AdvancedPosts = _module["default"].extend({
   },
   onElementChange: function onElementChange(propertyName) {
     var _this = this;
+
     if (propertyName === 'metro_matrix_rows_gap') {
       if (this.getInstanceValue('general_layout') === 'metro') {
         this.metroRun(0);
       }
+
       if (this.getInstanceValue('general_layout') === 'matrix') {
         this.matrixRun(0);
       }
     }
+
     if (propertyName === 'stroke_width') {
       setTimeout(function () {
         if (_this.getInstanceValue('general_layout') === 'masonry') {
@@ -5214,16 +5914,19 @@ var AdvancedPosts = _module["default"].extend({
         }
       }, 0);
     }
+
     if (propertyName === 'metro_matrix_large_aspect_ratio' || propertyName === 'metro_matrix_small_aspect_ratio') {
       setTimeout(function () {
         if (_this.getInstanceValue('general_layout') === 'metro') {
           _this.metroRun(0);
         }
+
         if (_this.getInstanceValue('general_layout') === 'matrix') {
           _this.matrixRun(0);
         }
       }, 0);
     }
+
     if (propertyName === 'rows_spacing' || propertyName === 'block_column_spacing') {
       if (this.getInstanceValue('general_layout') === 'masonry') {
         setTimeout(function () {
@@ -5234,9 +5937,11 @@ var AdvancedPosts = _module["default"].extend({
   },
   onInit: function onInit() {
     var _this2 = this;
+
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
     this.initializeOnce();
     this.initialize();
+
     if (elementorFrontend.isEditMode()) {
       elementor.listenTo(elementor.channels.deviceMode, 'change', function () {
         return _this2.onDeviceModeChange();
@@ -5245,20 +5950,25 @@ var AdvancedPosts = _module["default"].extend({
   },
   initialize: function initialize() {
     var _this3 = this;
+
     if (this.getInstanceValue('general_layout') === 'masonry') {
       this.masonryRun();
     }
+
     if (this.getInstanceValue('general_layout') === 'metro') {
       this.elements.$postsContainer.imagesLoaded().progress(function () {
         _this3.metroRun(0);
       });
     }
+
     if (this.getInstanceValue('general_layout') === 'matrix') {
       this.matrixRun(0);
     }
+
     if (this.getInstanceValue('mirror_rows') === 'yes') {
       this.mirrorRows();
     }
+
     this.handleAnitmation();
     this.handleFeaturedIamageEffect();
     objectFitPolyfill(this.$element.find(this.getSettings('selectors.postImageFit')));
@@ -5267,12 +5977,15 @@ var AdvancedPosts = _module["default"].extend({
     if (this.getInstanceValue('show_sortable') === 'yes') {
       this.sortableModule();
     }
+
     if (this.getInstanceValue('pagination_type') === 'page_based') {
       this.paginationModule();
     }
+
     if (this.getInstanceValue('pagination_type') === 'load_more' && this.elements.$loadMore.length) {
       this.loadMore();
     }
+
     if (this.getInstanceValue('pagination_type') === 'infinite_load') {
       this.infiniteLoadObserver();
     }
@@ -5281,12 +5994,15 @@ var AdvancedPosts = _module["default"].extend({
     if (this.getInstanceValue('general_layout') === 'metro' && items[0].classList.contains('raven-posts-full-width')) {
       return [].concat((0, _toConsumableArray2["default"])(items.slice(1, 3).reverse()), [items[0]], (0, _toConsumableArray2["default"])(items.slice(3, items.length)));
     }
+
     if (items[0].classList.contains('raven-posts-full-width')) {
       return [items[0]].concat((0, _toConsumableArray2["default"])(items.slice(1, items.length).reverse()));
     }
+
     if (this.getInstanceValue('general_layout') === 'matrix') {
       return (0, _toConsumableArray2["default"])(items);
     }
+
     return (0, _toConsumableArray2["default"])(items.reverse());
   },
   createAnimationObserver: function createAnimationObserver(self, item, options, index, effect) {
@@ -5297,15 +6013,19 @@ var AdvancedPosts = _module["default"].extend({
           if (item.classList.contains('raven-advanced-posts-loaded')) {
             return;
           }
+
           var delay = self.elements.$showedItems > 0 ? index - self.elements.$showedItems : index;
+
           if (effect === 'slide-right') {
             if (delay > self.elements.$showedItems) {
               delay -= self.elements.$showedItems;
             }
+
             if (self.elements.$showedItems > delay) {
               delay = self.elements.$showedItems - delay;
             }
           }
+
           setTimeout(function () {
             item.classList.add('raven-advanced-posts-loaded');
             self.elements.$showedItems = index;
@@ -5318,45 +6038,58 @@ var AdvancedPosts = _module["default"].extend({
   },
   handleAnitmation: function handleAnitmation() {
     var _this4 = this;
+
     var items = (0, _toConsumableArray2["default"])(this.elements.$postsContainer[0].querySelectorAll('.raven-posts-item:not(.raven-advanced-posts-loaded)'));
     var effect = this.getInstanceValue('load_effect'),
-      self = this;
+        self = this;
     this.elements.$postsContainer.imagesLoaded().done(function () {
       var increment = 0;
+
       if (effect === 'slide-right') {
         _this4.setColumnsCount();
+
         var settings = _this4.getSettings();
+
         var columnsCount = settings.columnsCount;
+
         if (!columnsCount) {
           if (_this4.getInstanceValue('general_layout') === 'metro') {
             columnsCount = 3;
           }
+
           if (_this4.getInstanceValue('general_layout') === 'matrix') {
             columnsCount = 4;
           }
         }
+
         var rows = parseInt(items.length / columnsCount),
-          itemsLeft = items.length % columnsCount;
+            itemsLeft = items.length % columnsCount;
+
         if (items.length / columnsCount <= 1) {
           items = (0, _toConsumableArray2["default"])(_this4.handlePostsOrder(items));
         } else {
           var itemsToRight = [];
           var tempItems = [];
+
           for (var row = 1; row <= rows; ++row) {
             tempItems = [];
+
             for (var i = itemsToRight.length; i < row * columnsCount; ++i) {
               tempItems.push(items[i]);
             }
+
             itemsToRight.push.apply(itemsToRight, (0, _toConsumableArray2["default"])(_this4.handlePostsOrder(tempItems)));
           }
+
           if (itemsLeft > 0) {
             itemsToRight.push.apply(itemsToRight, (0, _toConsumableArray2["default"])(items.slice(-itemsLeft).reverse()));
           }
+
           items = itemsToRight;
         }
-      }
+      } // eslint-disable-next-line no-unused-vars
 
-      // eslint-disable-next-line no-unused-vars
+
       items.forEach(function (event, index) {
         if (!effect || document.body.classList.contains('elementor-editor-active')) {
           if (!event.classList.contains('raven-advanced-posts-loaded')) {
@@ -5366,6 +6099,7 @@ var AdvancedPosts = _module["default"].extend({
             }, 200 + 100 * increment);
           }
         }
+
         if (effect) {
           var options = {
             threshold: 0.4
@@ -5377,17 +6111,21 @@ var AdvancedPosts = _module["default"].extend({
   },
   addPosts: function addPosts(data) {
     var state = this.getSettings('state');
+
     if (state.isLoading || state.paged < 1) {
       return false;
     }
+
     this.ajaxPosts(data, this.appendPosts);
     return true;
   },
   setPosts: function setPosts(data) {
     var state = this.getSettings('state');
+
     if (state.isLoading) {
       return false;
     }
+
     this.ajaxPosts(data, this.renderPosts);
     return true;
   },
@@ -5396,18 +6134,22 @@ var AdvancedPosts = _module["default"].extend({
       paged: 1,
       category: category
     });
+
     if (postOk) {
       this.setSettings('state.category', category);
     }
   },
   sortableModule: function sortableModule() {
     var _this5 = this;
+
     if (document.body.classList.contains('elementor-editor-active')) {
       return;
     }
+
     var _Sortable = _sortable["default"].extend({
       handleSort: this.handleSort.bind(this)
     });
+
     this.Sortable = new _Sortable({
       $element: this.$element.find(this.getSettings('selectors.sortable'))
     });
@@ -5415,18 +6157,23 @@ var AdvancedPosts = _module["default"].extend({
       if (event.currentTarget.classList.contains('raven-sortable-active')) {
         return;
       }
+
       _this5.elements.$sortPreLoader[0].classList.add('active-preloader');
+
       _this5.elements.$postsContainer.find('.raven-posts-item').delay('100').addClass('raven-posts-remove-animation');
     });
   },
   paginationModule: function paginationModule() {
     var _this6 = this;
+
     if (document.body.classList.contains('elementor-editor-active')) {
       return;
     }
+
     var _Pagination = _pagination["default"].extend({
       handlePagination: this.handlePagination.bind(this)
     });
+
     this.Pagination = new _Pagination({
       $element: this.$element.find(this.getSettings('selectors.pagination'))
     });
@@ -5434,26 +6181,33 @@ var AdvancedPosts = _module["default"].extend({
       if (event.currentTarget.classList.contains('raven-pagination-active')) {
         return;
       }
+
       _this6.elements.$showedItems = 0;
+
       _this6.elements.$preLoader[0].classList.add('active-preloader');
     });
   },
   loadMore: function loadMore() {
     var _this7 = this;
+
     var state = this.getSettings('state'),
-      settings = this.elements.$loadMore.data('settings');
+        settings = this.elements.$loadMore.data('settings');
     this.setPaged({
       paged: state.paged,
       maxNumPages: settings.maxNumPages
     });
     this.elements.$loadMoreButton.on('click', function (event) {
       event.preventDefault();
+
       if (document.body.classList.contains('elementor-editor-active')) {
         return;
       }
+
       _this7.elements.$preLoader[0].classList.add('active-preloader');
+
       var loadMorestate = _this7.getSettings('state'),
-        newPaged = loadMorestate.paged + 1;
+          newPaged = loadMorestate.paged + 1;
+
       _this7.addPosts({
         paged: newPaged,
         category: loadMorestate.category
@@ -5464,6 +6218,7 @@ var AdvancedPosts = _module["default"].extend({
     if ($indicator.length < 1) {
       return;
     }
+
     var observer = new IntersectionObserver(function (entries) {
       // eslint-disable-line no-undef
       entries.forEach(function (entry) {
@@ -5481,6 +6236,7 @@ var AdvancedPosts = _module["default"].extend({
       if (document.body.classList.contains('elementor-editor-active')) {
         return;
       }
+
       var options = {
         threshold: 1.0
       };
@@ -5503,27 +6259,31 @@ var AdvancedPosts = _module["default"].extend({
     });
   },
   renderPosts: function renderPosts(res) {
-    var _this$elements$$preLo, _this$elements$$sortP;
+    var _this$elements$$preLo, _this$elements$$preLo2, _this$elements$$sortP, _this$elements$$sortP2;
+
     this.elements.$postsContainer.empty();
     this.elements.$postsContainer.append(res.posts);
+
     if (this.Sortable && !this.Sortable.isEnabled()) {
       this.Sortable.renderUpdate();
+
       if (this.Pagination && this.Pagination.isEnabled()) {
         this.Pagination.recreatePagination(res.max_num_pages);
       }
     }
+
     if (this.Pagination && !this.Pagination.isEnabled()) {
       this.Pagination.renderUpdate();
     }
+
     this.setPaged({
       paged: 1,
       maxNumPages: res.max_num_pages
-    });
+    }); // eslint-disable-next-line no-unused-expressions
 
-    // eslint-disable-next-line no-unused-expressions
-    (_this$elements$$preLo = this.elements.$preLoader[0]) === null || _this$elements$$preLo === void 0 || (_this$elements$$preLo = _this$elements$$preLo.classList) === null || _this$elements$$preLo === void 0 ? void 0 : _this$elements$$preLo.remove('active-preloader');
-    // eslint-disable-next-line no-unused-expressions
-    (_this$elements$$sortP = this.elements.$sortPreLoader[0]) === null || _this$elements$$sortP === void 0 || (_this$elements$$sortP = _this$elements$$sortP.classList) === null || _this$elements$$sortP === void 0 ? void 0 : _this$elements$$sortP.remove('active-preloader');
+    (_this$elements$$preLo = this.elements.$preLoader[0]) === null || _this$elements$$preLo === void 0 ? void 0 : (_this$elements$$preLo2 = _this$elements$$preLo.classList) === null || _this$elements$$preLo2 === void 0 ? void 0 : _this$elements$$preLo2.remove('active-preloader'); // eslint-disable-next-line no-unused-expressions
+
+    (_this$elements$$sortP = this.elements.$sortPreLoader[0]) === null || _this$elements$$sortP === void 0 ? void 0 : (_this$elements$$sortP2 = _this$elements$$sortP.classList) === null || _this$elements$$sortP2 === void 0 ? void 0 : _this$elements$$sortP2.remove('active-preloader');
     this.initialize();
   },
   appendPosts: function appendPosts(res) {
@@ -5536,35 +6296,41 @@ var AdvancedPosts = _module["default"].extend({
     this.afterAppend();
   },
   afterAppend: function afterAppend() {
-    var _this$elements$$preLo2, _this$elements$$sortP2;
+    var _this$elements$$preLo3, _this$elements$$preLo4, _this$elements$$sortP3, _this$elements$$sortP4;
+
     if (this.getInstanceValue('mirror_rows') === 'yes') {
       this.mirrorRows();
     }
+
     if (this.getInstanceValue('pagination_type') === 'infinite_load') {
       this.infiniteLoadObserver();
     }
+
     if (this.getInstanceValue('general_layout') === 'masonry') {
       this.masonryRun();
     }
+
     if (this.getInstanceValue('general_layout') === 'metro') {
       this.metroRun(0);
     }
+
     if (this.getInstanceValue('general_layout') === 'matrix') {
       this.matrixRun(0);
     }
+
     if (!['metro', 'matrix'].includes(this.getInstanceValue('general_layout'))) {
       this.handleAnitmation();
     }
-    this.handleFeaturedIamageEffect();
 
-    // eslint-disable-next-line no-unused-expressions
-    (_this$elements$$preLo2 = this.elements.$preLoader[0]) === null || _this$elements$$preLo2 === void 0 || (_this$elements$$preLo2 = _this$elements$$preLo2.classList) === null || _this$elements$$preLo2 === void 0 ? void 0 : _this$elements$$preLo2.remove('active-preloader');
-    // eslint-disable-next-line no-unused-expressions
-    (_this$elements$$sortP2 = this.elements.$sortPreLoader[0]) === null || _this$elements$$sortP2 === void 0 || (_this$elements$$sortP2 = _this$elements$$sortP2.classList) === null || _this$elements$$sortP2 === void 0 ? void 0 : _this$elements$$sortP2.remove('active-preloader');
+    this.handleFeaturedIamageEffect(); // eslint-disable-next-line no-unused-expressions
+
+    (_this$elements$$preLo3 = this.elements.$preLoader[0]) === null || _this$elements$$preLo3 === void 0 ? void 0 : (_this$elements$$preLo4 = _this$elements$$preLo3.classList) === null || _this$elements$$preLo4 === void 0 ? void 0 : _this$elements$$preLo4.remove('active-preloader'); // eslint-disable-next-line no-unused-expressions
+
+    (_this$elements$$sortP3 = this.elements.$sortPreLoader[0]) === null || _this$elements$$sortP3 === void 0 ? void 0 : (_this$elements$$sortP4 = _this$elements$$sortP3.classList) === null || _this$elements$$sortP4 === void 0 ? void 0 : _this$elements$$sortP4.remove('active-preloader');
   },
   ajaxPosts: function ajaxPosts(data, callback) {
     var archiveQuery = this.elements.$postsContainer.data('archive-query'),
-      self = this;
+        self = this;
     var ajaxData = {
       action: 'raven_render_advanced_posts',
       post_id: this.getCurrentPostId(),
@@ -5574,15 +6340,19 @@ var AdvancedPosts = _module["default"].extend({
       // eslint-disable-next-line no-undef
       nonce: ravenTools.nonce
     };
+
     if (archiveQuery) {
       ajaxData.archive_query = JSON.stringify(archiveQuery);
     }
+
     var ajaxSuccess = function ajaxSuccess(response) {
       if (!response.posts) {
         return;
       }
+
       callback(response);
     };
+
     this.setSettings('state.isLoading', true);
     wp.ajax.post(ajaxData).done(function (response) {
       ajaxSuccess(response);
@@ -5594,24 +6364,30 @@ var AdvancedPosts = _module["default"].extend({
   },
   setPaged: function setPaged(params) {
     var paged = params.paged,
-      maxNumPages = params.maxNumPages;
+        maxNumPages = params.maxNumPages;
+
     if (paged >= maxNumPages) {
       paged = -1;
     }
+
     this.elements.$loadMore.show();
+
     if (paged === -1) {
       this.elements.$loadMore.hide();
     }
+
     this.setSettings('state.paged', paged);
     this.setSettings('state.maxNumPages', maxNumPages);
   },
   mirrorRows: function mirrorRows() {
     this.setColumnsCount();
     var settings = this.getSettings(),
-      $postsItems = this.$element.find(settings.selectors.postItem);
+        $postsItems = this.$element.find(settings.selectors.postItem);
     $postsItems.filter(settings.selectors.postMirrored).removeAttr(settings.classes.postMirrored);
+
     if ($postsItems.length && $postsItems.length > settings.columnsCount) {
       var totalRows = $postsItems.length / settings.columnsCount;
+
       for (var i = 1; i < totalRows; i += 2) {
         var startIndex = i * settings.columnsCount;
         $postsItems.slice(startIndex, startIndex + settings.columnsCount).attr(settings.classes.postMirrored, true);
@@ -5621,26 +6397,33 @@ var AdvancedPosts = _module["default"].extend({
   setColumnsCount: function setColumnsCount() {
     var curDevice = elementorFrontend.getCurrentDeviceMode();
     var columnsKey = "columns_".concat(curDevice);
+
     if (curDevice === 'desktop') {
       columnsKey = 'columns';
     }
+
     this.setSettings('columnsCount', parseInt(this.getInstanceValue(columnsKey)));
   },
   setGapSize: function setGapSize() {
     var _this$getInstanceValu;
+
     var curDevice = elementorFrontend.getCurrentDeviceMode();
     var gapKey = "metro_matrix_rows_gap_".concat(curDevice);
+
     if (curDevice === 'desktop') {
       gapKey = 'metro_matrix_rows_gap';
     }
+
     this.setSettings('gapSize', parseInt((_this$getInstanceValu = this.getInstanceValue(gapKey)) === null || _this$getInstanceValu === void 0 ? void 0 : _this$getInstanceValu.size));
   },
   masonryRun: function masonryRun() {
     var self = this,
-      isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+        isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+
     if (self.elements.$postsContainer.data('isotope')) {
       self.elements.$postsContainer.isotope('reloadItems').isotope();
     }
+
     self.elements.$postsContainer.isotope({
       itemSelector: '.raven-masonry-item',
       masonry: {
@@ -5654,32 +6437,40 @@ var AdvancedPosts = _module["default"].extend({
   metroRun: function metroRun(delayTime) {
     this.setGapSize();
     var self = this,
-      gap = this.getSettings().gapSize ? this.getSettings().gapSize : 0,
-      currentDevice = elementorFrontend.getCurrentDeviceMode(),
-      isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+        gap = this.getSettings().gapSize ? this.getSettings().gapSize : 0,
+        currentDevice = elementorFrontend.getCurrentDeviceMode(),
+        isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+
     if (self.elements.$postsContainer.data('isotope')) {
       self.elements.$postsContainer.isotope('reloadItems').isotope();
     }
+
     var normalSize = Math.floor((self.elements.$postsContainer.parent().width() + gap) / 4),
-      doubleSize = normalSize * 2;
+        doubleSize = normalSize * 2;
+
     if (currentDevice === 'tablet') {
       normalSize = normalSize * 2;
       doubleSize = normalSize * 2;
     }
+
     if (currentDevice === 'mobile') {
       normalSize = normalSize * 4;
       doubleSize = normalSize;
     }
+
     self.elements.$postsContainer.find('.raven-metro-item').each(function (index, event) {
       var setWidth = normalSize,
-        setHeight = normalSize;
+          setHeight = normalSize;
+
       if (event.classList.contains('raven-posts-full-width')) {
         setWidth = doubleSize;
         setHeight = doubleSize;
       }
+
       if (setWidth) {
         event.style.width = setWidth + 'px';
       }
+
       if (!self.elements.$postsContainer[0].classList.contains('content-layout-under-image')) {
         event.style.height = setHeight + 'px';
       }
@@ -5703,25 +6494,32 @@ var AdvancedPosts = _module["default"].extend({
   },
   matrixRun: function matrixRun(delayTime) {
     var self = this,
-      currentDevice = elementorFrontend.getCurrentDeviceMode(),
-      isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+        currentDevice = elementorFrontend.getCurrentDeviceMode(),
+        isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+
     if (self.elements.$postsContainer.data('isotope')) {
       self.elements.$postsContainer.isotope('reloadItems').isotope();
     }
+
     var normalSize = Math.floor(self.elements.$postsContainer.width() / 3),
-      tripleSize = normalSize * 3;
+        tripleSize = normalSize * 3;
+
     if (currentDevice === 'mobile') {
       normalSize = normalSize * 3;
       tripleSize = normalSize;
     }
+
     self.elements.$postsContainer.find('.raven-matrix-item').each(function (index, event) {
       var setWidth = normalSize;
+
       if (event.classList.contains('raven-posts-full-width')) {
         setWidth = tripleSize;
       }
+
       if (setWidth) {
         event.style.width = setWidth + 'px';
       }
+
       if (currentDevice === 'mobile') {
         event.style.paddingRight = 0;
       }
@@ -5747,46 +6545,59 @@ var AdvancedPosts = _module["default"].extend({
   },
   handleFeaturedIamageEffect: function handleFeaturedIamageEffect() {
     var effect = this.getInstanceValue('featured_image_hover');
+
     if (!effect || effect !== 'zoom-move' || this.elements.$postsImages.length < 1) {
       return;
     }
+
     var items = this.elements.$postsContainer.find('.raven-posts-item:not(.raven-advanced-posts-loaded)').find('.raven-post-image');
+
     if (this.elements.$postOverlay.length > 0) {
       items = this.elements.$postOverlay.find('.raven-posts-item:not(.raven-advanced-posts-loaded)').find('.raven-post-wrapper');
     }
+
     items.on('mouseout', function (event) {
       var zoomMove = event.currentTarget.querySelector('.raven-posts-zoom-move-wrapper');
+
       if (!zoomMove) {
         return;
       }
+
       zoomMove.style.transform = 'perspective(900px) translate3d( 0px, 0px, 0px ) scale(1)';
     });
     items.on('mousemove', function (event) {
       var bound = event.currentTarget.getBoundingClientRect(),
-        scaleX = ((bound.width + 35) / bound.width).toFixed(2),
-        scaleY = ((bound.height + 35) / bound.height).toFixed(2),
-        zoomMove = event.currentTarget.querySelector('.raven-posts-zoom-move-wrapper');
+          scaleX = ((bound.width + 35) / bound.width).toFixed(2),
+          scaleY = ((bound.height + 35) / bound.height).toFixed(2),
+          zoomMove = event.currentTarget.querySelector('.raven-posts-zoom-move-wrapper');
       var pageX = bound.width / 2 - (event.clientX - bound.left),
-        pageY = bound.height / 2 - (event.clientY - bound.top);
+          pageY = bound.height / 2 - (event.clientY - bound.top);
       pageX = pageX / bound.width * 30;
       pageY = pageY / bound.height * 30;
+
       if (!zoomMove) {
         return;
       }
+
       zoomMove.style.transform = "perspective(900px) translate3d( ".concat(pageX, "px, ").concat(pageY, "px, 0px ) scale(").concat(Math.max(scaleX, scaleY), ")");
     });
+
     if (this.elements.$postOverlay.length < 1 || document.body.classList.contains('elementor-editor-active')) {
       return;
     }
+
     items.on('click', function (event) {
       var postLink = event.currentTarget.querySelector('.raven-post-image').href;
+
       if (!postLink) {
         return;
       }
+
       window.location.assign(postLink);
     });
   }
 });
+
 function _default($scope) {
   new AdvancedPosts({
     $element: $scope
@@ -5800,6 +6611,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 function _default($scope) {
   $scope.find('.raven-alert-dismiss').on('click', function (event) {
     event.preventDefault();
@@ -5811,12 +6623,16 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var $ = jQuery;
+
 var AnimatedHeading = _module["default"].extend({
   svgPaths: {
     circle: ['M325,18C228.7-8.3,118.5,8.3,78,21C22.4,38.4,4.6,54.6,5.6,77.6c1.4,32.4,52.2,54,142.6,63.7 c66.2,7.1,212.2,7.5,273.5-8.3c64.4-16.6,104.3-57.6,33.8-98.2C386.7-4.9,179.4-1.4,126.3,20.7'],
@@ -5842,20 +6658,20 @@ var AnimatedHeading = _module["default"].extend({
   },
   getDefaultSettings: function getDefaultSettings() {
     var iterationDelay = this.getElementSettings('rotate_iteration_delay'),
-      settings = {
-        animationDelay: iterationDelay || 2500,
-        // Letters effect.
-        lettersDelay: iterationDelay * 0.02 || 50,
-        // Typing effect.
-        typeLettersDelay: iterationDelay * 0.06 || 150,
-        selectionDuration: iterationDelay * 0.2 || 500,
-        // Clip effect.
-        revealDuration: iterationDelay * 0.24 || 600,
-        revealAnimationDelay: iterationDelay * 0.6 || 1500,
-        // Highlighted heading.
-        highlightAnimationDuration: this.getElementSettings('highlight_animation_duration') || 1200,
-        highlightAnimationDelay: this.getElementSettings('highlight_iteration_delay') || 8000
-      };
+        settings = {
+      animationDelay: iterationDelay || 2500,
+      // Letters effect.
+      lettersDelay: iterationDelay * 0.02 || 50,
+      // Typing effect.
+      typeLettersDelay: iterationDelay * 0.06 || 150,
+      selectionDuration: iterationDelay * 0.2 || 500,
+      // Clip effect.
+      revealDuration: iterationDelay * 0.24 || 600,
+      revealAnimationDelay: iterationDelay * 0.6 || 1500,
+      // Highlighted heading.
+      highlightAnimationDuration: this.getElementSettings('highlight_animation_duration') || 1200,
+      highlightAnimationDelay: this.getElementSettings('highlight_iteration_delay') || 8000
+    };
     settings.typeAnimationDelay = settings.selectionDuration + 800;
     settings.selectors = {
       heading: '.raven-heading',
@@ -5895,16 +6711,18 @@ var AnimatedHeading = _module["default"].extend({
     var classes = this.getSettings('classes');
     this.elements.$dynamicText.each(function () {
       var $word = $(this),
-        letters = $word.text().split(''),
-        isActive = $word.hasClass(classes.textActive);
+          letters = $word.text().split(''),
+          isActive = $word.hasClass(classes.textActive);
       $word.empty();
       letters.forEach(function (letter) {
         var $letter = $('<span>', {
           "class": classes.dynamicLetter
         }).text(letter);
+
         if (isActive) {
           $letter.addClass(classes.animationIn);
         }
+
         $word.append($letter);
       });
       $word.css('opacity', 1);
@@ -5912,14 +6730,16 @@ var AnimatedHeading = _module["default"].extend({
   },
   showLetter: function showLetter($letter, $word, thisWordHasBiggerLength, duration) {
     var self = this,
-      classes = this.getSettings('classes');
+        classes = this.getSettings('classes');
     $letter.addClass(classes.animationIn);
+
     if (!$letter.is(':last-child')) {
       setTimeout(function () {
         self.showLetter($letter.next(), $word, thisWordHasBiggerLength, duration);
       }, duration);
       return;
     }
+
     if (!thisWordHasBiggerLength) {
       setTimeout(function () {
         self.hideWord($word);
@@ -5928,14 +6748,16 @@ var AnimatedHeading = _module["default"].extend({
   },
   hideLetter: function hideLetter($letter, $word, thisWordHasBiggerLength, duration) {
     var self = this,
-      settings = this.getSettings();
+        settings = this.getSettings();
     $letter.removeClass(settings.classes.animationIn);
+
     if (!$letter.is(':last-child')) {
       setTimeout(function () {
         self.hideLetter($letter.next(), $word, thisWordHasBiggerLength, duration);
       }, duration);
       return;
     }
+
     if (thisWordHasBiggerLength) {
       setTimeout(function () {
         self.hideWord(self.getNextWord($word));
@@ -5944,13 +6766,15 @@ var AnimatedHeading = _module["default"].extend({
   },
   showWord: function showWord($word, $duration) {
     var self = this,
-      settings = self.getSettings(),
-      animationType = self.getElementSettings('animation_type');
+        settings = self.getSettings(),
+        animationType = self.getElementSettings('animation_type');
+
     if ('typing' === animationType) {
       self.showLetter($word.find('.' + settings.classes.dynamicLetter).eq(0), $word, false, $duration);
       $word.addClass(settings.classes.textActive).removeClass(settings.classes.textInactive);
       return;
     }
+
     if ('clip' === animationType) {
       self.elements.$dynamicWrapper.animate({
         width: $word.width() + 10
@@ -5963,14 +6787,16 @@ var AnimatedHeading = _module["default"].extend({
   },
   hideWord: function hideWord($word) {
     var self = this,
-      settings = self.getSettings(),
-      classes = settings.classes,
-      letterSelector = '.' + classes.dynamicLetter,
-      animationType = self.getElementSettings('animation_type'),
-      nextWord = self.getNextWord($word);
+        settings = self.getSettings(),
+        classes = settings.classes,
+        letterSelector = '.' + classes.dynamicLetter,
+        animationType = self.getElementSettings('animation_type'),
+        nextWord = self.getNextWord($word);
+
     if (!this.isLoopMode && $word.is(':last-child')) {
       return;
     }
+
     if ('typing' === animationType) {
       self.elements.$dynamicWrapper.addClass(classes.typeSelected);
       setTimeout(function () {
@@ -5982,6 +6808,7 @@ var AnimatedHeading = _module["default"].extend({
       }, settings.typeAnimationDelay);
       return;
     }
+
     if (self.elements.$heading.hasClass(classes.letters)) {
       var thisWordHasBiggerLength = $word.children(letterSelector).length >= nextWord.children(letterSelector).length;
       self.hideLetter($word.find(letterSelector).eq(0), $word, thisWordHasBiggerLength, settings.lettersDelay);
@@ -5989,6 +6816,7 @@ var AnimatedHeading = _module["default"].extend({
       self.setDynamicWrapperWidth(nextWord);
       return;
     }
+
     if ('clip' === animationType) {
       self.elements.$dynamicWrapper.animate({
         width: '2px'
@@ -5998,6 +6826,7 @@ var AnimatedHeading = _module["default"].extend({
       });
       return;
     }
+
     self.switchWord($word, nextWord);
     setTimeout(function () {
       self.hideWord(nextWord);
@@ -6005,21 +6834,23 @@ var AnimatedHeading = _module["default"].extend({
   },
   setDynamicWrapperWidth: function setDynamicWrapperWidth($word) {
     var animationType = this.getElementSettings('animation_type');
+
     if ('clip' !== animationType && 'typing' !== animationType) {
       this.elements.$dynamicWrapper.css('width', $word.width());
     }
   },
   animateHeading: function animateHeading() {
     var self = this,
-      animationType = self.getElementSettings('animation_type'),
-      $dynamicWrapper = self.elements.$dynamicWrapper;
+        animationType = self.getElementSettings('animation_type'),
+        $dynamicWrapper = self.elements.$dynamicWrapper;
+
     if ('clip' === animationType) {
       $dynamicWrapper.width($dynamicWrapper.width() + 10);
     } else if ('typing' !== animationType) {
       self.setDynamicWrapperWidth(self.elements.$dynamicText);
-    }
+    } // Trigger animation.
 
-    // Trigger animation.
+
     setTimeout(function () {
       self.hideWord(self.elements.$dynamicText.eq(0));
     }, self.getSettings('animationDelay'));
@@ -6036,43 +6867,47 @@ var AnimatedHeading = _module["default"].extend({
   },
   addHighlight: function addHighlight() {
     var elementSettings = this.getElementSettings(),
-      $svg = $('<svg>', {
-        xmlns: 'http://www.w3.org/2000/svg',
-        viewBox: '0 0 500 150',
-        preserveAspectRatio: 'none'
-      }).html(this.getSvgPaths(elementSettings.marker));
+        $svg = $('<svg>', {
+      xmlns: 'http://www.w3.org/2000/svg',
+      viewBox: '0 0 500 150',
+      preserveAspectRatio: 'none'
+    }).html(this.getSvgPaths(elementSettings.marker));
     this.elements.$dynamicWrapper.append($svg[0].outerHTML);
   },
   rotateHeading: function rotateHeading() {
-    var settings = this.getSettings();
+    var settings = this.getSettings(); // Insert <span> for each letter of a changing word.
 
-    // Insert <span> for each letter of a changing word.
     if (this.elements.$heading.hasClass(settings.classes.letters)) {
       this.singleLetters();
-    }
+    } // Initialise heading animation.
 
-    // Initialise heading animation.
+
     this.animateHeading();
   },
   initHeading: function initHeading() {
     var headingStyle = this.getElementSettings('heading_style');
+
     if ('rotate' === headingStyle) {
       this.rotateHeading();
     } else if ('highlight' === headingStyle) {
       this.addHighlight();
       this.activateHighlightAnimation();
     }
+
     this.deactivateScrollListener();
   },
   activateHighlightAnimation: function activateHighlightAnimation() {
     var _this = this;
+
     var settings = this.getSettings(),
-      classes = settings.classes,
-      $heading = this.elements.$heading;
+        classes = settings.classes,
+        $heading = this.elements.$heading;
     $heading.removeClass(classes.hideHighlight).addClass(classes.activateHighlight);
+
     if (!this.isLoopMode) {
       return;
     }
+
     setTimeout(function () {
       $heading.removeClass(classes.activateHighlight).addClass(classes.hideHighlight);
     }, settings.highlightAnimationDuration + settings.highlightAnimationDelay * .8);
@@ -6082,6 +6917,7 @@ var AnimatedHeading = _module["default"].extend({
   },
   activateScrollListener: function activateScrollListener() {
     var _this2 = this;
+
     var scrollBuffer = -100;
     this.intersectionObservers.startAnimation.observer = elementorModules.utils.Scroll.scrollObserver({
       offset: "0px 0px ".concat(scrollBuffer, "px"),
@@ -6098,6 +6934,7 @@ var AnimatedHeading = _module["default"].extend({
     this.intersectionObservers.startAnimation.observer.unobserve(this.intersectionObservers.startAnimation.element);
   }
 });
+
 function _default($scope) {
   new AnimatedHeading({
     $element: $scope
@@ -6108,14 +6945,18 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var Button = _module["default"].extend({
   onInit: function onInit() {
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
+
     if (this.getInstanceValue('turn_to_popup_action_button') === 'yes') {
       this.registerEventForPopup();
     }
@@ -6131,6 +6972,7 @@ var Button = _module["default"].extend({
     });
   }
 });
+
 function _default($scope) {
   new Button({
     $element: $scope
@@ -6141,65 +6983,88 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _typeof = require("@babel/runtime/helpers/typeof");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
   (0, _inherits2["default"])(CarouselBase, _elementorModules$fro);
+
   var _super = _createSuper(CarouselBase);
+
   function CarouselBase() {
     (0, _classCallCheck2["default"])(this, CarouselBase);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(CarouselBase, [{
     key: "onInit",
     value: function () {
-      var _onInit = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var _onInit = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
         var elementSettings,
-          Swiper,
-          _args = arguments;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, _args);
-              elementSettings = this.getElementSettings();
-              if (!(1 >= this.getSlidesCount())) {
-                _context.next = 4;
-                break;
-              }
-              return _context.abrupt("return");
-            case 4:
-              Swiper = elementorFrontend.utils.swiper;
-              _context.next = 7;
-              return new Swiper(this.elements.$swiperContainer, this.getSwiperOptions());
-            case 7:
-              this.swiper = _context.sent;
-              if ('yes' === elementSettings.pause_on_hover) {
-                this.togglePauseOnHover(true);
-              }
+            Swiper,
+            _args = arguments;
+        return _regenerator["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, _args);
+                elementSettings = this.getElementSettings();
 
-              // Expose the swiper instance in the frontend
-              this.elements.$swiperContainer.data('swiper', this.swiper);
-            case 10:
-            case "end":
-              return _context.stop();
+                if (!(1 >= this.getSlidesCount())) {
+                  _context.next = 4;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 4:
+                Swiper = elementorFrontend.utils.swiper;
+                _context.next = 7;
+                return new Swiper(this.elements.$swiperContainer, this.getSwiperOptions());
+
+              case 7:
+                this.swiper = _context.sent;
+
+                if ('yes' === elementSettings.pause_on_hover) {
+                  this.togglePauseOnHover(true);
+                } // Expose the swiper instance in the frontend
+
+
+                this.elements.$swiperContainer.data('swiper', this.swiper);
+
+              case 10:
+              case "end":
+                return _context.stop();
+            }
           }
         }, _callee, this);
       }));
+
       function onInit() {
         return _onInit.apply(this, arguments);
       }
+
       return onInit;
     }()
   }, {
@@ -6225,9 +7090,9 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
     key: "getDefaultElements",
     value: function getDefaultElements() {
       var selectors = this.getSettings('selectors'),
-        elements = {
-          $swiperContainer: this.$element.find(selectors.swiperContainer)
-        };
+          elements = {
+        $swiperContainer: this.$element.find(selectors.swiperContainer)
+      };
       elements.$slides = elements.$swiperContainer.find(selectors.swiperSlide);
       return elements;
     }
@@ -6240,11 +7105,15 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
     key: "getDeviceSlidesPerView",
     value: function getDeviceSlidesPerView(device) {
       var _this$getElementSetti;
+
       var slidesPerViewKey = 'slides_per_view' + ('desktop' === device ? '' : '_' + device);
-      if ((_this$getElementSetti = this.getElementSettings(slidesPerViewKey)) !== null && _this$getElementSetti !== void 0 && _this$getElementSetti.size) {
+
+      if ((_this$getElementSetti = this.getElementSettings(slidesPerViewKey)) === null || _this$getElementSetti === void 0 ? void 0 : _this$getElementSetti.size) {
         var _this$getElementSetti2;
+
         return Math.min(this.getSlidesCount(), +((_this$getElementSetti2 = this.getElementSettings(slidesPerViewKey)) === null || _this$getElementSetti2 === void 0 ? void 0 : _this$getElementSetti2.size) || this.getSettings('slidesPerView')[device]);
       }
+
       return Math.min(this.getSlidesCount(), +this.getElementSettings(slidesPerViewKey) || this.getSettings('slidesPerView')[device]);
     }
   }, {
@@ -6253,6 +7122,7 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
       if ('slide' === this.getEffect()) {
         return this.getDeviceSlidesPerView(device);
       }
+
       return 1;
     }
   }, {
@@ -6267,22 +7137,27 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
       if ('slide' === this.getEffect() || 'coverflow' === this.getElementSettings('skin')) {
         return this.getDeviceSlidesToScroll(device);
       }
+
       return 1;
     }
   }, {
     key: "getSpaceBetween",
     value: function getSpaceBetween(device) {
       var propertyName = 'space_between';
+
       if (device && 'desktop' !== device) {
         propertyName += '_' + device;
       }
+
       return this.getElementSettings(propertyName).size || 0;
     }
   }, {
     key: "getSwiperOptions",
     value: function getSwiperOptions() {
       var _this = this,
-        _this$$element$;
+          _this$$element$,
+          _this$$element$$class;
+
       var elementSettings = this.getElementSettings();
       var swiperOptions = {
         grabCursor: true,
@@ -6298,18 +7173,21 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
         handleElementorBreakpoints: true,
         centeredSlides: 'yes' === elementSettings.overflow_visible || 'yes' === elementSettings.centered_slides
       };
+
       if ('yes' === elementSettings.lazyload || this.elements.$swiperContainer.find('img').hasClass('swiper-lazy')) {
         swiperOptions.lazy = {
           loadPrevNext: true,
           loadPrevNextAmount: 1
         };
       }
+
       if (elementSettings.show_arrows) {
         swiperOptions.navigation = {
           prevEl: '.elementor-swiper-button-prev',
           nextEl: '.elementor-swiper-button-next'
         };
       }
+
       if (elementSettings.pagination) {
         swiperOptions.pagination = {
           el: '.swiper-pagination',
@@ -6317,9 +7195,10 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
           clickable: true
         };
       }
+
       if ('cube' !== this.getEffect()) {
         var breakpointsSettings = {},
-          breakpoints = elementorFrontend.config.responsive.activeBreakpoints;
+            breakpoints = elementorFrontend.config.responsive.activeBreakpoints;
         Object.keys(breakpoints).forEach(function (breakpointName) {
           breakpointsSettings[breakpoints[breakpointName].value] = {
             slidesPerView: _this.getSlidesPerView(breakpointName),
@@ -6329,29 +7208,35 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
         });
         swiperOptions.breakpoints = breakpointsSettings;
       }
+
       if (elementSettings.autoplay) {
         swiperOptions.autoplay = {
           delay: elementSettings.autoplay_speed,
           disableOnInteraction: !!elementSettings.pause_on_interaction
         };
       }
+
       var swiperWrapper = this.findElement('.raven-swiper');
-      if ((_this$$element$ = this.$element[0]) !== null && _this$$element$ !== void 0 && (_this$$element$ = _this$$element$.classList) !== null && _this$$element$ !== void 0 && _this$$element$.contains('elementor-widget-raven-media-carousel')) {
+
+      if ((_this$$element$ = this.$element[0]) === null || _this$$element$ === void 0 ? void 0 : (_this$$element$$class = _this$$element$.classList) === null || _this$$element$$class === void 0 ? void 0 : _this$$element$$class.contains('elementor-widget-raven-media-carousel')) {
         swiperOptions.on = {
           init: function init() {
             swiperWrapper[0].classList.add('media-carousel-initiated');
+
             if (swiperWrapper[1]) {
               swiperWrapper[1].classList.add('media-carousel-initiated');
             }
           }
         };
       }
+
       return swiperOptions;
     }
   }, {
     key: "getDeviceBreakpointValue",
     value: function getDeviceBreakpointValue(device) {
       var _this2 = this;
+
       if (!this.breakpointsDictionary) {
         var breakpoints = elementorFrontend.config.responsive.activeBreakpoints;
         this.breakpointsDictionary = {};
@@ -6359,17 +7244,20 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
           _this2.breakpointsDictionary[breakpointName] = breakpoints[breakpointName].value;
         });
       }
+
       return this.breakpointsDictionary[device];
     }
   }, {
     key: "updateSpaceBetween",
     value: function updateSpaceBetween(propertyName) {
       var deviceMatch = propertyName.match('space_between_(.*)'),
-        device = deviceMatch ? deviceMatch[1] : 'desktop',
-        newSpaceBetween = this.getSpaceBetween(device);
+          device = deviceMatch ? deviceMatch[1] : 'desktop',
+          newSpaceBetween = this.getSpaceBetween(device);
+
       if ('desktop' !== device) {
         this.swiper.params.breakpoints[this.getDeviceBreakpointValue(device)].spaceBetween = newSpaceBetween;
       }
+
       this.swiper.params.spaceBetween = newSpaceBetween;
       this.swiper.update();
     }
@@ -6392,23 +7280,26 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
         this.swiper.update();
         return;
       }
-      var elementSettings = this.getElementSettings(),
-        newSettingValue = elementSettings[propertyName],
-        changeableProperties = this.getChangeableProperties();
-      var propertyToUpdate = changeableProperties[propertyName],
-        valueToUpdate = newSettingValue;
 
-      // Handle special cases where the value to update is not the value that the Swiper library accepts
+      var elementSettings = this.getElementSettings(),
+          newSettingValue = elementSettings[propertyName],
+          changeableProperties = this.getChangeableProperties();
+      var propertyToUpdate = changeableProperties[propertyName],
+          valueToUpdate = newSettingValue; // Handle special cases where the value to update is not the value that the Swiper library accepts
+
       switch (propertyName) {
         case 'autoplay':
           valueToUpdate = false;
+
           if (newSettingValue) {
             valueToUpdate = {
               delay: elementSettings.autoplay_speed,
               disableOnInteraction: 'yes' === elementSettings.pause_on_interaction
             };
           }
+
           break;
+
         case 'autoplay_speed':
           propertyToUpdate = 'autoplay';
           valueToUpdate = {
@@ -6416,18 +7307,21 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
             disableOnInteraction: 'yes' === elementSettings.pause_on_interaction
           };
           break;
+
         case 'pause_on_hover':
           this.togglePauseOnHover('yes' === newSettingValue);
           break;
+
         case 'pause_on_interaction':
           valueToUpdate = 'yes' === newSettingValue;
           break;
-      }
+      } // 'pause_on_hover' is implemented by the handler with event listeners, not the Swiper library
 
-      // 'pause_on_hover' is implemented by the handler with event listeners, not the Swiper library
+
       if ('pause_on_hover' !== propertyName) {
         this.swiper.params[propertyToUpdate] = valueToUpdate;
       }
+
       this.swiper.update();
     }
   }, {
@@ -6436,22 +7330,25 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
       if (1 >= this.getSlidesCount()) {
         return;
       }
-      if (0 === propertyName.indexOf('width')) {
-        this.swiper.update();
 
-        // If there is another thumbs slider, like in the Media Carousel widget.
+      if (0 === propertyName.indexOf('width')) {
+        this.swiper.update(); // If there is another thumbs slider, like in the Media Carousel widget.
+
         if (this.thumbsSwiper) {
           this.thumbsSwiper.update();
         }
-        return;
-      }
 
-      // This is for handling the responsive control 'space_between'.
+        return;
+      } // This is for handling the responsive control 'space_between'.
+
+
       if (0 === propertyName.indexOf('space_between')) {
         this.updateSpaceBetween(propertyName);
         return;
       }
+
       var changeableProperties = this.getChangeableProperties();
+
       if (changeableProperties.hasOwnProperty(propertyName)) {
         this.updateSwiperOption(propertyName);
       }
@@ -6462,6 +7359,7 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
       if (1 >= this.getSlidesCount()) {
         return;
       }
+
       if ('activeItemIndex' === propertyName) {
         this.swiper.slideToLoop(this.getEditSettings('activeItemIndex') - 1);
       }
@@ -6470,17 +7368,21 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
     key: "handlePaginationGap",
     value: function handlePaginationGap() {
       var _this3 = this;
+
       var activeBreakpoints = elementorFrontend.config.responsive.activeBreakpoints;
       var selector = elementorFrontend.config.experimentalFeatures.e_swiper_latest ? '.elementor-element-' + this.getID() + ' .raven-main-swiper.swiper' : '.elementor-element-' + this.getID() + ' .raven-main-swiper';
       var paginationSize = this.getElementSettings('pagination_gap') ? this.getElementSettings('pagination_gap').size : 0;
       var height = this.elements.$swiperContainer.outerHeight() + paginationSize;
       var paddingBottom = parseInt(this.elements.$swiperContainer.css('padding-bottom'), 10) + paginationSize;
       var style = '<style> ';
+
       if (this.getElementSettings('pagination_gap') && paginationSize) {
         style += selector + '{ height: ' + height + 'px !important; padding-bottom: ' + paddingBottom + 'px;}';
       }
+
       Object.keys(activeBreakpoints).reverse().forEach(function (breakpointName) {
         var paginationSizeBreakpoint = _this3.getElementSettings('pagination_gap_' + breakpointName) ? _this3.getElementSettings('pagination_gap_' + breakpointName).size : false;
+
         if (_this3.getElementSettings('pagination_gap_' + breakpointName) && paginationSizeBreakpoint !== false) {
           var heightBreakPoint = _this3.elements.$swiperContainer.outerHeight() + paginationSizeBreakpoint;
           var paddingBottomBreakPoint = parseInt(_this3.elements.$swiperContainer.css('padding-bottom'), 10) + paginationSizeBreakpoint;
@@ -6493,97 +7395,126 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
   }]);
   return CarouselBase;
 }(elementorModules.frontend.handlers.SwiperBase);
+
 var _default = CarouselBase;
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101,"@babel/runtime/helpers/typeof":106}],33:[function(require,module,exports){
+},{"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101,"@babel/runtime/regenerator":108}],33:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _typeof = require("@babel/runtime/helpers/typeof");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _get4 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _base = _interopRequireDefault(require("../carousel/base"));
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var MediaCarousel = /*#__PURE__*/function (_CarouselBase) {
   (0, _inherits2["default"])(MediaCarousel, _CarouselBase);
+
   var _super = _createSuper(MediaCarousel);
+
   function MediaCarousel() {
     (0, _classCallCheck2["default"])(this, MediaCarousel);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(MediaCarousel, [{
     key: "onInit",
     value: function () {
-      var _onInit = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var _onInit = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
         var _this = this;
+
         var slidesCount, elementSettings, loop, breakpointsSettings, breakpoints, desktopSlidesPerView, thumbsSliderOptions, Swiper;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return (0, _get4["default"])((0, _getPrototypeOf2["default"])(MediaCarousel.prototype), "onInit", this).call(this);
-            case 2:
-              slidesCount = this.getSlidesCount();
-              this.handlePaginationGap();
-              if (!(!this.isSlideshow() || 1 >= slidesCount)) {
-                _context.next = 6;
-                break;
-              }
-              return _context.abrupt("return");
-            case 6:
-              elementSettings = this.getElementSettings(), loop = 'yes' === elementSettings.loop, breakpointsSettings = {}, breakpoints = elementorFrontend.config.responsive.activeBreakpoints, desktopSlidesPerView = this.getDeviceSlidesPerView('desktop');
-              Object.keys(breakpoints).forEach(function (breakpointName) {
-                breakpointsSettings[breakpoints[breakpointName].value] = {
-                  slidesPerView: _this.getDeviceSlidesPerView(breakpointName),
-                  spaceBetween: _this.getSpaceBetween(breakpointName)
+        return _regenerator["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return (0, _get4["default"])((0, _getPrototypeOf2["default"])(MediaCarousel.prototype), "onInit", this).call(this);
+
+              case 2:
+                slidesCount = this.getSlidesCount();
+                this.handlePaginationGap();
+
+                if (!(!this.isSlideshow() || 1 >= slidesCount)) {
+                  _context.next = 6;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 6:
+                elementSettings = this.getElementSettings(), loop = 'yes' === elementSettings.loop, breakpointsSettings = {}, breakpoints = elementorFrontend.config.responsive.activeBreakpoints, desktopSlidesPerView = this.getDeviceSlidesPerView('desktop');
+                Object.keys(breakpoints).forEach(function (breakpointName) {
+                  breakpointsSettings[breakpoints[breakpointName].value] = {
+                    slidesPerView: _this.getDeviceSlidesPerView(breakpointName),
+                    spaceBetween: _this.getSpaceBetween(breakpointName)
+                  };
+                });
+                thumbsSliderOptions = {
+                  slidesPerView: desktopSlidesPerView,
+                  initialSlide: this.getInitialSlide(),
+                  centeredSlides: elementSettings.centered_slides,
+                  slideToClickedSlide: true,
+                  spaceBetween: this.getSpaceBetween(),
+                  loopedSlides: slidesCount,
+                  loop: loop,
+                  breakpoints: breakpointsSettings,
+                  handleElementorBreakpoints: true
                 };
-              });
-              thumbsSliderOptions = {
-                slidesPerView: desktopSlidesPerView,
-                initialSlide: this.getInitialSlide(),
-                centeredSlides: elementSettings.centered_slides,
-                slideToClickedSlide: true,
-                spaceBetween: this.getSpaceBetween(),
-                loopedSlides: slidesCount,
-                loop: loop,
-                breakpoints: breakpointsSettings,
-                handleElementorBreakpoints: true
-              };
-              if ('yes' === elementSettings.lazyload) {
-                thumbsSliderOptions.lazy = {
-                  loadPrevNext: true,
-                  loadPrevNextAmount: 1
-                };
-              }
-              Swiper = elementorFrontend.utils.swiper;
-              _context.next = 13;
-              return new Swiper(this.elements.$thumbsSwiper, thumbsSliderOptions);
-            case 13:
-              this.swiper.controller.control = this.thumbsSwiper = _context.sent;
-              // Expose the swiper instance in the frontend
-              this.elements.$thumbsSwiper.data('swiper', this.thumbsSwiper);
-              this.thumbsSwiper.controller.control = this.swiper;
-            case 16:
-            case "end":
-              return _context.stop();
+
+                if ('yes' === elementSettings.lazyload) {
+                  thumbsSliderOptions.lazy = {
+                    loadPrevNext: true,
+                    loadPrevNextAmount: 1
+                  };
+                }
+
+                Swiper = elementorFrontend.utils.swiper;
+                _context.next = 13;
+                return new Swiper(this.elements.$thumbsSwiper, thumbsSliderOptions);
+
+              case 13:
+                this.swiper.controller.control = this.thumbsSwiper = _context.sent;
+                // Expose the swiper instance in the frontend
+                this.elements.$thumbsSwiper.data('swiper', this.thumbsSwiper);
+                this.thumbsSwiper.controller.control = this.swiper;
+
+              case 16:
+              case "end":
+                return _context.stop();
+            }
           }
         }, _callee, this);
       }));
+
       function onInit() {
         return _onInit.apply(this, arguments);
       }
+
       return onInit;
     }()
   }, {
@@ -6595,10 +7526,13 @@ var MediaCarousel = /*#__PURE__*/function (_CarouselBase) {
     key: "getDefaultSettings",
     value: function getDefaultSettings() {
       var _get2;
+
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
+
       var defaultSettings = (_get2 = (0, _get4["default"])((0, _getPrototypeOf2["default"])(MediaCarousel.prototype), "getDefaultSettings", this)).call.apply(_get2, [this].concat(args));
+
       if (this.isSlideshow()) {
         defaultSettings.selectors.thumbsSwiper = '.raven-thumbnails-swiper';
         defaultSettings.slidesPerView = {
@@ -6611,12 +7545,14 @@ var MediaCarousel = /*#__PURE__*/function (_CarouselBase) {
           mobile: 3
         };
       }
+
       return defaultSettings;
     }
   }, {
     key: "getSlidesPerViewSettingNames",
     value: function getSlidesPerViewSettingNames() {
       var _this2 = this;
+
       if (!this.slideshowElementSettings) {
         this.slideshowElementSettings = ['slides_per_view'];
         var activeBreakpoints = elementorFrontend.config.responsive.activeBreakpoints;
@@ -6624,6 +7560,7 @@ var MediaCarousel = /*#__PURE__*/function (_CarouselBase) {
           _this2.slideshowElementSettings.push('slides_per_view_' + breakpointName);
         });
       }
+
       return this.slideshowElementSettings;
     }
   }, {
@@ -6632,20 +7569,25 @@ var MediaCarousel = /*#__PURE__*/function (_CarouselBase) {
       if (-1 !== this.getSlidesPerViewSettingNames().indexOf(setting) && this.isSlideshow()) {
         setting = 'slideshow_' + setting;
       }
+
       return (0, _get4["default"])((0, _getPrototypeOf2["default"])(MediaCarousel.prototype), "getElementSettings", this).call(this, setting);
     }
   }, {
     key: "getDefaultElements",
     value: function getDefaultElements() {
       var _get3;
+
       for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
         args[_key2] = arguments[_key2];
       }
+
       var selectors = this.getSettings('selectors'),
-        defaultElements = (_get3 = (0, _get4["default"])((0, _getPrototypeOf2["default"])(MediaCarousel.prototype), "getDefaultElements", this)).call.apply(_get3, [this].concat(args));
+          defaultElements = (_get3 = (0, _get4["default"])((0, _getPrototypeOf2["default"])(MediaCarousel.prototype), "getDefaultElements", this)).call.apply(_get3, [this].concat(args));
+
       if (this.isSlideshow()) {
         defaultElements.$thumbsSwiper = this.$element.find(selectors.thumbsSwiper);
       }
+
       return defaultElements;
     }
   }, {
@@ -6654,6 +7596,7 @@ var MediaCarousel = /*#__PURE__*/function (_CarouselBase) {
       if ('coverflow' === this.getElementSettings('skin')) {
         return 'coverflow';
       }
+
       return (0, _get4["default"])((0, _getPrototypeOf2["default"])(MediaCarousel.prototype), "getEffect", this).call(this);
     }
   }, {
@@ -6662,81 +7605,108 @@ var MediaCarousel = /*#__PURE__*/function (_CarouselBase) {
       if (this.isSlideshow()) {
         return 1;
       }
+
       if ('coverflow' === this.getElementSettings('skin')) {
         return this.getDeviceSlidesPerView(device);
       }
+
       if ('carousel' === this.getElementSettings('skin') && 'slide' === this.getElementSettings('effect') && 'yes' === this.getElementSettings('overflow_visible')) {
         return this.getDeviceSlidesPerView(device) + 0.5;
       }
+
       return (0, _get4["default"])((0, _getPrototypeOf2["default"])(MediaCarousel.prototype), "getSlidesPerView", this).call(this, device);
     }
   }, {
     key: "getSwiperOptions",
     value: function getSwiperOptions() {
       var options = (0, _get4["default"])((0, _getPrototypeOf2["default"])(MediaCarousel.prototype), "getSwiperOptions", this).call(this);
+
       if (this.isSlideshow()) {
         options.loopedSlides = this.getSlidesCount();
         delete options.pagination;
         delete options.breakpoints;
       }
+
       return options;
     }
   }]);
   return MediaCarousel;
 }(_base["default"]);
+
 function _default($scope) {
   new MediaCarousel({
     $element: $scope
   });
 }
 
-},{"../carousel/base":32,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/get":93,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101,"@babel/runtime/helpers/typeof":106}],34:[function(require,module,exports){
+},{"../carousel/base":32,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/get":93,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101,"@babel/runtime/regenerator":108}],34:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _typeof = require("@babel/runtime/helpers/typeof");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _get2 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _base = _interopRequireDefault(require("../carousel/base"));
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var TestimonialCarousel = /*#__PURE__*/function (_CarouselBase) {
   (0, _inherits2["default"])(TestimonialCarousel, _CarouselBase);
+
   var _super = _createSuper(TestimonialCarousel);
+
   function TestimonialCarousel() {
     (0, _classCallCheck2["default"])(this, TestimonialCarousel);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(TestimonialCarousel, [{
     key: "onInit",
     value: function () {
-      var _onInit = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              _context.next = 2;
-              return (0, _get2["default"])((0, _getPrototypeOf2["default"])(TestimonialCarousel.prototype), "onInit", this).call(this);
-            case 2:
-              this.handlePaginationGap();
-            case 3:
-            case "end":
-              return _context.stop();
+      var _onInit = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
+        return _regenerator["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return (0, _get2["default"])((0, _getPrototypeOf2["default"])(TestimonialCarousel.prototype), "onInit", this).call(this);
+
+              case 2:
+                this.handlePaginationGap();
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
           }
         }, _callee, this);
       }));
+
       function onInit() {
         return _onInit.apply(this, arguments);
       }
+
       return onInit;
     }()
   }, {
@@ -6749,9 +7719,11 @@ var TestimonialCarousel = /*#__PURE__*/function (_CarouselBase) {
       Object.keys(elementorFrontend.config.responsive.activeBreakpoints).forEach(function (breakpointName) {
         defaultSettings.slidesPerView[breakpointName] = 1;
       });
+
       if (defaultSettings.loop) {
         defaultSettings.loopedSlides = this.getSlidesCount();
       }
+
       return defaultSettings;
     }
   }, {
@@ -6762,22 +7734,27 @@ var TestimonialCarousel = /*#__PURE__*/function (_CarouselBase) {
   }]);
   return TestimonialCarousel;
 }(_base["default"]);
+
 function _default($scope) {
   new TestimonialCarousel({
     $element: $scope
   });
 }
 
-},{"../carousel/base":32,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/get":93,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101,"@babel/runtime/helpers/typeof":106}],35:[function(require,module,exports){
+},{"../carousel/base":32,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/get":93,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101,"@babel/runtime/regenerator":108}],35:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 $ = jQuery;
+
 var Cart = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -6804,9 +7781,11 @@ var Cart = _module["default"].extend({
     if (propertyName === 'sections_titles_typography_font_size') {
       this.fixVariationStyle();
     }
+
     if (propertyName === 'cart_divider_weight' || propertyName === 'cart_divider_gap') {
       this.fixDividerStyle();
     }
+
     if (propertyName === 'cart_quantity_width') {
       this.fixQuantityStyle();
     }
@@ -6815,12 +7794,14 @@ var Cart = _module["default"].extend({
     if (!document.body.classList.contains('woocommerce-cart')) {
       return;
     }
+
     document.body.classList.add('raven-cart-wiget-cart-page');
   },
   fixVariationStyle: function fixVariationStyle() {
     var selectors = this.getSettings('selectors');
     var productNameFontSize = this.$element.find(selectors.productName).find('a').css('font-size');
     var productVariations = this.$element.find(selectors.productName).find('.product-variations');
+
     if (productNameFontSize) {
       productVariations.find('div').css('font-size', 'calc(' + productNameFontSize + ' * 0.7)');
       productVariations.find('span').css('font-size', 'calc(' + productNameFontSize + ' * 0.7)');
@@ -6829,6 +7810,7 @@ var Cart = _module["default"].extend({
   fixDividerStyle: function fixDividerStyle() {
     var currentPaddingTop = parseFloat(this.$element.find('.cart_item').find('td').css('padding-top'));
     var dividerWeight = this.getInstanceValue('cart_divider_weight');
+
     if (dividerWeight.size) {
       this.$element.find('.woocommerce-cart-form__contents').find('tbody').find('.cart_item:not(:first-child)').find('td').css('padding-top', dividerWeight.size + currentPaddingTop);
       this.$element.find('.woocommerce-cart-form__contents').find('tbody').find('.actions').css('padding-top', dividerWeight.size + currentPaddingTop);
@@ -6836,40 +7818,50 @@ var Cart = _module["default"].extend({
   },
   fixQuantityStyle: function fixQuantityStyle() {
     var _this$getInstanceValu;
+
     var selectors = this.getSettings('selectors');
+
     if (!this.getInstanceValue('cart_quantity_width')) {
       return;
     }
+
     if (((_this$getInstanceValu = this.getInstanceValue('cart_quantity_width')) === null || _this$getInstanceValu === void 0 ? void 0 : _this$getInstanceValu.unit) === 'px') {
       var _this$getInstanceValu2;
+
       this.$element.find(selectors.productQuantity).find('input').css('width', ((_this$getInstanceValu2 = this.getInstanceValue('cart_quantity_width')) === null || _this$getInstanceValu2 === void 0 ? void 0 : _this$getInstanceValu2.size) + 'px');
       return;
     }
+
     var parentWidth = parseFloat(this.$element.find(selectors.productQuantity).css('width'));
     var unit = this.getInstanceValue('cart_quantity_width').unit;
     var value = this.getInstanceValue('cart_quantity_width').size;
     var pixelValue = 0;
+
     if (unit === '%') {
       pixelValue = value / 100 * parentWidth;
     } else if (unit === 'em') {
       pixelValue = value * parentWidth;
     }
+
     if (pixelValue !== 0) {
       if (this.getInstanceValue('cart_quantity_view') === 'plus_minus') {
         var plusMinusWidth = parseFloat(this.$element.find(selectors.productQuantity).find('.input-group-prepend').css('width'));
         pixelValue = pixelValue - plusMinusWidth * 2;
         this.$element.find(selectors.productQuantity).find('input').css('flex', 'inherit');
       }
+
       this.$element.find(selectors.productQuantity).find('input').css('width', pixelValue + 'px');
     }
   },
   fixShippingAjaxStyle: function fixShippingAjaxStyle() {
     var _this = this;
+
     $(document).ajaxComplete(function (event, xhr, settings) {
       if (settings.url.indexOf('wc-ajax=update_shipping_method') !== -1) {
         if (!_this.getInstanceValue('cart_items_continue_shopping')) {
           $('.elementor-widget-raven-cart.elementor-element-' + _this.getID() + ' .jupiterx-continue-shopping').hide();
         }
+
         $('.elementor-widget-raven-cart.elementor-element-' + _this.getID() + ' .checkout-button').text(_this.getInstanceValue('checkout_button_text'));
         $('.elementor-widget-raven-cart.elementor-element-' + _this.getID() + ' .cart_totals h2').text(_this.getInstanceValue('totals_section_title'));
       }
@@ -6877,12 +7869,15 @@ var Cart = _module["default"].extend({
   },
   handleShippingMethodList: function handleShippingMethodList() {
     var selectors = this.getSettings('selectors');
+
     if (this.$element.find(selectors.shippingMethods).length < 1) {
       return;
     }
+
     this.$element.find(selectors.shippingMethods).each(function (index, item) {
       // eslint-disable-line no-unused-vars
       var radioSpan = $(item).find('.raven-cart-shipping-method-radio');
+
       if (radioSpan.length < 1) {
         $(item).find('input').after('<span class="raven-cart-shipping-method-radio"></span>');
       }
@@ -6895,26 +7890,24 @@ var Cart = _module["default"].extend({
         if ($(element).find('.input-group-prepend').length === 0) {
           $(element).find('.input-text.qty').hide();
           $(element).find('.input-text.qty').after('<div class=\"input-group input-text qty text custom-qty-input \"><div class=\"input-group-prepend\"><button style=\"min-width: 0; box-shadow: none;\" class=\"btn btn-decrement btn-sm btn-outline-secondary\" type=\"button\" tabindex=\"-1\"><span>-</span></button></div><input type=\"text\" value="" style=\"text-align: center\" class=\"form-control input-text qty text\" placeholder=\"\" tabindex=\"-1\"><div class=\"input-group-append\"><button style=\"min-width: 0; box-shadow: none;\" class=\"btn btn-increment btn-sm btn-outline-secondary\" type=\"button\" tabindex=\"-1\"><span>+</span></button></div></div>');
-          $(element).find('.custom-qty-input').find('.input-text.qty').val($(element).find('.input-text.qty').val());
+          $(element).find('.custom-qty-input').find('.input-text.qty').val($(element).find('.input-text.qty').val()); // Change quantity value on input change.
 
-          // Change quantity value on input change.
           $(element).on('paste change', '.custom-qty-input .qty', function () {
             $(element).find('.input-text.qty').val($(element).find('.custom-qty-input').find('.input-text.qty').val());
-          });
+          }); // Increment quantity.
 
-          // Increment quantity.
           $(element).on('click', '.btn-increment', function () {
             $(element).find('.input-text.qty').val(function (i, oldVal) {
               return parseInt(oldVal, 10) + 1;
             }).trigger('change');
-          });
+          }); // Decrement quantity.
 
-          // Decrement quantity.
           $(element).on('click', '.btn-decrement', function () {
             $(element).find('.input-text.qty').val(function (i, oldVal) {
               if (parseInt(oldVal, 10) > 1) {
                 return parseInt(oldVal, 10) - 1;
               }
+
               return parseInt(oldVal, 10);
             }).trigger('change');
           });
@@ -6932,6 +7925,7 @@ var Cart = _module["default"].extend({
     });
   }
 });
+
 function _default($scope) {
   new Cart({
     $element: $scope
@@ -6942,16 +7936,21 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var _masonry = _interopRequireDefault(require("../utils/masonry"));
+
 var Categories = _module["default"].extend({
   Masonry: null,
   onInit: function onInit() {
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
+
     if (this.getInstanceValue('layout') === 'masonry') {
       this.createMasonry();
     }
@@ -6963,6 +7962,7 @@ var Categories = _module["default"].extend({
     this.Masonry.run();
   }
 });
+
 function _default($scope) {
   new Categories({
     $element: $scope
@@ -6973,11 +7973,14 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var CircleProgress = _module["default"].extend({
   breakpoints: {},
   animation: false,
@@ -7007,9 +8010,11 @@ var CircleProgress = _module["default"].extend({
   },
   bindEvents: function bindEvents() {
     this.setValues();
+
     if (parseInt(this.value) === 0) {
       return;
     }
+
     this.handleBar();
     this.handleCounter();
     this.handleResize();
@@ -7021,6 +8026,7 @@ var CircleProgress = _module["default"].extend({
   },
   createObserver: function createObserver($wrapper, data) {
     var _this = this;
+
     var observer = new IntersectionObserver(function (entries) {
       // eslint-disable-line no-undef
       entries.forEach(function (entry) {
@@ -7028,15 +8034,18 @@ var CircleProgress = _module["default"].extend({
           data.fromValue = 0;
           data.toValue = _this.value;
           data.duration = _this.getInstanceValue('duration');
-          _this.elements.$counterNumber.numerator(data);
 
-          // animate progress
+          _this.elements.$counterNumber.numerator(data); // animate progress
+
+
           _this.animation = true;
           var dashOffset = _this.circumference * (1 - _this.progress);
+
           _this.elements.$value.css({
             transitionDuration: data.duration + 'ms',
             strokeDashoffset: dashOffset
           });
+
           observer.disconnect();
         }
       });
@@ -7048,30 +8057,33 @@ var CircleProgress = _module["default"].extend({
   handleCounter: function handleCounter() {
     var data = {};
     data.fromValue = 0;
+
     if (this.getInstanceValue('separate_Ttousands') === 'yes') {
       data.delimiter = ',';
     }
+
     this.createObserver(this.elements.$wrapper, data);
   },
   handleBar: function handleBar() {
     var activeBreakpoints = elementorFrontend.config.responsive.activeBreakpoints,
-      currentDeviceMode = elementorFrontend.getCurrentDeviceMode(),
-      settings = this.getElementSettings(),
-      self = this;
+        currentDeviceMode = elementorFrontend.getCurrentDeviceMode(),
+        settings = this.getElementSettings(),
+        self = this;
     activeBreakpoints.desktop = [];
+
     if (activeBreakpoints[currentDeviceMode]) {
       Object.keys(activeBreakpoints).reverse().forEach(function (breakpointName) {
         var size = 'desktop' === breakpointName ? settings.circle_size.size : settings["circle_size_".concat(breakpointName)].size,
-          meter = 'desktop' === breakpointName ? settings.progress_circle_thickness.size : settings["progress_circle_thickness_".concat(breakpointName)].size,
-          value = 'desktop' === breakpointName ? settings.progress_indicator_thickness.size : settings["progress_indicator_thickness_".concat(breakpointName)].size;
+            meter = 'desktop' === breakpointName ? settings.progress_circle_thickness.size : settings["progress_circle_thickness_".concat(breakpointName)].size,
+            value = 'desktop' === breakpointName ? settings.progress_indicator_thickness.size : settings["progress_indicator_thickness_".concat(breakpointName)].size;
         size = self.handleEmptyValues(size, 'size');
         meter = self.handleEmptyValues(meter, 'meter');
         value = self.handleEmptyValues(value, 'value');
         var viewBox = "0 0 ".concat(size, " ").concat(size),
-          center = size / 2,
-          thickness = value >= meter ? value : meter,
-          radius = center - thickness / 2,
-          circumference = 2 * Math.PI * radius;
+            center = size / 2,
+            thickness = value >= meter ? value : meter,
+            radius = center - thickness / 2,
+            circumference = 2 * Math.PI * radius;
         self.breakpoints[breakpointName] = {
           size: size,
           meter: meter,
@@ -7084,16 +8096,20 @@ var CircleProgress = _module["default"].extend({
         };
       });
     }
+
     self.updateSvg(self.breakpoints[currentDeviceMode].size, self.breakpoints[currentDeviceMode].viewBox, self.breakpoints[currentDeviceMode].center, self.breakpoints[currentDeviceMode].radius, self.breakpoints[currentDeviceMode].value, self.breakpoints[currentDeviceMode].meter, self.breakpoints[currentDeviceMode].circumference);
   },
   handleEmptyValues: function handleEmptyValues(value, name) {
     if (!!value) {
       return value;
     }
+
     var lastIndex = Object.keys(this.breakpoints).length - 1;
+
     if (lastIndex < 0) {
       return value;
     }
+
     var key = Object.keys(this.breakpoints)[lastIndex];
     return this.breakpoints[key][name];
   },
@@ -7101,6 +8117,7 @@ var CircleProgress = _module["default"].extend({
     var self = this;
     $(window).on('resize orientationchange', function () {
       var currentDeviceMode = elementorFrontend.getCurrentDeviceMode();
+
       if (document.body.classList.contains('elementor-editor-active')) {
         self.breakpoints = {};
         setTimeout(function () {
@@ -7108,6 +8125,7 @@ var CircleProgress = _module["default"].extend({
         });
         return;
       }
+
       self.updateSvg(self.breakpoints[currentDeviceMode].size, self.breakpoints[currentDeviceMode].viewBox, self.breakpoints[currentDeviceMode].center, self.breakpoints[currentDeviceMode].radius, self.breakpoints[currentDeviceMode].value, self.breakpoints[currentDeviceMode].meter, self.breakpoints[currentDeviceMode].circumference);
     });
   },
@@ -7126,11 +8144,13 @@ var CircleProgress = _module["default"].extend({
       r: radius,
       'stroke-width': meter
     });
+
     if (this.animation) {
       this.elements.$value.css({
         transitionDuration: ''
       });
     }
+
     this.elements.$value.attr({
       cx: center,
       cy: center,
@@ -7143,6 +8163,7 @@ var CircleProgress = _module["default"].extend({
     });
   }
 });
+
 function _default($scope) {
   new CircleProgress({
     $element: $scope
@@ -7153,29 +8174,35 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 /* eslint no-undef: 0 */
 var $ = jQuery;
+
 var CodeHighlight = _module["default"].extend({
   onInit: function onInit() {
-    Prism.highlightAllUnder(this.$element[0], false);
+    Prism.highlightAllUnder(this.$element[0], false); // Advanced tabs widget compatibility.
 
-    // Advanced tabs widget compatibility.
     this.changeActiveTabEvent();
   },
   onElementChange: function onElementChange(propertyName) {
     var _this = this;
+
     if ('code' === propertyName || 'height' === propertyName) {
       return;
     }
+
     if ('src' === propertyName) {
       var language = this.getElementSettings('src');
       this.addRelatedJs(language);
     }
+
     setTimeout(function () {
       Prism.highlightAllUnder(_this.$element[0], false);
     }, 1500);
@@ -7184,23 +8211,28 @@ var CodeHighlight = _module["default"].extend({
     var id = 'div[data-id="' + this.getID() + '"]';
     var wrapper = $(id);
     wrapper.empty();
+
     if ('cpp' === language || 'objectivec' === language) {
       wrapper.append('<script src="' + elementor.config.jx_assets_url + '/lib/code-highlight/prism-c.min.js" ></script>');
     }
+
     if ('scala' === language) {
       wrapper.append('<script src="' + elementor.config.jx_assets_url + '/lib/code-highlight/prism-java.min.js" ></script>');
     }
+
     if ('scss' === language || 'sass' === language) {
       wrapper.append('<script src="' + elementor.config.jx_assets_url + '/lib/code-highlight/prism-css.min.js" ></script>');
     }
   },
   changeActiveTabEvent: function changeActiveTabEvent() {
     var _this2 = this;
+
     document.addEventListener('jupiterxcore:advancedtabs:changeactivetab', function () {
       Prism.highlightAllUnder(_this2.$element[0], false);
     });
   }
 });
+
 function _default($scope) {
   new CodeHighlight({
     $element: $scope
@@ -7216,34 +8248,38 @@ function _default($scope) {
     var target = $(this).data('ravenLinkTarget');
     handleLink($(this), url, target, event);
   });
+
   function handleLink($element, url, target, event) {
     if ($(event.target).filter('a, a *, .no-link, .no-link *').length) {
       return true;
     }
-
     /**
      * Handle popup & lightbox.
      *
      * @todo Find a proper way via Elementor Pro Javascript API.
      */
+
+
     if (url.match(/^#elementor-action/)) {
       if (!$element.find('.raven-column-link-dynamic').length) {
         $element.append("<a class=\"raven-column-link-dynamic\" href=\"".concat(url, "\"></a>"));
       }
-      return $element.find('.raven-column-link-dynamic').trigger('click');
-    }
 
-    // Handle hash (e.g. #section-id).
+      return $element.find('.raven-column-link-dynamic').trigger('click');
+    } // Handle hash (e.g. #section-id).
+
+
     if (url.match(/^#/)) {
       if ($(url).length) {
         return document.querySelector(url).scrollIntoView({
           behavior: 'smooth'
         });
       }
-      return;
-    }
 
-    // Handle full url.
+      return;
+    } // Handle full url.
+
+
     window.open(url, target);
   }
 })(jQuery);
@@ -7255,22 +8291,24 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 function _default($scope) {
   var ravenContentSwitch = $scope.find('.raven-content-switch-container'),
-    radioSwitch = ravenContentSwitch.find('.raven-content-switch-input'),
-    contentList = ravenContentSwitch.find('.raven-content-switch-two-content'),
-    defaultState = ravenContentSwitch.data('default_state'),
-    primaryContentSide = contentList.find('li[data-type="raven-content-switch-monthly"]'),
-    secondaryContentSide = contentList.find('li[data-type="raven-content-switch-yearly"]'),
-    primaryLabel = $scope.find('.raven-content-switch-primary-label'),
-    secondaryLabel = $scope.find('.raven-content-switch-secondary-label'),
-    swtichButton = $scope.find('.raven-content-switch-button'),
-    sides = {};
+      radioSwitch = ravenContentSwitch.find('.raven-content-switch-input'),
+      contentList = ravenContentSwitch.find('.raven-content-switch-two-content'),
+      defaultState = ravenContentSwitch.data('default_state'),
+      primaryContentSide = contentList.find('li[data-type="raven-content-switch-monthly"]'),
+      secondaryContentSide = contentList.find('li[data-type="raven-content-switch-yearly"]'),
+      primaryLabel = $scope.find('.raven-content-switch-primary-label'),
+      secondaryLabel = $scope.find('.raven-content-switch-secondary-label'),
+      swtichButton = $scope.find('.raven-content-switch-button'),
+      sides = {};
   radioSwitch.prop('checked', defaultState === 'primary');
   sides[0] = primaryContentSide;
   sides[1] = secondaryContentSide;
   radioSwitch.on('click', function (event) {
     var selectedFilter = $(event.target).val();
+
     if ($(this).hasClass('raven-content-switch-input-active')) {
       selectedFilter = 1;
       secondaryLabel.toggleClass('selected');
@@ -7287,6 +8325,7 @@ function _default($scope) {
       hideNotSelectedItems(sides, selectedFilter);
     }
   });
+
   function hideNotSelectedItems(contentSides, filter) {
     $.each(contentSides, function (key) {
       if (Number.parseInt(key) !== Number.parseInt(filter)) {
@@ -7305,6 +8344,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 function _default($scope) {
   var $el = $scope.find('[data-raven-countdown]');
   var finalDate = $el.data('raven-countdown');
@@ -7324,9 +8364,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 function _default($scope) {
   $ = jQuery;
   var $counters = $scope.find('[data-raven-counter]');
+
   var createObserver = function createObserver($counter) {
     var observer = new IntersectionObserver(function (entries) {
       // eslint-disable-line no-undef
@@ -7334,9 +8376,11 @@ function _default($scope) {
         if (entry.isIntersecting) {
           var data = $counter.data();
           var decimalDigits = data.toValue.toString().match(/\.(.*)/);
+
           if (decimalDigits) {
             data.rounding = decimalDigits[1].length;
           }
+
           data.fromValue = $.trim($counter.text());
           $counter.numerator(data);
           observer.disconnect();
@@ -7345,6 +8389,7 @@ function _default($scope) {
     });
     observer.observe($counter[0]);
   };
+
   $counters.each(function () {
     var $counter = $(this);
     createObserver($counter);
@@ -7355,16 +8400,24 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var _i18n = require("@wordpress/i18n");
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 var Form = _module["default"].extend({
   form: null,
   captchaV3Ids: [],
@@ -7374,18 +8427,22 @@ var Form = _module["default"].extend({
   onInit: function onInit() {
     this.form = this.$element.find('.raven-form');
     this.isMultiStep = undefined !== this.form.attr('data-step');
+
     if (this.isMultiStep) {
       this.handleMultiStep(this.form);
     }
+
     this.initializeITI();
     var dateField = this.form.find('.flatpickr[type=text]');
     var locale = {
       firstDayOfWeek: 1
     };
     var customLocale = dateField.data('locale');
+
     if (customLocale !== undefined && customLocale !== 'default') {
       locale = customLocale;
     }
+
     dateField.flatpickr({
       locale: locale,
       minuteIncrement: 1,
@@ -7397,27 +8454,33 @@ var Form = _module["default"].extend({
   },
   onSubmit: function onSubmit() {
     var _this = this;
+
     var self = this;
     var form = self.form;
     form.on('submit', function (event) {
       event.preventDefault();
+
       if (!_this.checkSaveState()) {
         return;
       }
-      form.css('opacity', 0.5);
-      _this.fixTelBeforeSubmit();
 
-      // Prepare form data.
+      form.css('opacity', 0.5);
+
+      _this.fixTelBeforeSubmit(); // Prepare form data.
+
+
       var formData = new FormData(form[0]);
+
       var validFormData = _this.validateFormData(formData, form);
+
       if (!validFormData) {
         form.css('opacity', 1);
         return;
       }
-      formData.append('action', 'raven_form_frontend');
-      formData.append('referrer', location.toString());
 
-      // Send request.
+      formData.append('action', 'raven_form_frontend');
+      formData.append('referrer', location.toString()); // Send request.
+
       jQuery.ajax({
         url: _wpUtilSettings.ajax.url,
         type: 'POST',
@@ -7431,20 +8494,24 @@ var Form = _module["default"].extend({
   },
   validateFormData: function validateFormData(formData, form) {
     var maxFileUploadSize = window.ravenTools.maxFileUploadSize;
+
     if (_.isEmpty(maxFileUploadSize)) {
       return true;
     }
+
     var _iterator = _createForOfIteratorHelper(formData.entries()),
-      _step;
+        _step;
+
     try {
       for (_iterator.s(); !(_step = _iterator.n()).done;) {
         var _step$value = (0, _slicedToArray2["default"])(_step.value, 2),
-          key = _step$value[0],
-          value = _step$value[1];
+            key = _step$value[0],
+            value = _step$value[1];
+
         if (value instanceof File && value.size > maxFileUploadSize) {
           // eslint-disable-line no-undef
           var target = form.find("input[name=\"".concat(key, "\"]")),
-            field = target.parents('.raven-field-group');
+              field = target.parents('.raven-field-group');
           field.find('small').remove();
           field.removeClass('raven-field-invalid');
           field.addClass('raven-field-invalid');
@@ -7457,57 +8524,66 @@ var Form = _module["default"].extend({
     } finally {
       _iterator.f();
     }
+
     return true;
   },
   checkSaveState: function checkSaveState() {
     if (!this.isEdit) {
       return true;
     }
+
     var btn = jQuery(elementor.panel.el).find('button#elementor-panel-saver-button-publish');
+
     if (!btn.length || btn.hasClass('elementor-disabled')) {
       this.form.prev('div.elementor-alert.elementor-alert-info').remove();
       return true;
     }
+
     var adminErrorsNode = "\n\t\t\t<div class=\"elementor-alert elementor-alert-info\" role=\"alert\">\n\t\t\t\t<span class=\"elementor-alert-title\">\n\t\t\t\t\t".concat((0, _i18n.__)('Please first update/publish the changes.', 'jupiterx-core'), "\n\t\t\t\t</span>\n\t\t\t</div>\n\t\t");
     this.form.before(adminErrorsNode);
     return false;
   },
   doSuccess: function doSuccess(response) {
     // Message.
-    this.showMessage(response);
+    this.showMessage(response); // Download.
 
-    // Download.
     if (response.data.download_url) {
       window.open(response.data.download_url, '_blank');
-    }
+    } // Redirect.
 
-    // Redirect.
+
     if (!$.isEmptyObject(response.data.redirect_to)) {
       window.location.href = response.data.redirect_to;
     }
+
     if (!$.isEmptyObject(response.data.popup)) {
       var popupData = {};
       var popupParent = this.form.parents('.jupiterx-popup');
+
       if (response.data.popup[0].type === 'close' && popupParent.length !== 0) {
         var _popupParent$data;
+
         popupData.constantly = response.data.popup[0].constantly === 'yes' ? true : false;
-        var popupId = popupParent === null || popupParent === void 0 || (_popupParent$data = popupParent.data('settings')) === null || _popupParent$data === void 0 ? void 0 : _popupParent$data.id;
+        var popupId = popupParent === null || popupParent === void 0 ? void 0 : (_popupParent$data = popupParent.data('settings')) === null || _popupParent$data === void 0 ? void 0 : _popupParent$data.id;
+
         if (popupId) {
           popupData.popupId = popupId;
         }
+
         $(document).trigger('jupiterx-popup-close-form-trigger', popupData);
         return;
       }
+
       popupData.popupId = response.data.popup[0].popupId;
       $(document).trigger('jupiterx-popup-open-trigger', popupData);
-    }
+    } // Admin errors.
 
-    // Admin errors.
+
     if (!$.isEmptyObject(response.data.admin_errors)) {
       this.showAdminErrors(response.data.admin_errors);
-    }
+    } // Reset recaptcha to initial state.
 
-    // Reset recaptcha to initial state.
+
     this.captchaV3Ids.forEach(function (id) {
       return window.grecaptcha.reset(id);
     });
@@ -7519,24 +8595,32 @@ var Form = _module["default"].extend({
     var i18n = window.ravenFormsTranslations.validation;
     var headerHeight = $('header').height();
     var bodySelector = document.querySelector('body');
+
     if (validity.valueMissing) {
       target.setCustomValidity(i18n.required);
       var $top = $(target).offset().top - $(target).parent().height() - 50;
+
       if (bodySelector.classList.contains('jupiterx-header-fixed') || bodySelector.classList.contains('jupiterx-header-sticked')) {
         $top -= headerHeight;
       }
+
       $(window).scrollTop($top);
       return;
     }
+
     var message = '';
+
     switch (type) {
       case 'email':
         if (validity.typeMismatch || validity.patternMismatch) {
           message = i18n.invalidEmail;
         }
+
         break;
+
       case 'tel':
         var isITI = target.hasAttribute('data-iti-tel');
+
         if (isITI) {
           var validationMessages = window.ravenFormsTranslations.itiValidation;
           var inputItiInstance = window.intlTelInputGlobals.getInstance(target);
@@ -7544,37 +8628,49 @@ var Form = _module["default"].extend({
           var areaCodeRequired = target.hasAttribute('data-iti-area-required');
           var mustBeTelType = target.getAttribute('data-iti-tel-type');
           var telType = "".concat(inputItiInstance.getNumberType());
+
           switch (itiValidationCode) {
             case 1:
               message = validationMessages.invalidCountryCode;
               break;
+
             case 2:
               message = validationMessages.tooShort;
               break;
+
             case 3:
               message = validationMessages.tooLong;
               break;
+
             case 4:
               message = areaCodeRequired ? validationMessages.areaCodeMissing : '';
               break;
+
             case 5:
               message = validationMessages.invalidLength;
               break;
+
             case -99:
               message = validationMessages.invalidGeneral;
               break;
+
             case 0:
             default:
               if ('all' !== mustBeTelType && telType !== mustBeTelType) {
                 message = validationMessages.typeMismatch[mustBeTelType];
               }
+
           }
+
           break;
         }
+
         if (validity.typeMismatch || validity.patternMismatch) {
           message = i18n.invalidPhone;
         }
+
         break;
+
       case 'number':
         if (validity.typeMismatch || validity.patternMismatch) {
           message = i18n.invalidNumber;
@@ -7583,8 +8679,10 @@ var Form = _module["default"].extend({
         } else if (validity.rangeUnderflow) {
           message = i18n.invalidMinValue.replace('MIN_VALUE', target.min);
         }
+
         break;
     }
+
     target.setCustomValidity(message);
   },
   showMessage: function showMessage(response) {
@@ -7596,12 +8694,14 @@ var Form = _module["default"].extend({
     form.find('.raven-field-group').removeClass('raven-field-invalid');
     form.parent().removeClass('raven-form-success');
     form.parent().addClass('raven-form-error');
+
     if (response.success) {
       form.trigger('reset');
       form.parent().removeClass('raven-form-error');
       form.parent().addClass('raven-form-success');
       form.trigger('submit_success', response.data);
     }
+
     $.each(response.data.errors, function (key, value) {
       var field = $('#raven-field-group-' + key);
       field.addClass('raven-field-invalid');
@@ -7618,23 +8718,26 @@ var Form = _module["default"].extend({
   },
   initCaptcha: function initCaptcha() {
     var _window$grecaptcha;
+
     var captchav3 = this.form.find('.raven-g-recaptcha:last');
+
     if (!captchav3.length) {
       return;
-    }
+    } // If Google Recaptcha API is ready, run addRecaptcha().
 
-    // If Google Recaptcha API is ready, run addRecaptcha().
-    if ((_window$grecaptcha = window.grecaptcha) !== null && _window$grecaptcha !== void 0 && _window$grecaptcha.render) {
+
+    if ((_window$grecaptcha = window.grecaptcha) === null || _window$grecaptcha === void 0 ? void 0 : _window$grecaptcha.render) {
       this.addRecaptcha(captchav3);
       clearTimeout(this.reCaptchaCheckTimeout);
       return;
-    }
+    } // Otherwise, recheck API availability frequently.
 
-    // Otherwise, recheck API availability frequently.
+
     this.reCaptchaCheckTimeout = setTimeout(this.initCaptcha, 350);
   },
   addRecaptcha: function addRecaptcha(elementRecaptcha) {
     var _this2 = this;
+
     var settings = elementRecaptcha.data();
     var isV3 = 'v3' === settings.type;
     this.captchaV3Ids.forEach(function (id) {
@@ -7644,10 +8747,12 @@ var Form = _module["default"].extend({
     this.form.on('reset error', function () {
       return window.grecaptcha.reset(widgetId);
     });
+
     if (!isV3) {
       elementRecaptcha.data('widgetId', widgetId);
       return;
     }
+
     this.captchaV3Ids.push(widgetId);
     this.form.find('button[type="submit"]').on('click', function (e) {
       e.preventDefault();
@@ -7656,11 +8761,13 @@ var Form = _module["default"].extend({
           action: elementRecaptcha.data('action')
         }).then(function (token) {
           _this2.form.find('[name="g-recaptcha-response"]').remove();
+
           _this2.form.append(jQuery('<input>', {
             type: 'hidden',
             value: token,
             name: 'g-recaptcha-response'
           }));
+
           _this2.form.submit();
         });
       });
@@ -7683,9 +8790,11 @@ var Form = _module["default"].extend({
     this.stepsValidableFields = this.getStepsValidableFields();
     this.isProgressBar = this.isIndicatorProgressBar();
     this.progressMeter = this.isProgressBar ? this.indicators[0].find('.raven-form__indicators__indicator__progress__meter') : null;
+
     if (this.isProgressBar) {
       this.updateProgressMeter(0);
     }
+
     this.setStepButtonsOnClicks();
   },
   jqueryToArray: function jqueryToArray(jqObj) {
@@ -7697,6 +8806,7 @@ var Form = _module["default"].extend({
   },
   getStepsValidableFields: function getStepsValidableFields() {
     var result = Array(this.steps.length);
+
     _.each(this.steps, function (step, i) {
       result[i] = [];
       var selection = step.find('*[oninvalid]');
@@ -7704,16 +8814,20 @@ var Form = _module["default"].extend({
         result[i].push($(el));
       });
     });
+
     return result;
   },
   setStepButtonsOnClicks: function setStepButtonsOnClicks() {
     var _this3 = this;
+
     _.each(this.buttons, function (button) {
       var stepKey = button.attr('data-step-key');
       var isNext = button.hasClass('step-button-next');
+
       if (!stepKey) {
         return;
       }
+
       if (isNext) {
         button.click({
           destStep: +stepKey + 1,
@@ -7722,21 +8836,23 @@ var Form = _module["default"].extend({
         }, function (e) {
           // Validate fields before going to next step.
           var stepValidityResult = true;
+
           _.each(e.data.inputsToValidate, function (field) {
             if (!field[0].checkValidity()) {
-              stepValidityResult = false;
+              stepValidityResult = false; // Show invalidity message.
 
-              // Show invalidity message.
               if (e.data.destStep - 1 < e.data.totalSteps - 1) {
                 field[0].reportValidity();
               }
             }
           });
+
           if (stepValidityResult) {
             _this3.moveToStep(e.data.destStep);
           }
         });
       }
+
       if (!isNext) {
         button.click({
           destStep: +stepKey - 1
@@ -7754,10 +8870,12 @@ var Form = _module["default"].extend({
         step.addClass('elementor-hidden');
       }
     });
+
     if (this.isProgressBar) {
       this.updateProgressMeter(stepKey);
       return;
     }
+
     this.updateNormalIndicators(stepKey);
   },
   isIndicatorProgressBar: function isIndicatorProgressBar() {
@@ -7765,15 +8883,19 @@ var Form = _module["default"].extend({
   },
   updateNormalIndicators: function updateNormalIndicators(stepKey) {
     var _this4 = this;
+
     _.each(this.indicators, function (indicator, i) {
       if (i === stepKey) {
         _this4.stripStateClasses(indicator);
+
         indicator.addClass('raven-form__indicators__indicator--state-active');
       } else if (i > stepKey) {
         _this4.stripStateClasses(indicator);
+
         indicator.addClass('raven-form__indicators__indicator--state-inactive');
       } else {
         _this4.stripStateClasses(indicator);
+
         indicator.addClass('raven-form__indicators__indicator--state-completed');
       }
     });
@@ -7794,13 +8916,17 @@ var Form = _module["default"].extend({
   // ITI ►START◄ (ITI plugin: Intelligent Tel Input).
   initializeITI: function initializeITI() {
     var _this5 = this;
+
     var itiTelFields = this.form.find('input[data-iti-tel]');
+
     if (!itiTelFields.length) {
       return;
     }
+
     if (!window.itiCountry) {
       $.get('https://ipwho.is/', function () {}, 'json').always(function (response) {
         window.itiCountry = response && response.country_code ? response.country_code.toLowerCase() : 'us';
+
         _this5.setupTelFields(itiTelFields);
       });
     } else {
@@ -7809,13 +8935,16 @@ var Form = _module["default"].extend({
   },
   setupTelFields: function setupTelFields(itiTelFields) {
     var iti = require('intl-tel-input');
+
     if (!iti) {
       return;
     }
+
     var allCountries = window.intlTelInputGlobals.getCountryData().map(function (item) {
       return item.iso2;
     });
     var numberTypes = ['FIXED_LINE', 'MOBILE', 'FIXED_LINE_OR_MOBILE', 'TOLL_FREE', 'PREMIUM_RATE', 'SHARED_COST', 'VOIP', 'PERSONAL_NUMBER', 'PAGER', 'UAN', 'VOICEMAIL'];
+
     _.each(itiTelFields, function (input) {
       var allowDropdown = input.hasAttribute('data-iti-allow-dropdown');
       var countriesAttr = input.getAttribute('data-iti-country-include');
@@ -7832,42 +8961,53 @@ var Form = _module["default"].extend({
         initialCountry: '',
         geoIpLookup: null
       };
+
       if (ipDetect) {
         args.initialCountry = isCountriesSet && !countries.includes(window.itiCountry) ? countries[0] : 'auto';
+
         args.geoIpLookup = function (success) {
           return success(window.itiCountry);
         };
       }
+
       iti(input, args);
     });
   },
   fixTelBeforeSubmit: function fixTelBeforeSubmit() {
     var itiTelFields = this.form.find('input[data-iti-tel]');
+
     _.each(itiTelFields, function (input) {
       var internationalize = input.hasAttribute('data-iti-internationalize');
+
       if (internationalize) {
         var itiInstance = window.intlTelInputGlobals.getInstance(input);
         input.value = itiInstance.getNumber();
       }
     });
   } // ITI ►END◄.
+
 });
+
 function _default($scope) {
   new Form({
     $element: $scope
   });
 }
 
-},{"../utils/module":9,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/slicedToArray":103,"@wordpress/i18n":114,"intl-tel-input":118}],44:[function(require,module,exports){
+},{"../utils/module":9,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/slicedToArray":103,"@wordpress/i18n":115,"intl-tel-input":119}],44:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var $ = jQuery;
+
 var Hotspot = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -7887,8 +9027,10 @@ var Hotspot = _module["default"].extend({
   },
   bindEvents: function bindEvents() {
     var _this = this;
+
     var tooltipTrigger = this.getCurrentDeviceSetting('tooltip_trigger'),
-      tooltipTriggerEvent = 'mouseenter' === tooltipTrigger ? 'mouseleave mouseenter' : tooltipTrigger;
+        tooltipTriggerEvent = 'mouseenter' === tooltipTrigger ? 'mouseleave mouseenter' : tooltipTrigger;
+
     if (tooltipTriggerEvent !== 'none') {
       this.elements.$hotspotsExcludesLinks.on(tooltipTriggerEvent, function (event) {
         return _this.onHotspotTriggerEvent(event);
@@ -7901,11 +9043,12 @@ var Hotspot = _module["default"].extend({
   },
   onHotspotTriggerEvent: function onHotspotTriggerEvent(event) {
     var elementTarget = $(event.target),
-      isHotspotButtonEvent = elementTarget.closest('.raven-hotspot__button').length,
-      isTooltipMouseLeave = 'mouseleave' === event.type && (elementTarget.is('.raven-hotspot--tooltip-position') || elementTarget.parents('.raven-hotspot--tooltip-position').length),
-      isMobile = 'mobile' === elementorFrontend.getCurrentDeviceMode(),
-      isHotspotLink = elementTarget.closest('.raven-hotspot--link').length,
-      triggerTooltip = !(isHotspotLink && isMobile && ('mouseleave' === event.type || 'mouseenter' === event.type));
+        isHotspotButtonEvent = elementTarget.closest('.raven-hotspot__button').length,
+        isTooltipMouseLeave = 'mouseleave' === event.type && (elementTarget.is('.raven-hotspot--tooltip-position') || elementTarget.parents('.raven-hotspot--tooltip-position').length),
+        isMobile = 'mobile' === elementorFrontend.getCurrentDeviceMode(),
+        isHotspotLink = elementTarget.closest('.raven-hotspot--link').length,
+        triggerTooltip = !(isHotspotLink && isMobile && ('mouseleave' === event.type || 'mouseenter' === event.type));
+
     if (triggerTooltip && (isHotspotButtonEvent || isTooltipMouseLeave)) {
       var currentHotspot = $(event.currentTarget);
       this.elements.$hotspot.not(currentHotspot).removeClass('raven-hotspot--active');
@@ -7918,11 +9061,14 @@ var Hotspot = _module["default"].extend({
   },
   hotspotSequencedAnimation: function hotspotSequencedAnimation() {
     var _this2 = this;
+
     var isSequencedAnimation = this.getElementSettings('hotspot_sequenced_animation');
     var sequencedAnimation = this.getElementSettings('hotspot_sequenced_animation_duration');
+
     if ('no' === isSequencedAnimation) {
       return;
     } //start sequenced animation when element on viewport
+
 
     var hotspotObserver = elementorModules.utils.Scroll.scrollObserver({
       callback: function callback(event) {
@@ -7933,6 +9079,7 @@ var Hotspot = _module["default"].extend({
             if (0 === index) {
               return;
             }
+
             var sequencedAnimationDuration = sequencedAnimation ? sequencedAnimation.size : 1000;
             var animationDelay = index * (sequencedAnimationDuration / _this2.elements.$hotspot.length);
             element.style.animationDelay = animationDelay + 'ms';
@@ -7945,6 +9092,7 @@ var Hotspot = _module["default"].extend({
   setTooltipPositionControl: function setTooltipPositionControl() {
     var tooltipAnimation = this.getElementSettings('tooltip_animation');
     var isDirectionAnimation = 'undefined' !== typeof tooltipAnimation && tooltipAnimation.match(/^raven-hotspot--(slide|fade)-direction/);
+
     if (isDirectionAnimation) {
       var tooltipPosition = this.getElementSettings('tooltip_position');
       this.elements.$tooltip.removeClass('raven-hotspot--tooltip-animation-from-left raven-hotspot--tooltip-animation-from-top raven-hotspot--tooltip-animation-from-right raven-hotspot--tooltip-animation-from-bottom');
@@ -7953,9 +9101,11 @@ var Hotspot = _module["default"].extend({
   },
   onInit: function onInit() {
     var _this3 = this;
+
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
     this.hotspotSequencedAnimation();
     this.setTooltipPositionControl();
+
     if (window.elementor) {
       elementor.listenTo(elementor.channels.deviceMode, 'change', function () {
         return _this3.onDeviceModeChange();
@@ -7966,11 +9116,13 @@ var Hotspot = _module["default"].extend({
     if (propertyName.startsWith('tooltip_position')) {
       this.setTooltipPositionControl();
     }
+
     if (propertyName.startsWith('hotspot_sequenced_animation')) {
       this.editorAddSequencedAnimation();
     }
   }
 });
+
 function _default($scope) {
   new Hotspot({
     $element: $scope
@@ -7981,25 +9133,28 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var $ = jQuery;
+
 var ImageAccordion = _module["default"].extend({
   onInit: function onInit() {
     this.addOnHover();
   },
   addOnHover: function addOnHover() {
     var settings = this.getElementSettings(),
-      wrapper = this.$element,
-      length = $(wrapper).find('.jupiterx-image-accordion-item').length,
-      activeSize = settings.active_size.size,
-      flexGrow = activeSize / ((100 - activeSize) / (length - 1));
-    this.onMouseLeave(flexGrow);
+        wrapper = this.$element,
+        length = $(wrapper).find('.jupiterx-image-accordion-item').length,
+        activeSize = settings.active_size.size,
+        flexGrow = activeSize / ((100 - activeSize) / (length - 1));
+    this.onMouseLeave(flexGrow); // On hover.
 
-    // On hover.
     $(wrapper).find('.jupiterx-image-accordion-item').on('mouseover', function () {
       $(wrapper).find('.jupiterx-image-accordion-item').removeClass('jupiterx-active-image-accordion-item').css({
         'flex-grow': 1
@@ -8007,9 +9162,8 @@ var ImageAccordion = _module["default"].extend({
       $(this).addClass('jupiterx-active-image-accordion-item').css({
         'flex-grow': flexGrow
       });
-    });
+    }); // On first load.
 
-    // On first load.
     $(wrapper).find('.jupiterx-default-active-image-accordion-item').addClass('jupiterx-active-image-accordion-item').css({
       'flex-grow': flexGrow
     });
@@ -8019,15 +9173,15 @@ var ImageAccordion = _module["default"].extend({
     $(wrapper).find('.jupiterx-image-accordion-item').on('mouseleave', function () {
       $(wrapper).find('.jupiterx-image-accordion-item').css({
         'flex-grow': 1
-      }).removeClass('jupiterx-active-image-accordion-item');
+      }).removeClass('jupiterx-active-image-accordion-item'); // Reactivate default one when mouse leaving widget area.
 
-      // Reactivate default one when mouse leaving widget area.
       $(wrapper).find('.jupiterx-default-active-image-accordion-item').addClass('jupiterx-active-image-accordion-item').css({
         'flex-grow': flexGrow
       });
     });
   }
 });
+
 function _default($scope) {
   new ImageAccordion({
     $element: $scope
@@ -8038,12 +9192,16 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var ImageComparison = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -8085,60 +9243,63 @@ var ImageComparison = _module["default"].extend({
   onInit: function onInit() {
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
     var self = this,
-      settings = this.getCarouselSettings(),
-      options = {
-        allowTouchMove: false,
-        draggable: false,
-        slidesPerColumn: 0,
-        slidesPerView: +settings.slides_view_mobile,
-        slidesToScroll: +settings.slides_scroll_mobile || 1,
-        spaceBetween: 24,
-        slidesPerGroup: +settings.slides_scroll_mobile || 1,
-        slidesPerGroupSkip: 0,
-        autoplay: settings.enable_autoplay === 'yes' ? {
-          delay: settings.autoplay_speed
-        } : false,
-        watchOverflow: false,
-        speed: +settings.transition_speed,
-        navigation: {
-          nextEl: '.swiper-next-arrow',
-          prevEl: '.swiper-prev-arrow'
+        settings = this.getCarouselSettings(),
+        options = {
+      allowTouchMove: false,
+      draggable: false,
+      slidesPerColumn: 0,
+      slidesPerView: +settings.slides_view_mobile,
+      slidesToScroll: +settings.slides_scroll_mobile || 1,
+      spaceBetween: 24,
+      slidesPerGroup: +settings.slides_scroll_mobile || 1,
+      slidesPerGroupSkip: 0,
+      autoplay: settings.enable_autoplay === 'yes' ? {
+        delay: settings.autoplay_speed
+      } : false,
+      watchOverflow: false,
+      speed: +settings.transition_speed,
+      navigation: {
+        nextEl: '.swiper-next-arrow',
+        prevEl: '.swiper-prev-arrow'
+      },
+      appendArrows: this.elements.$sliderWrapper,
+      autoHeight: true,
+      breakpoints: {
+        360: {
+          slidesPerView: +settings.slides_view_mobile,
+          slidesToScroll: +settings.slides_scroll_mobile || 1,
+          spaceBetween: 24,
+          slidesPerGroup: +settings.slides_scroll_mobile || 1,
+          slidesPerGroupSkip: 0
         },
-        appendArrows: this.elements.$sliderWrapper,
-        autoHeight: true,
-        breakpoints: {
-          360: {
-            slidesPerView: +settings.slides_view_mobile,
-            slidesToScroll: +settings.slides_scroll_mobile || 1,
-            spaceBetween: 24,
-            slidesPerGroup: +settings.slides_scroll_mobile || 1,
-            slidesPerGroupSkip: 0
-          },
-          768: {
-            slidesPerView: +settings.slides_view_tablet,
-            slidesToScroll: +settings.slides_scroll_tablet || 1,
-            spaceBetween: 24,
-            slidesPerGroup: +settings.slides_scroll_tablet || 1,
-            slidesPerGroupSkip: 0
-          },
-          1024: {
-            slidesPerView: +settings.slides_view,
-            slidesToScroll: +settings.slides_scroll || 1,
-            spaceBetween: 24,
-            slidesPerGroup: +settings.slides_scroll || 1,
-            slidesPerGroupSkip: 0
-          }
+        768: {
+          slidesPerView: +settings.slides_view_tablet,
+          slidesToScroll: +settings.slides_scroll_tablet || 1,
+          spaceBetween: 24,
+          slidesPerGroup: +settings.slides_scroll_tablet || 1,
+          slidesPerGroupSkip: 0
+        },
+        1024: {
+          slidesPerView: +settings.slides_view,
+          slidesToScroll: +settings.slides_scroll || 1,
+          spaceBetween: 24,
+          slidesPerGroup: +settings.slides_scroll || 1,
+          slidesPerGroupSkip: 0
         }
-      };
+      }
+    };
     this.elements.$sliderWrapper.each(function (index, swiperContainer) {
       $(this).parents('.elementor-widget-raven-image-comparison').find('.raven-image-comparison').addClass('swiper-' + index);
+
       if (options.navigation) {
         options.navigation = {
           nextEl: $(swiperContainer).parents('.raven-image-comparison.swiper-' + index).find('.swiper-next-arrow')[0],
           prevEl: $(swiperContainer).parents('.raven-image-comparison.swiper-' + index).find('.swiper-prev-arrow')[0]
         };
       }
+
       options.pagination = false;
+
       if (settings.show_dots === 'yes') {
         options.pagination = {
           el: $(swiperContainer).parents('.raven-image-comparison.swiper-' + index).find('.swiper-pagination')[0],
@@ -8146,28 +9307,33 @@ var ImageComparison = _module["default"].extend({
           clickable: true
         };
       }
+
       if ('fade' === self.getInstanceValue('effect')) {
         options.effect = 'fade';
         options.fadeEffect = {
           crossFade: true
         };
       }
-
       /**
        * It should run Juxtapose before swiper to prevent wrong slide height.
        */
+
+
       if ('function' === typeof juxtapose.scanPage) {
         // eslint-disable-line no-undef
         juxtapose.scanPage('.raven-image-comparison .raven-juxtapose'); // eslint-disable-line no-undef
       }
 
       options.on = {};
+
       options.on.init = function () {
         self.setJXDimensions();
         self.elements.$carouselWrapper.addClass('raven-image-comparison-active');
       };
+
       options.on.update = options.on.init;
       var swiperObj = null;
+
       if ('undefined' === typeof Swiper) {
         var asyncSwiper = elementorFrontend.utils.swiper;
         new asyncSwiper(swiperContainer, options).then(function (newSwiperInstance) {
@@ -8187,11 +9353,11 @@ var ImageComparison = _module["default"].extend({
           }
         });
       }
+
       window.addEventListener('resize', function () {
         swiperObj = new Swiper(swiperContainer, options); // eslint-disable-line
-      });
+      }); // eslint-disable-next-line no-undef
 
-      // eslint-disable-next-line no-undef
       var resizeObserver = new ResizeObserver(function () {
         self.setJXDimensions();
       });
@@ -8199,9 +9365,8 @@ var ImageComparison = _module["default"].extend({
     });
   },
   bindEvents: function bindEvents() {
-    var self = this;
+    var self = this; // We run it async, so swiper will be ready to set the dimensions.
 
-    // We run it async, so swiper will be ready to set the dimensions.
     setTimeout(function () {
       self.setJXDimensions();
     }, 1);
@@ -8209,14 +9374,17 @@ var ImageComparison = _module["default"].extend({
   setJXDimensions: function setJXDimensions() {
     this.elements.$slides.each(function (index, slide) {
       var placeHolderImage = $(slide).find('.placeholder-image'),
-        height = placeHolderImage[0].clientHeight,
-        width = slide.clientWidth,
-        swiperHeight = $(placeHolderImage).parents('.swiper-wrapper').height();
+          height = placeHolderImage[0].clientHeight,
+          width = slide.clientWidth,
+          swiperHeight = $(placeHolderImage).parents('.swiper-wrapper').height();
       $(placeHolderImage).parents('.swiper-slide').find('.raven-juxtapose')[0].style.height = height + 'px';
+
       if (parseInt(swiperHeight) < 1 && 'object' === (typeof elementor === "undefined" ? "undefined" : (0, _typeof2["default"])(elementor))) {
         $(placeHolderImage).parents('.swiper-wrapper').css('height', height);
       }
+
       var jxImages = $(placeHolderImage).parents('.swiper-slide').find('.raven-juxtapose img');
+
       if (jxImages.length > 0) {
         jxImages[0].style.width = width + 'px';
         jxImages[1].style.width = width + 'px';
@@ -8224,6 +9392,7 @@ var ImageComparison = _module["default"].extend({
     });
   }
 });
+
 function _default($scope) {
   new ImageComparison({
     $element: $scope
@@ -8234,28 +9403,44 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _get3 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0, _defineProperty2["default"])(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
   (0, _inherits2["default"])(Lottie, _elementorModules$fro);
+
   var _super = _createSuper(Lottie);
+
   function Lottie() {
     (0, _classCallCheck2["default"])(this, Lottie);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(Lottie, [{
     key: "getDefaultSettings",
     value: function getDefaultSettings() {
@@ -8275,7 +9460,8 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "getDefaultElements",
     value: function getDefaultElements() {
       var _this$getSettings = this.getSettings(),
-        selectors = _this$getSettings.selectors;
+          selectors = _this$getSettings.selectors;
+
       return {
         $widgetWrapper: this.$element,
         $container: this.$element.find(selectors.container),
@@ -8290,10 +9476,13 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "onInit",
     value: function onInit() {
       var _get2;
+
       for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
         args[_key] = arguments[_key];
       }
+
       (_get2 = (0, _get3["default"])((0, _getPrototypeOf2["default"])(Lottie.prototype), "onInit", this)).call.apply(_get2, [this].concat(args));
+
       this.lottie = null;
       this.state = {
         isAnimationScrollUpdateNeededOnFirstLoad: true,
@@ -8346,22 +9535,26 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "initLottie",
     value: function initLottie() {
       var lottieSettings = this.getLottieSettings();
+
       if (lottieSettings.lazyload) {
         this.lazyloadLottie();
         return;
       }
+
       this.generateLottie();
     }
   }, {
     key: "lazyloadLottie",
     value: function lazyloadLottie() {
       var _this = this;
+
       var bufferHeightBeforeTriggerLottie = 200;
       this.intersectionObservers.lazyload.observer = elementorModules.utils.Scroll.scrollObserver({
         offset: "0px 0px ".concat(bufferHeightBeforeTriggerLottie, "px"),
         callback: function callback(event) {
           if (event.isInViewport) {
             _this.generateLottie();
+
             _this.intersectionObservers.lazyload.observer.unobserve(_this.intersectionObservers.lazyload.element);
           }
         }
@@ -8386,27 +9579,32 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
         autoplay: false,
         // We always want to trigger the animation manually for considering start/end frame.
         name: 'lottie-widget'
-      });
-      // Expose the lottie instance in the frontend.
+      }); // Expose the lottie instance in the frontend.
+
       this.elements.$animation.data('lottie', this.lottie);
     }
   }, {
     key: "getAnimationPath",
     value: function getAnimationPath() {
       var _lottieSettings$sourc, _lottieSettings$sourc2;
+
       var lottieSettings = this.getLottieSettings();
-      if ((_lottieSettings$sourc = lottieSettings.source_json) !== null && _lottieSettings$sourc !== void 0 && _lottieSettings$sourc.url && 'json' === lottieSettings.source_json.url.toLowerCase().substr(-4)) {
+
+      if (((_lottieSettings$sourc = lottieSettings.source_json) === null || _lottieSettings$sourc === void 0 ? void 0 : _lottieSettings$sourc.url) && 'json' === lottieSettings.source_json.url.toLowerCase().substr(-4)) {
         return lottieSettings.source_json.url;
       }
-      if ((_lottieSettings$sourc2 = lottieSettings.source_external_url) !== null && _lottieSettings$sourc2 !== void 0 && _lottieSettings$sourc2.url) {
+
+      if ((_lottieSettings$sourc2 = lottieSettings.source_external_url) === null || _lottieSettings$sourc2 === void 0 ? void 0 : _lottieSettings$sourc2.url) {
         return lottieSettings.source_external_url.url;
       }
+
       return window.lottie_defaultAnimationUrl.url;
     }
   }, {
     key: "setCaption",
     value: function setCaption() {
       var lottieSettings = this.getLottieSettings();
+
       if ('external_url' === lottieSettings.source || 'media_file' === lottieSettings.source && 'custom' === lottieSettings.caption_source) {
         var $captionElement = this.getCaptionElement();
         $captionElement.text(lottieSettings.caption);
@@ -8417,19 +9615,22 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     value: function getCaptionElement() {
       if (!this.elements.$caption.length) {
         var _this$getSettings2 = this.getSettings(),
-          classes = _this$getSettings2.classes;
+            classes = _this$getSettings2.classes;
+
         this.elements.$caption = jQuery('<p>', {
           "class": classes.caption
         });
         this.elements.$container.append(this.elements.$caption);
         return this.elements.$caption;
       }
+
       return this.elements.$caption;
     }
   }, {
     key: "setLottieEvents",
     value: function setLottieEvents() {
       var _this2 = this;
+
       this.lottie.addEventListener('DOMLoaded', function () {
         return _this2.onLottieDomLoaded();
       });
@@ -8441,12 +9642,13 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "saveInitialValues",
     value: function saveInitialValues() {
       var _lottieSettings$play_;
-      var lottieSettings = this.getLottieSettings();
 
+      var lottieSettings = this.getLottieSettings();
       /*
       These values of the animation are being changed during the animation runtime
       and saved in the lottie instance (and not in the state) for the instance expose in the frontend.
        */
+
       this.lottie.__initialTotalFrames = this.lottie.totalFrames;
       this.lottie.__initialFirstFrame = this.lottie.firstFrame;
       this.state.currentAnimationTrigger = lottieSettings.trigger;
@@ -8475,19 +9677,24 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "initAnimationTrigger",
     value: function initAnimationTrigger() {
       var lottieSettings = this.getLottieSettings();
+
       switch (lottieSettings.trigger) {
         case 'none':
           this.playLottie();
           break;
+
         case 'arriving_to_viewport':
           this.playAnimationWhenArrivingToViewport();
           break;
+
         case 'bind_to_scroll':
           this.playAnimationWhenBindToScroll();
           break;
+
         case 'on_click':
           this.bindAnimationClickEvents();
           break;
+
         case 'on_hover':
           this.bindAnimationHoverEvents();
           break;
@@ -8497,16 +9704,21 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "playAnimationWhenArrivingToViewport",
     value: function playAnimationWhenArrivingToViewport() {
       var _this3 = this;
+
       var offset = this.getOffset();
       this.intersectionObservers.animation.observer = elementorModules.utils.Scroll.scrollObserver({
         offset: "".concat(offset.end, "% 0% ").concat(offset.start, "%"),
         callback: function callback(event) {
           if (event.isInViewport) {
             _this3.state.isInViewport = true;
+
             _this3.playLottie();
+
             return;
           }
+
           _this3.state.isInViewport = false;
+
           _this3.lottie.pause();
         }
       });
@@ -8517,8 +9729,8 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "getOffset",
     value: function getOffset() {
       var lottieSettings = this.getLottieSettings(),
-        start = -lottieSettings.viewport.sizes.start || 0,
-        end = -(100 - lottieSettings.viewport.sizes.end) || 0;
+          start = -lottieSettings.viewport.sizes.start || 0,
+          end = -(100 - lottieSettings.viewport.sizes.end) || 0;
       return {
         start: start,
         end: end
@@ -8528,8 +9740,9 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "playAnimationWhenBindToScroll",
     value: function playAnimationWhenBindToScroll() {
       var _this4 = this;
+
       var lottieSettings = this.getLottieSettings(),
-        offset = this.getOffset();
+          offset = this.getOffset();
       this.intersectionObservers.animation.observer = elementorModules.utils.Scroll.scrollObserver({
         offset: "".concat(offset.end, "% 0% ").concat(offset.start, "%"),
         callback: function callback(event) {
@@ -8544,6 +9757,7 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     value: function updateAnimationByScrollPosition() {
       var lottieSettings = this.getLottieSettings();
       var percentage;
+
       if ('page' === lottieSettings.effects_relative_to) {
         percentage = this.getLottiePagePercentage();
       } else if ('fixed' === this.getCurrentDeviceSetting('_position')) {
@@ -8551,6 +9765,7 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
       } else {
         percentage = this.getLottieViewportPercentage();
       }
+
       var nextFrameToPlay = this.getFrameNumberByPercent(percentage);
       nextFrameToPlay = nextFrameToPlay - this.lottie.__initialFirstFrame;
       this.lottie.goToAndStop(nextFrameToPlay, true);
@@ -8579,45 +9794,46 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
       this 'stretched' will make percent to be either negative or larger than 100, therefore we need to limit percent between 0-100.
       */
 
-      percent = Math.min(100, Math.max(0, percent));
-      // Getting frame number by percent of range, considering start/end frame values if exist.
+      percent = Math.min(100, Math.max(0, percent)); // Getting frame number by percent of range, considering start/end frame values if exist.
+
       return frame.first + (frame.last - frame.first) * (percent / 100);
     }
   }, {
     key: "getAnimationFrames",
     value: function getAnimationFrames() {
       var lottieSettings = this.getLottieSettings(),
-        currentFrame = this.getAnimationCurrentFrame(),
-        startPoint = this.getAnimationRange().start,
-        endPoint = this.getAnimationRange().end;
+          currentFrame = this.getAnimationCurrentFrame(),
+          startPoint = this.getAnimationRange().start,
+          endPoint = this.getAnimationRange().end;
       var firstFrame = this.lottie.__initialFirstFrame,
-        lastFrame = 0 === this.lottie.__initialFirstFrame ? this.lottie.__initialTotalFrames : this.lottie.__initialFirstFrame + this.lottie.__initialTotalFrames;
+          lastFrame = 0 === this.lottie.__initialFirstFrame ? this.lottie.__initialTotalFrames : this.lottie.__initialFirstFrame + this.lottie.__initialTotalFrames; // Limiting min start point to animation first frame.
 
-      // Limiting min start point to animation first frame.
       if (startPoint && startPoint > firstFrame) {
         firstFrame = startPoint;
-      }
+      } // limiting max end point to animation last frame.
 
-      // limiting max end point to animation last frame.
+
       if (endPoint && endPoint < lastFrame) {
         lastFrame = endPoint;
       }
-
       /*
       Getting the relevant first frame after loop complete and when not bind to scroll.
       when the animation is in progress (no when a new loop start), the first frame should be the current frame.
       when the trigger is bind_to_scroll we DON'T need to get this functionality.
       */
+
+
       if (!this.state.isNewLoopCycle && 'bind_to_scroll' !== lottieSettings.trigger) {
         // When we have a custom start point, we need to check if the start point is larger than the last pause stop of the animation.
         firstFrame = startPoint && startPoint > currentFrame ? startPoint : currentFrame;
-      }
+      } // Reverse Mode.
 
-      // Reverse Mode.
+
       if ('backward' === this.state.animationDirection && this.isReverseMode()) {
         firstFrame = currentFrame;
         lastFrame = startPoint && startPoint > this.lottie.__initialFirstFrame ? startPoint : this.lottie.__initialFirstFrame;
       }
+
       return {
         first: firstFrame,
         last: lastFrame,
@@ -8650,11 +9866,14 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "setLinkTimeout",
     value: function setLinkTimeout() {
       var _lottieSettings$custo,
-        _this5 = this;
+          _this5 = this;
+
       var lottieSettings = this.getLottieSettings();
-      if ('on_click' === lottieSettings.trigger && (_lottieSettings$custo = lottieSettings.custom_link) !== null && _lottieSettings$custo !== void 0 && _lottieSettings$custo.url && lottieSettings.link_timeout) {
+
+      if ('on_click' === lottieSettings.trigger && ((_lottieSettings$custo = lottieSettings.custom_link) === null || _lottieSettings$custo === void 0 ? void 0 : _lottieSettings$custo.url) && lottieSettings.link_timeout) {
         this.elements.$containerLink.on('click', function (event) {
           event.preventDefault();
+
           if (!_this5.isEdit) {
             setTimeout(function () {
               var tabTarget = 'on' === lottieSettings.custom_link.is_external ? '_blank' : '_self';
@@ -8668,9 +9887,11 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "bindAnimationClickEvents",
     value: function bindAnimationClickEvents() {
       var _this6 = this;
+
       this.listeners.elements.$container.triggerAnimationClick = function () {
         _this6.playLottie();
       };
+
       this.addSessionEventListener(this.elements.$container, 'click', this.listeners.elements.$container.triggerAnimationClick);
     }
   }, {
@@ -8687,8 +9908,8 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     value: function playLottie() {
       var frame = this.getAnimationFrames();
       this.lottie.stop();
-      this.lottie.playSegments([frame.first, frame.last], true);
-      // We reset the loop cycle state after playing the animation.
+      this.lottie.playSegments([frame.first, frame.last], true); // We reset the loop cycle state after playing the animation.
+
       this.state.isNewLoopCycle = false;
     }
   }, {
@@ -8701,13 +9922,17 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "createAnimationHoverInEvents",
     value: function createAnimationHoverInEvents() {
       var _this7 = this;
+
       var lottieSettings = this.getLottieSettings(),
-        $widgetArea = this.getHoverAreaElement();
+          $widgetArea = this.getHoverAreaElement();
       this.state.hoverArea = lottieSettings.hover_area;
+
       this.listeners.elements.$widgetArea.triggerAnimationHoverIn = function () {
         _this7.state.animationDirection = 'forward';
+
         _this7.playLottie();
       };
+
       this.addSessionEventListener($widgetArea, 'mouseenter', this.listeners.elements.$widgetArea.triggerAnimationHoverIn);
     }
   }, {
@@ -8724,18 +9949,25 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "createAnimationHoverOutEvents",
     value: function createAnimationHoverOutEvents() {
       var _this8 = this;
+
       var lottieSettings = this.getLottieSettings(),
-        $widgetArea = this.getHoverAreaElement();
+          $widgetArea = this.getHoverAreaElement();
+
       if ('pause' === lottieSettings.on_hover_out || 'reverse' === lottieSettings.on_hover_out) {
         this.state.hoverOutMode = lottieSettings.on_hover_out;
+
         this.listeners.elements.$widgetArea.triggerAnimationHoverOut = function () {
           if ('pause' === lottieSettings.on_hover_out) {
             _this8.lottie.pause();
+
             return;
           }
+
           _this8.state.animationDirection = 'backward';
+
           _this8.playLottie();
         };
+
         this.addSessionEventListener($widgetArea, 'mouseleave', this.listeners.elements.$widgetArea.triggerAnimationHoverOut);
       }
     }
@@ -8743,11 +9975,13 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "getHoverAreaElement",
     value: function getHoverAreaElement() {
       var lottieSettings = this.getLottieSettings();
+
       if ('section' === lottieSettings.hover_area) {
         return this.elements.$sectionParent;
       } else if ('column' === lottieSettings.hover_area) {
         return this.elements.$columnParent;
       }
+
       return this.elements.$container;
     }
   }, {
@@ -8755,6 +9989,7 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     value: function setLoopOnAnimationComplete() {
       var lottieSettings = this.getLottieSettings();
       this.state.isNewLoopCycle = true;
+
       if (lottieSettings.loop && !this.isReverseMode()) {
         this.setLoopWhenNotReverse();
       } else if (lottieSettings.loop && this.isReverseMode()) {
@@ -8773,27 +10008,31 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "setLoopWhenNotReverse",
     value: function setLoopWhenNotReverse() {
       var lottieSettings = this.getLottieSettings();
+
       if (lottieSettings.number_of_times > 0) {
         this.state.playAnimationCount++;
+
         if (this.state.playAnimationCount < lottieSettings.number_of_times) {
           this.playLottie();
           return;
         }
+
         this.state.playAnimationCount = 0;
         return;
       }
+
       this.playLottie();
     }
   }, {
     key: "setReverseAnimationOnLoop",
     value: function setReverseAnimationOnLoop() {
       var lottieSettings = this.getLottieSettings();
-
       /*
       We trigger the reverse animation:
       either when we don't have any value in the 'Number of Times" field, and then it will be an infinite forward/backward loop,
       or, when we have a value in the 'Number of Times" field and then we need to limit the number of times of the loop cycles.
        */
+
       if (!lottieSettings.number_of_times || this.state.playAnimationCount < lottieSettings.number_of_times) {
         this.state.animationDirection = 'forward' === this.state.animationDirection ? 'backward' : 'forward';
         this.playLottie();
@@ -8805,10 +10044,11 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
         if ('backward' === this.state.animationDirection) {
           this.state.playAnimationCount++;
         }
-        return;
-      }
 
-      // Reset the values for the loop counting for the next trigger.
+        return;
+      } // Reset the values for the loop counting for the next trigger.
+
+
       this.state.playAnimationCount = 0;
       this.state.animationDirection = 'forward';
     }
@@ -8825,6 +10065,7 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
         this.playLottie();
         return;
       }
+
       this.state.playAnimationCount = 0;
       this.state.animationDirection = 'forward';
     }
@@ -8832,6 +10073,7 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "setAnimationSpeed",
     value: function setAnimationSpeed() {
       var lottieSettings = this.getLottieSettings();
+
       if (lottieSettings.play_speed) {
         this.lottie.setSpeed(lottieSettings.play_speed.size);
       }
@@ -8846,39 +10088,40 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "updateLottieValues",
     value: function updateLottieValues() {
       var _lottieSettings$play_2,
-        _this9 = this;
+          _this9 = this;
+
       var lottieSettings = this.getLottieSettings(),
-        valuesComparison = [{
-          sourceVal: (_lottieSettings$play_2 = lottieSettings.play_speed) === null || _lottieSettings$play_2 === void 0 ? void 0 : _lottieSettings$play_2.size,
-          stateProp: 'animationSpeed',
-          callback: function callback() {
-            return _this9.setAnimationSpeed();
-          }
-        }, {
-          sourceVal: lottieSettings.link_timeout,
-          stateProp: 'linkTimeout',
-          callback: function callback() {
-            return _this9.setLinkTimeout();
-          }
-        }, {
-          sourceVal: lottieSettings.caption,
-          stateProp: 'caption',
-          callback: function callback() {
-            return _this9.setCaption();
-          }
-        }, {
-          sourceVal: lottieSettings.effects_relative_to,
-          stateProp: 'effectsRelativeTo',
-          callback: function callback() {
-            return _this9.updateAnimationByScrollPosition();
-          }
-        }, {
-          sourceVal: lottieSettings.loop,
-          stateProp: 'loop',
-          callback: function callback() {
-            return _this9.onLoopStateChange();
-          }
-        }];
+          valuesComparison = [{
+        sourceVal: (_lottieSettings$play_2 = lottieSettings.play_speed) === null || _lottieSettings$play_2 === void 0 ? void 0 : _lottieSettings$play_2.size,
+        stateProp: 'animationSpeed',
+        callback: function callback() {
+          return _this9.setAnimationSpeed();
+        }
+      }, {
+        sourceVal: lottieSettings.link_timeout,
+        stateProp: 'linkTimeout',
+        callback: function callback() {
+          return _this9.setLinkTimeout();
+        }
+      }, {
+        sourceVal: lottieSettings.caption,
+        stateProp: 'caption',
+        callback: function callback() {
+          return _this9.setCaption();
+        }
+      }, {
+        sourceVal: lottieSettings.effects_relative_to,
+        stateProp: 'effectsRelativeTo',
+        callback: function callback() {
+          return _this9.updateAnimationByScrollPosition();
+        }
+      }, {
+        sourceVal: lottieSettings.loop,
+        stateProp: 'loop',
+        callback: function callback() {
+          return _this9.onLoopStateChange();
+        }
+      }];
       valuesComparison.forEach(function (item) {
         if ('undefined' !== typeof item.sourceVal && item.sourceVal !== _this9.state[item.stateProp]) {
           _this9.state[item.stateProp] = item.sourceVal;
@@ -8890,6 +10133,7 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "onLoopStateChange",
     value: function onLoopStateChange() {
       var isInActiveViewportMode = 'arriving_to_viewport' === this.state.currentAnimationTrigger && this.state.isInViewport;
+
       if (this.state.loop && (isInActiveViewportMode || 'none' === this.state.currentAnimationTrigger)) {
         this.playLottie();
       }
@@ -8898,10 +10142,11 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "resetAnimationTrigger",
     value: function resetAnimationTrigger() {
       var lottieSettings = this.getLottieSettings(),
-        isTriggerChange = lottieSettings.trigger !== this.state.currentAnimationTrigger,
-        isViewportOffsetChange = lottieSettings.viewport ? this.isViewportOffsetChange() : false,
-        isHoverOutModeChange = lottieSettings.on_hover_out ? this.isHoverOutModeChange() : false,
-        isHoverAreaChange = lottieSettings.hover_area ? this.isHoverAreaChange() : false;
+          isTriggerChange = lottieSettings.trigger !== this.state.currentAnimationTrigger,
+          isViewportOffsetChange = lottieSettings.viewport ? this.isViewportOffsetChange() : false,
+          isHoverOutModeChange = lottieSettings.on_hover_out ? this.isHoverOutModeChange() : false,
+          isHoverAreaChange = lottieSettings.hover_area ? this.isHoverAreaChange() : false;
+
       if (isTriggerChange || isViewportOffsetChange || isHoverOutModeChange || isHoverAreaChange) {
         this.removeAnimationFrameRequests();
         this.removeObservers();
@@ -8913,8 +10158,8 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "isViewportOffsetChange",
     value: function isViewportOffsetChange() {
       var lottieSettings = this.getLottieSettings(),
-        isStartOffsetChange = lottieSettings.viewport.sizes.start !== this.state.viewportOffset.start,
-        isEndOffsetChange = lottieSettings.viewport.sizes.end !== this.state.viewportOffset.end;
+          isStartOffsetChange = lottieSettings.viewport.sizes.start !== this.state.viewportOffset.start,
+          isEndOffsetChange = lottieSettings.viewport.sizes.end !== this.state.viewportOffset.end;
       return isStartOffsetChange || isEndOffsetChange;
     }
   }, {
@@ -8964,6 +10209,7 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
       this.removeObservers();
       this.removeEventListeners();
       this.elements.$animation.removeData('lottie');
+
       if (this.lottie) {
         this.lottie.destroy();
       }
@@ -8987,6 +10233,7 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "onLottieIntersection",
     value: function onLottieIntersection(event) {
       var _this10 = this;
+
       if (event.isInViewport) {
         /*
         It's required to update the animation progress on first load when lottie is inside the viewport on load
@@ -9000,13 +10247,15 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
           this.state.isAnimationScrollUpdateNeededOnFirstLoad = false;
           this.updateAnimationByScrollPosition();
         }
+
         this.animationFrameRequest.timer = window.requestAnimationFrame(function () {
           return _this10.onAnimationFrameRequest();
         });
         return;
       }
+
       var frame = this.getAnimationFrames(),
-        finalFrame = 'up' === event.intersectionScrollDirection ? frame.first : frame.last;
+          finalFrame = 'up' === event.intersectionScrollDirection ? frame.first : frame.last;
       this.state.isAnimationScrollUpdateNeededOnFirstLoad = false;
       window.cancelAnimationFrame(this.animationFrameRequest.timer);
       this.lottie.goToAndStop(finalFrame, true);
@@ -9015,11 +10264,13 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
     key: "onAnimationFrameRequest",
     value: function onAnimationFrameRequest() {
       var _this11 = this;
+
       // Making calculation only when there is a change with the scroll position.
       if (window.scrollY !== this.animationFrameRequest.lastScrollY) {
         this.updateAnimationByScrollPosition();
         this.animationFrameRequest.lastScrollY = window.scrollY;
       }
+
       this.animationFrameRequest.timer = window.requestAnimationFrame(function () {
         return _this11.onAnimationFrameRequest();
       });
@@ -9027,6 +10278,7 @@ var Lottie = /*#__PURE__*/function (_elementorModules$fro) {
   }]);
   return Lottie;
 }(elementorModules.frontend.handlers.Base);
+
 function _default($scope) {
   new Lottie({
     $element: $scope
@@ -9037,12 +10289,16 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var MediaGallery = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -9072,6 +10328,7 @@ var MediaGallery = _module["default"].extend({
   },
   bindEvents: function bindEvents() {
     var _this = this;
+
     var self = this;
     this.zoom();
     this.zoomMove();
@@ -9081,26 +10338,36 @@ var MediaGallery = _module["default"].extend({
     jQuery(window).resize(function () {
       self.setHeight();
     });
+
     if (!this.elements.$tabsWrapper[0]) {
       return;
     }
+
     this.elements.$tabsWrapper[0].addEventListener('click', function (event) {
       if (!event.target.classList.contains('tab-item')) {
         return;
       }
+
       var activeIndex = _this.getSettings('state.activeIndex');
+
       if ('show' !== _this.getInstanceValue('all_filter') && 0 === activeIndex) {
         activeIndex = 1;
       }
+
       var activeTab = _this.elements.$tabsWrapper[0].querySelector('[data-raven-tab-index="' + activeIndex + '"]');
+
       var activeContent = _this.elements.$contentsWrapper[0].querySelector('[data-raven-content-index="' + activeIndex + '"]');
+
       activeTab.classList.remove('active');
       activeContent.classList.remove('active');
       activeContent.querySelectorAll('.gallery-item').forEach(function (item) {
         item.classList.remove('show-animation');
       });
+
       _this.setSettings('state.activeIndex', event.target.dataset.ravenTabIndex);
+
       var newActiveContent = _this.elements.$contentsWrapper[0].querySelector('[data-raven-content-index="' + event.target.dataset.ravenTabIndex + '"]');
+
       event.target.classList.add('active');
       newActiveContent.classList.add('active');
       newActiveContent.querySelectorAll('.gallery-item').forEach(function (item, index) {
@@ -9108,6 +10375,7 @@ var MediaGallery = _module["default"].extend({
           item.classList.add('show-animation');
         }, index * 100);
       });
+
       _this.setHeight();
     });
   },
@@ -9115,30 +10383,36 @@ var MediaGallery = _module["default"].extend({
     if (this.getInstanceValue('image_hover_animation') !== 'zoom') {
       return;
     }
+
     this.elements.$items.find('.poster').zoom();
   },
   zoomMove: function zoomMove() {
     if (this.getInstanceValue('image_hover_animation') !== '3d-zoom') {
       return;
     }
+
     (0, _toConsumableArray2["default"])(this.elements.$galleryItems).forEach(function (item) {
       var img = item.querySelector('img');
+
       if (!img) {
         return;
       }
+
       var isContentUnderImage = $(item).parents('.content-layout-under-image');
+
       if (isContentUnderImage.length > 0) {
         item = item.querySelector('[class*="type-"]');
       }
+
       item.addEventListener('mouseout', function () {
         img.style.transform = 'perspective(900px) translate3d( 0px, 0px, 0px ) scale(1)';
       });
       item.addEventListener('mousemove', function (event) {
         var bound = event.currentTarget.getBoundingClientRect(),
-          scaleX = ((bound.width + 35) / bound.width).toFixed(2),
-          scaleY = ((bound.height + 35) / bound.height).toFixed(2);
+            scaleX = ((bound.width + 35) / bound.width).toFixed(2),
+            scaleY = ((bound.height + 35) / bound.height).toFixed(2);
         var pageX = bound.width / 2 - (event.clientX - bound.left),
-          pageY = bound.height / 2 - (event.clientY - bound.top);
+            pageY = bound.height / 2 - (event.clientY - bound.top);
         pageX = pageX / bound.width * 40;
         pageY = pageY / bound.height * 40;
         img.style.transform = "perspective(900px) translate3d( ".concat(pageX, "px, ").concat(pageY, "px, 0px ) scale(").concat(Math.max(scaleX, scaleY), ")");
@@ -9155,9 +10429,11 @@ var MediaGallery = _module["default"].extend({
   },
   setHeight: function setHeight() {
     var isInsideFlexBoxContainer = this.$element.parents()[0].classList.contains('e-con-inner');
+
     if (!isInsideFlexBoxContainer) {
       return;
     }
+
     var height = this.$element.find('.raven-media-gallery-wrapper')[0].clientHeight;
     this.$element[0].style.height = height + 'px';
   },
@@ -9166,6 +10442,7 @@ var MediaGallery = _module["default"].extend({
     this.handleAnimation();
   }
 });
+
 function _default($scope) {
   new MediaGallery({
     $element: $scope
@@ -9176,29 +10453,33 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var MyAccount = _module["default"].extend({
   pageWrapperAttr: 'raven-my-account-page',
   currentPage: null,
   onInit: function onInit() {
     this.initElements();
-    this.bindEvents();
+    this.bindEvents(); // Specific scripts to manage the widget in editor preview.
 
-    // Specific scripts to manage the widget in editor preview.
     if (this.isEdit) {
       this.editorInitTabs();
       this.currentPage = this.$element.attr(this.pageWrapperAttr);
+
       if (!this.currentPage) {
         this.currentPage = 'dashboard';
       }
-      this.editorShowTab();
-    }
 
-    // General scripts for both frontend and editor.
+      this.editorShowTab();
+    } // General scripts for both frontend and editor.
+
+
     this.applyButtonsHoverAnimation();
     this.doHeightEqualizations();
     this.setContentMinHeight();
@@ -9240,21 +10521,23 @@ var MyAccount = _module["default"].extend({
   },
   bindEvents: function bindEvents() {
     // Add our wrapper class around the select2 whenever it is opened.
-    elementorFrontend.elements.$document.on('select2:open', this.addSelect2Wrapper);
-
-    // The heights of the Registration and Login boxes need to be recaclulated and equalized when
+    elementorFrontend.elements.$document.on('select2:open', this.addSelect2Wrapper); // The heights of the Registration and Login boxes need to be recaclulated and equalized when
     // WooCommerce adds validation messages (such as the password strength meter) into these sections.
+
     elementorFrontend.elements.$body.on('keyup change', '.register #reg_password', this.doHeightEqualizations);
   },
   editorInitTabs: function editorInitTabs() {
     var _this = this;
+
     this.elements.$allPageElements.each(function (index, element) {
       var endpoint = element.getAttribute(_this.pageWrapperAttr);
       var linksToEndpoint;
       linksToEndpoint = _this.$element.find('.woocommerce-MyAccount-navigation-link--' + endpoint);
+
       if ('view-order' === endpoint) {
         linksToEndpoint = _this.elements.$viewOrderLinks.add(_this.elements.$viewOrderButtons);
       }
+
       linksToEndpoint.on('click', {
         endpoint: endpoint
       }, _this.editorShowTab);
@@ -9263,24 +10546,28 @@ var MyAccount = _module["default"].extend({
   },
   editorShowTab: function editorShowTab() {
     var event = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : null;
+
     if (event) {
       this.currentPage = event.data.endpoint;
     }
+
     if ('customer-logout' === this.currentPage) {
       return;
     }
+
     var targetPage = this.$element.find("[".concat(this.pageWrapperAttr, "=\"").concat(this.currentPage, "\"]"));
     this.$element.attr(this.pageWrapperAttr, this.currentPage);
     this.elements.$allPageElements.hide();
     targetPage.show();
     this.toggleEndpointClasses();
+
     if ('view-order' !== this.currentPage) {
       this.elements.$tabItem.removeClass('is-active');
       this.$element.find('.woocommerce-MyAccount-navigation-link--' + this.currentPage).addClass('is-active');
-    }
-
-    // We need to run doHeightEqualizations() again when the 'edit-address' or 'view-order' tab is shown, because jQuery cannot
+    } // We need to run doHeightEqualizations() again when the 'edit-address' or 'view-order' tab is shown, because jQuery cannot
     // get the height of hidden elements, and this tab was hidden on initial page load in the editor.
+
+
     if ('edit-address' === this.currentPage || 'view-order' === this.currentPage) {
       this.doHeightEqualizations();
     }
@@ -9288,15 +10575,18 @@ var MyAccount = _module["default"].extend({
   toggleEndpointClasses: function toggleEndpointClasses() {
     var wcPages = ['dashboard', 'orders', 'view-order', 'downloads', 'edit-account', 'edit-address', 'payment-methods'];
     this.elements.$tabWrapper.removeClass('raven-my-account-tab__' + wcPages.join(' raven-my-account-tab__'));
+
     if (wcPages.includes(this.currentPage)) {
       this.elements.$tabWrapper.addClass('raven-my-account-tab__' + this.currentPage);
     }
   },
   applyButtonsHoverAnimation: function applyButtonsHoverAnimation() {
     var elementSettings = this.getElementSettings();
+
     if (elementSettings.forms_buttons_hover_animation) {
       this.$element.find('.woocommerce button.button').addClass('elementor-animation-' + elementSettings.forms_buttons_hover_animation);
     }
+
     if (elementSettings.tables_button_hover_animation) {
       this.$element.find('.order-again .button, td .button, .woocommerce-pagination .button').addClass('elementor-animation-' + elementSettings.tables_button_hover_animation);
     }
@@ -9304,6 +10594,7 @@ var MyAccount = _module["default"].extend({
   doHeightEqualizations: function doHeightEqualizations() {
     // Equalize <address> boxes height.
     this.equalizeElementHeight(this.elements.$address);
+
     if (!this.isEdit) {
       // Equalize login/reg boxes height, since auth forms do not display in the Editor.
       this.equalizeElementHeight(this.elements.$authForms); //
@@ -9317,6 +10608,7 @@ var MyAccount = _module["default"].extend({
       $element.each(function (index, element) {
         maxHeight = Math.max(maxHeight, element.offsetHeight);
       });
+
       if (0 < maxHeight) {
         $element.css('height', maxHeight + 'px');
       }
@@ -9326,10 +10618,12 @@ var MyAccount = _module["default"].extend({
   setContentMinHeight: function setContentMinHeight() {
     var nav = jQuery('.custom-my-account-nav-vertical');
     var content = jQuery('.woocommerce-MyAccount-content-wrapper');
+
     if (nav.length) {
       var navHeight = window.getComputedStyle(nav[0]).height;
       content.css('min-height', navHeight);
     }
+
     content.css('visibility', 'visible');
   },
   removePaddingBetweenPurchaseNote: function removePaddingBetweenPurchaseNote($element) {
@@ -9344,6 +10638,7 @@ var MyAccount = _module["default"].extend({
     if (0 === propertyName.indexOf('general_text_typography') || 0 === propertyName.indexOf('sections_padding')) {
       this.doHeightEqualizations();
     }
+
     if (0 === propertyName.indexOf('forms_rows_gap')) {
       this.removePaddingBetweenPurchaseNote(this.elements.$purchasenote);
     }
@@ -9352,6 +10647,7 @@ var MyAccount = _module["default"].extend({
   addSelect2Wrapper: function addSelect2Wrapper(event) {
     // The select element is recaptured every time because the markup can refresh
     var selectElement = jQuery(event.target).data('select2');
+
     if (selectElement.$dropdown) {
       selectElement.$dropdown.addClass('e-woo-select2-wrapper');
     }
@@ -9365,9 +10661,11 @@ var MyAccount = _module["default"].extend({
     var $wpAdminBar = elementorFrontend.elements.$wpAdminBar;
     var classes = this.getSettings('classes');
     var stickyOptionsOffset = elementSettings.sticky_right_column_offset || 0;
+
     if ($wpAdminBar.length && 'fixed' === $wpAdminBar.css('position')) {
       stickyOptionsOffset += $wpAdminBar.height();
     }
+
     if ('yes' === this.getElementSettings('sticky_right_column')) {
       this.elements.$stickyRightColumn.addClass(classes.stickyRightColumnActive);
       this.elements.$stickyRightColumn.css('top', stickyOptionsOffset + 'px');
@@ -9377,6 +10675,7 @@ var MyAccount = _module["default"].extend({
     if (!this.isStickyRightColumnActive()) {
       return;
     }
+
     var classes = this.getSettings('classes');
     this.elements.$stickyRightColumn.removeClass(classes.stickyRightColumnActive);
   },
@@ -9385,11 +10684,13 @@ var MyAccount = _module["default"].extend({
       this.deactivateStickyRightColumn();
       return;
     }
+
     if (!this.isStickyRightColumnActive()) {
       this.activateStickyRightColumn();
     }
   }
 });
+
 function _default($scope) {
   new MyAccount({
     $element: $scope
@@ -9400,13 +10701,18 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var $ = jQuery;
+
 var NavMenu = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -9437,12 +10743,12 @@ var NavMenu = _module["default"].extend({
       $megaMenu: this.$element.find(selectors.megaMenu),
       $navMenuItem: this.$element.find(selectors.$menus).find('li'),
       $liNavItem: this.$element.find(selectors.liNavItem)
-    };
+    }; // If there is no parent:<.elementor-container> then the container is a Flex Container.
 
-    // If there is no parent:<.elementor-container> then the container is a Flex Container.
     if (!elements.$elementorContainer.length) {
       elements.$elementorContainer = this.$element.closest('.e-con');
     }
+
     return elements;
   },
   onInit: function onInit() {
@@ -9462,58 +10768,71 @@ var NavMenu = _module["default"].extend({
   },
   bindEvents: function bindEvents() {
     var mobileLayout = this.getElementSettings('mobile_layout');
+
     switch (mobileLayout) {
       case 'dropdown':
         this.elements.$toggleButton.on('click', this.toggleDropdown.bind(this));
         elementorFrontend.addListenerOnce(this.$element.data('model-cid'), 'resize', this.dropdownFullWidth.bind(this));
         $(window).on('resize', this.setMegaMenuWidth.bind(this));
         break;
+
       case 'side':
         var sideMenuOpenPosition = this.getElementSettings('side_menu_alignment'),
-          sideMenuEffect = this.getElementSettings('side_menu_effect');
+            sideMenuEffect = this.getElementSettings('side_menu_effect');
         this.elements.$mobileMenu.addClass('raven-side-menu-' + sideMenuOpenPosition);
         this.elements.$mobileMenu.addClass('raven-side-menu-' + sideMenuOpenPosition);
         this.elements.$toggleButton.on('click', this.toggleMobileMenu.bind(this));
         this.elements.$closeButton.on('click', this.toggleMobileMenu.bind(this));
+
         if (sideMenuEffect === 'push') {
           this.elements.$body.addClass('raven-nav-menu-effect-push');
           this.elements.$toggleButton.on('click', this.sideMenuPush.bind(this));
           this.elements.$closeButton.on('click', this.sideMenuPush.bind(this));
         }
+
         this.elements.$menus.on('select.smapi', this.onSideMenuItemClick.bind(this));
         break;
+
       case 'full-screen':
         var isItemFullWidth = this.getElementSettings('mobile_menu_item_full_width');
+
         if (isItemFullWidth === 'yes') {
           this.elements.$mobileMenu.addClass('raven-nav-menu-item-full-width');
         }
+
         this.elements.$toggleButton.on('click', this.toggleMobileMenu.bind(this));
         this.elements.$closeButton.on('click', this.toggleMobileMenu.bind(this));
         break;
     }
+
     this.elements.$liNavItem.on('hover', this.setMegaMenuWidth);
   },
   initSmartMenu: function initSmartMenu() {
     var subIndicatorsContent = this.getElementSettings('submenu_icon');
     var spaceBetween = this.getElementSettings('submenu_space_between'),
-      options = {
-        subIndicatorsText: subIndicatorsContent,
-        subIndicators: '' !== subIndicatorsContent,
-        subIndicatorsPos: 'append',
-        subMenusMaxWidth: '1500px'
-      };
+        options = {
+      subIndicatorsText: subIndicatorsContent,
+      subIndicators: '' !== subIndicatorsContent,
+      subIndicatorsPos: 'append',
+      subMenusMaxWidth: '1500px'
+    };
+
     if (this.elements.$body.hasClass('rtl')) {
       options.rightToLeftSubMenus = true;
     }
+
     if (this.elements.$megaMenu.length) {
       options.keepInViewport = false;
     }
+
     if ((0, _typeof2["default"])(spaceBetween) === 'object' && spaceBetween.size !== '') {
       options.mainMenuSubOffsetY = parseInt(spaceBetween.size);
     }
+
     if (this.getElementSettings('submenu_opening_position') === 'top') {
       options.bottomToTopSubMenus = true;
     }
+
     this.excludeOtherUl();
     this.elements.$menus.smartmenus(options);
   },
@@ -9526,18 +10845,19 @@ var NavMenu = _module["default"].extend({
     this.dropdownFullWidth();
   },
   dropdownFullWidth: function dropdownFullWidth() {
-    var mobileMenu = this.elements.$mobileMenu;
+    var mobileMenu = this.elements.$mobileMenu; // Used for scrolling menu in small screens.
 
-    // Used for scrolling menu in small screens.
     mobileMenu.css('max-height', document.documentElement.clientHeight - mobileMenu.get(0).getBoundingClientRect().top);
+
     if (this.getElementSettings('full_width') !== 'stretch') {
       return;
     }
+
     var elementorElement = this.elements.$elementorElement,
-      elementorContainer = this.elements.$elementorContainer,
-      mobileToggle = this.elements.$toggleButton,
-      mobileContainer = this.elements.$mobileContainer,
-      windowWidth = window.innerWidth;
+        elementorContainer = this.elements.$elementorContainer,
+        mobileToggle = this.elements.$toggleButton,
+        mobileContainer = this.elements.$mobileContainer,
+        windowWidth = window.innerWidth;
     this.stretchElement.stretch();
     mobileMenu.css('top', elementorElement.offset().top + elementorElement.outerHeight() - mobileToggle.offset().top);
     mobileContainer.css('max-width', windowWidth > 1024 ? elementorContainer.outerWidth() : 'none');
@@ -9545,9 +10865,11 @@ var NavMenu = _module["default"].extend({
   sideMenuPush: function sideMenuPush() {
     var sideMenuOpenPosition = this.getElementSettings('side_menu_alignment');
     var width = parseInt(this.$element.css('--menu-container-width')) || 250;
+
     if (sideMenuOpenPosition === 'right') {
       width = -width;
     }
+
     if (!this.elements.$body.hasClass('raven-nav-menu-effect-pushed')) {
       this.elements.$body.addClass('raven-nav-menu-effect-pushed').css('margin-' + (this.isRtl() ? 'right' : 'left'), width);
     } else {
@@ -9556,11 +10878,13 @@ var NavMenu = _module["default"].extend({
   },
   toggleMobileMenu: function toggleMobileMenu() {
     this.elements.$mobileMenu.toggleClass('raven-nav-menu-active');
+
     if (this.elements.$mobileMenu.hasClass('raven-nav-menu-active')) {
       this.elements.$mobileMenu.parents('.animated').addClass('raven-nav-menu-parents-animation');
     } else {
       this.elements.$mobileMenu.parents('.animated').removeClass('raven-nav-menu-parents-animation');
     }
+
     if (this.elements.$toggleButton.find('.hamburger').length !== 0) {
       this.elements.$toggleButton.find('.hamburger').toggleClass('is-active');
     }
@@ -9568,6 +10892,7 @@ var NavMenu = _module["default"].extend({
   mobileMenuScroll: function mobileMenuScroll() {
     var overlays = document.querySelectorAll('.raven-nav-menu-mobile.raven-nav-menu-dropdown, .raven-nav-menu-mobile.raven-nav-menu-full-screen');
     var _clientY = null;
+
     var _loop = function _loop(i) {
       overlays[i].addEventListener('touchstart', function (event) {
         if (event.targetTouches.length === 1) {
@@ -9580,9 +10905,11 @@ var NavMenu = _module["default"].extend({
       overlays[i].addEventListener('touchmove', function (event) {
         if (event.targetTouches.length === 1) {
           var clientY = event.targetTouches[0].clientY - _clientY;
+
           if (overlays[i].scrollTop === 0 && clientY > 0 && event.cancelable) {
             event.preventDefault();
           }
+
           if (overlays[i].scrollHeight - overlays[i].scrollTop <= overlays[i].clientHeight && clientY < 0 && event.cancelable) {
             event.preventDefault();
           }
@@ -9592,22 +10919,27 @@ var NavMenu = _module["default"].extend({
         passive: true
       });
     };
+
     for (var i = 0; i < overlays.length; i++) {
       _loop(i);
     }
   },
   mobileMenuPageRedirection: function mobileMenuPageRedirection() {
     var itemWithChildern = this.elements.$mobileMenu.find('.menu-item-has-children'),
-      itemLink = itemWithChildern.find('> .raven-link-item'),
-      subArrow = itemLink.find('> .sub-arrow');
+        itemLink = itemWithChildern.find('> .raven-link-item'),
+        subArrow = itemLink.find('> .sub-arrow');
+
     if (itemWithChildern.length === 0 || itemLink.length === 0) {
       return;
     }
+
     subArrow.on('click', function (event) {
       var target = $(event.currentTarget);
+
       if (!target.parent().hasClass('highlighted')) {
         return;
       }
+
       event.preventDefault();
     });
   },
@@ -9618,32 +10950,40 @@ var NavMenu = _module["default"].extend({
     this.elements.$menus.on('click', function (e) {
       anchorId = e.target.getAttribute('href') || '';
       var url = null;
+
       try {
         url = new window.URL($(e.target).prop('href'));
       } catch (err) {
         return;
       }
+
       if (url.href.replace(url.hash, '') !== window.location.href.replace(window.location.hash, '') && anchorId.search(/^#/) === -1) {
         return;
       }
+
       if (url.hash.search(/^#/) === -1) {
         return;
       }
+
       anchorId = url.hash;
       e.preventDefault();
       var anchorTarget = $(anchorId);
+
       if (anchorTarget.length === 0) {
         if (self.elements.$body.hasClass('raven-nav-menu-effect-pushed')) {
           self.sideMenuPush();
         }
+
         self.elements.$mobileMenu.removeClass('raven-nav-menu-active');
         self.changeHamburgerState(false);
         window.history.pushState(null, null, url.hash);
         return;
       }
+
       var scrollPosition = anchorTarget.offset().top;
       scrollPosition -= self.getAdminbarHeight();
       scrollPosition -= self.getBodyBorderWidth();
+
       if (headerSettings && headerSettings.behavior === 'sticky' && headerSettings.overlap) {
         scrollPosition -= self.isHeaderSticked() ? self.tbarHeight() : 2 * self.tbarHeight();
       } else if (headerSettings && !headerSettings.behavior) {
@@ -9651,14 +10991,17 @@ var NavMenu = _module["default"].extend({
       } else {
         scrollPosition -= self.tbarHeight();
       }
+
       if (self.hasCustomStickyHeader()) {
         scrollPosition -= self.getCustomStickyHeaderHeight();
       } else if (headerSettings && headerSettings.behavior === 'fixed' && headerSettings.position === 'top' || headerSettings && headerSettings.behavior === 'sticky') {
         scrollPosition -= self.getHeaderHeight();
       }
+
       if (self.elements.$body.hasClass('raven-nav-menu-effect-pushed')) {
         self.sideMenuPush();
       }
+
       self.elements.$mobileMenu.removeClass('raven-nav-menu-active');
       self.changeHamburgerState(false);
       window.history.pushState(null, null, url.hash);
@@ -9670,20 +11013,26 @@ var NavMenu = _module["default"].extend({
   },
   inPageMenuScroll: function inPageMenuScroll() {
     var self = this;
+
     if (self.elements.$inPageMenuItems.length) {
       self.elements.$inPageMenuItems.each(function (index, node) {
         // Skip links without fragments.
         if (node.hash < 1) {
           return;
         }
+
         var section = $('[id="' + node.hash.replace('#', '') + '"]');
+
         if (!section.length) {
           return;
         }
+
         node = $(node);
+
         if (!window.location.hash) {
           self.activateMenuItem(section, node);
         }
+
         window.addEventListener('scroll', _.throttle(function () {
           self.activateMenuItem(section, node);
         }));
@@ -9692,38 +11041,47 @@ var NavMenu = _module["default"].extend({
   },
   activateMenuItem: function activateMenuItem(section, element) {
     var self = this,
-      threshold = 1;
+        threshold = 1;
     var isVisible = false;
     var headerHeight = self.getHeaderHeight() + self.getAdminbarHeight(),
-      top = section.offset().top,
-      offset = top - threshold - headerHeight,
-      maxOffset = top - threshold * 2 + section.outerHeight() - headerHeight,
-      scrollOffset = window.pageYOffset;
+        top = section.offset().top,
+        offset = top - threshold - headerHeight,
+        maxOffset = top - threshold * 2 + section.outerHeight() - headerHeight,
+        scrollOffset = window.pageYOffset;
+
     if (scrollOffset >= offset && scrollOffset <= maxOffset) {
       isVisible = true;
     }
+
     element.toggleClass('raven-menu-item-active', isVisible);
   },
   getHeaderHeight: function getHeaderHeight() {
     var header = $('.jupiterx-header');
+
     if (header.length === 0) {
       return 0;
     }
+
     var _header$data = header.data('jupiterx-settings'),
-      behavior = _header$data.behavior;
+        behavior = _header$data.behavior;
+
     if (behavior === 'fixed' || behavior === 'sticky' || window.pageYOffset < header.height()) {
       return header.height();
     }
+
     return 0;
   },
   hasCustomStickyHeader: function hasCustomStickyHeader() {
     var settings = this.getHeaderSettings();
+
     if (!settings) {
       return false;
     }
+
     if (!settings.behavior || settings.behavior !== 'sticky') {
       return false;
     }
+
     return !settings.stickyTemplate || settings.stickyTemplate !== settings.template;
   },
   getHeaderSettings: function getHeaderSettings() {
@@ -9734,35 +11092,46 @@ var NavMenu = _module["default"].extend({
     if (!this.hasCustomStickyHeader()) {
       return 0;
     }
+
     var $stickyHeader = $('.jupiterx-header-custom .elementor:last-of-type');
+
     if ($stickyHeader.length === 0) {
       return 0;
     }
+
     return $stickyHeader.outerHeight();
   },
   getBodyBorderWidth: function getBodyBorderWidth() {
     var $bodyBorder = $('.jupiterx-site-body-border');
+
     if ($bodyBorder.length === 0) {
       return 0;
     }
+
     var width = $bodyBorder.css('border-width');
+
     if (!width) {
       return 0;
     }
+
     return parseInt(width.replace('px', ''));
   },
   getAdminbarHeight: function getAdminbarHeight() {
     var adminbar = $('#wpadminbar');
+
     if (adminbar.length) {
       return adminbar.height();
     }
+
     return 0;
   },
   tbarHeight: function tbarHeight() {
     var tbar = $('.jupiterx-tbar');
+
     if (tbar.length) {
       return tbar.outerHeight();
     }
+
     return 0;
   },
   onElementChange: function onElementChange(propertyName) {
@@ -9773,10 +11142,12 @@ var NavMenu = _module["default"].extend({
     } else {
       this.dropdownFullWidth();
     }
+
     if (propertyName === 'mobile_layout' || propertyName === 'side_menu_effect') {
       this.elements.$body.removeClass('raven-nav-menu-effect-pushed').removeAttr('style');
       this.elements.$mobileMenu.removeClass('raven-nav-menu-active');
     }
+
     if (this.getElementSettings('mobile_layout') === 'side') {
       if (propertyName.startsWith('menu_container_width') && this.elements.$body.hasClass('raven-nav-menu-effect-pushed')) {
         var sideMenuOpenPosition = this.getElementSettings('side_menu_alignment');
@@ -9784,8 +11155,10 @@ var NavMenu = _module["default"].extend({
         this.elements.$body.css('margin-left', sideMenuOpenPosition === 'left' ? width : -width);
       }
     }
+
     if (propertyName === 'submenu_space_between') {
       var spaceBetween = this.getElementSettings('submenu_space_between');
+
       if ((0, _typeof2["default"])(spaceBetween) === 'object') {
         this.findElement('.raven-submenu').first().css('margin-top', spaceBetween.size === '' ? '0' : "".concat(spaceBetween.size, "px"));
         this.elements.$menus.smartmenus('destroy');
@@ -9801,21 +11174,26 @@ var NavMenu = _module["default"].extend({
   },
   editShowSubmenu: function editShowSubmenu(toggle) {
     var subMenu = this.findElement('.raven-submenu').first(),
-      spaceBetween = this.getElementSettings('submenu_space_between');
+        spaceBetween = this.getElementSettings('submenu_space_between');
     subMenu.toggleClass('raven-show-submenu', toggle);
+
     if ((0, _typeof2["default"])(spaceBetween) === 'object') {
       subMenu.css('margin-top', spaceBetween.size === '' ? '0' : "".concat(spaceBetween.size, "px"));
     }
   },
   onSideMenuItemClick: function onSideMenuItemClick(e, item) {
     var $el = $(item);
+
     if ($el.closest('.raven-nav-menu-side').length === 0) {
       return;
     }
+
     var href = $el.attr('href');
+
     if (href.search(/^#/) !== -1 || href.trim().length === 0) {
       return;
     }
+
     this.elements.$closeButton.trigger('click');
   },
   isHeaderSticked: function isHeaderSticked() {
@@ -9823,14 +11201,14 @@ var NavMenu = _module["default"].extend({
   },
   setMegaMenuWidth: function setMegaMenuWidth() {
     var megaMenu = this.elements.$liNavItem.find('.submenu .raven-megamenu-wrapper'),
-      elementorContainer = this.elements.$elementorContainer,
-      elementorContainerLeft = elementorContainer.offset().left,
-      containerWidth = elementorContainer.outerWidth();
+        elementorContainer = this.elements.$elementorContainer,
+        elementorContainerLeft = elementorContainer.offset().left,
+        containerWidth = elementorContainer.outerWidth();
     megaMenu.each(function () {
       var self = $(this),
-        megaMenuLiParent = self.parent().parent(),
-        megaMenuLiParentLeft = megaMenuLiParent.offset().left,
-        transformValue = -Math.abs(megaMenuLiParentLeft - elementorContainerLeft);
+          megaMenuLiParent = self.parent().parent(),
+          megaMenuLiParentLeft = megaMenuLiParent.offset().left,
+          transformValue = -Math.abs(megaMenuLiParentLeft - elementorContainerLeft);
       self.parent().css('transform', "translateX(".concat(transformValue, "px)"));
     });
     megaMenu.css('width', "".concat(containerWidth, "px"));
@@ -9844,16 +11222,20 @@ var NavMenu = _module["default"].extend({
   },
   changeHamburgerState: function changeHamburgerState(active) {
     var $hamburger = this.elements.$toggleButton.find('.hamburger');
+
     if ($hamburger.length === 0) {
       return;
     }
+
     if (!active) {
       $hamburger.removeClass('is-active');
       return;
     }
+
     $hamburger.addClass('is-active');
   }
 });
+
 function _default($scope) {
   new NavMenu({
     $element: $scope
@@ -9864,24 +11246,36 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var PaypalButton = /*#__PURE__*/function (_elementorModules$fro) {
   (0, _inherits2["default"])(PaypalButton, _elementorModules$fro);
+
   var _super = _createSuper(PaypalButton);
+
   function PaypalButton() {
     (0, _classCallCheck2["default"])(this, PaypalButton);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(PaypalButton, [{
     key: "getDefaultSettings",
     value: function getDefaultSettings() {
@@ -9918,11 +11312,13 @@ var PaypalButton = /*#__PURE__*/function (_elementorModules$fro) {
       if (_.isNull(this.elements.button)) {
         return;
       }
+
       this.elements.button.addEventListener('click', this.handleClick.bind(this));
     }
   }]);
   return PaypalButton;
 }(elementorModules.frontend.handlers.Base);
+
 function _default($scope) {
   new PaypalButton({
     $element: $scope
@@ -9933,19 +11329,25 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var _masonry = _interopRequireDefault(require("../utils/masonry"));
+
 var PhotoAlbum = _module["default"].extend({
   Masonry: null,
   onInit: function onInit() {
     $(this.$element).on('add-stack-effect', this.addStackEffect);
+
     if (this.getInstanceValue('layout') === 'masonry') {
       this.createMasonry();
     }
+
     if (this.getElementSettings('_skin') === 'stack') {
       $(this.$element).trigger('add-stack-effect');
     }
@@ -9964,14 +11366,17 @@ var PhotoAlbum = _module["default"].extend({
       $element: self.$element
     });
     self.Masonry.run();
+
     if (self.getElementSettings('_skin') !== 'stack') {
       return;
     }
+
     setTimeout(function () {
       $(self.$element).trigger('add-stack-effect');
     }, 50);
   }
 });
+
 function _default($scope) {
   new PhotoAlbum({
     $element: $scope
@@ -9982,11 +11387,14 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var PhotoRoller = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -10006,17 +11414,17 @@ var PhotoRoller = _module["default"].extend({
     };
   },
   onInit: function onInit() {
-    elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
+    elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments); // If the max height has value, we should maintain the scale of the image.
 
-    // If the max height has value, we should maintain the scale of the image.
     if (this.getElementSettings('max_height').size) {
       this.calculateNewWidth();
-    }
+    } // Fore redraw for Safari. This is a hack.
 
-    // Fore redraw for Safari. This is a hack.
+
     if (typeof window.safari === 'undefined') {
       return;
     }
+
     this.redraw();
     $(window).resize(this.redraw);
   },
@@ -10026,22 +11434,24 @@ var PhotoRoller = _module["default"].extend({
   calculateNewWidth: function calculateNewWidth() {
     var maxHeight = this.getElementSettings('max_height');
     var oldWidth = parseFloat(this.elements.$image.css('width'), 10);
-    var oldHeight = parseFloat(this.elements.$image.css('height'), 10);
+    var oldHeight = parseFloat(this.elements.$image.css('height'), 10); // Set max height.
 
-    // Set max height.
     this.elements.$frame.css('max-height', maxHeight.size + maxHeight.unit);
     this.elements.$frame.after().css('max-height', maxHeight.size + maxHeight.unit);
+
     if (maxHeight.unit === 'px' && maxHeight.size < oldHeight) {
       var newWidth = maxHeight.size / oldHeight * oldWidth;
       this.elements.$frame.css('width', newWidth);
       this.elements.$image.css('width', newWidth);
       return;
     }
+
     if (maxHeight.unit === '%' && maxHeight.size < 100) {
       // Calculate the maximum height in pixels based on the width.
       var maxHeightPixels = oldHeight * maxHeight.size / 100,
-        aspectRatio = oldWidth / oldHeight,
-        _newWidth = maxHeightPixels * aspectRatio;
+          aspectRatio = oldWidth / oldHeight,
+          _newWidth = maxHeightPixels * aspectRatio;
+
       this.elements.$frame.css('width', _newWidth);
       this.elements.$frame.css('height', maxHeightPixels);
       this.elements.$image.css('width', _newWidth);
@@ -10049,6 +11459,7 @@ var PhotoRoller = _module["default"].extend({
     }
   }
 });
+
 function _default($scope) {
   new PhotoRoller({
     $element: $scope
@@ -10059,11 +11470,14 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var PostComments = _module["default"].extend({
   onInit: function onInit() {
     $('body').find('li.depth-1').each(function (index, element) {
@@ -10085,9 +11499,11 @@ var PostComments = _module["default"].extend({
     var wrapper = this.getWrapper();
     var iconHoverColor = $(wrapper).css('--action-links-icon-color-hover');
     var defaultColor = $(wrapper).find('.fa-comment-dots').css('color');
+
     if (!iconHoverColor) {
       return;
     }
+
     $(wrapper).find('.jupiterx-comment-links i').on('mouseover', function () {
       $(this).css('color', iconHoverColor);
     });
@@ -10108,6 +11524,7 @@ var PostComments = _module["default"].extend({
     });
   }
 });
+
 function _default($scope) {
   new PostComments({
     $element: $scope
@@ -10118,11 +11535,14 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var PostNavigation = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -10146,24 +11566,27 @@ var PostNavigation = _module["default"].extend({
   },
   handleZoomAndMove: function handleZoomAndMove() {
     var effect = this.getInstanceValue('hover_animation_featured_image');
+
     if (!effect || effect !== 'zoom-move' || this.elements.$image.length < 1) {
       return;
     }
+
     this.elements.$image.on('mouseout', function (event) {
       event.currentTarget.style.transform = 'perspective(900px) translate3d( 0px, 0px, 0px ) scale(1)';
     });
     this.elements.$image.on('mousemove', function (event) {
       var bound = event.currentTarget.getBoundingClientRect(),
-        scaleX = ((bound.width + 35) / bound.width).toFixed(2),
-        scaleY = ((bound.height + 35) / bound.height).toFixed(2);
+          scaleX = ((bound.width + 35) / bound.width).toFixed(2),
+          scaleY = ((bound.height + 35) / bound.height).toFixed(2);
       var pageX = bound.width / 2 - (event.clientX - bound.left),
-        pageY = bound.height / 2 - (event.clientY - bound.top);
+          pageY = bound.height / 2 - (event.clientY - bound.top);
       pageX = pageX / bound.width * 30;
       pageY = pageY / bound.height * 30;
       event.currentTarget.style.transform = "perspective(900px) translate3d( ".concat(pageX, "px, ").concat(pageY, "px, 0px )  scale(").concat(Math.max(scaleX, scaleY));
     });
   }
 });
+
 function _default($scope) {
   new PostNavigation({
     $element: $scope
@@ -10174,13 +11597,17 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.classic = classic;
 exports.cover = cover;
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var PostsCarousel = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -10269,26 +11696,32 @@ var PostsCarousel = _module["default"].extend({
         }
       }
     };
+
     if ('yes' === settings.overflow_visible) {
       this.elements.$carouselWrapper.find('.swiper-button-next').css('right', '40px');
       this.elements.$carouselWrapper.find('.swiper-button-prev').css('left', '40px');
     }
+
     var self = this;
     this.elements.$sliderWrapper.each(function (index, swiperContainer) {
       $(this).parents('.elementor-widget-raven-posts-carousel').find('.raven-posts-carousel').addClass('swiper-' + index);
       $(this).parents('.elementor-widget-raven-posts-carousel').find('.raven-posts-carousel').addClass('swiper-' + index);
+
       if (options.navigation) {
         options.navigation = {
           nextEl: $(swiperContainer).parents('.raven-posts-carousel').find('.swiper-button-next')[0],
           prevEl: $(swiperContainer).parents('.raven-posts-carousel').find('.swiper-button-prev')[0]
         };
       }
+
       var swiperObj = null;
       options.on = {};
+
       options.on.init = function () {
         self.handleAnitmation();
         self.handleFeaturedIamageEffect();
       };
+
       if ('undefined' === typeof Swiper) {
         var asyncSwiper = elementorFrontend.utils.swiper;
         new asyncSwiper(swiperContainer, options).then(function (newSwiperInstance) {
@@ -10312,17 +11745,21 @@ var PostsCarousel = _module["default"].extend({
   },
   handleAnitmation: function handleAnitmation() {
     var _this = this;
+
     this.elements.$sliderWrapper.imagesLoaded().done(function () {
       var items = (0, _toConsumableArray2["default"])(_this.elements.$sliderWrapper[0].querySelectorAll('.swiper-slide'));
+
       if (!_this.getInstanceValue('load_effect')) {
         items.forEach(function (event) {
           event.classList.add('raven-posts-carousel-loaded');
         });
         return;
       }
+
       if (_this.getInstanceValue('load_effect') === 'slide-right') {
         items = items.slice().reverse();
       }
+
       items.forEach(function (event, index) {
         setTimeout(function () {
           event.classList.add('raven-posts-carousel-loaded');
@@ -10335,51 +11772,65 @@ var PostsCarousel = _module["default"].extend({
   },
   handleFeaturedIamageEffect: function handleFeaturedIamageEffect() {
     var effect = this.getInstanceValue('post_image_hover_effect');
+
     if (!effect || effect !== 'zoom-move') {
       return;
     }
+
     var items = this.elements.$sliderWrapper.find('.raven-post-image');
+
     if ('cover' === this.getElementSettings('_skin')) {
       items = this.elements.$sliderWrapper.find('.raven-post-wrapper');
     }
+
     items.on('mouseout', function (event) {
       var zoomMove = event.currentTarget.querySelector('.raven-posts-carousel-zoom-move-wrapper');
+
       if (!zoomMove) {
         return;
       }
+
       zoomMove.style.transform = 'perspective(900px) translate3d( 0px, 0px, 0px ) scale(1)';
     });
     items.on('mousemove', function (event) {
       var bound = event.currentTarget.getBoundingClientRect(),
-        scaleX = ((bound.width + 35) / bound.width).toFixed(2),
-        scaleY = ((bound.height + 35) / bound.height).toFixed(2),
-        zoomMove = event.currentTarget.querySelector('.raven-posts-carousel-zoom-move-wrapper');
+          scaleX = ((bound.width + 35) / bound.width).toFixed(2),
+          scaleY = ((bound.height + 35) / bound.height).toFixed(2),
+          zoomMove = event.currentTarget.querySelector('.raven-posts-carousel-zoom-move-wrapper');
       var pageX = bound.width / 2 - (event.clientX - bound.left),
-        pageY = bound.height / 2 - (event.clientY - bound.top);
+          pageY = bound.height / 2 - (event.clientY - bound.top);
       pageX = pageX / bound.width * 30;
       pageY = pageY / bound.height * 30;
+
       if (!zoomMove) {
         return;
       }
+
       zoomMove.style.transform = "perspective(900px) translate3d( ".concat(pageX, "px, ").concat(pageY, "px, 0px ) scale(").concat(Math.max(scaleX, scaleY), ")");
     });
+
     if ('cover' !== this.getElementSettings('_skin') || document.body.classList.contains('elementor-editor-active')) {
       return;
     }
+
     items.on('click', function (event) {
       var postLink = event.currentTarget.querySelector('.raven-post-image').getAttribute('data-href');
+
       if (!postLink) {
         return;
       }
+
       window.location.assign(postLink);
     });
   }
 });
+
 function classic($scope) {
   new PostsCarousel({
     $element: $scope
   });
 }
+
 function cover($scope) {
   new PostsCarousel({
     $element: $scope
@@ -10390,15 +11841,21 @@ function cover($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.classic = classic;
 exports.cover = cover;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var _sortable = _interopRequireDefault(require("../utils/sortable"));
+
 var _pagination = _interopRequireDefault(require("../utils/pagination"));
+
 var _masonry = _interopRequireDefault(require("../utils/masonry"));
+
 var Posts = _module["default"].extend({
   Sortable: null,
   Pagination: null,
@@ -10441,9 +11898,10 @@ var Posts = _module["default"].extend({
     if (this.getInstanceValue('mirror_rows') === 'yes') {
       elementorFrontend.addListenerOnce(this.$element.data('model-cid'), 'resize', this.mirrorRows.bind(this));
     }
+
     if (this.getInstanceValue('pagination_type') === 'load_more' && this.elements.$loadMore.length) {
       var state = this.getSettings('state'),
-        settings = this.elements.$loadMore.data('settings');
+          settings = this.elements.$loadMore.data('settings');
       this.setPaged({
         paged: state.paged,
         maxNumPages: settings.maxNumPages
@@ -10460,6 +11918,7 @@ var Posts = _module["default"].extend({
     if (this.getInstanceValue('pagination_type') === 'page_based') {
       this.paginationModule();
     }
+
     if (this.getInstanceValue('show_sortable') === 'yes') {
       this.sortableModule();
     }
@@ -10468,18 +11927,22 @@ var Posts = _module["default"].extend({
     if (this.getInstanceValue('layout') === 'masonry') {
       this.runMasonry();
     }
+
     if (this.getInstanceValue('mirror_rows') === 'yes') {
       this.mirrorRows();
     }
+
     if (this.getInstanceValue('pagination_type') === 'infinite_load') {
       this.infiniteLoadObserver();
     }
+
     objectFitPolyfill(this.$element.find(this.getSettings('selectors.postImageFit')));
   },
   paginationModule: function paginationModule() {
     var _Pagination = _pagination["default"].extend({
       handlePagination: this.handlePagination.bind(this)
     });
+
     this.Pagination = new _Pagination({
       $element: this.$element.find(this.getSettings('selectors.pagination'))
     });
@@ -10488,6 +11951,7 @@ var Posts = _module["default"].extend({
     var _Sortable = _sortable["default"].extend({
       handleSort: this.handleSort.bind(this)
     });
+
     this.Sortable = new _Sortable({
       $element: this.$element.find(this.getSettings('selectors.sortable'))
     });
@@ -10496,6 +11960,7 @@ var Posts = _module["default"].extend({
     if (this.getInstanceValue('mirror_rows') === 'yes') {
       this.mirrorRows();
     }
+
     if (this.getInstanceValue('pagination_type') === 'infinite_load') {
       this.infiniteLoadObserver();
     }
@@ -10503,9 +11968,11 @@ var Posts = _module["default"].extend({
   setColumnsCount: function setColumnsCount() {
     var curDevice = elementorFrontend.getCurrentDeviceMode();
     var columnsKey = "columns_".concat(curDevice);
+
     if (curDevice === 'desktop') {
       columnsKey = 'columns';
     }
+
     this.setSettings('columnsCount', parseInt(this.getInstanceValue(columnsKey)));
   },
   runMasonry: function runMasonry() {
@@ -10517,10 +11984,12 @@ var Posts = _module["default"].extend({
   mirrorRows: function mirrorRows() {
     this.setColumnsCount();
     var settings = this.getSettings(),
-      $postsItems = this.$element.find(settings.selectors.postItem);
+        $postsItems = this.$element.find(settings.selectors.postItem);
     $postsItems.filter(settings.selectors.postMirrored).removeAttr(settings.classes.postMirrored);
+
     if ($postsItems.length && $postsItems.length > settings.columnsCount) {
       var totalRows = $postsItems.length / settings.columnsCount;
+
       for (var i = 1; i < totalRows; i += 2) {
         var startIndex = i * settings.columnsCount;
         $postsItems.slice(startIndex, startIndex + settings.columnsCount).attr(settings.classes.postMirrored, true);
@@ -10531,6 +12000,7 @@ var Posts = _module["default"].extend({
     if ($indicator.length < 1) {
       return;
     }
+
     var observer = new IntersectionObserver(function (entries) {
       // eslint-disable-line no-undef
       entries.forEach(function (entry) {
@@ -10566,18 +12036,23 @@ var Posts = _module["default"].extend({
       lang: this.elements.$postsContainer.data('lang')
     };
     var archiveQuery = this.elements.$postsContainer.data('archive-query');
+
     if (archiveQuery) {
       ajaxData.archive_query = JSON.stringify(archiveQuery);
     }
+
     var ajaxSuccess = function ajaxSuccess(res) {
       if (!res.success || !res.data.posts) {
         return;
       }
+
       callback(res);
     };
+
     var ajaxComplete = function ajaxComplete() {
       this.setSettings('state.isLoading', false);
     };
+
     this.setSettings('state.isLoading', true);
     $.ajax({
       type: 'POST',
@@ -10589,21 +12064,26 @@ var Posts = _module["default"].extend({
   },
   addPosts: function addPosts(data) {
     var state = this.getSettings('state');
+
     if (state.isLoading || state.paged < 1) {
       return false;
     }
+
     this.ajaxPosts(data, this.appendPosts);
     return true;
   },
   appendPosts: function appendPosts(res) {
     var state = this.getSettings('state');
+
     switch (this.getInstanceValue('layout')) {
       case 'masonry':
         this.Masonry.push(res.data.posts);
         break;
+
       default:
         this.elements.$postsContainer.append(res.data.posts);
     }
+
     this.setPaged({
       paged: state.paged + 1,
       maxNumPages: res.data.max_num_pages
@@ -10612,24 +12092,30 @@ var Posts = _module["default"].extend({
   },
   setPosts: function setPosts(data) {
     var state = this.getSettings('state');
+
     if (state.isLoading) {
       return false;
     }
+
     this.ajaxPosts(data, this.renderPosts);
     return true;
   },
   renderPosts: function renderPosts(res) {
     this.elements.$postsContainer.empty();
     this.elements.$postsContainer.append(res.data.posts);
+
     if (this.Sortable && !this.Sortable.isEnabled()) {
       this.Sortable.renderUpdate();
+
       if (this.Pagination && this.Pagination.isEnabled()) {
         this.Pagination.recreatePagination(res.data.max_num_pages);
       }
     }
+
     if (this.Pagination && !this.Pagination.isEnabled()) {
       this.Pagination.renderUpdate();
     }
+
     this.setPaged({
       paged: 1,
       maxNumPages: res.data.max_num_pages
@@ -10639,7 +12125,7 @@ var Posts = _module["default"].extend({
   handleLoadMore: function handleLoadMore(event) {
     event.preventDefault();
     var state = this.getSettings('state'),
-      newPaged = state.paged + 1;
+        newPaged = state.paged + 1;
     this.addPosts({
       paged: newPaged,
       category: state.category
@@ -10647,7 +12133,7 @@ var Posts = _module["default"].extend({
   },
   handleInfiniteLoad: function handleInfiniteLoad() {
     var state = this.getSettings('state'),
-      newPaged = state.paged + 1;
+        newPaged = state.paged + 1;
     this.addPosts({
       paged: newPaged,
       category: state.category
@@ -10665,21 +12151,25 @@ var Posts = _module["default"].extend({
       paged: 1,
       category: category
     });
+
     if (postOk) {
       this.setSettings('state.category', category);
     }
   },
   setPaged: function setPaged(params) {
     var paged = params.paged,
-      maxNumPages = params.maxNumPages;
+        maxNumPages = params.maxNumPages;
+
     if (paged >= maxNumPages) {
       paged = -1;
     }
+
     if (paged === -1) {
       this.elements.$loadMore.hide();
     } else {
       this.elements.$loadMore.show();
     }
+
     this.setSettings('state.paged', paged);
     this.setSettings('state.maxNumPages', maxNumPages);
   },
@@ -10690,6 +12180,7 @@ var Posts = _module["default"].extend({
     if (!activeSection) {
       return;
     }
+
     this.editOverlayIcons(activeSection.indexOf('section_icons') !== -1);
   },
   onEditorClosed: function onEditorClosed() {
@@ -10699,11 +12190,13 @@ var Posts = _module["default"].extend({
     this.$element.toggleClass('raven-edit-icons', toggle);
   }
 });
+
 function classic($scope) {
   new Posts({
     $element: $scope
   });
 }
+
 function cover($scope) {
   new Posts({
     $element: $scope
@@ -10714,11 +12207,14 @@ function cover($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var ProductDataTabs = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -10737,14 +12233,16 @@ var ProductDataTabs = _module["default"].extend({
     if (document.body.classList.contains('elementor-editor-active')) {
       $('.wc-tabs-wrapper, .woocommerce-tabs, #rating').trigger('init');
     }
+
     this.elements.$standardTab.on('click', function (event) {
       $('.raven-product-data-tabs.standard-tab-style .woocommerce-tabs ul.tabs li').removeClass('previous-tab');
       var target = $(event.currentTarget).parent(),
-        previousElement = target.prev();
+          previousElement = target.prev();
       previousElement.addClass('previous-tab');
     });
   }
 });
+
 function _default($scope) {
   new ProductDataTabs({
     $element: $scope
@@ -10755,11 +12253,14 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var ProductsGallery = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -10799,6 +12300,7 @@ var ProductsGallery = _module["default"].extend({
   onInit: function onInit() {
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
     var settings = this.getGallerylSettings();
+
     if (settings.layout === 'stack' && settings.aspectIsEnabled) {
       objectFitPolyfill(this.$element.find(this.getSettings('selectors.galleryImageFit')));
     }
@@ -10808,23 +12310,28 @@ var ProductsGallery = _module["default"].extend({
   },
   onElementChange: function onElementChange(propertyName) {
     var settings = this.getGallerylSettings();
+
     if (propertyName === 'aspect_ratio' && settings.videoIsEnable) {
       var $gallery = this.$element.find('.raven-product-gallery-wrapper').find('.raven-product-gallery-stack-wrapper'),
-        videos = $gallery.find('.jupiterx-product-gallery-stack-video'),
-        images = $gallery.find('.raven-product-gallery-stack-image'),
-        imagesHeight = images.height();
+          videos = $gallery.find('.jupiterx-product-gallery-stack-video'),
+          images = $gallery.find('.raven-product-gallery-stack-image'),
+          imagesHeight = images.height();
       videos.css('height', 'auto');
+
       if (images.length === 0) {
         setTimeout(function () {
           return videos.css('height', 'max-content');
         });
         return;
       }
+
       setTimeout(function () {
         return videos.height(imagesHeight);
       });
     }
+
     var reloadProperties = ['product_thumbnail_width', 'product_thumbnail_width'];
+
     if (reloadProperties.includes(propertyName)) {
       new window.jupiterxProductGallery(jQuery('.raven-product-gallery-wrapper'), true);
     }
@@ -10838,62 +12345,78 @@ var ProductsGallery = _module["default"].extend({
   },
   ProductGalleryInstance: function ProductGalleryInstance() {
     var $ = jQuery,
-      settings = this.getGallerylSettings(),
-      slider = this.elements.$galleryBase.find('.raven-product-gallery-slider-wrapper'),
-      widgetWrapper = this.getWrapper(),
-      widget = this;
+        settings = this.getGallerylSettings(),
+        slider = this.elements.$galleryBase.find('.raven-product-gallery-slider-wrapper'),
+        widgetWrapper = this.getWrapper(),
+        widget = this;
     $(slider).removeClass('jupiterx-product-gallery-vertical jupiterx-product-gallery-horizontal jupiterx-product-gallery-none');
     var thumbnailsView = this.getThumbnail(widget);
+
     if (window.innerWidth < 768) {
       settings.thumbnails = 'horizontal';
       $(widgetWrapper).find('.woocommerce-product-gallery-raven-widget').removeClass('raven-product-gallery-left raven-product-gallery-right').addClass('raven-product-gallery-horizontal').find('ol').removeClass('slick-vertical');
     }
+
     var ProductGallery = function ProductGallery($target) {
       var _this = this;
+
       var afterAjax = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
       this.$target = $target;
+
       if (true === afterAjax) {
         return this;
       }
+
       if ('stack' === settings.layout) {
         if (settings.zoom) {
           this.initZoom('li');
         }
+
         if (settings.zoom) {
           this.lightbox();
         }
+
         if (settings.videoIsEnable) {
           this.controlVideoOnload();
           this.endedVideo();
           this.handleVideoHeight();
         }
       }
+
       if ('standard' === settings.layout) {
         this.slider();
+
         if (!settings.carousel) {
           this.carousel();
         }
+
         if (settings.zoom) {
           this.zoomIcon();
         }
+
         if (settings.lightbox) {
           this.standardLightbox();
         }
+
         if (!settings.lightbox) {
           var $image = this.$target.find('.woocommerce-product-gallery__image');
           $image.find('a').css('pointer-events', 'none');
         }
+
         if (settings.wcZoomDisabled && settings.zoom) {
           setTimeout(function () {
             _this.initZoom('.woocommerce-product-gallery__image');
           }, 100);
         }
+
         if (settings.wcLighboxDisabled && settings.lightbox && !settings.videoIsEnable) {
           this.initPhotoswipe();
         }
+
         this.disableProductElementorLighBox();
         this.createSlickThumbnailsSlider();
         this.repositionDirectionNav();
+
         if (settings.videoIsEnable) {
           this.handleIframe();
           this.handleVideoOnChangeSlide();
@@ -10902,45 +12425,56 @@ var ProductsGallery = _module["default"].extend({
         }
       }
     };
+
     this.handleWcModal();
+
     ProductGallery.prototype.endedVideo = function () {
       $('video').on('ended', function (event) {
         var current = $(event.currentTarget),
-          iconTag = current.parent().find('i');
+            iconTag = current.parent().find('i');
         iconTag.removeClass('circle-pause').addClass('circle-play');
       });
     };
+
     ProductGallery.prototype.handleIframe = function () {
       var gallery = this.$target;
       var aciveItem = gallery.find('.flex-active-slide');
+
       if (aciveItem.length === 0) {
         aciveItem = gallery.find('.woocommerce-product-gallery__image');
       }
+
       aciveItem.find('iframe').on('load', function (event) {
         $(event.currentTarget).parent().removeClass('iframe-on-load');
         $(event.currentTarget).show();
         $(event.currentTarget).next().hide();
       });
     };
+
     ProductGallery.prototype.handleVideoHeight = function () {
       var $gallery = this.$target.find('.raven-product-gallery-stack-wrapper'),
-        videos = $gallery.find('.jupiterx-product-gallery-stack-video'),
-        images = $gallery.find('.raven-product-gallery-stack-image'),
-        imagesHeight = images.height();
+          videos = $gallery.find('.jupiterx-product-gallery-stack-video'),
+          images = $gallery.find('.raven-product-gallery-stack-image'),
+          imagesHeight = images.height();
+
       if (images.length === 0) {
         videos.css('height', 'max-content');
         return;
       }
+
       videos.height(imagesHeight);
     };
+
     ProductGallery.prototype.slider = function () {
       var isRtl = document.body.classList.contains('rtl') ? true : false;
       var nextIcon = '<svg fill=\"#333333\" version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"7.2px\" height=\"12px\" viewBox=\"0 0 7.2 12\" style=\"enable-background:new 0 0 7.2 12;\" xml:space=\"preserve\"><path class=\"st0\" d=\"M4.8,6l-4.5,4.3c-0.4,0.4-0.4,1,0,1.4c0.4,0.4,1,0.4,1.4,0l5.2-5C7.1,6.5,7.2,6.3,7.2,6S7.1,5.5,6.9,5.3l-5.2-5C1.5,0.1,1.2,0,1,0C0.7,0,0.5,0.1,0.3,0.3c-0.4,0.4-0.4,1,0,1.4L4.8,6z\"/></svg>';
       var prevIcon = '<svg fill=\"#333333\" version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"7.2px\" height=\"12px\" viewBox=\"0 0 7.2 12\" style=\"enable-background:new 0 0 7.2 12;\" xml:space=\"preserve\"><path class=\"st0\" d=\"M2.4,6l4.5-4.3c0.4-0.4,0.4-1,0-1.4c-0.4-0.4-1-0.4-1.4,0l-5.2,5C0.1,5.5,0,5.7,0,6s0.1,0.5,0.3,0.7l5.2,5\tC5.7,11.9,6,12,6.2,12c0.3,0,0.5-0.1,0.7-0.3c0.4-0.4,0.4-1,0-1.4L2.4,6z\"/></svg>';
+
       if (isRtl) {
         nextIcon = '<svg fill=\"#333333\" version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"7.2px\" height=\"12px\" viewBox=\"0 0 7.2 12\" style=\"enable-background:new 0 0 7.2 12;\" xml:space=\"preserve\"><path class=\"st0\" d=\"M2.4,6l4.5-4.3c0.4-0.4,0.4-1,0-1.4c-0.4-0.4-1-0.4-1.4,0l-5.2,5C0.1,5.5,0,5.7,0,6s0.1,0.5,0.3,0.7l5.2,5\tC5.7,11.9,6,12,6.2,12c0.3,0,0.5-0.1,0.7-0.3c0.4-0.4,0.4-1,0-1.4L2.4,6z\"/></svg>';
         prevIcon = '<svg fill=\"#333333\" version=\"1.1\" id=\"Layer_1\" xmlns=\"http://www.w3.org/2000/svg\" xmlns:xlink=\"http://www.w3.org/1999/xlink\" x=\"0px\" y=\"0px\" width=\"7.2px\" height=\"12px\" viewBox=\"0 0 7.2 12\" style=\"enable-background:new 0 0 7.2 12;\" xml:space=\"preserve\"><path class=\"st0\" d=\"M4.8,6l-4.5,4.3c-0.4,0.4-0.4,1,0,1.4c0.4,0.4,1,0.4,1.4,0l5.2-5C7.1,6.5,7.2,6.3,7.2,6S7.1,5.5,6.9,5.3l-5.2-5C1.5,0.1,1.2,0,1,0C0.7,0,0.5,0.1,0.3,0.3c-0.4,0.4-0.4,1,0,1.4L4.8,6z\"/></svg>';
       }
+
       var args = {
         flexslider: {
           allowOneSlide: false,
@@ -10961,6 +12495,7 @@ var ProductsGallery = _module["default"].extend({
       slider.wc_product_gallery(args);
       this.smoothHeight();
     };
+
     ProductGallery.prototype.smoothHeight = function () {
       var duration = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 400;
       setTimeout(function () {
@@ -10973,24 +12508,27 @@ var ProductsGallery = _module["default"].extend({
         $('.flex-direction-nav').css('top', half + 'px');
       }, duration);
     };
+
     ProductGallery.prototype.getGalleryItems = function () {
       var $slides = $('.woocommerce-product-gallery__image'),
-        items = [];
+          items = [];
+
       if ($slides.length > 0) {
         $slides.each(function (i, el) {
           var img = $(el).find('img');
+
           if (img.length > 0) {
             var largeImageSrc = img.attr('data-large_image'),
-              largeImageW = img.attr('data-large_image_width'),
-              largeImageH = img.attr('data-large_image_height'),
-              alt = img.attr('alt'),
-              item = {
-                alt: alt,
-                src: largeImageSrc,
-                w: largeImageW,
-                h: largeImageH,
-                title: img.attr('data-caption') ? img.attr('data-caption') : img.attr('title')
-              };
+                largeImageW = img.attr('data-large_image_width'),
+                largeImageH = img.attr('data-large_image_height'),
+                alt = img.attr('alt'),
+                item = {
+              alt: alt,
+              src: largeImageSrc,
+              w: largeImageW,
+              h: largeImageH,
+              title: img.attr('data-caption') ? img.attr('data-caption') : img.attr('title')
+            };
             items.push(item);
           } else {
             $(el).find('.jupiterx-attachment-media-custom-video-icons').css('max-width', 'inherit');
@@ -11001,24 +12539,28 @@ var ProductsGallery = _module["default"].extend({
           }
         });
       }
+
       return items;
     };
+
     ProductGallery.prototype.handlePhotoswipe = function () {
       if (!settings.lightbox) {
         return;
-      }
+      } // Disable all default events.
 
-      // Disable all default events.
+
       this.$target.off('click', '.woocommerce-product-gallery__trigger');
       this.$target.off('click', '.woocommerce-product-gallery__image a');
       this.$target.on('click', '.woocommerce-product-gallery__trigger', this.openPhotoswipe);
       this.$target.on('click', '.woocommerce-product-gallery__image a', function (e) {
         e.preventDefault();
       });
+
       if (settings.zoom) {
         if (this.$target.find('.woocommerce-product-gallery__trigger').length === 0) {
           this.$target.append('<a href="#" class="woocommerce-product-gallery__trigger"></a>');
         }
+
         var $zoomIcon = $(this.$target).find('.woocommerce-product-gallery__trigger');
         $($zoomIcon).hide();
         $(document).on('click', '.zoomImg, .woocommerce-product-gallery__image a', function () {
@@ -11026,13 +12568,15 @@ var ProductsGallery = _module["default"].extend({
         });
       }
     };
-
     /**
      * Init PhotoSwipe.
      */
+
+
     ProductGallery.prototype.initPhotoswipe = function () {
       var $target = this.$target,
-        images = $target.find('img');
+          images = $target.find('img');
+
       if (images.length > 0) {
         this.$target.prepend('<a href="#" class="woocommerce-product-gallery__trigger"></a>');
         this.$target.on('click', '.woocommerce-product-gallery__trigger', this.openPhotoswipe);
@@ -11040,30 +12584,37 @@ var ProductsGallery = _module["default"].extend({
           event.preventDefault();
         });
       }
+
       if (settings.zoom) {
         var $zoomIcon = $target.find('.woocommerce-product-gallery__trigger');
         $(document).on('click', '.flex-active-slide', function (event) {
           var iframe = $(event.currentTarget).find('.jupiterx-attachment-media-iframe');
+
           if (iframe.length > 0) {
             return;
           }
+
           $($zoomIcon).click();
         });
       }
     };
+
     ProductGallery.prototype.handleVideoOnPhotoSwipe = function (element, photoswipe) {
       if (!$(element).hasClass('pswp--open')) {
         return;
       }
+
       photoswipe.listen('beforeChange', function () {
         var video = $(element).find('video'),
-          iframe = $(element).find('iframe'),
-          items = $(element).find('.pswp__item');
+            iframe = $(element).find('iframe'),
+            items = $(element).find('.pswp__item');
+
         if (video.length > 0) {
           var iconTag = video.parent().find('i');
           iconTag.removeClass('circle-pause').addClass('circle-play');
           video.get(0).pause();
         }
+
         if (iframe.length > 0) {
           ProductGallery.prototype.resetIframes(iframe);
           $(element).find('iframe').on('load', function (event) {
@@ -11072,28 +12623,34 @@ var ProductsGallery = _module["default"].extend({
             $(event.currentTarget).next().hide();
           });
         }
+
         items.each(function (index, item) {
           if ('block' === $(item).css('display') && typeof $(item).find('video').attr('autoplay') !== 'undefined') {
             var _iconTag = video.parent().find('i');
+
             _iconTag.removeClass('circle-play').addClass('circle-pause');
+
             $(item).find('video').get(0).play();
           }
         });
       });
       ProductGallery.prototype.handleVideoOnClick($(element));
     };
+
     ProductGallery.prototype.openPhotoswipe = function (event) {
       event.preventDefault();
       var pswpElement = $('.pswp')[0],
-        items = ProductGallery.prototype.getGalleryItems(),
-        eventTarget = $(event.target);
+          items = ProductGallery.prototype.getGalleryItems(),
+          eventTarget = $(event.target);
       var clicked;
+
       if (eventTarget.is('.woocommerce-product-gallery__trigger') || eventTarget.is('.woocommerce-product-gallery__trigger img')) {
         clicked = slider.find('.flex-active-slide');
       } else {
         clicked = eventTarget.closest('.woocommerce-product-gallery__image');
         return;
       }
+
       var options = $.extend({
         index: $(clicked).index(),
         addCaptionHTMLFn: function addCaptionHTMLFn(item, captionEl) {
@@ -11101,55 +12658,67 @@ var ProductsGallery = _module["default"].extend({
             captionEl.children[0].textContent = '';
             return false;
           }
+
           captionEl.children[0].textContent = item.title;
           return true;
         } // eslint-disable-line
+
       }, {
         closeOnScroll: false,
         history: false,
         hideAnimationDuration: 0,
         showAnimationDuration: 0
-      });
+      }); // Initializes and opens PhotoSwipe.
 
-      // Initializes and opens PhotoSwipe.
       var photoswipe = new PhotoSwipe(pswpElement, PhotoSwipeUI_Default, items, options); // eslint-disable-line
+
       photoswipe.init();
       ProductGallery.prototype.handleVideoOnPhotoSwipe(pswpElement, photoswipe);
     };
+
     ProductGallery.prototype.disableProductElementorLighBox = function () {
       var $imageLinks = $(this.$target).find('a');
+
       if (settings.lightbox && document.body.classList.contains('elementor-editor-active')) {
         $($imageLinks).attr('data-elementor-open-lightbox', 'yes');
         return;
       }
+
       $($imageLinks).attr('data-elementor-open-lightbox', 'no');
     };
+
     ProductGallery.prototype.initZoom = function (item) {
       if (!$.isFunction($.fn.zoom)) {
         return;
       }
+
       var $target = this.$target,
-        zoomTarget = $target.find(item);
+          zoomTarget = $target.find(item);
       $(zoomTarget).each(function (index, target) {
         var image = $(target).find('img'),
-          itemWidth = $(target).width();
+            itemWidth = $(target).width();
+
         if (image.data('large_image_width') > itemWidth) {
           var zoomOptions = {
             touch: false
           };
+
           if ('ontouchstart' in window) {
             zoomOptions.on = 'click';
           }
+
           $(target).trigger('zoom.destroy');
           $(target).zoom(zoomOptions);
         }
       });
     };
+
     ProductGallery.prototype.carousel = function () {
       var $target = this.$target,
-        nav = $target.find('.flex-direction-nav');
+          nav = $target.find('.flex-direction-nav');
       $(nav).remove();
     };
+
     ProductGallery.prototype.lightbox = function () {
       var self = this;
       setTimeout(function () {
@@ -11159,14 +12728,18 @@ var ProductsGallery = _module["default"].extend({
         });
       }, 100);
     };
+
     ProductGallery.prototype.standardLightbox = function () {
       if (settings.zoom) {
         return;
       }
+
       var $target = this.$target;
+
       if ($target.find('.woocommerce-product-gallery__trigger').length === 0) {
         this.$target.append('<a href="#" class="woocommerce-product-gallery__trigger"></a>');
       }
+
       var $zoomIcon = null;
       $zoomIcon = $target.find('.woocommerce-product-gallery__trigger');
       $($zoomIcon).hide();
@@ -11174,16 +12747,19 @@ var ProductsGallery = _module["default"].extend({
         $($zoomIcon).click();
       });
     };
+
     ProductGallery.prototype.zoomIcon = function () {
       var $target = this.$target,
-        $zoomIcon = $target.find('.woocommerce-product-gallery__trigger');
+          $zoomIcon = $target.find('.woocommerce-product-gallery__trigger');
       $($zoomIcon).hide();
+
       if (settings.lightbox) {
         $target.on('click', '.zoomImg, .woocommerce-product-gallery__image a', function () {
           $($zoomIcon).click();
         });
       }
     };
+
     ProductGallery.prototype.createSlickThumbnailsSlider = function () {
       var $gallery = this.$target.find('.raven-product-gallery-slider-wrapper');
       var options = {
@@ -11194,6 +12770,7 @@ var ProductsGallery = _module["default"].extend({
         prevArrow: '<button class="slick-prev" aria-label="Prev" type="button"><svg fill="#333333" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="7.2px" height="12px" viewBox="0 0 7.2 12" style="enable-background:new 0 0 7.2 12;" xml:space="preserve"><path class="st0" d="M2.4,6l4.5-4.3c0.4-0.4,0.4-1,0-1.4c-0.4-0.4-1-0.4-1.4,0l-5.2,5C0.1,5.5,0,5.7,0,6s0.1,0.5,0.3,0.7l5.2,5	C5.7,11.9,6,12,6.2,12c0.3,0,0.5-0.1,0.7-0.3c0.4-0.4,0.4-1,0-1.4L2.4,6z"/></svg></button>',
         nextArrow: '<button class="slick-next" aria-label="Next" type="button"><svg fill="#333333" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" width="7.2px" height="12px" viewBox="0 0 7.2 12" style="enable-background:new 0 0 7.2 12;" xml:space="preserve"><path class="st0" d="M4.8,6l-4.5,4.3c-0.4,0.4-0.4,1,0,1.4c0.4,0.4,1,0.4,1.4,0l5.2-5C7.1,6.5,7.2,6.3,7.2,6S7.1,5.5,6.9,5.3l-5.2-5C1.5,0.1,1.2,0,1,0C0.7,0,0.5,0.1,0.3,0.3c-0.4,0.4-0.4,1,0,1.4L4.8,6z"/></svg></button>'
       };
+
       if (['left', 'right'].includes(widget.getThumbnail(widget))) {
         options = $.extend(options, {
           vertical: true,
@@ -11201,20 +12778,25 @@ var ProductsGallery = _module["default"].extend({
         });
         setTimeout(function () {
           var activeItems = $gallery.find('.slick-active'),
-            count = activeItems.length;
+              count = activeItems.length;
           var height = activeItems.height() * count;
+
           if (parseInt(activeItems.css('margin-bottom')) > 0) {
             height += parseInt(activeItems.css('margin-bottom')) * count;
           }
+
           if (parseInt(activeItems.css('border-bottom-width')) > 0) {
             height += parseInt(activeItems.css('border-bottom-width')) * count;
           }
+
           if (parseInt(activeItems.css('border-top-width')) > 0) {
             height += parseInt(activeItems.css('border-top-width')) * count;
           }
+
           $gallery.find('.slick-track, .slick-list').css('height', height + 'px');
         }, 100);
       }
+
       if ('horizontal' === widget.getThumbnail(widget)) {
         options.arrows = false;
         options.useTransform = false;
@@ -11222,12 +12804,14 @@ var ProductsGallery = _module["default"].extend({
         options.arrows = true;
         options.useTransform = true;
       }
+
       if ($('.flex-control-thumbs').hasClass('slick-initialized')) {
         $('.flex-control-thumbs').slick('destroy');
         $('.flex-control-thumbs').slick(options);
       } else {
         $('.flex-control-thumbs').slick(options);
       }
+
       if (settings.videoIsEnable) {
         var galleryItems = $gallery.find('.woocommerce-product-gallery__image');
         galleryItems.each(function (index, element) {
@@ -11236,6 +12820,7 @@ var ProductsGallery = _module["default"].extend({
           }
         });
       }
+
       var self = this;
       $gallery.on('click', '.flex-direction-nav a', function () {
         $gallery.find('.flex-control-nav').slick('slickGoTo', $gallery.find('.flex-active-slide').index());
@@ -11244,55 +12829,68 @@ var ProductsGallery = _module["default"].extend({
         self.smoothHeight(0);
       });
     };
+
     ProductGallery.prototype.repositionDirectionNav = function () {
       var $gallery = this.$target.find('.raven-product-gallery-slider-wrapper');
+
       var positionNav = function positionNav() {
         var $nav = $gallery.find('.flex-direction-nav'),
-          $thumbs = $gallery.find('.flex-control-thumbs'),
-          $videoIcon = $gallery.find('.jupiterx-attachment-media-custom-video-icons'),
-          $viewport = $gallery.find('.flex-viewport');
+            $thumbs = $gallery.find('.flex-control-thumbs'),
+            $videoIcon = $gallery.find('.jupiterx-attachment-media-custom-video-icons'),
+            $viewport = $gallery.find('.flex-viewport');
         var width = $thumbs.outerWidth(true);
+
         if (widget.getThumbnail(widget) === 'right') {
           $nav.css('right', width);
         }
+
         if (widget.getThumbnail(widget) === 'left') {
           $nav.css('left', width);
         }
+
         $videoIcon.css('max-width', $viewport.width());
       };
+
       $(window).resize(positionNav);
       positionNav();
     };
+
     ProductGallery.prototype.handleVideoOnClick = function ($gallery) {
       $gallery.off('click', '.jupiterx-attachment-media-custom-video-icons').on('click', '.jupiterx-attachment-media-custom-video-icons', function (event) {
         var current = $(event.currentTarget),
-          iconTag = $(event.currentTarget).find('i'),
-          video = current.prev(),
-          wrapper = $gallery.find('.jupiterx-attachment-media-iframe'),
-          videos = $gallery.find('video'),
-          iframe = $gallery.find('iframe');
+            iconTag = $(event.currentTarget).find('i'),
+            video = current.prev(),
+            wrapper = $gallery.find('.jupiterx-attachment-media-iframe'),
+            videos = $gallery.find('video'),
+            iframe = $gallery.find('iframe');
+
         if (iframe.length > 0) {
           ProductGallery.prototype.resetIframes(iframe);
         }
+
         if (!video.get(0).paused) {
           iconTag.removeClass('circle-pause').addClass('circle-play');
           video.get(0).pause();
           return;
         }
+
         wrapper.find('i').removeClass('circle-pause').addClass('circle-play');
         videos.trigger('pause');
         iconTag.removeClass('circle-play').addClass('circle-pause');
         video.get(0).play();
       });
     };
+
     ProductGallery.prototype.controlVideoOnload = function () {
       var $gallery = this.$target.find('.raven-product-gallery-stack-wrapper'),
-        videos = $gallery.find('video'),
-        iframe = $gallery.find('iframe');
+          videos = $gallery.find('video'),
+          iframe = $gallery.find('iframe');
       var active = $gallery.find('li:first-child');
+
       if ($gallery.length === 0) {
         return;
       }
+
       if (videos.length > 0) {
         videos.each(function () {
           var iconTag = $(this).parent().find('i');
@@ -11300,6 +12898,7 @@ var ProductsGallery = _module["default"].extend({
           $(this).get(0).pause();
         });
       }
+
       if (iframe.length > 0) {
         ProductGallery.prototype.resetIframes(iframe);
         iframe.on('load', function (event) {
@@ -11308,24 +12907,29 @@ var ProductsGallery = _module["default"].extend({
           $(event.currentTarget).next().hide();
         });
       }
+
       if (videos.length > 0 && active.find('video').length === 0) {
         var firstVideo = videos[0];
         active = $(firstVideo).parent();
       }
+
       if (active.length > 0 && active.find('video').length > 0 && typeof active.find('video').attr('autoplay') !== 'undefined') {
         var iconTag = active.find('video').parent().find('i');
         iconTag.removeClass('circle-play').addClass('circle-pause');
         active.find('video').get(0).play();
       }
+
       ProductGallery.prototype.handleVideoOnClick($gallery);
     };
+
     ProductGallery.prototype.handleVideoOnChangeSlide = function () {
       var $gallery = this.$target,
-        selectors = '.flex-direction-nav a, .flex-control-thumbs li, .flex-control-thumbs li .jupiterx-product-single-play-icon, .woocommerce-product-gallery__image a, .woocommerce-product-gallery__trigger';
+          selectors = '.flex-direction-nav a, .flex-control-thumbs li, .flex-control-thumbs li .jupiterx-product-single-play-icon, .woocommerce-product-gallery__image a, .woocommerce-product-gallery__trigger';
       $gallery.on('click', selectors, function () {
         var video = $gallery.find('video'),
-          iframe = $gallery.find('iframe'),
-          active = $gallery.find('.flex-active-slide');
+            iframe = $gallery.find('iframe'),
+            active = $gallery.find('.flex-active-slide');
+
         if (video.length > 0) {
           var iconTag = video.parent().find('i');
           iconTag.removeClass('circle-pause').addClass('circle-play');
@@ -11333,6 +12937,7 @@ var ProductsGallery = _module["default"].extend({
             $(item).get(0).pause();
           });
         }
+
         if (iframe.length > 0) {
           ProductGallery.prototype.resetIframes(iframe);
           iframe.on('load', function (event) {
@@ -11341,46 +12946,55 @@ var ProductsGallery = _module["default"].extend({
             $(event.currentTarget).next().hide();
           });
         }
+
         if (active.length > 0 && typeof active.find('video').attr('autoplay') !== 'undefined') {
           var _iconTag2 = video.parent().find('i');
+
           _iconTag2.removeClass('circle-play').addClass('circle-pause');
+
           active.find('video').get(0).play();
         }
       });
       ProductGallery.prototype.handleVideoOnClick($gallery);
     };
+
     ProductGallery.prototype.resetIframes = function (iframe) {
       iframe.each(function (index, element) {
         var src = $(element).attr('src');
         $(element).attr('src', src);
       });
     };
-    new ProductGallery(jQuery('.raven-product-gallery-wrapper'));
-    window.jupiterxProductGallery = ProductGallery;
 
-    // Let library update slider 250ms after window resize event.
+    new ProductGallery(jQuery('.raven-product-gallery-wrapper'));
+    window.jupiterxProductGallery = ProductGallery; // Let library update slider 250ms after window resize event.
+
     var handleResize = function handleResize() {
       var windowInnerWidth = window.innerWidth;
+
       if (windowInnerWidth < 768 || 'horizontal' === widget.getThumbnail(widget)) {
         settings.thumbnails = 'horizontal';
         $(widgetWrapper).find('.woocommerce-product-gallery-raven-widget').removeClass('raven-product-gallery-left raven-product-gallery-right').addClass('raven-product-gallery-horizontal').find('ol').removeClass('slick-vertical');
       }
+
       if (windowInnerWidth >= 768 && 'horizontal' !== thumbnailsView) {
         settings.thumbnails = thumbnailsView;
         $(widgetWrapper).find('.woocommerce-product-gallery-raven-widget').removeClass('raven-product-gallery-horizontal raven-product-gallery-right raven-product-gallery-left').addClass("raven-product-gallery-".concat(thumbnailsView)).find('ol').addClass('slick-vertical');
       }
+
       new ProductGallery(jQuery('.raven-product-gallery-wrapper'));
+
       if (windowInnerWidth < 768) {
         $(widgetWrapper).find('div.flex-active-slide').css('width', windowInnerWidth - 40);
       }
     };
+
     window.addEventListener('resize', this.debounce(handleResize, 100));
   },
   debounce: function debounce(func, wait) {
     var timeout;
     return function () {
       var context = this,
-        args = arguments;
+          args = arguments;
       clearTimeout(timeout);
       timeout = setTimeout(function () {
         timeout = null;
@@ -11411,18 +13025,24 @@ var ProductsGallery = _module["default"].extend({
     if (false === data.replace) {
       return;
     }
+
     var id = this.getWrapper(),
-      content = data.content,
-      self = this,
-      settings = this.getGallerylSettings();
+        content = data.content,
+        self = this,
+        settings = this.getGallerylSettings();
+
     if ('stack' === data.layout) {
       $(id).find('.raven-product-gallery-wrapper').html(content);
+
       var _productGallery = new window.jupiterxProductGallery(jQuery('.raven-product-gallery-wrapper'), true);
+
       if (settings.videoIsEnable) {
         _productGallery.controlVideoOnload();
       }
+
       return;
     }
+
     $(id).find('.woocommerce-product-gallery-raven-widget').html(content);
     var i = 0;
     $(id).find('.flex-control-nav li').each(function () {
@@ -11431,6 +13051,7 @@ var ProductsGallery = _module["default"].extend({
       } else {
         $(this).addClass('slick-slide slick-active');
       }
+
       $(this).attr('style', 'width: 61px;');
       $(this).attr('tabindex', '0');
       $(this).attr('aria-hidden', 'false');
@@ -11438,10 +13059,10 @@ var ProductsGallery = _module["default"].extend({
       i++;
     });
     var listOl = $(id).find('.flex-control-nav'),
-      listOlHtml = listOl.html(),
-      listOlNew = document.createElement('ol'),
-      slickList = document.createElement('div'),
-      slickTrack = document.createElement('div');
+        listOlHtml = listOl.html(),
+        listOlNew = document.createElement('ol'),
+        slickList = document.createElement('div'),
+        slickTrack = document.createElement('div');
     listOlNew.setAttribute('class', 'flex-control-nav flex-control-thumbs slick-initialized slick-slider');
     slickList.setAttribute('class', 'slick-list');
     slickTrack.setAttribute('class', 'slick-track');
@@ -11456,29 +13077,33 @@ var ProductsGallery = _module["default"].extend({
     self.handleWcModal();
     self.onFullScreenClose();
     var productGallery = new window.jupiterxProductGallery(jQuery('.raven-product-gallery-wrapper'), true);
+
     if (settings.videoIsEnable) {
       productGallery.controlVideoOnload();
     }
+
     productGallery.createSlickThumbnailsSlider();
   },
   restButtonAjax: function restButtonAjax() {
     var self = this,
-      id = self.getWrapper(),
-      productId = $(id).find('input[name="product_id"]').val(),
-      variationId = $('input[name="variation_id"]').val();
+        id = self.getWrapper(),
+        productId = $(id).find('input[name="product_id"]').val(),
+        variationId = $('input[name="variation_id"]').val();
+
     if (0 === variationId || _.isEmpty(variationId)) {
       var variationForm = document.getElementById('jupiterx-clear-variable-button-single-page');
       variationForm.removeEventListener('click', this.restButtonAjax);
       return;
     }
+
     wp.ajax.post({
       beforeSend: function beforeSend() {
         var itemHeight = $(id).find('.flex-active').outerHeight(),
-          mainImage = $(id).find('.flex-viewport').outerHeight(),
-          nav = $(id).find('.flex-control-nav'),
-          style = ".raven-product-gallery-wrapper-placeholder .slick-slide { min-height: ".concat(itemHeight, "px };"),
-          temporaryStyle = '<div class="temporary-style"><style>' + style + '</style></div>',
-          stackedLi = $('.jupiterx-product-gallery-stack-item').outerHeight();
+            mainImage = $(id).find('.flex-viewport').outerHeight(),
+            nav = $(id).find('.flex-control-nav'),
+            style = ".raven-product-gallery-wrapper-placeholder .slick-slide { min-height: ".concat(itemHeight, "px };"),
+            temporaryStyle = '<div class="temporary-style"><style>' + style + '</style></div>',
+            stackedLi = $('.jupiterx-product-gallery-stack-item').outerHeight();
         $(id).find('.raven-product-gallery-wrapper').append(temporaryStyle);
         $(id).find('.flex-viewport').remove();
         $("<div class=\"flex-viewport\" style=\"width:100%; height:".concat(mainImage, "px;\"></div>")).insertBefore(nav);
@@ -11492,6 +13117,7 @@ var ProductsGallery = _module["default"].extend({
       form_id: $(id).find('input[name="form_id"]').val(),
       product_id: productId,
       nonce: ravenTools.nonce //eslint-disable-line
+
     }).always(function () {
       $('.raven-product-gallery-wrapper').removeClass('raven-product-gallery-wrapper-placeholder');
       $(id).find('.raven-product-gallery-wrapper').find('.temporary-style').remove();
@@ -11503,9 +13129,11 @@ var ProductsGallery = _module["default"].extend({
   },
   resetButtonOnClick: function resetButtonOnClick() {
     var variationForm = document.getElementById('jupiterx-clear-variable-button-single-page');
+
     if (_.isNull(variationForm)) {
       return;
     }
+
     variationForm.addEventListener('click', this.restButtonAjax);
   },
   updateGalleryPictures: function updateGalleryPictures(self) {
@@ -11515,21 +13143,23 @@ var ProductsGallery = _module["default"].extend({
     $('body').append("<input type=\"hidden\" id=\"variation-previous-number\" value=\"".concat(defaultVariation, "\">"));
     $('.variation_id').off().on('change', function () {
       var variationId = $('input[name="variation_id"]').val(),
-        firstLoad = $('#variation-first-load').val(),
-        previousVariation = $('#variation-previous-number').val(),
-        productId = $(id).find('input[name="product_id"]').val();
+          firstLoad = $('#variation-first-load').val(),
+          previousVariation = $('#variation-previous-number').val(),
+          productId = $(id).find('input[name="product_id"]').val();
+
       if (_.isEmpty(variationId) || 'true' === firstLoad || variationId === previousVariation) {
         $('#variation-first-load').val('false');
         return;
       }
+
       wp.ajax.post({
         beforeSend: function beforeSend() {
           var itemHeight = $(id).find('.flex-active').outerHeight(),
-            mainImage = $(id).find('.flex-viewport').outerHeight(),
-            nav = $(id).find('.flex-control-nav'),
-            style = ".raven-product-gallery-wrapper-placeholder .slick-slide { min-height: ".concat(itemHeight, "px };"),
-            temporaryStyle = '<div class="temporary-style"><style>' + style + '</style></div>',
-            stackedLi = $('.jupiterx-product-gallery-stack-item').outerHeight();
+              mainImage = $(id).find('.flex-viewport').outerHeight(),
+              nav = $(id).find('.flex-control-nav'),
+              style = ".raven-product-gallery-wrapper-placeholder .slick-slide { min-height: ".concat(itemHeight, "px };"),
+              temporaryStyle = '<div class="temporary-style"><style>' + style + '</style></div>',
+              stackedLi = $('.jupiterx-product-gallery-stack-item').outerHeight();
           $(id).find('.raven-product-gallery-wrapper').append(temporaryStyle);
           $(id).find('.flex-viewport').remove();
           $("<div class=\"flex-viewport\" style=\"width:100%; height:".concat(mainImage, "px;\"></div>")).insertBefore(nav);
@@ -11543,6 +13173,7 @@ var ProductsGallery = _module["default"].extend({
         form_id: $(id).find('input[name="form_id"]').val(),
         product_id: productId,
         nonce: ravenTools.nonce //eslint-disable-line
+
       }).always(function () {
         $('.raven-product-gallery-wrapper').removeClass('raven-product-gallery-wrapper-placeholder');
         $(id).find('.raven-product-gallery-wrapper').find('.temporary-style').remove();
@@ -11579,15 +13210,19 @@ var ProductsGallery = _module["default"].extend({
   },
   getThumbnail: function getThumbnail(widget) {
     var settings = widget.getGallerylSettings();
+
     if ('stack' === settings.layout) {
       return widget.getElementSettings().thumbnails;
     }
+
     if (0 === widget.elements.$gallery.data('has-gallery')) {
       return 'horizontal';
     }
+
     return widget.getElementSettings().thumbnails;
   }
 });
+
 function _default($scope) {
   new ProductsGallery({
     $element: $scope
@@ -11601,14 +13236,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
-/* eslint no-undef: 0 */
 
+/* eslint no-undef: 0 */
 var $ = jQuery;
+
 function _default() {
   loadFromBrowser();
   ratingSelector();
   submitNewReview();
 }
+
 var submitNewReview = function submitNewReview() {
   $('.jupiterx-product-review-submit-new').on('click', function () {
     $('.jupiterx-product-review-alarm').css('display', 'none');
@@ -11626,12 +13263,15 @@ var submitNewReview = function submitNewReview() {
         item.parent().find('.jupiterx-product-review-alarm').css('display', 'block');
       }
     });
+
     if (true === error) {
       return;
     }
+
     if ($('#jupiterx-product-review-acceptance').length > 0 && $('#jupiterx-product-review-acceptance').is(':checked')) {
       saveToBrowser(name.val(), email.val());
     }
+
     wp.ajax.post({
       beforeSend: function beforeSend() {
         $('.jupiterx-product-review-form-wrapper').css('opacity', 0.5);
@@ -11652,15 +13292,15 @@ var submitNewReview = function submitNewReview() {
     });
   });
 };
-var ratingSelector = function ratingSelector() {
-  var elements = document.querySelectorAll('.jupiterx-product-review-rating-selector');
-  // Elementor editor mode.
-  var selector = 'jupiterx-product-review-rating-selector ',
-    marked = selector + ' jupiterx-product-review-marked',
-    unmarked = selector + ' jupiterx-product-review-unmarked';
-  var checker = true;
 
-  // On click;
+var ratingSelector = function ratingSelector() {
+  var elements = document.querySelectorAll('.jupiterx-product-review-rating-selector'); // Elementor editor mode.
+
+  var selector = 'jupiterx-product-review-rating-selector ',
+      marked = selector + ' jupiterx-product-review-marked',
+      unmarked = selector + ' jupiterx-product-review-unmarked';
+  var checker = true; // On click;
+
   elements.forEach(function (el) {
     return el.addEventListener('click', function () {
       $('.jupiterx-product-review-rating-selector').attr('class', unmarked);
@@ -11675,30 +13315,34 @@ var ratingSelector = function ratingSelector() {
       if (false === checker) {
         return;
       }
+
       $(el).attr('class', marked);
       $(el).prevAll().attr('class', marked);
     });
-  });
+  }); // On mouseout.
 
-  // On mouseout.
   elements.forEach(function (el) {
     return el.addEventListener('mouseout', function () {
       if (false === checker) {
         return;
       }
+
       $(el).attr('class', unmarked);
       $(el).prevAll().attr('class', unmarked);
     });
   });
 };
+
 var loadFromBrowser = function loadFromBrowser() {
   if (null !== localStorage.getItem('jupiterx-product-review-name')) {
     $('.jupiterx-product-review-name').val(localStorage.getItem('jupiterx-product-review-name'));
   }
+
   if (null !== localStorage.getItem('jupiterx-product-review-email')) {
     $('.jupiterx-product-review-email').val(localStorage.getItem('jupiterx-product-review-email'));
   }
 };
+
 var saveToBrowser = function saveToBrowser(name, email) {
   localStorage.setItem('jupiterx-product-review-name', name);
   localStorage.setItem('jupiterx-product-review-email', email);
@@ -11708,12 +13352,16 @@ var saveToBrowser = function saveToBrowser(name, email) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var ProductsCarousel = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -11767,12 +13415,13 @@ var ProductsCarousel = _module["default"].extend({
   },
   onInit: function onInit() {
     var _this = this;
+
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
     this.addClassToContent();
     this.wrapAllContents();
     var settings = this.getCarouselSettings(),
-      breakpointsSettings = {},
-      breakpoints = elementorFrontend.config.responsive.activeBreakpoints;
+        breakpointsSettings = {},
+        breakpoints = elementorFrontend.config.responsive.activeBreakpoints;
     Object.keys(breakpoints).forEach(function (breakpointName) {
       breakpointsSettings[breakpoints[breakpointName].value] = {
         slidesPerView: _this.getDeviceSlidesPerView(breakpointName),
@@ -11802,13 +13451,16 @@ var ProductsCarousel = _module["default"].extend({
     var self = this;
     this.elements.$sliderWrapper.each(function (index, swiperContainer) {
       $(this).parents('.elementor-widget-raven-products-carousel').find('.raven-products-carousel').addClass('swiper-' + index);
+
       if (options.navigation) {
         options.navigation = {
           nextEl: $(swiperContainer).parents('.raven-products-carousel.swiper-' + index).find('.swiper-button-next')[0],
           prevEl: $(swiperContainer).parents('.raven-products-carousel.swiper-' + index).find('.swiper-button-prev')[0]
         };
       }
+
       options.pagination = false;
+
       if (settings.show_pagination === 'yes') {
         options.pagination = {
           el: $(swiperContainer).parents('.raven-products-carousel.swiper-' + index).find('.swiper-pagination')[0],
@@ -11816,19 +13468,22 @@ var ProductsCarousel = _module["default"].extend({
           clickable: true
         };
       }
+
       var swiperObj = null;
       options.on = {};
+
       options.on.init = function () {
         self.handleAnimation();
         self.zoom();
-      };
-
-      // Hide the carousel and wait for swiper to adjust the slides, then show slides.
+      }; // Hide the carousel and wait for swiper to adjust the slides, then show slides.
       // Added to make load effect work correctly.
+
+
       $(swiperContainer)[0].style.opacity = 0;
       setInterval(function () {
         $(swiperContainer)[0].style.opacity = 1;
       }, 700);
+
       if ('undefined' === typeof Swiper) {
         var asyncSwiper = elementorFrontend.utils.swiper;
         new asyncSwiper(swiperContainer, options).then(function (newSwiperInstance) {
@@ -11848,35 +13503,43 @@ var ProductsCarousel = _module["default"].extend({
           }
         });
       }
+
       if (swiperObj) {
         swiperObj.params.slidesPerView = self.getDeviceSlidesPerView('desktop');
         swiperObj.breakpoints = breakpointsSettings;
         swiperObj.update();
-      }
+      } // Expose the swiper instance in the frontend.
 
-      // Expose the swiper instance in the frontend.
+
       self.elements.$itemsSlider.data('swiper', swiperObj);
     });
   },
   handleAnimation: function handleAnimation() {
     var _this2 = this;
+
     var carouselSettings = this.getCarouselSettings();
     this.elements.$sliderWrapper.load().after(function () {
       var items = (0, _toConsumableArray2["default"])(_this2.elements.$carouselWrapper[0].querySelectorAll('.swiper-slide'));
+
       if (_this2.getInstanceValue('load_effect') === 'slide-right') {
         items = items.slice().reverse();
       }
+
       if (carouselSettings.overflow_visible && _this2.getInstanceValue('load_effect') !== 'slide-right') {
         items[items.length - 1].classList.add('raven-load-effect-' + carouselSettings.load_effect);
       }
+
       items.forEach(function (event, index) {
         setTimeout(function () {
           event.classList.add('raven-load-effect-' + carouselSettings.load_effect);
+
           if (index === items.length - 1) {
             _this2.elements.$itemsSlider[0].classList.add('raven-products-loaded');
+
             setInterval(function () {
               _this2.elements.$itemsSlider[0].classList.remove('raven-products-load-effect');
             }, 1500);
+
             _this2.setSettings('state.loaded', true);
           }
         }, 100 * index);
@@ -11885,11 +13548,12 @@ var ProductsCarousel = _module["default"].extend({
   },
   bindEvents: function bindEvents() {
     this.zoom();
+
     if (this.getInstanceValue('wishlist') === 'show') {
       this.wishlist();
-    }
+    } // Prevent horizontal scroll when overflow visible is activated.
 
-    // Prevent horizontal scroll when overflow visible is activated.
+
     if (this.getInstanceValue('overflow_visible')) {
       window['jupiterx-main'].style.overflow = 'hidden';
     }
@@ -11903,6 +13567,7 @@ var ProductsCarousel = _module["default"].extend({
     if (this.getInstanceValue('swap_effect') !== 'zoom_hover') {
       return;
     }
+
     this.elements.$sliderWrapper.find('.jupiterx-wc-loop-product-image').zoom();
   },
   wishlist: function wishlist() {
@@ -11918,10 +13583,12 @@ var ProductsCarousel = _module["default"].extend({
       data.nonce = nonceAdd;
       data.add_to_wishlist = productId;
       data.remove_from_wishlist = productId;
+
       if (state === 'remove') {
         action = 'remove_from_wishlist';
         data.nonce = nonceRemove;
       }
+
       wp.ajax.send(action, {
         type: 'GET',
         data: data
@@ -11930,6 +13597,7 @@ var ProductsCarousel = _module["default"].extend({
           $this.addClass('jupiterx-wishlist-remove');
           $this.data('state', 'remove');
         }
+
         if (action === 'remove_from_wishlist' && res.fragments.length === 0) {
           $this.removeClass('jupiterx-wishlist-remove');
           $this.data('state', 'add');
@@ -11940,9 +13608,11 @@ var ProductsCarousel = _module["default"].extend({
   addClassToContent: function addClassToContent() {
     var carouselSettings = this.getCarouselSettings();
     var contents = [this.elements.$productPrice, this.elements.$productTitle, this.elements.$categories, this.elements.$ratingWrapper];
+
     if ('outside' === carouselSettings.atc_button_location) {
       contents.push(this.elements.$addToCartButton);
     }
+
     contents.forEach(function (content) {
       (0, _toConsumableArray2["default"])(content).forEach(function (item) {
         item.classList.add('raven-product-item-content');
@@ -11957,9 +13627,11 @@ var ProductsCarousel = _module["default"].extend({
   },
   getSpaceBetween: function getSpaceBetween(device) {
     var propertyName = 'columns_space_between';
+
     if (device && 'desktop' !== device) {
       propertyName += '_' + device;
     }
+
     return this.getElementSettings(propertyName).size || 10;
   },
   getDeviceSlidesToScroll: function getDeviceSlidesToScroll(device) {
@@ -11971,6 +13643,7 @@ var ProductsCarousel = _module["default"].extend({
     return +this.getElementSettings(slidesPerViewKey) || 1;
   }
 });
+
 function _default($scope) {
   new ProductsCarousel({
     $element: $scope
@@ -11981,40 +13654,50 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
-var _module = _interopRequireDefault(require("../utils/module"));
-/* eslint no-undef: 0 */
 
+var _module = _interopRequireDefault(require("../utils/module"));
+
+/* eslint no-undef: 0 */
 var $ = jQuery;
+
 var ProgressTracker = _module["default"].extend({
   onInit: function onInit() {
     var settings = this.getElementSettings();
     this.selector = this.getTrackingElementSelector();
+
     if ('circular' === settings.type) {
       this.circularOnScroll(settings);
       this.progressUpdate();
       return;
     }
+
     this.createHorizontalScroll();
     this.progressUpdate();
   },
   onElementChange: function onElementChange(property) {
     var settings = this.getElementSettings();
+
     if ('relative_to' === property || 'selector' === property || 'type' === property) {
       window.removeEventListener('scroll', this.progressUpdate);
       this.selector = this.getTrackingElementSelector();
+
       if (this.selector === false) {
         return;
       }
+
       if (!this.circle && 'circular' === settings.type) {
         this.createCircle(settings);
       }
+
       if (!this.horizontal && 'horizontal' === settings.type) {
         this.createHorizontalScroll();
       }
+
       this.initListeners();
     }
   },
@@ -12022,19 +13705,22 @@ var ProgressTracker = _module["default"].extend({
     if (this.selector === false) {
       return;
     }
+
     this.horizontal = document.querySelector('.jupiterx-progress-tracker-horizontal-' + this.getID());
     this.initListeners();
   },
   circularOnScroll: function circularOnScroll(settings) {
     this.createCircle(settings);
+
     if (this.selector === false) {
       return;
     }
+
     this.initListeners();
   },
   createCircle: function createCircle(settings) {
     var element = this.getCircularWrapper(settings),
-      globalConfig = this.defaultGlobalConfig(settings);
+        globalConfig = this.defaultGlobalConfig(settings);
     this.circle = new CircularProgressBar(element, globalConfig);
     this.circle.initial();
   },
@@ -12045,8 +13731,10 @@ var ProgressTracker = _module["default"].extend({
     if (this.selector === false) {
       return;
     }
+
     var settings = this.getElementSettings(),
-      percentNum = this.calculateScroll();
+        percentNum = this.calculateScroll();
+
     if ('circular' === settings.type) {
       this.circle.animationTo({
         percent: percentNum.toFixed(0),
@@ -12054,18 +13742,20 @@ var ProgressTracker = _module["default"].extend({
       });
       return;
     }
+
     var percentage = percentNum.toFixed(0) + '%';
     this.horizontal.querySelector('.progress-indicator').style.width = percentage;
+
     if ('yes' === settings.percentage) {
       this.horizontal.querySelector('.percentage-text').innerText = percentage;
     }
   },
   calculateScroll: function calculateScroll() {
     var scrollStartPercentage = this.selector.is(elementorFrontend.elements.$body) || this.selector.is($('#e-scroll-snap-container')) ? -100 : 0,
-      percentage = elementorModules.utils.Scroll.getElementViewportPercentage(this.selector, {
-        start: scrollStartPercentage,
-        end: -100
-      });
+        percentage = elementorModules.utils.Scroll.getElementViewportPercentage(this.selector, {
+      start: scrollStartPercentage,
+      end: -100
+    });
     return percentage;
   },
   getWrapper: function getWrapper() {
@@ -12077,29 +13767,36 @@ var ProgressTracker = _module["default"].extend({
   getTrackingElementSelector: function getTrackingElementSelector() {
     var trackingElementSetting = this.getElementSettings().relative_to;
     var selector;
+
     switch (trackingElementSetting) {
       case 'selector':
         selector = $(this.getElementSettings().selector);
         break;
+
       case 'post_content':
         if ($('.elementor-widget-raven-post-content').length > 0) {
           selector = $('.elementor-widget-raven-post-content');
           break;
         }
+
         if ($('.elementor-widget-theme-post-content').length) {
           selector = $('.elementor-widget-theme-post-content');
           break;
         }
+
         selector = false;
         break;
+
       default:
         selector = this.isScrollSnap() ? $('#e-scroll-snap-container') : elementorFrontend.elements.$body;
         break;
     }
+
     if (false === selector || selector.length <= 0) {
       this.onDestroy();
       return false;
     }
+
     return selector;
   },
   isScrollSnap: function isScrollSnap() {
@@ -12129,15 +13826,18 @@ var ProgressTracker = _module["default"].extend({
       // Font size of percentage.
       animationOff: true
     };
+
     if (!_.isEmpty(settings.circular_size.size)) {
       defaultSettings.size = settings.circular_size.size;
     }
+
     return defaultSettings;
   },
   onDestroy: function onDestroy() {
     window.removeEventListener('scroll', this.progressUpdate);
   }
 });
+
 function _default($scope) {
   new ProgressTracker({
     $element: $scope
@@ -12152,6 +13852,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.classic = classic;
 exports.full = full;
+
 function classic($scope) {
   var form = $scope.find('.raven-search-form');
   $scope.on('focus', '.raven-search-form-input', function () {
@@ -12161,6 +13862,7 @@ function classic($scope) {
     form.removeClass('raven-search-form-focus');
   });
 }
+
 function full($scope) {
   var elements = {
     lightbox: $scope.find('.raven-search-form-lightbox'),
@@ -12188,17 +13890,26 @@ function full($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
-function _createForOfIteratorHelper(o, allowArrayLike) { var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"]; if (!it) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = it.call(o); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
+
 function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
-function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 $ = jQuery;
+
 var ShoppingCart = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -12225,41 +13936,51 @@ var ShoppingCart = _module["default"].extend({
   },
   bindEvents: function bindEvents() {
     var _this = this,
-      _window;
+        _window;
+
     elementorFrontend.elements.$body.on('updated_wc_div update_checkout', function () {
       _this.refreshFragments();
     });
     var isWooCommerceArchivePage = this.elements.$body.hasClass('woocommerce-page') && this.elements.$body.hasClass('archive');
-    if ((_window = window) !== null && _window !== void 0 && _window.ravenTools && isWooCommerceArchivePage) {
+
+    if (((_window = window) === null || _window === void 0 ? void 0 : _window.ravenTools) && isWooCommerceArchivePage) {
       var _ref = window.ravenTools.wc || {},
-        wcAjaxAddToCart = _ref.wcAjaxAddToCart,
-        disableAjaxToCartInArchive = _ref.disableAjaxToCartInArchive;
+          wcAjaxAddToCart = _ref.wcAjaxAddToCart,
+          disableAjaxToCartInArchive = _ref.disableAjaxToCartInArchive;
+
       if (wcAjaxAddToCart !== 'yes' && disableAjaxToCartInArchive) {
         $(document.body).off('click', '.add_to_cart_button.ajax_add_to_cart');
         $('.add_to_cart_button.ajax_add_to_cart').removeClass('ajax_add_to_cart').addClass('no_ajax_add_to_cart');
       }
     }
+
     if (this.getElementSettings('enable_ajax_add_to_cart') !== 'yes' && isWooCommerceArchivePage) {
       this.handleAjaxAddToCartOnPage();
     }
+
     if (this.getElementSettings('enable_ajax_add_to_cart') !== 'yes' && !isWooCommerceArchivePage && this.elements.$hasProductWidget) {
       this.handleAjaxAddToCartOnPage();
     }
+
     if (this.getElementSettings('show_cart_quick_view') !== 'yes' && (this.elements.$body.find('form.cart').hasClass('bundle_form') || this.elements.$body.find('form.cart').hasClass('grouped_form'))) {
       return;
     }
+
     if (this.getElementSettings('show_cart_quick_view') === 'yes' && this.getElementSettings('enable_ajax_add_to_cart') === 'yes' && (this.elements.$body.find('form.cart').hasClass('bundle_form') || this.elements.$body.find('form.cart').hasClass('grouped_form'))) {
       this.handleMiniCartOpenClose();
       return;
     }
+
     if (this.getElementSettings('show_cart_quick_view') === 'yes' && this.getElementSettings('enable_ajax_add_to_cart') !== 'yes') {
       this.handleMiniCartOpenClose();
       this.handleRemoveFromCart();
       return;
     }
+
     if (this.getElementSettings('show_cart_quick_view') !== 'yes') {
       return;
     }
+
     this.handleMiniCartOpenClose();
     this.handleMiniCartOnAddToCart();
     this.ajaxAddToCart();
@@ -12267,6 +13988,7 @@ var ShoppingCart = _module["default"].extend({
   },
   handleAjaxAddToCartOnPage: function handleAjaxAddToCartOnPage() {
     var _this2 = this;
+
     elementorFrontend.elements.$body.find('.add_to_cart_button.ajax_add_to_cart').attr('data-has_raven_shopping_cart', 'exists');
     elementorFrontend.elements.$body.on('wc_fragments_refreshed removed_from_cart added_to_cart', function () {
       _this2.refreshFragments();
@@ -12286,11 +14008,12 @@ var ShoppingCart = _module["default"].extend({
         templates: templatesInPage
       },
       success: function success(successData) {
-        if (successData !== null && successData !== void 0 && successData.fragments) {
+        if (successData === null || successData === void 0 ? void 0 : successData.fragments) {
           $.each(successData.fragments, function (key, value) {
             $(key).replaceWith(value);
           });
         }
+
         this.handleRemoveFromCart();
       }
     });
@@ -12298,20 +14021,21 @@ var ShoppingCart = _module["default"].extend({
   handleMiniCartOpenClose: function handleMiniCartOpenClose() {
     var self = this;
     var overlayColor = this.getElementSettings('content_effect_blur_content'),
-      BlurContent = this.getElementSettings('content_effect_content_overlay');
+        BlurContent = this.getElementSettings('content_effect_content_overlay');
     this.elements.$shoppingCart.on('click', function (event) {
       if ('#' !== $(this).attr('href')) {
         return;
       }
+
       event.preventDefault();
       var stickyHeaders = $('.jupiterx-header-sticky-custom .elementor[data-elementor-type=header]');
       var stickyHeaderId = self.elements.$header.data('jupiterx-settings');
-      var clickedStickyHeaderId = $(event.target).closest('[data-elementor-type="header"]').attr('data-elementor-id');
+      var clickedStickyHeaderId = $(event.target).closest('[data-elementor-type="header"]').attr('data-elementor-id'); // Handle customizer sticky header.
 
-      // Handle customizer sticky header.
       if (self.elements.$header.hasClass('jupiterx-header-sticky-custom') && stickyHeaders.length === 2 && stickyHeaderId.stickyTemplate === clickedStickyHeaderId || $(event.target).closest('.raven-sticky--effects').length > 0 && self.elements.$header.hasClass('jupiterx-header-sticky-custom')) {
         var defaultHeaderElement = self.elements.$header.find('[data-elementor-id]:not([data-elementor-id="' + stickyHeaderId.stickyTemplate + '"])');
         var headerAttr = defaultHeaderElement.attr('data-elementor-type');
+
         if (headerAttr === 'header') {
           if ($(event.target).closest('.raven-sticky--effects').length > 0) {
             defaultHeaderElement.children().each(function () {
@@ -12321,18 +14045,22 @@ var ShoppingCart = _module["default"].extend({
               }
             });
           }
+
           defaultHeaderElement.find('.jupiterx-cart-quick-view').css('visibility', 'visible');
           defaultHeaderElement.find('.raven-shopping-cart').click();
           return;
         }
       }
+
       self.$element.addClass('jupiterx-raven-cart-quick-view-overlay');
+
       if (overlayColor === 'enabled' || BlurContent === 'enabled') {
         self.elements.$overlay.addClass('jupiterx-shopping-cart-overlay-activated');
       }
     });
     this.elements.$closeButton.on('click', function () {
       self.$element.alterClass('jupiterx-raven-cart-quick-view-overlay');
+
       if (overlayColor === 'enabled' || BlurContent === 'enabled') {
         self.elements.$overlay.removeClass('jupiterx-shopping-cart-overlay-activated');
       }
@@ -12341,14 +14069,16 @@ var ShoppingCart = _module["default"].extend({
   handleMiniCartOnAddToCart: function handleMiniCartOnAddToCart() {
     var self = this;
     var isPro = false;
+
     if (typeof elementor !== 'undefined') {
       isPro = elementor.helpers.hasPro();
     }
+
     if (isPro && document.body.classList.contains('elementor-editor-active')) {
       return;
-    }
+    } // Before sending Ajax by WooCommerce we modify data.
 
-    // Before sending Ajax by WooCommerce we modify data.
+
     $(document.body).on('adding_to_cart', function (event, button, data) {
       if ($('.raven-shopping-cart-count').length > 0 && 'object' === (0, _typeof2["default"])(data)) {
         data.raven_shopping_cart = 'exists';
@@ -12357,48 +14087,60 @@ var ShoppingCart = _module["default"].extend({
     $(document.body).on('added_to_cart', function () {
       var target = self.elements.$shoppingCart;
       var stickyHeaders = $('.jupiterx-header-sticky-custom .elementor[data-elementor-type=header]');
+
       if (self.elements.$header.hasClass('jupiterx-header-sticky-custom') && stickyHeaders.length === 2) {
         if (self.elements.$shoppingCart.parents('.elementor[data-elementor-type=header]').css('visibility') !== 'visible') {
           return;
         }
-      }
+      } // motion effect.
 
-      // motion effect.
+
       var targetParent = self.elements.$body.find('.raven-sticky--effects'),
-        montionEffect = target.parents('.raven-sticky--active');
+          montionEffect = target.parents('.raven-sticky--active');
+
       if (montionEffect.length > 0 && !montionEffect.hasClass('raven-sticky--effects')) {
         return;
       }
+
       if (targetParent.length !== 0 && targetParent.find('.raven-shopping-cart')) {
         target = targetParent.find('.raven-shopping-cart');
       }
+
       target.click();
     });
   },
   ajaxAddToCart: function ajaxAddToCart() {
     var currentCart = this.elements.$elementorElement;
+
     if ($(currentCart[0]).parents('.jupiterx-header').length === 0 || !this.elements.$cartWrapper.data('is-product')) {
       return;
     }
+
     $(document.body).find('form.cart').off('submit').on('submit', function (event) {
       event.preventDefault();
       var $form = $(this);
       var ajaxData = {};
       var formData = new FormData($form[0]);
+
       if ($form.hasClass('grouped_form') || $form.hasClass('bundle_form')) {
         return;
       }
+
       var _iterator = _createForOfIteratorHelper(formData.entries()),
-        _step;
+          _step;
+
       try {
         for (_iterator.s(); !(_step = _iterator.n()).done;) {
           var _step$value = (0, _slicedToArray2["default"])(_step.value, 2),
-            key = _step$value[0],
-            value = _step$value[1];
+              key = _step$value[0],
+              value = _step$value[1];
+
           var newKey = key;
+
           if ('add-to-cart' === newKey) {
             newKey = 'raven-add-to-cart';
           }
+
           ajaxData[newKey] = value;
         }
       } catch (err) {
@@ -12406,15 +14148,20 @@ var ShoppingCart = _module["default"].extend({
       } finally {
         _iterator.f();
       }
+
       if (!ajaxData.hasOwnProperty('raven-add-to-cart')) {
         ajaxData['raven-add-to-cart'] = $form.find('[name="add-to-cart"]').val();
       }
+
       ajaxData.raven_shopping_cart = 'exists';
       ajaxData.nonce = ravenTools.nonce; // eslint-disable-line no-undef
+
       ajaxData.action = 'raven_shopping_cart_single_insert_to_cart';
+
       if (!event.hasOwnProperty('originalEvent')) {
         return;
       }
+
       $.ajax({
         type: 'post',
         url: wc_add_to_cart_params.ajax_url,
@@ -12433,10 +14180,13 @@ var ShoppingCart = _module["default"].extend({
             window.location = response.product_url;
             return false;
           }
+
           var data = response.data;
+
           if (data.error) {
             return;
           }
+
           $(document.body).trigger('added_to_cart', [data.fragments, data.cart_hash, $form]);
         }
       });
@@ -12447,7 +14197,7 @@ var ShoppingCart = _module["default"].extend({
     $(document.body).on('click', '.jupiterx_remove_from_cart', function (event) {
       event.preventDefault();
       var cartKey = $(event.target).data('cart_item_key'),
-        $row = $(event.target).closest('.woocommerce-mini-cart-item');
+          $row = $(event.target).closest('.woocommerce-mini-cart-item');
       $row.block({
         message: null,
         overlayCSS: {
@@ -12473,6 +14223,7 @@ var ShoppingCart = _module["default"].extend({
     });
   }
 });
+
 function _default($scope) {
   new ShoppingCart({
     $element: $scope
@@ -12483,15 +14234,20 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _typeof = require("@babel/runtime/helpers/typeof");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+
 var $ = jQuery;
+
 var ravenSlider = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -12515,14 +14271,15 @@ var ravenSlider = _module["default"].extend({
   },
   getDefaultElements: function getDefaultElements() {
     var selectors = this.getSettings('selectors'),
-      elements = {
-        $swiperContainer: this.$element.find(selectors.slider)
-      };
+        elements = {
+      $swiperContainer: this.$element.find(selectors.slider)
+    };
     elements.$slides = elements.$swiperContainer.find(selectors.slide);
     return elements;
   },
   getSwiperOptions: function getSwiperOptions() {
     var _this = this;
+
     var swiperOptions = {
       autoplay: this.getAutoplayConfig(),
       grabCursor: true,
@@ -12543,13 +14300,15 @@ var ravenSlider = _module["default"].extend({
     };
     var elementSettingsNavigation = this.getElementSettings('navigation');
     var showArrows = 'arrows' === elementSettingsNavigation || 'both' === elementSettingsNavigation,
-      pagination = 'dots' === elementSettingsNavigation || 'both' === elementSettingsNavigation;
+        pagination = 'dots' === elementSettingsNavigation || 'both' === elementSettingsNavigation;
+
     if (showArrows) {
       swiperOptions.navigation = {
         prevEl: '.elementor-swiper-button-prev',
         nextEl: '.elementor-swiper-button-next'
       };
     }
+
     if (pagination) {
       swiperOptions.pagination = {
         el: '.swiper-pagination',
@@ -12557,20 +14316,24 @@ var ravenSlider = _module["default"].extend({
         clickable: true
       };
     }
+
     if (true === swiperOptions.loop) {
       swiperOptions.loopedSlides = this.getSlidesCount();
     }
+
     if ('fade' === swiperOptions.effect) {
       swiperOptions.fadeEffect = {
         crossFade: true
       };
     }
+
     return swiperOptions;
   },
   getAutoplayConfig: function getAutoplayConfig() {
     if ('yes' !== this.getElementSettings('autoplay')) {
       return false;
     }
+
     return {
       stopOnLastSlide: true,
       // Has no effect in infinite mode by default.
@@ -12580,7 +14343,7 @@ var ravenSlider = _module["default"].extend({
   },
   initSingleSlideAnimations: function initSingleSlideAnimations() {
     var settings = this.getSettings(),
-      animation = this.elements.$swiperContainer.data(settings.attributes.dataAnimation);
+        animation = this.elements.$swiperContainer.data(settings.attributes.dataAnimation);
     this.elements.$swiperContainer.find('.' + settings.classes.slideBackground).addClass(settings.classes.kenBurnsActive); // If there is an animation, get the container of the slide's inner contents and add the animation classes to it
 
     if (animation) {
@@ -12589,65 +14352,81 @@ var ravenSlider = _module["default"].extend({
   },
   initSlider: function initSlider() {
     var _this2 = this;
-    return (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+
+    return (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
       var $slider, settings, animation, Swiper;
-      return _regeneratorRuntime().wrap(function _callee$(_context) {
-        while (1) switch (_context.prev = _context.next) {
-          case 0:
-            $slider = _this2.elements.$swiperContainer, settings = _this2.getSettings(), animation = $slider.data(settings.attributes.dataAnimation);
-            if ($slider.length) {
-              _context.next = 3;
-              break;
-            }
-            return _context.abrupt("return");
-          case 3:
-            if (!(1 >= _this2.getSlidesCount())) {
-              _context.next = 5;
-              break;
-            }
-            return _context.abrupt("return");
-          case 5:
-            Swiper = elementorFrontend.utils.swiper;
-            _context.next = 8;
-            return new Swiper($slider, _this2.getSwiperOptions());
-          case 8:
-            _this2.swiper = _context.sent;
-            // Expose the swiper instance in the frontend
+      return _regenerator["default"].wrap(function _callee$(_context) {
+        while (1) {
+          switch (_context.prev = _context.next) {
+            case 0:
+              $slider = _this2.elements.$swiperContainer, settings = _this2.getSettings(), animation = $slider.data(settings.attributes.dataAnimation);
 
-            $slider.data('swiper', _this2.swiper); // The Ken Burns effect will only apply on the specific slides that toggled the effect ON,
-            // since it depends on an additional class besides 'elementor-ken-burns--active'
+              if ($slider.length) {
+                _context.next = 3;
+                break;
+              }
 
-            _this2.handleKenBurns();
-            if (_this2.getElementSettings('pause_on_hover')) {
-              _this2.togglePauseOnHover(true);
-            }
-            if (animation) {
-              _context.next = 14;
-              break;
-            }
-            return _context.abrupt("return");
-          case 14:
-            _this2.swiper.on('slideChangeTransitionStart', function () {
-              var $sliderContent = $slider.find(settings.selectors.slideInnerContents);
-              $sliderContent.removeClass(settings.classes.animated + ' ' + animation).hide();
-            });
-            _this2.swiper.on('slideChangeTransitionEnd', function () {
-              var $currentSlide = $slider.find(settings.selectors.slideInnerContents);
-              $currentSlide.show().addClass(settings.classes.animated + ' ' + animation);
-            });
-          case 16:
-          case "end":
-            return _context.stop();
+              return _context.abrupt("return");
+
+            case 3:
+              if (!(1 >= _this2.getSlidesCount())) {
+                _context.next = 5;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 5:
+              Swiper = elementorFrontend.utils.swiper;
+              _context.next = 8;
+              return new Swiper($slider, _this2.getSwiperOptions());
+
+            case 8:
+              _this2.swiper = _context.sent;
+              // Expose the swiper instance in the frontend
+              $slider.data('swiper', _this2.swiper); // The Ken Burns effect will only apply on the specific slides that toggled the effect ON,
+              // since it depends on an additional class besides 'elementor-ken-burns--active'
+
+              _this2.handleKenBurns();
+
+              if (_this2.getElementSettings('pause_on_hover')) {
+                _this2.togglePauseOnHover(true);
+              }
+
+              if (animation) {
+                _context.next = 14;
+                break;
+              }
+
+              return _context.abrupt("return");
+
+            case 14:
+              _this2.swiper.on('slideChangeTransitionStart', function () {
+                var $sliderContent = $slider.find(settings.selectors.slideInnerContents);
+                $sliderContent.removeClass(settings.classes.animated + ' ' + animation).hide();
+              });
+
+              _this2.swiper.on('slideChangeTransitionEnd', function () {
+                var $currentSlide = $slider.find(settings.selectors.slideInnerContents);
+                $currentSlide.show().addClass(settings.classes.animated + ' ' + animation);
+              });
+
+            case 16:
+            case "end":
+              return _context.stop();
+          }
         }
       }, _callee);
     }))();
   },
   onInit: function onInit() {
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
+
     if (2 > this.getSlidesCount()) {
       this.initSingleSlideAnimations();
       return;
     }
+
     this.initSlider();
   },
   getChangeableProperties: function getChangeableProperties() {
@@ -12663,10 +14442,11 @@ var ravenSlider = _module["default"].extend({
       this.swiper.update();
       return;
     }
+
     var newSettingValue = this.getElementSettings(propertyName),
-      changeableProperties = this.getChangeableProperties();
+        changeableProperties = this.getChangeableProperties();
     var propertyToUpdate = changeableProperties[propertyName],
-      valueToUpdate = newSettingValue; // Handle special cases where the value to update is not the value that the Swiper library accepts.
+        valueToUpdate = newSettingValue; // Handle special cases where the value to update is not the value that the Swiper library accepts.
 
     switch (propertyName) {
       case 'autoplay_speed':
@@ -12676,17 +14456,21 @@ var ravenSlider = _module["default"].extend({
           disableOnInteraction: 'yes' === this.getElementSettings('pause_on_interaction')
         };
         break;
+
       case 'pause_on_hover':
         this.togglePauseOnHover('yes' === newSettingValue);
         break;
+
       case 'pause_on_interaction':
         valueToUpdate = 'yes' === newSettingValue;
         break;
     } // 'pause_on_hover' is implemented by the handler with event listeners, not the Swiper library.
 
+
     if ('pause_on_hover' !== propertyName) {
       this.swiper.params[propertyToUpdate] = valueToUpdate;
     }
+
     this.swiper.update();
   },
   getSlidesCount: function getSlidesCount() {
@@ -12698,20 +14482,25 @@ var ravenSlider = _module["default"].extend({
   },
   handleKenBurns: function handleKenBurns() {
     var settings = this.getSettings();
+
     if (this.$activeImageBg) {
       this.$activeImageBg.removeClass(settings.classes.kenBurnsActive);
     }
+
     this.activeItemIndex = this.swiper ? this.swiper.activeIndex : this.getInitialSlide();
+
     if (this.swiper) {
       this.$activeImageBg = $(this.swiper.slides[this.activeItemIndex]).children('.' + settings.classes.slideBackground);
     } else {
       this.$activeImageBg = $(this.elements.$slides[0]).children('.' + settings.classes.slideBackground);
     }
+
     this.$activeImageBg.addClass(settings.classes.kenBurnsActive);
   },
   // This method live-handles the 'Pause On Hover' control's value being changed in the Editor Panel
   togglePauseOnHover: function togglePauseOnHover(toggleOn) {
     var _this3 = this;
+
     if (toggleOn) {
       this.elements.$swiperContainer.on({
         mouseenter: function mouseenter() {
@@ -12729,7 +14518,9 @@ var ravenSlider = _module["default"].extend({
     if (1 >= this.getSlidesCount()) {
       return;
     }
+
     var changeableProperties = this.getChangeableProperties();
+
     if (changeableProperties.hasOwnProperty(propertyName)) {
       this.updateSwiperOption(propertyName);
     }
@@ -12738,37 +14529,43 @@ var ravenSlider = _module["default"].extend({
     if (1 >= this.getSlidesCount()) {
       return;
     }
+
     if ('activeItemIndex' === propertyName) {
       this.swiper.slideToLoop(this.getEditSettings('activeItemIndex') - 1);
     }
   }
 });
+
 function _default($scope) {
   new ravenSlider({
     $element: $scope
   });
 }
 
-},{"../utils/module":9,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/typeof":106}],66:[function(require,module,exports){
+},{"../utils/module":9,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/regenerator":108}],66:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.Google = void 0;
 exports["default"] = _default;
-var _i18n = require("@wordpress/i18n");
-/* eslint no-undef: "off", no-unused-vars: "off", no-shadow: "off", no-var: "off" */
+exports.Google = void 0;
 
+var _i18n = require("@wordpress/i18n");
+
+/* eslint no-undef: "off", no-unused-vars: "off", no-shadow: "off", no-var: "off" */
 var $ = jQuery;
+
 function _default($scope) {
   if ($('#jupiterx-raven-social-login-widget-facebook').length > 0) {
     jxRavenSocialLoginfacebook();
   }
+
   if ($('#jupiterx-raven-social-login-widget-twitter').length > 0) {
     jxRavenSocialLoginTwitter();
   }
 }
+
 var jxRavenSocialLoginfacebook = function jxRavenSocialLoginfacebook() {
   // Facebook event.
   window.fbAsyncInit = function () {
@@ -12782,6 +14579,7 @@ var jxRavenSocialLoginfacebook = function jxRavenSocialLoginfacebook() {
       version: 'v10.0'
     });
   };
+
   var facebookBtn = document.getElementById('jupiterx-raven-social-login-widget-facebook');
   facebookBtn.addEventListener('click', function () {
     FB.login(function (response) {
@@ -12796,11 +14594,11 @@ var jxRavenSocialLoginfacebook = function jxRavenSocialLoginfacebook() {
             jxRavenSocialFacebookSignIn(email, name, accessToken);
           });
         }
-      } else {
-        //user hit cancel button
+      } else {//user hit cancel button
       }
     });
   }, false);
+
   var jxRavenSocialFacebookSignIn = function jxRavenSocialFacebookSignIn(emailUser, nameUser, accessToken) {
     $.ajax({
       url: _wpUtilSettings.ajax.url,
@@ -12820,6 +14618,7 @@ var jxRavenSocialLoginfacebook = function jxRavenSocialLoginfacebook() {
       }
     }).always(function (data) {
       $('.raven-social-login-wrap .facebook').css('opacity', '1.0');
+
       if (true === data.success) {
         if (data.data.redirectUrl) {
           window.location.href = data.data.redirectUrl;
@@ -12832,6 +14631,7 @@ var jxRavenSocialLoginfacebook = function jxRavenSocialLoginfacebook() {
     });
   };
 };
+
 var jxRavenSocialLoginTwitter = function jxRavenSocialLoginTwitter() {
   var twitterBtn = document.getElementById('jupiterx-raven-social-login-widget-twitter');
   twitterBtn.addEventListener('click', function () {
@@ -12850,6 +14650,7 @@ var jxRavenSocialLoginTwitter = function jxRavenSocialLoginTwitter() {
       }
     }).always(function (data) {
       $('.raven-social-login-wrap .twitter').css('opacity', '1.0');
+
       if (true === data.success) {
         win = window.open(data.data, '_blank');
         win.focus();
@@ -12859,6 +14660,7 @@ var jxRavenSocialLoginTwitter = function jxRavenSocialLoginTwitter() {
     });
   }, false);
 };
+
 var jxRavenSocialGoogle = function jxRavenSocialGoogle(data) {
   $.ajax({
     url: _wpUtilSettings.ajax.url,
@@ -12876,6 +14678,7 @@ var jxRavenSocialGoogle = function jxRavenSocialGoogle(data) {
     }
   }).always(function (data) {
     $('.raven-social-login-wrap .google').css('opacity', '1.0');
+
     if (true === data.success) {
       if (data.data.redirectUrl) {
         window.location.href = data.data.redirectUrl;
@@ -12887,15 +14690,17 @@ var jxRavenSocialGoogle = function jxRavenSocialGoogle(data) {
     }
   });
 };
+
 exports.Google = jxRavenSocialGoogle;
 
-},{"@wordpress/i18n":114}],67:[function(require,module,exports){
+},{"@wordpress/i18n":115}],67:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _default = function _default() {
   var socialShareUrl = {
     facebook: 'https://www.facebook.com/sharer.php?u={url}',
@@ -12916,24 +14721,30 @@ var _default = function _default() {
     email: 'mailto:?subject={title}&body={text}\n{url}',
     print: 'javascript:print()'
   };
+
   var checkUrl = function checkUrl(string) {
     var url;
+
     try {
       url = new URL(string);
     } catch (_) {
       return false;
     }
+
     return url.protocol === 'http:' || url.protocol === 'https:';
   };
+
   var replacement = function replacement(network) {
     var $target = document.getElementById('jupiterx-social-share-target').value;
     var $title = encodeURIComponent(document.getElementById('jupiterx-social-share-title').value),
-      $image = document.getElementById('jupiterx-social-share-image').value,
-      safeUrl = checkUrl($target),
-      $text = '';
+        $image = document.getElementById('jupiterx-social-share-image').value,
+        safeUrl = checkUrl($target),
+        $text = '';
+
     if (false === safeUrl) {
       $target = 'https://' + $target;
     }
+
     var $url = socialShareUrl[network];
     $url = $url.replace(/{text}/g, $text);
     $url = $url.replace(/{url}/g, $target);
@@ -12941,46 +14752,58 @@ var _default = function _default() {
     $url = $url.replace('{image}', $image);
     return $url;
   };
+
   var windowFeature = function windowFeature() {
     var defaultValue = 'toolbar=0,status=0';
     var width = window.screen.width / 2,
-      height = window.screen.height / 2,
-      left = window.screen.width / 4,
-      top = window.screen.height / 4;
+        height = window.screen.height / 2,
+        left = window.screen.width / 4,
+        top = window.screen.height / 4;
+
     if (window.screen.width < 600) {
       width = window.screen.width;
       height = window.screen.height - 150;
       left = 10;
       top = 75;
     }
+
     return defaultValue + ',width=' + width + ',height=' + height + ',left=' + left + ',top=' + top;
   };
+
   document.querySelectorAll('.jupiterx-social-share-button').forEach(function (item) {
     item.addEventListener('click', function () {
       var network = item.getAttribute('data-network'),
-        finalURL = replacement(network),
-        name = network.charAt(0).toUpperCase() + network.slice(1);
+          finalURL = replacement(network),
+          name = network.charAt(0).toUpperCase() + network.slice(1);
+
       if ('print' === network) {
         //eslint-disable-next-line
         javascript: print();
+
         return;
       }
+
       window.open(finalURL, name, windowFeature());
     });
   });
 };
+
 exports["default"] = _default;
 
 },{}],68:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var StickyMediaScroller = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -13028,13 +14851,16 @@ var StickyMediaScroller = _module["default"].extend({
         entries.forEach(function (entry) {
           var visiblePart = entry.intersectionRatio * 100;
           var scrollDirection = self.getSettings('state.scrollDirection');
+
           if (entry.intersectionRatio > 0 && !scrollDirection) {
             self.elements.$mediaColumn.find('.section').removeClass('active');
             self.elements.$mediaColumn.find("[data-section-index=\"".concat($(entry.target).index(), "\"]")).addClass('active');
           }
+
           if ('up' === scrollDirection) {
             self.handleScrollUp(visiblePart, entries);
           }
+
           if ('down' === scrollDirection) {
             self.handleScrollDown(visiblePart, entries);
           }
@@ -13047,35 +14873,43 @@ var StickyMediaScroller = _module["default"].extend({
   },
   detectScrollDirection: function detectScrollDirection() {
     var self = this,
-      lastScroll = self.getSettings('state.lastScroll'),
-      newScroll = window.scrollY;
+        lastScroll = self.getSettings('state.lastScroll'),
+        newScroll = window.scrollY;
+
     if (newScroll - lastScroll > 0) {
       self.setSettings('state.scrollDirection', 'down');
     } else if (newScroll - lastScroll < 0) {
       self.setSettings('state.scrollDirection', 'up');
     }
+
     self.setSettings('state.lastScroll', newScroll);
   },
   handleScrollUp: function handleScrollUp(visiblePart, entries) {
     var self = this;
+
     if (visiblePart < 90) {
       return;
     }
+
     var previousActiveMedia = self.elements.$mediaColumn.find('.section.active'),
-      sectionIndex = entries[0].target.dataset.sectionIndex,
-      activeMediaItem = self.elements.$mediaColumn.find("[data-section-index=\"".concat(sectionIndex, "\"]"));
+        sectionIndex = entries[0].target.dataset.sectionIndex,
+        activeMediaItem = self.elements.$mediaColumn.find("[data-section-index=\"".concat(sectionIndex, "\"]"));
     self.activateMediaSection(activeMediaItem[0], previousActiveMedia[0]);
   },
   handleScrollDown: function handleScrollDown(visiblePart, entries) {
     var self = this;
+
     if (visiblePart > 40) {
       return;
     }
+
     var previousActiveMedia = self.elements.$mediaColumn.find('.section.active');
     var sectionIndex = +entries[0].target.dataset.sectionIndex + 1;
+
     if (sectionIndex === this.elements.$contentItem.length) {
       sectionIndex = this.elements.$contentItem.length - 1;
     }
+
     var activeMediaItem = self.elements.$mediaColumn.find("[data-section-index=\"".concat(sectionIndex, "\"]"));
     self.activateMediaSection(activeMediaItem[0], previousActiveMedia[0]);
   },
@@ -13083,45 +14917,56 @@ var StickyMediaScroller = _module["default"].extend({
     previousActive.classList.remove('active');
     currentActive.classList.add('active');
     var previousActiveVideo = previousActive.querySelector('video'),
-      currentActiveVideo = currentActive.querySelector('video'),
-      previousActiveIframe = previousActive.querySelector('iframe'),
-      currentActiveIframe = currentActive.querySelector('iframe');
+        currentActiveVideo = currentActive.querySelector('video'),
+        previousActiveIframe = previousActive.querySelector('iframe'),
+        currentActiveIframe = currentActive.querySelector('iframe');
+
     if (previousActiveVideo || previousActiveIframe) {
       var previousActiveIframeSrc = previousActiveIframe === null || previousActiveIframe === void 0 ? void 0 : previousActiveIframe.src;
+
       if (previousActiveIframeSrc) {
         previousActiveIframe.src = '';
         previousActiveIframe.dataset.src = previousActiveIframeSrc;
       }
+
       if (previousActiveVideo) {
         previousActiveVideo.currentTime = previousActiveVideo.dataset.startTime;
         previousActiveVideo.pause();
       }
     }
+
     if (currentActiveIframe && currentActiveIframe.dataset && currentActiveIframe.dataset.src) {
       currentActiveIframe.src = currentActiveIframe.dataset.src;
     }
+
     if (currentActiveVideo && currentActiveVideo.autoplay && currentActiveVideo.muted) {
       currentActiveVideo.play();
     }
+
     this.setStickPosition(currentActive);
   },
   setMediaHeight: function setMediaHeight() {
     var _this = this;
+
     this.elements.$mediaColumn.each(function (index, item) {
       var mediaHeight = item.querySelector('.section').clientHeight;
       item.style.height = mediaHeight + 'px';
     });
     this.elements.$mediaColumn.find('.section').each(function (index, item) {
       var _item$querySelector;
+
       var mediaHeight = (_item$querySelector = item.querySelector('.raven-sticky-media-scroller-content')) === null || _item$querySelector === void 0 ? void 0 : _item$querySelector.clientHeight;
       item.style.height = mediaHeight + 'px';
     });
     this.elements.$responsiveModeWrapper.find('.section:first-child').each(function (index, item) {
       var _item$querySelector2, _item$parentElement$q;
+
       var mediaHeight = (_item$querySelector2 = item.querySelector('.raven-sticky-media-scroller-content')) === null || _item$querySelector2 === void 0 ? void 0 : _item$querySelector2.clientHeight;
       var contentHeight = (_item$parentElement$q = item.parentElement.querySelector('.section:last-child')) === null || _item$parentElement$q === void 0 ? void 0 : _item$parentElement$q.clientHeight;
+
       if (mediaHeight > contentHeight && _this.elements.$responsiveModeWrapper.css('display') !== 'none' && item.classList.contains('elementor-repeater-item-media-type-video')) {
         item.style.height = mediaHeight - contentHeight + 'px';
+
         if (document.body.classList.contains('elementor-editor-active')) {
           item.style.height = mediaHeight + 'px';
         }
@@ -13130,39 +14975,48 @@ var StickyMediaScroller = _module["default"].extend({
       }
     });
   },
+
   /*
    * Only sets the position for the bottom and center.
    * The top position is handled in the css.
    */
   setStickPosition: function setStickPosition() {
     var currentActive = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
+
     if (!currentActive.length) {
       currentActive = this.elements.$mediaColumn.find('.section.active')[0];
     }
+
     var mediaHeight = currentActive.clientHeight,
-      stickPosition = this.getElementSettings('stick_position'),
-      windowHeight = window.innerHeight;
+        stickPosition = this.getElementSettings('stick_position'),
+        windowHeight = window.innerHeight;
     this.elements.$mediaColumn[0].style.height = mediaHeight + 'px';
+
     if ('bottom' === stickPosition) {
       this.elements.$mediaColumn[0].style.top = windowHeight - mediaHeight - 40 + 'px';
     }
+
     if ('center' === stickPosition) {
       this.elements.$mediaColumn[0].style.top = (windowHeight - mediaHeight) / 2 + 'px';
     }
   },
   pauseAllVideosOnFirstScroll: function pauseAllVideosOnFirstScroll() {
     var notActiveSections = this.elements.$stickyModeWrapper[0].querySelectorAll('.section:not(.active)');
+
     if (!notActiveSections) {
       return;
     }
+
     notActiveSections.forEach(function (section) {
       var video = section.querySelector('video');
+
       if (video) {
         video.pause();
       }
     });
   }
 });
+
 function _default($scope) {
   new StickyMediaScroller({
     $element: $scope
@@ -13173,24 +15027,36 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var StripeButton = /*#__PURE__*/function (_elementorModules$fro) {
   (0, _inherits2["default"])(StripeButton, _elementorModules$fro);
+
   var _super = _createSuper(StripeButton);
+
   function StripeButton() {
     (0, _classCallCheck2["default"])(this, StripeButton);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(StripeButton, [{
     key: "getDefaultSettings",
     value: function getDefaultSettings() {
@@ -13214,9 +15080,11 @@ var StripeButton = /*#__PURE__*/function (_elementorModules$fro) {
     key: "bindEvents",
     value: function bindEvents() {
       var _this = this;
+
       if (_.isNull(this.elements.form)) {
         return;
       }
+
       this.elements.form.addEventListener('submit', function (e) {
         return _this.handleSubmit(e);
       });
@@ -13225,35 +15093,39 @@ var StripeButton = /*#__PURE__*/function (_elementorModules$fro) {
     key: "handleSubmit",
     value: function handleSubmit(event) {
       event.preventDefault();
+
       if (elementorFrontend.isEditMode()) {
         return;
       }
+
       if (this.elements.errors.innerHTML !== '') {
         document.querySelectorAll('.elementor-stripe-error-message').forEach(function (e) {
           return e.remove();
         });
       }
+
       var stripeForm = this.elements.form,
-        formData = new FormData(stripeForm),
-        ajaxurl = formData.get('url'),
-        action = formData.get('action'),
-        postId = formData.get('post_id'),
-        widgetId = formData.get('widget_id'),
-        customErrorMsg = formData.get('custom_error_msg'),
-        customErrorMsgGlobal = formData.get('custom_error_msg_global'),
-        customErrorMsgPayment = formData.get('custom_error_msg_payment'),
-        nonce = formData.get('stripe_form_submit_nonce'),
-        pageUrl = document.URL,
-        // Should the page open in a new tab or not
-        openInNewWindow = formData.get('open_in_new_window'),
-        target = 'yes' === openInNewWindow ? '_blank' : '_self'; // Create error container
+          formData = new FormData(stripeForm),
+          ajaxurl = formData.get('url'),
+          action = formData.get('action'),
+          postId = formData.get('post_id'),
+          widgetId = formData.get('widget_id'),
+          customErrorMsg = formData.get('custom_error_msg'),
+          customErrorMsgGlobal = formData.get('custom_error_msg_global'),
+          customErrorMsgPayment = formData.get('custom_error_msg_payment'),
+          nonce = formData.get('stripe_form_submit_nonce'),
+          pageUrl = document.URL,
+          // Should the page open in a new tab or not
+      openInNewWindow = formData.get('open_in_new_window'),
+          target = 'yes' === openInNewWindow ? '_blank' : '_self'; // Create error container
 
       var createErrorContainer = function createErrorContainer(errorMsg) {
         var errorDiv = document.createElement('div'),
-          errorCont = stripeForm.appendChild(errorDiv);
+            errorCont = stripeForm.appendChild(errorDiv);
         errorCont.className = 'elementor-message elementor-stripe-error-message elementor-message-danger';
         errorCont.innerHTML = errorMsg;
       };
+
       var data = {
         action: action,
         postId: postId,
@@ -13261,6 +15133,7 @@ var StripeButton = /*#__PURE__*/function (_elementorModules$fro) {
         pageUrl: pageUrl,
         nonce: nonce
       };
+
       if (0 < this.elements.errors.length) {
         this.elements.errors.forEach(function (error) {
           error.classList.remove('elementor-hidden');
@@ -13272,10 +15145,12 @@ var StripeButton = /*#__PURE__*/function (_elementorModules$fro) {
         }).done(function (response) {
           var code = response.response.code;
           var result = response.body && JSON.parse(response.body);
+
           switch (code) {
             case 200:
               window.open(result.url, target);
               break;
+
             case 401:
             case 403:
               if (customErrorMsg) {
@@ -13283,19 +15158,23 @@ var StripeButton = /*#__PURE__*/function (_elementorModules$fro) {
               } else {
                 createErrorContainer(result.error.message);
               }
+
               break;
+
             default:
               if (customErrorMsg) {
                 createErrorContainer(customErrorMsgGlobal);
               } else {
                 createErrorContainer(result.error.message);
               }
+
           }
         }).fail(function (result) {
           if (customErrorMsg) {
             createErrorContainer(customErrorMsgGlobal);
             return;
           }
+
           console.log(result); // eslint-disable-line
         });
       }
@@ -13303,6 +15182,7 @@ var StripeButton = /*#__PURE__*/function (_elementorModules$fro) {
   }]);
   return StripeButton;
 }(elementorModules.frontend.handlers.Base);
+
 function _default($scope) {
   new StripeButton({
     $element: $scope
@@ -13313,29 +15193,40 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var _i18n = require("@wordpress/i18n");
+
 var $ = jQuery;
+
 var TableOfContents = _module["default"].extend({
   onInit: function onInit() {
     this.setLoader();
     var settings = this.getElementSettings();
     var tags = {};
     this.addCollpaseIcons(settings);
+
     if (_.isEmpty(settings.headings_by_tags)) {
       return;
     }
+
     tags = this.findWanted(settings);
+
     if (_.isEmpty(tags)) {
       this.manageNotFound();
       return;
     }
+
     this.manageToAppendFound(tags, settings);
+
     if ('object' === (typeof elementor === "undefined" ? "undefined" : (0, _typeof2["default"])(elementor))) {
       this.autoSlide(settings);
     }
@@ -13346,21 +15237,24 @@ var TableOfContents = _module["default"].extend({
   },
   autoSlide: function autoSlide(settings) {
     var id = this.getWrapper();
+
     if ('yes' === settings.collapse_subitems) {
       $(id).find('.jupiterx-table-of-content-main-list > li > ol').hide();
     }
+
     if ('undefined' === typeof elementor) {
       window.addEventListener('scroll', this.onScrollEvent);
     }
   },
   onScrollEvent: function onScrollEvent() {
     var id = this.getWrapper(),
-      settings = this.getElementSettings(),
-      self = this;
+        settings = this.getElementSettings(),
+        self = this;
     var key = 0;
     $("[data-".concat(self.getID(), "-jxtoc]")).each(function (index, item) {
       var headerKey = $(item).attr("data-".concat(self.getID(), "-jxtoc"));
       var isInView = self.isElementInView(headerKey);
+
       if (isInView[0]) {
         key = headerKey;
         return true;
@@ -13368,10 +15262,13 @@ var TableOfContents = _module["default"].extend({
     });
     $(id).find('.jupiterx-table-of-contents-item-link').removeClass('jupiterx-table-of-contents-item-link-active');
     $(id).find(".jupiterx-table-of-contents-item-link[data-id=".concat(key, "]")).addClass('jupiterx-table-of-contents-item-link-active');
+
     if ('yes' !== settings.collapse_subitems) {
       return;
     }
+
     var element = $(id).find("li[data-key=".concat(key, "] > ol"));
+
     if ($(id).find(".jupiterx-table-of-contents-item-wrapper[data-key=".concat(key, "]")).parent().hasClass('jupiterx-table-of-content-main-list')) {
       $(id).find('.jupiterx-table-of-content-main-list > li > ol').not(element).hide('fast');
       element.slideDown();
@@ -13383,24 +15280,27 @@ var TableOfContents = _module["default"].extend({
   isElementInView: function isElementInView(key) {
     var check = false;
     var id = this.getWrapper(),
-      self = this,
-      selfList = $(id).find(".jupiterx-table-of-contents-item-wrapper[data-key=\"".concat(key, "\"]")),
-      selfHeader = $("[data-".concat(this.getID(), "-jxtoc=\"").concat(key, "\"]")),
-      selfTop = selfHeader.offset().top + 25,
-      selfBottom = selfTop + selfHeader.outerHeight(),
-      viewportTopSelf = $(window).scrollTop(),
-      viewportBottomSelf = viewportTopSelf + $(window).height();
+        self = this,
+        selfList = $(id).find(".jupiterx-table-of-contents-item-wrapper[data-key=\"".concat(key, "\"]")),
+        selfHeader = $("[data-".concat(this.getID(), "-jxtoc=\"").concat(key, "\"]")),
+        selfTop = selfHeader.offset().top + 25,
+        selfBottom = selfTop + selfHeader.outerHeight(),
+        viewportTopSelf = $(window).scrollTop(),
+        viewportBottomSelf = viewportTopSelf + $(window).height();
     check = selfBottom > viewportTopSelf && selfTop < viewportBottomSelf;
+
     if (check) {
       return [true, key];
     }
+
     selfList.find('li').each(function (index, item) {
       var headKey = $(item).attr('data-key'),
-        header = $("[data-".concat(self.getID(), "-jxtoc=").concat(headKey, "]")),
-        elementTop = header.offset().top,
-        elementBottom = elementTop + header.outerHeight(),
-        viewportTop = $(window).scrollTop(),
-        viewportBottom = viewportTop + $(window).height();
+          header = $("[data-".concat(self.getID(), "-jxtoc=").concat(headKey, "]")),
+          elementTop = header.offset().top,
+          elementBottom = elementTop + header.outerHeight(),
+          viewportTop = $(window).scrollTop(),
+          viewportBottom = viewportTop + $(window).height();
+
       if (elementBottom > viewportTop && elementTop < viewportBottom) {
         check = true;
       }
@@ -13409,33 +15309,40 @@ var TableOfContents = _module["default"].extend({
   },
   addCollpaseIcons: function addCollpaseIcons(settings) {
     var editor = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : false;
+
     if ('yes' !== settings.minimize_box) {
       return;
     }
+
     var id = this.getWrapper(),
-      expandHtml = $(id).find('.jupiterx-table-of-contents-list-icon-expand').html(),
-      collapseHtml = $(id).find('.jupiterx-table-of-contents-list-icon-collapse').html(),
-      parent = $(id).find('.jupiterx-toc-body-maximized'),
-      screen = window.innerWidth,
-      table = $(id).find('.jupiterx-table-of-contents-widget'),
-      tableHeight = table.css('min-height'),
-      header = $(id).find('.jupiterx-table-of-contents-header');
+        expandHtml = $(id).find('.jupiterx-table-of-contents-list-icon-expand').html(),
+        collapseHtml = $(id).find('.jupiterx-table-of-contents-list-icon-collapse').html(),
+        parent = $(id).find('.jupiterx-toc-body-maximized'),
+        screen = window.innerWidth,
+        table = $(id).find('.jupiterx-table-of-contents-widget'),
+        tableHeight = table.css('min-height'),
+        header = $(id).find('.jupiterx-table-of-contents-header');
+
     if (editor && $(id).find('.jxtoc').length < 0) {
       $(id).append('<input type="hidden" value="0" class="jxtoc-checker">');
     }
+
     if (!editor || '0' === $(id).find('.jxtoc-checker').val()) {
       parent.append(expandHtml);
       parent.append(collapseHtml);
     }
+
     if (editor) {
       $(id).find('.jxtoc-checker').val('1');
     }
+
     header.css('cursor', 'pointer');
     var collapse = $(id).find('.jupiterx-table-of-contents-expand-icon'),
-      expand = $(id).find('.jupiterx-table-of-contents-collapse-icon');
+        expand = $(id).find('.jupiterx-table-of-contents-collapse-icon');
     header.off().on('click', function () {
       var body = $(id).find('.jupiterx-table-of-contents-body'),
-        isExpanded = body.is(':visible');
+          isExpanded = body.is(':visible');
+
       if (isExpanded) {
         body.slideUp();
         $(id).find('table').css('min-height', 'auto');
@@ -13450,16 +15357,19 @@ var TableOfContents = _module["default"].extend({
     });
     collapse.hide();
     expand.show();
+
     if ('desktop' === settings.minimized_on && screen >= 1024) {
       collapse.show();
       expand.hide();
       header.trigger('click');
     }
+
     if ('tablet' === settings.minimized_on && screen < 1024 && screen > 767) {
       collapse.show();
       expand.hide();
       header.trigger('click');
     }
+
     if ('mobile' === settings.minimized_on && screen < 767) {
       collapse.show();
       expand.hide();
@@ -13472,58 +15382,61 @@ var TableOfContents = _module["default"].extend({
   },
   findWanted: function findWanted(settings) {
     var _this = this;
-    var foundTargets = {},
-      wanted = settings.headings_by_tags.join();
-    var searchArea = 'body',
-      i = 0;
 
-    // Looking in body.
+    var foundTargets = {},
+        wanted = settings.headings_by_tags.join();
+    var searchArea = 'body',
+        i = 0; // Looking in body.
+
     if (!_.isEmpty(settings.container)) {
       searchArea = settings.container;
     }
+
     $(searchArea).find(wanted).each(function (index, element) {
       var _settings$container, _settings$container2, _settings$container3, _settings$container4;
-      var tag = $(element).prop('tagName');
-      var check = true;
 
-      // Not table of contents title.
+      var tag = $(element).prop('tagName');
+      var check = true; // Not table of contents title.
+
       if ($(element).hasClass('jupiterx-table-of-contents-native-exclude')) {
         return;
-      }
+      } // Not header headings.
 
-      // Not header headings.
-      if ($(element).parents('header').length === 1 && !((_settings$container = settings.container) !== null && _settings$container !== void 0 && _settings$container.includes('header'))) {
+
+      if ($(element).parents('header').length === 1 && !((_settings$container = settings.container) === null || _settings$container === void 0 ? void 0 : _settings$container.includes('header'))) {
         if ($(element).parents('#jupiterx-primary').length !== 1) {
           return;
         }
-      }
+      } // Not footer headings.
 
-      // Not footer headings.
-      if ($(element).parents('footer').length === 1 && !((_settings$container2 = settings.container) !== null && _settings$container2 !== void 0 && _settings$container2.includes('footer'))) {
+
+      if ($(element).parents('footer').length === 1 && !((_settings$container2 = settings.container) === null || _settings$container2 === void 0 ? void 0 : _settings$container2.includes('footer'))) {
         if ($(element).parents('#jupiterx-primary').length !== 1) {
           return;
         }
-      }
+      } // Not sidebar also
 
-      // Not sidebar also
-      if ($(element).parents('aside').length === 1 && !((_settings$container3 = settings.container) !== null && _settings$container3 !== void 0 && _settings$container3.includes('aside'))) {
+
+      if ($(element).parents('aside').length === 1 && !((_settings$container3 = settings.container) === null || _settings$container3 === void 0 ? void 0 : _settings$container3.includes('aside'))) {
         if ($(element).parents('#jupiterx-primary').length !== 1) {
           return;
         }
-      }
+      } // Not post title bar.
 
-      // Not post title bar.
-      if ($(element).parents('.jupiterx-main-header').length === 1 && !((_settings$container4 = settings.container) !== null && _settings$container4 !== void 0 && _settings$container4.includes('.jupiterx-main-header'))) {
+
+      if ($(element).parents('.jupiterx-main-header').length === 1 && !((_settings$container4 = settings.container) === null || _settings$container4 === void 0 ? void 0 : _settings$container4.includes('.jupiterx-main-header'))) {
         return;
-      }
+      } // Not excludes.
 
-      // Not excludes.
+
       if (!_.isEmpty(settings.exclude_headings_by_selector)) {
         check = _this.checkExcludes(element, settings.exclude_headings_by_selector, tag);
+
         if (!check) {
           return;
         }
       }
+
       $(element).attr("data-".concat(_this.getID(), "-jxtoc"), i);
       foundTargets[i] = {
         type: tag,
@@ -13539,23 +15452,28 @@ var TableOfContents = _module["default"].extend({
     if (!excludes.includes(',')) {
       excludes = excludes + ',';
     }
+
     var check = true,
-      toCheck = '';
+        toCheck = '';
     var selectors = excludes.split(',');
     selectors.forEach(function (item) {
       var firstLetter = item.charAt(0);
+
       if ('.' === firstLetter) {
         toCheck = item.substring(1);
+
         if ($(element).hasClass(toCheck)) {
           check = false;
         }
       } else if ('#' === firstLetter) {
         toCheck = item.substring(1);
+
         if (toCheck === $(element).attr('id')) {
           check = false;
         }
       } else {
         toCheck = item.toUpperCase();
+
         if (toCheck === tag) {
           check = false;
         }
@@ -13576,37 +15494,46 @@ var TableOfContents = _module["default"].extend({
   },
   buildItem: function buildItem(settings, tags, key, count) {
     var _this2 = this;
+
     var id = this.getWrapper(),
-      element = tags[key],
-      wrapper = document.createElement('li'),
-      innerRapper = document.createElement('div');
+        element = tags[key],
+        wrapper = document.createElement('li'),
+        innerRapper = document.createElement('div');
     wrapper.setAttribute('class', 'jupiterx-table-of-contents-item-wrapper');
     wrapper.setAttribute('data-tag', element.type);
     innerRapper.setAttribute('class', 'jupiterx-table-of-contents-inner-wrapper');
+
     if ('yes' !== settings.word_wrap) {
       wrapper.classList.add('jupiterx-toc-word-wrap');
     }
+
     if ('yes' === settings.hierarchical_view) {
       wrapper.setAttribute('data-key', key);
     }
+
     var counter = document.createElement('span');
     var point = document.createElement('span');
     point.setAttribute('class', 'jupiterx-table-of-contents-list-pointer');
+
     if ('numbers' === settings.marker_view) {
       counter.innerText = count;
       point.innerText = '.';
     }
+
     if ('bullets' === settings.marker_view) {
       counter.innerHTML = $(id).find('.jupiterx-table-of-contents-list-icon-wrapper').html();
     }
+
     if (_.isEmpty(settings.hierarchical_view)) {
       innerRapper.appendChild(counter);
       innerRapper.appendChild(point);
     }
+
     if (!_.isEmpty(settings.hierarchical_view) && 'bullets' === settings.marker_view) {
       wrapper.classList.add('wrapper-with-no-number');
       innerRapper.appendChild(counter);
     }
+
     var item = document.createElement('a');
     item.setAttribute('class', 'jupiterx-table-of-contents-item-link');
     item.setAttribute('data-text', element.text);
@@ -13614,6 +15541,7 @@ var TableOfContents = _module["default"].extend({
     item.setAttribute('href', '#');
     $(item).off().on('click', function (e) {
       e.preventDefault();
+
       _this2.collapseSubmenus(e, settings);
     });
     item.innerText = element.text;
@@ -13627,80 +15555,95 @@ var TableOfContents = _module["default"].extend({
   },
   manageToAppendFound: function manageToAppendFound(tags, settings) {
     var _this3 = this;
+
     var i = 1;
     var id = this.getWrapper(),
-      widgetBody = $(id).find('.jupiterx-table-of-contents-body'),
-      listType = _.isEmpty(settings.hierarchical_view) ? 'ul' : 'ol',
-      orderedList = document.createElement(listType);
+        widgetBody = $(id).find('.jupiterx-table-of-contents-body'),
+        listType = _.isEmpty(settings.hierarchical_view) ? 'ul' : 'ol',
+        orderedList = document.createElement(listType);
     orderedList.setAttribute('type', '1');
     orderedList.setAttribute('class', 'jupiterx-table-of-content-main-list');
+
     for (var key in tags) {
       var item = this.buildItem(settings, tags, key, i);
       var counter = parseInt(key);
       i++;
+
       if (counter === 0 || _.isEmpty(settings.hierarchical_view)) {
         orderedList.appendChild(item.content);
         continue;
       }
+
       var currentDignity = this.convertTagToNumber(item.tag);
       counter = counter - 1;
+
       while (counter >= 0) {
         var keyTagDignity = this.convertTagToNumber(tags[counter].type),
-          keyHTML = $(orderedList).find('[data-key="' + counter + '"]');
+            keyHTML = $(orderedList).find('[data-key="' + counter + '"]'); // Same as previous tag.
 
-        // Same as previous tag.
         if (currentDignity === keyTagDignity) {
           keyHTML.parent().append(item.content);
           break;
-        }
+        } // lower than previous tag and parent has an OL child.
 
-        // lower than previous tag and parent has an OL child.
+
         if (currentDignity > keyTagDignity && keyHTML.children('ol').length > 0) {
           keyHTML.append(item.content);
           break;
-        }
+        } // lower than previous tag and parent does not have an OL child.
 
-        // lower than previous tag and parent does not have an OL child.
+
         if (currentDignity > keyTagDignity && 0 === keyHTML.children('ol').length) {
           var ol = document.createElement('ol');
           ol.appendChild(item.content);
           ol.setAttribute('class', 'jupiterx-table-of-contents-nested-list');
           keyHTML.append(ol);
           break;
-        }
+        } // Higher than previous.
 
-        // Higher than previous.
+
         if (currentDignity < keyTagDignity) {
           var doublePre = counter - 1;
+
           if (doublePre < 0) {
             $(orderedList).find('[data-key="0"]').parent().append(item.content);
             break;
           }
+
           keyTagDignity = this.convertTagToNumber(tags[doublePre].type);
           keyHTML = $(orderedList).find('[data-key="' + doublePre + '"]');
+
           if (currentDignity > keyTagDignity && keyHTML.children('ol').length > 0) {
             keyHTML.find('ol').append(item.content);
             break;
           }
+
           if (currentDignity > keyTagDignity && 0 === keyHTML.children('ol').length) {
             var _ol = document.createElement('ol');
+
             _ol.appendChild(item.content);
+
             _ol.setAttribute('class', 'jupiterx-table-of-contents-nested-list');
+
             keyHTML.append(_ol);
             break;
           }
         }
+
         counter--;
       }
     }
+
     if ('undefined' === typeof elementor) {
       setTimeout(function () {
         $('.jupiterx-table-of-contents-loader').css('display', 'none');
         widgetBody.append(orderedList);
+
         _this3.autoSlide(settings);
       }, 500);
       return;
     }
+
     $('.jupiterx-table-of-contents-loader').css('display', 'none');
     widgetBody.append(orderedList);
   },
@@ -13709,47 +15652,57 @@ var TableOfContents = _module["default"].extend({
   },
   collapseSubmenus: function collapseSubmenus(e, settings) {
     var _this4 = this;
+
     window.removeEventListener('scroll', this.onScrollEvent);
     var relatedTag = $(e.target).attr('data-id');
     $('.jupiterx-table-of-contents-item-link').removeClass('jupiterx-table-of-contents-item-link-active');
     e.target.classList.add('jupiterx-table-of-contents-item-link-active');
+
     if ('undefined' === typeof elementor) {
       $('html, body').animate({
         scrollTop: $("[data-".concat(this.getID(), "-jxtoc=\"") + relatedTag + "\"]").offset().top - 100
       }, 500);
     }
+
     if ('yes' !== settings.collapse_subitems) {
       setTimeout(function () {
         window.addEventListener('scroll', _this4.onScrollEvent);
       }, 0);
       return;
     }
+
     var key = e.target.getAttribute('data-id');
     var id = this.getWrapper();
+
     if ($(e.target).parent().parent().parent().hasClass('jupiterx-table-of-content-main-list')) {
       $(id).find("li[data-key=".concat(key, "] > ol")).slideToggle('fast');
       $(id).find(".jupiterx-table-of-content-main-list > li[data-key!=".concat(key, "] > ol")).hide();
     }
+
     setTimeout(function () {
       window.addEventListener('scroll', _this4.onScrollEvent);
     }, 0);
   }
 });
+
 function _default($scope) {
   new TableOfContents({
     $element: $scope
   });
 }
 
-},{"../utils/module":9,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/typeof":106,"@wordpress/i18n":114}],71:[function(require,module,exports){
+},{"../utils/module":9,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/typeof":106,"@wordpress/i18n":115}],71:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var Tabs = _module["default"].extend({
   $activeContent: null,
   interval: null,
@@ -13778,9 +15731,11 @@ var Tabs = _module["default"].extend({
   },
   activateDefaultTab: function activateDefaultTab() {
     var settings = this.getSettings();
+
     if ((!settings.autoExpand || settings.autoExpand === 'editor') && !this.isEdit) {
       return;
     }
+
     var defaultActiveTab = this.getEditSettings('activeItemIndex') || 1;
     var originalToggleMethods = {
       showTabFn: settings.showTabFn,
@@ -13809,6 +15764,7 @@ var Tabs = _module["default"].extend({
     var $requestedContent = this.elements.$tabContents.filter('[data-tab="' + tabIndex + '"]');
     $requestedTitle.add($requestedContent).addClass(activeClass);
     $requestedContent[settings.showTabFn]();
+
     if ($requestedTitle.hasClass('raven-tabs-mobile-title') && window.innerWidth < 1025) {
       var headerHeight = $('header').outerHeight();
       window.scroll({
@@ -13822,6 +15778,7 @@ var Tabs = _module["default"].extend({
   },
   useAjax: function useAjax() {
     var useAjaxLoading = this.getElementSettings('use_ajax_loading');
+
     if ('yes' === useAjaxLoading) {
       var templateWrapper = $('.raven-tabs-content.raven-tabs-active .raven-ajax-content-template');
       var templateId = templateWrapper.attr('data-id');
@@ -13848,10 +15805,12 @@ var Tabs = _module["default"].extend({
   },
   onInit: function onInit() {
     var _this = this;
+
     var self = this;
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(self, arguments);
     self.activateDefaultTab();
     var autoSwitch = self.getElementSettings('auto_switch');
+
     if ('yes' === autoSwitch) {
       var delay = self.getElementSettings('auto_swtich_delay');
       var indexNumber = 1;
@@ -13859,9 +15818,11 @@ var Tabs = _module["default"].extend({
       var tabsLength = tabsContents.$tabContents.length;
       self.interval = setInterval(function () {
         indexNumber++;
+
         if (indexNumber > tabsLength) {
           indexNumber = 1;
         }
+
         _this.changeActiveTab(indexNumber);
       }, delay);
     }
@@ -13874,21 +15835,25 @@ var Tabs = _module["default"].extend({
   changeActiveTab: function changeActiveTab(tabIndex) {
     var isActiveTab = this.isActiveTab(tabIndex);
     var settings = this.getSettings();
+
     if ((settings.toggleSelf || !isActiveTab) && settings.hidePrevious) {
       this.deactivateActiveTab();
     }
+
     if (!settings.hidePrevious && isActiveTab) {
       this.deactivateActiveTab(tabIndex);
     }
+
     if (!isActiveTab) {
       this.activateTab(tabIndex);
-    }
+    } // eslint-disable-next-line no-undef
 
-    // eslint-disable-next-line no-undef
+
     var changeActiveTab = new CustomEvent('jupiterxcore:advancedtabs:changeactivetab');
     document.dispatchEvent(changeActiveTab);
   }
 });
+
 function _default($scope) {
   new Tabs({
     $element: $scope,
@@ -13900,25 +15865,38 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _get2 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var baseTabs = /*#__PURE__*/function (_elementorModules$fro) {
   (0, _inherits2["default"])(baseTabs, _elementorModules$fro);
+
   var _super = _createSuper(baseTabs);
+
   function baseTabs() {
     (0, _classCallCheck2["default"])(this, baseTabs);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(baseTabs, [{
     key: "getDefaultSettings",
     value: function getDefaultSettings() {
@@ -13957,14 +15935,16 @@ var baseTabs = /*#__PURE__*/function (_elementorModules$fro) {
     key: "activateDefaultTab",
     value: function activateDefaultTab(videoId) {
       var settings = this.getSettings();
+
       if (!settings.autoExpand || 'editor' === settings.autoExpand && !this.isEdit) {
         return;
       }
+
       var defaultActiveTab = this.getEditSettings('activeItemIndex') || videoId || 1,
-        originalToggleMethods = {
-          showTabFn: settings.showTabFn,
-          hideTabFn: settings.hideTabFn
-        };
+          originalToggleMethods = {
+        showTabFn: settings.showTabFn,
+        hideTabFn: settings.hideTabFn
+      };
       this.setSettings({
         showTabFn: 'show',
         hideTabFn: 'hide'
@@ -13976,38 +15956,47 @@ var baseTabs = /*#__PURE__*/function (_elementorModules$fro) {
     key: "handleKeyboardNavigation",
     value: function handleKeyboardNavigation(event) {
       var tab = event.currentTarget,
-        $tabList = jQuery(tab.closest(this.getSettings('selectors').tablist)),
-        // eslint-disable-next-line @wordpress/no-unused-vars-before-return
-        $tabs = $tabList.find(this.getSettings('selectors').tabTitle),
-        isVertical = 'vertical' === $tabList.attr('aria-orientation');
+          $tabList = jQuery(tab.closest(this.getSettings('selectors').tablist)),
+          // eslint-disable-next-line @wordpress/no-unused-vars-before-return
+      $tabs = $tabList.find(this.getSettings('selectors').tabTitle),
+          isVertical = 'vertical' === $tabList.attr('aria-orientation');
+
       switch (event.key) {
         case 'ArrowLeft':
         case 'ArrowRight':
           if (isVertical) {
             return;
           }
+
           break;
+
         case 'ArrowUp':
         case 'ArrowDown':
           if (!isVertical) {
             return;
           }
+
           event.preventDefault();
           break;
+
         case 'Home':
           event.preventDefault();
           $tabs.first().trigger('focus');
           return;
+
         case 'End':
           event.preventDefault();
           $tabs.last().trigger('focus');
           return;
+
         default:
           return;
       }
+
       var tabIndex = tab.getAttribute('data-tab') - 1,
-        direction = this.getSettings('keyDirection')[event.key],
-        nextTab = $tabs[tabIndex + direction];
+          direction = this.getSettings('keyDirection')[event.key],
+          nextTab = $tabs[tabIndex + direction];
+
       if (nextTab) {
         nextTab.focus();
       } else if (-1 === tabIndex + direction) {
@@ -14020,10 +16009,10 @@ var baseTabs = /*#__PURE__*/function (_elementorModules$fro) {
     key: "deactivateActiveTab",
     value: function deactivateActiveTab(tabIndex) {
       var settings = this.getSettings(),
-        activeClass = settings.classes.active,
-        activeFilter = tabIndex ? '[data-tab="' + tabIndex + '"]' : '.' + activeClass,
-        $activeTitle = this.elements.$tabTitles.filter(activeFilter),
-        $activeContent = this.elements.$tabContents.filter(activeFilter);
+          activeClass = settings.classes.active,
+          activeFilter = tabIndex ? '[data-tab="' + tabIndex + '"]' : '.' + activeClass,
+          $activeTitle = this.elements.$tabTitles.filter(activeFilter),
+          $activeContent = this.elements.$tabContents.filter(activeFilter);
       $activeTitle.add($activeContent).removeClass(activeClass);
       $activeTitle.attr({
         tabindex: '-1',
@@ -14036,10 +16025,10 @@ var baseTabs = /*#__PURE__*/function (_elementorModules$fro) {
     key: "activateTab",
     value: function activateTab(tabIndex) {
       var settings = this.getSettings(),
-        activeClass = settings.classes.active,
-        $requestedTitle = this.elements.$tabTitles.filter('[data-tab="' + tabIndex + '"]'),
-        $requestedContent = this.elements.$tabContents.filter('[data-tab="' + tabIndex + '"]'),
-        animationDuration = 'show' === settings.showTabFn ? 0 : 400;
+          activeClass = settings.classes.active,
+          $requestedTitle = this.elements.$tabTitles.filter('[data-tab="' + tabIndex + '"]'),
+          $requestedContent = this.elements.$tabContents.filter('[data-tab="' + tabIndex + '"]'),
+          animationDuration = 'show' === settings.showTabFn ? 0 : 400;
       $requestedTitle.add($requestedContent).addClass(activeClass);
       $requestedTitle.attr({
         tabindex: '0',
@@ -14059,12 +16048,14 @@ var baseTabs = /*#__PURE__*/function (_elementorModules$fro) {
     key: "bindEvents",
     value: function bindEvents() {
       var _this = this;
+
       this.elements.$tabTitles.on({
         keydown: function keydown(event) {
           // Support for old markup that includes an `<a>` tag in the tab.
           if (jQuery(event.target).is('a') && "Enter" === event.key) {
             event.preventDefault();
           }
+
           if (['End', 'Home', 'ArrowUp', 'ArrowDown'].includes(event.key)) {
             _this.handleKeyboardNavigation(event);
           }
@@ -14074,16 +16065,21 @@ var baseTabs = /*#__PURE__*/function (_elementorModules$fro) {
             case 'ArrowLeft':
             case 'ArrowRight':
               _this.handleKeyboardNavigation(event);
+
               break;
+
             case 'Enter':
             case 'Space':
               event.preventDefault();
+
               _this.changeActiveTab(event.currentTarget.getAttribute('data-tab'));
+
               break;
           }
         },
         click: function click(event) {
           event.preventDefault();
+
           _this.changeActiveTab(event.currentTarget.getAttribute('data-tab'));
         }
       });
@@ -14097,13 +16093,16 @@ var baseTabs = /*#__PURE__*/function (_elementorModules$fro) {
     key: "changeActiveTab",
     value: function changeActiveTab(tabIndex) {
       var isActiveTab = this.isActiveTab(tabIndex),
-        settings = this.getSettings();
+          settings = this.getSettings();
+
       if ((settings.toggleSelf || !isActiveTab) && settings.hidePrevious) {
         this.deactivateActiveTab();
       }
+
       if (!settings.hidePrevious && isActiveTab) {
         this.deactivateActiveTab(tabIndex);
       }
+
       if (!isActiveTab) {
         this.activateTab(tabIndex);
       }
@@ -14111,6 +16110,7 @@ var baseTabs = /*#__PURE__*/function (_elementorModules$fro) {
   }]);
   return baseTabs;
 }(elementorModules.frontend.handlers.Base);
+
 var _default = baseTabs;
 exports["default"] = _default;
 
@@ -14118,17 +16118,22 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.triggerEvent = triggerEvent;
-var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _playlistEvent = _interopRequireDefault(require("../video-playlist/playlist-event"));
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == (0, _typeof2["default"])(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError((0, _typeof2["default"])(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+
 // Functions to get objects for the playlist event object.
 function getEventTabsObject(widgetObject) {
   var currentInnerTabsTitleElements = widgetObject.elements.$innerTabs.filter('.e-active').find('.raven-inner-tabs-wrapper .raven-inner-tab-title');
+
   if (currentInnerTabsTitleElements.length) {
     var activeInnerTabTitleElement = currentInnerTabsTitleElements.filter('.raven-inner-tab-active');
     return {
@@ -14136,11 +16141,13 @@ function getEventTabsObject(widgetObject) {
       index: activeInnerTabTitleElement.index() + 1
     };
   }
+
   return {
     name: 'none',
     index: 'none'
   };
 }
+
 function getEventPlaylistObject(widgetObject, positionInVideoList) {
   var currentVideoIndex = positionInVideoList || widgetObject.currentPlaylistItemIndex;
   return {
@@ -14151,9 +16158,10 @@ function getEventPlaylistObject(widgetObject, positionInVideoList) {
     }).length
   };
 }
+
 function getEventVideoObject(widgetObject, positionInVideoList) {
   var currentVideoIndex = positionInVideoList || widgetObject.currentPlaylistItemIndex,
-    currentVideo = widgetObject.playlistItemsArray[currentVideoIndex - 1];
+      currentVideo = widgetObject.playlistItemsArray[currentVideoIndex - 1];
   return {
     provider: currentVideo.videoType,
     url: currentVideo.videoUrl,
@@ -14161,119 +16169,155 @@ function getEventVideoObject(widgetObject, positionInVideoList) {
     duration: currentVideo.videoDuration
   };
 }
+
 function getEventEventObject(_x, _x2, _x3, _x4) {
   return _getEventEventObject.apply(this, arguments);
 }
+
 function _getEventEventObject() {
-  _getEventEventObject = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(widgetObject, eventType, eventTrigger, positionInVideoList) {
+  _getEventEventObject = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(widgetObject, eventType, eventTrigger, positionInVideoList) {
     var currentVideoIndex, currentVideo;
-    return _regeneratorRuntime().wrap(function _callee$(_context) {
-      while (1) switch (_context.prev = _context.next) {
-        case 0:
-          currentVideoIndex = positionInVideoList || widgetObject.currentPlaylistItemIndex, currentVideo = widgetObject.playlistItemsArray[currentVideoIndex - 1];
-          _context.t0 = eventType;
-          _context.next = 4;
-          return currentVideo.playerInstance.getCurrentTime();
-        case 4:
-          _context.t1 = _context.sent;
-          _context.t2 = widgetObject.$element;
-          _context.t3 = eventTrigger;
-          _context.t4 = currentVideo.playerInstance.watchCount;
-          return _context.abrupt("return", {
-            type: _context.t0,
-            time: _context.t1,
-            element: _context.t2,
-            trigger: _context.t3,
-            watchCount: _context.t4
-          });
-        case 9:
-        case "end":
-          return _context.stop();
+    return _regenerator["default"].wrap(function _callee$(_context) {
+      while (1) {
+        switch (_context.prev = _context.next) {
+          case 0:
+            currentVideoIndex = positionInVideoList || widgetObject.currentPlaylistItemIndex, currentVideo = widgetObject.playlistItemsArray[currentVideoIndex - 1];
+            _context.t0 = eventType;
+            _context.next = 4;
+            return currentVideo.playerInstance.getCurrentTime();
+
+          case 4:
+            _context.t1 = _context.sent;
+            _context.t2 = widgetObject.$element;
+            _context.t3 = eventTrigger;
+            _context.t4 = currentVideo.playerInstance.watchCount;
+            return _context.abrupt("return", {
+              type: _context.t0,
+              time: _context.t1,
+              element: _context.t2,
+              trigger: _context.t3,
+              watchCount: _context.t4
+            });
+
+          case 9:
+          case "end":
+            return _context.stop();
+        }
       }
     }, _callee);
   }));
   return _getEventEventObject.apply(this, arguments);
 }
+
 function triggerEvent(_x5, _x6, _x7, _x8) {
   return _triggerEvent.apply(this, arguments);
 }
+
 function _triggerEvent() {
-  _triggerEvent = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regeneratorRuntime().mark(function _callee2(widgetObject, eventType, eventTrigger, positionInVideoList) {
+  _triggerEvent = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee2(widgetObject, eventType, eventTrigger, positionInVideoList) {
     var currentEvent;
-    return _regeneratorRuntime().wrap(function _callee2$(_context2) {
-      while (1) switch (_context2.prev = _context2.next) {
-        case 0:
-          _context2.t0 = _playlistEvent["default"];
-          _context2.next = 3;
-          return getEventEventObject(widgetObject, eventType, eventTrigger, positionInVideoList);
-        case 3:
-          _context2.t1 = _context2.sent;
-          _context2.t2 = getEventTabsObject(widgetObject);
-          _context2.t3 = getEventPlaylistObject(widgetObject, positionInVideoList);
-          _context2.t4 = getEventVideoObject(widgetObject, positionInVideoList);
-          _context2.t5 = {
-            event: _context2.t1,
-            tab: _context2.t2,
-            playlist: _context2.t3,
-            video: _context2.t4
-          };
-          currentEvent = new _context2.t0(_context2.t5);
-          jQuery('body').trigger('raven-video-playList', currentEvent);
-        case 10:
-        case "end":
-          return _context2.stop();
+    return _regenerator["default"].wrap(function _callee2$(_context2) {
+      while (1) {
+        switch (_context2.prev = _context2.next) {
+          case 0:
+            _context2.t0 = _playlistEvent["default"];
+            _context2.next = 3;
+            return getEventEventObject(widgetObject, eventType, eventTrigger, positionInVideoList);
+
+          case 3:
+            _context2.t1 = _context2.sent;
+            _context2.t2 = getEventTabsObject(widgetObject);
+            _context2.t3 = getEventPlaylistObject(widgetObject, positionInVideoList);
+            _context2.t4 = getEventVideoObject(widgetObject, positionInVideoList);
+            _context2.t5 = {
+              event: _context2.t1,
+              tab: _context2.t2,
+              playlist: _context2.t3,
+              video: _context2.t4
+            };
+            currentEvent = new _context2.t0(_context2.t5);
+            jQuery('body').trigger('raven-video-playList', currentEvent);
+
+          case 10:
+          case "end":
+            return _context2.stop();
+        }
       }
     }, _callee2);
   }));
   return _triggerEvent.apply(this, arguments);
 }
 
-},{"../video-playlist/playlist-event":80,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/typeof":106}],74:[function(require,module,exports){
+},{"../video-playlist/playlist-event":80,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/regenerator":108}],74:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _get2 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _baseTabs2 = _interopRequireDefault(require("../video-playlist/base-tabs"));
+
 var _playerYoutube = _interopRequireDefault(require("../video-playlist/player-youtube"));
+
 var _playerVimeo = _interopRequireDefault(require("../video-playlist/player-vimeo"));
+
 var _playerHosted = _interopRequireDefault(require("../video-playlist/player-hosted"));
+
 var _scrollUtils = require("../video-playlist/scroll-utils");
+
 var _innerTabs = require("../video-playlist/inner-tabs");
+
 var _urlParams = require("../video-playlist/url-params");
+
 var _eventTrigger = require("../video-playlist/event-trigger");
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0, _defineProperty2["default"])(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
   (0, _inherits2["default"])(VideoPlaylistHandler, _baseTabs);
+
   var _super = _createSuper(VideoPlaylistHandler);
+
   function VideoPlaylistHandler() {
     (0, _classCallCheck2["default"])(this, VideoPlaylistHandler);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(VideoPlaylistHandler, [{
     key: "getDefaultSettings",
     value: function getDefaultSettings() {
       var defaultSettings = (0, _get2["default"])((0, _getPrototypeOf2["default"])(VideoPlaylistHandler.prototype), "getDefaultSettings", this).call(this),
-        selectors = {
-          tabsWrapper: '.raven-tabs-items-wrapper',
-          tabsItems: '.raven-tabs-items',
-          toggleVideosDisplayButton: '.raven-tabs-toggle-videos-display-button',
-          videos: '.raven-tabs-content-wrapper .raven-tab-content',
-          innerTabs: '.raven-tabs-inner-tabs .raven-tab-content',
-          imageOverlay: '.raven-custom-embed-image-overlay'
-        };
+          selectors = {
+        tabsWrapper: '.raven-tabs-items-wrapper',
+        tabsItems: '.raven-tabs-items',
+        toggleVideosDisplayButton: '.raven-tabs-toggle-videos-display-button',
+        videos: '.raven-tabs-content-wrapper .raven-tab-content',
+        innerTabs: '.raven-tabs-inner-tabs .raven-tab-content',
+        imageOverlay: '.raven-custom-embed-image-overlay'
+      };
       return _objectSpread(_objectSpread({}, defaultSettings), {}, {
         selectors: _objectSpread(_objectSpread({}, defaultSettings.selectors), selectors)
       });
@@ -14282,7 +16326,7 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
     key: "getDefaultElements",
     value: function getDefaultElements() {
       var elements = (0, _get2["default"])((0, _getPrototypeOf2["default"])(VideoPlaylistHandler.prototype), "getDefaultElements", this).call(this),
-        selectors = this.getSettings('selectors');
+          selectors = this.getSettings('selectors');
       return _objectSpread(_objectSpread({}, elements), {}, {
         $tabsWrapper: this.findElement(selectors.tabsWrapper),
         $tabsItems: this.findElement(selectors.tabsItems),
@@ -14312,36 +16356,35 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
     key: "bindEvents",
     value: function bindEvents() {
       var _this = this;
-      (0, _get2["default"])((0, _getPrototypeOf2["default"])(VideoPlaylistHandler.prototype), "bindEvents", this).call(this);
 
-      // Handle the click on the image overlay.
+      (0, _get2["default"])((0, _getPrototypeOf2["default"])(VideoPlaylistHandler.prototype), "bindEvents", this).call(this); // Handle the click on the image overlay.
+
       this.elements.$imageOverlay.on({
         click: function click(e) {
           // Remove image overlay if the user clicked it and play the video in case it is not playing.
           e.currentTarget.remove();
+
           _this.getCurrentPlayerSelected().play();
         }
-      });
+      }); // Handle the inner tab functionality.
 
-      // Handle the inner tab functionality.
       this.elements.$innerTabs.on({
         click: function click(event) {
           (0, _innerTabs.handleInnerTabs)(event, _this);
         }
-      });
+      }); // Handle scroll on the right panel to make the "shadows" effect when the panel is scrollable.
 
-      // Handle scroll on the right panel to make the "shadows" effect when the panel is scrollable.
       this.elements.$tabsItems.on({
         scroll: function scroll(event) {
           (0, _scrollUtils.handleVideosPanelScroll)(_this.elements, event);
         }
-      });
+      }); // Handle the closing/opening right panel in mobile mode.
 
-      // Handle the closing/opening right panel in mobile mode.
       this.elements.$toggleVideosDisplayButton.on({
         click: function click(event) {
           jQuery(event.target).toggleClass('rotate-up');
           jQuery(event.target).toggleClass('rotate-down');
+
           _this.elements.$tabsWrapper.slideToggle('slow');
         }
       });
@@ -14350,37 +16393,32 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
     key: "onInit",
     value: function onInit() {
       (0, _get2["default"])((0, _getPrototypeOf2["default"])(VideoPlaylistHandler.prototype), "onInit", this).apply(this, arguments);
-      this.playlistId = this.getID();
+      this.playlistId = this.getID(); // Handle watched videos.
 
-      // Handle watched videos.
       this.storageKey = 'watched_videos_' + this.getID();
       var storageObject = elementorFrontend.storage.get(this.storageKey);
       this.watchedVideosArray = [];
+
       if (storageObject) {
         this.watchedVideosArray = JSON.parse(storageObject);
       }
-      this.watchedIndication = this.getElementSettings('show_watched_indication');
 
-      // Handle indication for scrolling in the right panel.
-      (0, _scrollUtils.handleVideosPanelScroll)(this.elements);
+      this.watchedIndication = this.getElementSettings('show_watched_indication'); // Handle indication for scrolling in the right panel.
 
-      // Handle the video player functionality, includes "on load" and "next up".
+      (0, _scrollUtils.handleVideosPanelScroll)(this.elements); // Handle the video player functionality, includes "on load" and "next up".
+
       this.isAutoplayOnLoad = 'yes' === this.getElementSettings('autoplay_on_load');
       this.isAutoplayNextUp = 'yes' === this.getElementSettings('autoplay_next');
       this.isFirstVideoActivated = true;
-      this.createPlaylistItems();
+      this.createPlaylistItems(); // Handle display for show more/less button.
 
-      // Handle display for show more/less button.
       this.isCollapsible = this.getElementSettings('inner_tab_is_content_collapsible');
-      this.innerTabsHeightLimit = this.getElementSettings('inner_tab_collapsible_height');
+      this.innerTabsHeightLimit = this.getElementSettings('inner_tab_collapsible_height'); // Keep track of the element that supposed to be paused since the user selected other video.
 
-      // Keep track of the element that supposed to be paused since the user selected other video.
-      this.currentPlayingPlaylistItemIndex = 1;
+      this.currentPlayingPlaylistItemIndex = 1; // Handle the first initial activation of the video in the playlist.
 
-      // Handle the first initial activation of the video in the playlist.
-      this.activateInitialVideo();
+      this.activateInitialVideo(); // Handle Inner Tab activation in edit mode.
 
-      // Handle Inner Tab activation in edit mode.
       this.activateInnerTabInEditMode();
     }
   }, {
@@ -14391,13 +16429,16 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
         // The boolean below will prevent running twice the activateDefaultTab function when widget first load and user click the item to play it.
         this.preventTabActivation = true;
       }
+
       if ('activeItemIndex' !== propertyName) {
         return;
       }
+
       if (this.preventTabActivation) {
         this.preventTabActivation = false;
         return;
       }
+
       this.activateDefaultTab();
     }
   }, {
@@ -14405,53 +16446,60 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
     value: function activateInitialVideo() {
       this.isPageOnLoad = true;
       var isLazyLoad = !!this.getElementSettings('lazy_load'),
-        initialTabIndex = (0, _urlParams.handleURLParams)(this.playlistId, this.playlistItemsArray);
+          initialTabIndex = (0, _urlParams.handleURLParams)(this.playlistId, this.playlistItemsArray);
       var isUrlParamsExist = false;
       this.currentPlaylistItemIndex = 1;
       this.currentPlayingPlaylistItemIndex = 1;
+
       if (initialTabIndex) {
         this.currentPlaylistItemIndex = initialTabIndex;
         this.currentPlayingPlaylistItemIndex = initialTabIndex;
         isUrlParamsExist = true;
-      }
+      } // When there are no url parameters and on-load is on, the video should be played, means the url parameters should be set.
 
-      // When there are no url parameters and on-load is on, the video should be played, means the url parameters should be set.
+
       if (this.isAutoplayOnLoad && !isUrlParamsExist) {
         (0, _urlParams.setVideoParams)(this.playlistId, this.playlistItemsArray, this.currentPlaylistItemIndex);
       }
+
       if (isUrlParamsExist) {
         var _this$$element$;
+
         // eslint-disable-next-line no-unused-expressions
         (_this$$element$ = this.$element[0]) === null || _this$$element$ === void 0 ? void 0 : _this$$element$.scrollIntoView({
           behavior: 'smooth'
         });
       }
+
       this.handleFirstVideoActivation(isLazyLoad);
     }
-
     /*
     The scenarios for playing the first video after page load:
     - lazy load off - video will load on page load before user scroll video to view.
     - lazy load on - video will load when user scroll the video to view.
     */
+
   }, {
     key: "handleFirstVideoActivation",
     value: function handleFirstVideoActivation(isLazyLoad) {
       var _this2 = this;
+
       if (!isLazyLoad) {
-        this.activateDefaultTab(this.currentPlaylistItemIndex);
-        // No need to use the observer since "lazy load is" off.
+        this.activateDefaultTab(this.currentPlaylistItemIndex); // No need to use the observer since "lazy load is" off.
+
         return;
       }
+
       var playlistElement = document.querySelector('.elementor-element-' + this.playlistId + ' .raven-tabs-main-area'),
-        observer = elementorModules.utils.Scroll.scrollObserver({
-          callback: function callback(event) {
-            if (event.isInViewport) {
-              _this2.activateDefaultTab(_this2.currentPlaylistItemIndex);
-              observer.unobserve(playlistElement);
-            }
+          observer = elementorModules.utils.Scroll.scrollObserver({
+        callback: function callback(event) {
+          if (event.isInViewport) {
+            _this2.activateDefaultTab(_this2.currentPlaylistItemIndex);
+
+            observer.unobserve(playlistElement);
           }
-        });
+        }
+      });
       observer.observe(playlistElement);
     }
   }, {
@@ -14468,9 +16516,8 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
     key: "getCurrentPlayerPlaying",
     value: function getCurrentPlayerPlaying() {
       return this.playlistItemsArray[this.currentPlayingPlaylistItemIndex - 1].playerInstance;
-    }
+    } // Handle video selection.
 
-    // Handle video selection.
   }, {
     key: "isVideoShouldBePlayed",
     value: function isVideoShouldBePlayed() {
@@ -14479,14 +16526,14 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
         if (this.getCurrentPlayerPlaying()) {
           this.getCurrentPlayerPlaying().pause();
         }
-        this.currentPlayingPlaylistItemIndex = this.currentPlaylistItemIndex;
-        // When user select the same video, the current video will be paused if is playing.
+
+        this.currentPlayingPlaylistItemIndex = this.currentPlaylistItemIndex; // When user select the same video, the current video will be paused if is playing.
       } else if (this.getCurrentPlayerPlaying().isVideoPlaying) {
         this.getCurrentPlayerPlaying().pause();
         return false;
-      }
+      } // When none of the videos are playing, the selected video should be played.
 
-      // When none of the videos are playing, the selected video should be played.
+
       return true;
     }
   }, {
@@ -14494,16 +16541,16 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
     value: function activateInnerTabInEditMode() {
       if (this.isEdit && this.getEditSettings('innerActiveIndex')) {
         var innerTabActivated = this.getEditSettings('innerActiveIndex'),
-          innerTabs = jQuery(this.elements.$innerTabs.eq(this.currentPlaylistItemIndex - 1).find('.raven-inner-tab-title a'));
+            innerTabs = jQuery(this.elements.$innerTabs.eq(this.currentPlaylistItemIndex - 1).find('.raven-inner-tab-title a'));
         innerTabs[innerTabActivated].click();
       }
-    }
+    } // Handle video creation including event listeners and playing video if needed.
 
-    // Handle video creation including event listeners and playing video if needed.
   }, {
     key: "handleVideo",
     value: function handleVideo(playListItem) {
       var _this3 = this;
+
       // If the video already created (visited once), then just play it if it's not playing already, otherwise pause it.
       if (playListItem.playerInstance) {
         if (this.isVideoShouldBePlayed()) {
@@ -14511,12 +16558,14 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
           if (1 === this.currentPlaylistItemIndex && this.elements.$imageOverlay) {
             this.elements.$imageOverlay.remove();
           }
+
           this.playVideoAfterCreation(playListItem);
         }
-        return;
-      }
 
-      // If the video is not created yet (first visit), then create the video instance and the event listeners.
+        return;
+      } // If the video is not created yet (first visit), then create the video instance and the event listeners.
+
+
       var players = {
         youtube: _playerYoutube["default"],
         vimeo: _playerVimeo["default"],
@@ -14526,88 +16575,86 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
       playListItem.playerInstance.create().then(function () {
         if (_this3.isVideoShouldBePlayed()) {
           _this3.playVideoOnCreation(playListItem);
-        }
+        } // Handle the functionality when video full screen mode changes.
 
-        // Handle the functionality when video full screen mode changes.
+
         playListItem.playerInstance.handleFullScreenChange(function (isEnterFullScreenMode) {
           // Trigger event when enter/exit full screen mode.
           (0, _eventTrigger.triggerEvent)(_this3, isEnterFullScreenMode ? 'videoFullScreen' : 'videoExitFullScreen', 'click');
-        });
+        }); // Handle the functionality when video play.
 
-        // Handle the functionality when video play.
         playListItem.playerInstance.handlePlayed(function () {
           var currentPlaylistItem = _this3.getCurrentItemSelected();
+
           var videoTrigger = 'click';
+
           if (currentPlaylistItem.isAutoplayOnLoad) {
             videoTrigger = 'onLoad';
             playListItem.isAutoplayOnLoad = false;
           } else if (currentPlaylistItem.isAutoPlayNextUp) {
             videoTrigger = 'nextVideo';
-          }
+          } // Trigger event when video started.
 
-          // Trigger event when video started.
+
           (0, _eventTrigger.triggerEvent)(_this3, currentPlaylistItem.playerInstance.isVideoPausedLocal ? 'videoResume' : 'videoStart', videoTrigger);
-        });
+        }); // Handle the functionality when video ended.
 
-        // Handle the functionality when video ended.
         playListItem.playerInstance.handleEnded(function () {
           // Trigger event when video ended.
-          (0, _eventTrigger.triggerEvent)(_this3, 'videoEnded', 'click');
+          (0, _eventTrigger.triggerEvent)(_this3, 'videoEnded', 'click'); // Handle the indication for videos that have been watched and ended.
 
-          // Handle the indication for videos that have been watched and ended.
           if (_this3.watchedIndication) {
             _this3.elements.$tabTitles.filter('.e-active').addClass('watched-video');
           }
+
           var endedVideoId = _this3.getCurrentItemSelected().dataItemId;
+
           if (!_this3.watchedVideosArray.includes(endedVideoId) && _this3.watchedIndication) {
             _this3.watchedVideosArray.push(_this3.getCurrentItemSelected().dataItemId);
-            elementorFrontend.storage.set(_this3.storageKey, JSON.stringify(_this3.watchedVideosArray));
-          }
 
-          // Handle "next up" functionality.
+            elementorFrontend.storage.set(_this3.storageKey, JSON.stringify(_this3.watchedVideosArray));
+          } // Handle "next up" functionality.
+
+
           if (_this3.isAutoplayNextUp) {
             // If there are more videos in the list, play next video.
             if (_this3.playlistItemsArray.length >= ++_this3.currentPlaylistItemIndex) {
               // Handle the logic for playing next video.
               while ('section' === _this3.getCurrentItemSelected().videoType) {
-                _this3.currentPlaylistItemIndex++;
+                _this3.currentPlaylistItemIndex++; // When last video in the playlist ended, we reset the this.currentPlaylistItemIndex to the last playlist item index.
 
-                // When last video in the playlist ended, we reset the this.currentPlaylistItemIndex to the last playlist item index.
                 if (_this3.playlistItemsArray.length < _this3.currentPlaylistItemIndex) {
                   _this3.currentPlaylistItemIndex = _this3.playlistItemsArray.length;
                   return;
                 }
               }
+
               _this3.changeActiveTab(_this3.currentPlaylistItemIndex, true);
             }
           }
-        });
-
-        // Handle the functionality when video paused.
+        }); // Handle the functionality when video paused.
         // The handlePaused will trigger event with setTimeout, positionInVideoList will keep track for the paused video when selecting other video.
+
         playListItem.playerInstance.handlePaused(function (positionInVideoList) {
           // Trigger event when video paused.
           (0, _eventTrigger.triggerEvent)(_this3, 'videoPaused', 'click', positionInVideoList);
         });
       });
-    }
+    } // Handle the actual playing of the video that already exists (already created before).
 
-    // Handle the actual playing of the video that already exists (already created before).
   }, {
     key: "playVideoAfterCreation",
     value: function playVideoAfterCreation(playListItem) {
       playListItem.playerInstance.play();
-    }
+    } // Handle the actual playing of the video when the video is created.
 
-    // Handle the actual playing of the video when the video is created.
   }, {
     key: "playVideoOnCreation",
     value: function playVideoOnCreation(playListItem) {
       // Play the video according to "on load" and "next up" indications.
       if (this.isAutoplayOnLoad) {
-        playListItem.isAutoplayOnLoad = true;
+        playListItem.isAutoplayOnLoad = true; // Mute the initiated video when "autoplay onload" and then play.
 
-        // Mute the initiated video when "autoplay onload" and then play.
         playListItem.playerInstance.mute();
         playListItem.playerInstance.play();
         this.isAutoplayOnLoad = false;
@@ -14615,12 +16662,14 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
         playListItem.isAutoPlayNextUp = true;
         playListItem.playerInstance.play();
       }
+
       this.isFirstVideoActivated = false;
     }
   }, {
     key: "createPlaylistItems",
     value: function createPlaylistItems() {
       var _this4 = this;
+
       this.playlistItemsArray = [];
       this.elements.$videos.each(function (index, tabContent) {
         var playListItem = {};
@@ -14632,15 +16681,16 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
         playListItem.tabContent = tabContent;
         playListItem.dataTab = index + 1;
         playListItem.dataItemId = _this4.getElementSettings().tabs[index]._id;
-        _this4.playlistItemsArray.push(playListItem);
-      });
 
-      // When the page loads,the code checks which videos already watched and adding a class accordingly.
+        _this4.playlistItemsArray.push(playListItem);
+      }); // When the page loads,the code checks which videos already watched and adding a class accordingly.
+
       if (this.watchedVideosArray.length > 0 && this.watchedIndication) {
         this.watchedVideosArray.forEach(function (watchedVideoId) {
           var watchedPlaylistItem = _this4.playlistItemsArray.find(function (playlistItem) {
             return playlistItem.dataItemId === watchedVideoId;
           });
+
           _this4.elements.$tabTitles.filter('[data-tab="' + watchedPlaylistItem.dataTab + '"]').addClass('watched-video');
         });
       }
@@ -14649,23 +16699,25 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
     key: "changeActiveTab",
     value: function changeActiveTab(tabIndex, isVideoSelectedAutomatically) {
       var _this$playlistItemsAr;
+
       (0, _get2["default"])((0, _getPrototypeOf2["default"])(VideoPlaylistHandler.prototype), "changeActiveTab", this).call(this, tabIndex);
+
       if (this.playlistItemsArray[tabIndex - 1] && ((_this$playlistItemsAr = this.playlistItemsArray[tabIndex - 1]) === null || _this$playlistItemsAr === void 0 ? void 0 : _this$playlistItemsAr.videoType) !== 'section') {
         this.currentPlaylistItemIndex = parseInt(tabIndex);
+
         if (isVideoSelectedAutomatically) {
           this.currentPlayingPlaylistItemIndex = this.currentPlaylistItemIndex;
-        }
+        } // Handle on creation of the video and working with it.
 
-        // Handle on creation of the video and working with it.
-        this.handleVideo(this.getCurrentItemSelected(), isVideoSelectedAutomatically);
 
-        // Set Video params in url only if its not the first video when page load.
+        this.handleVideo(this.getCurrentItemSelected(), isVideoSelectedAutomatically); // Set Video params in url only if its not the first video when page load.
+
         if (!this.isPageOnLoad) {
           (0, _urlParams.setVideoParams)(this.playlistId, this.playlistItemsArray, this.currentPlaylistItemIndex);
         }
-        this.isPageOnLoad = false;
 
-        // Handle the display for the inner tabs buttons as long there are actually inner tabs.
+        this.isPageOnLoad = false; // Handle the display for the inner tabs buttons as long there are actually inner tabs.
+
         if (jQuery(this.elements.$innerTabs.eq(tabIndex - 1)).find('.raven-inner-tab-content').length > 0) {
           var innerTabsContent = this.elements.$innerTabs.filter('.e-active').find('.raven-inner-tab-content');
           (0, _innerTabs.handleInnerTabsButtonsDisplay)(innerTabsContent.toArray(), this.isCollapsible, this.innerTabsHeightLimit);
@@ -14675,6 +16727,7 @@ var VideoPlaylistHandler = /*#__PURE__*/function (_baseTabs) {
   }]);
   return VideoPlaylistHandler;
 }(_baseTabs2["default"]);
+
 function _default($scope) {
   new VideoPlaylistHandler({
     $element: $scope
@@ -14690,13 +16743,17 @@ Object.defineProperty(exports, "__esModule", {
 exports.handleInnerTabs = handleInnerTabs;
 exports.handleInnerTabsButtonsDisplay = handleInnerTabsButtonsDisplay;
 exports.onTabContentButtonsClick = onTabContentButtonsClick;
+
 var _eventTrigger = require("../video-playlist/event-trigger");
+
 function toggleInnerTabs(event, clickedTab, widgetObject) {
   var activeTabWrapper = event.currentTarget,
-    tabTitles = activeTabWrapper.querySelectorAll('.raven-inner-tab-title');
+      tabTitles = activeTabWrapper.querySelectorAll('.raven-inner-tab-title');
+
   if (clickedTab.hasClass('raven-inner-tab-active') || tabTitles.length < 2) {
     return;
   }
+
   var tabsContents = activeTabWrapper.querySelectorAll('.raven-inner-tab-content');
   tabTitles.forEach(function (tabTitle) {
     tabTitle.classList.toggle('raven-inner-tab-active');
@@ -14705,55 +16762,58 @@ function toggleInnerTabs(event, clickedTab, widgetObject) {
     tabContent.toggleAttribute('hidden');
     tabContent.classList.toggle('raven-inner-tab-active');
   });
-  handleInnerTabsButtonsDisplay(Array.from(tabsContents), widgetObject.isCollapsible, widgetObject.innerTabsHeightLimit);
+  handleInnerTabsButtonsDisplay(Array.from(tabsContents), widgetObject.isCollapsible, widgetObject.innerTabsHeightLimit); // Trigger event when tab open.
 
-  // Trigger event when tab open.
   (0, _eventTrigger.triggerEvent)(widgetObject, 'tabOpened', 'click');
 }
+
 function handleInnerTabs(event, widgetObject) {
   var clickedTarget = event.target;
-  var clickedTagType = clickedTarget.tagName;
+  var clickedTagType = clickedTarget.tagName; // Handle click on tab on desktop mode.
 
-  // Handle click on tab on desktop mode.
   if (clickedTarget.classList.contains('raven-inner-tab-title-text')) {
     event.preventDefault();
     var $clickedTab = jQuery(clickedTarget).parent('.raven-inner-tab-title');
     toggleInnerTabs(event, $clickedTab, widgetObject);
-  }
+  } // Handle click on tab on mobile mode.
 
-  // Handle click on tab on mobile mode.
+
   if (clickedTarget.classList.contains('raven-tab-mobile-title')) {
     var _$clickedTab = jQuery(clickedTarget);
-    toggleInnerTabs(event, _$clickedTab, widgetObject);
-  }
 
-  // Handle click on show-less buttons in tab content.
+    toggleInnerTabs(event, _$clickedTab, widgetObject);
+  } // Handle click on show-less buttons in tab content.
+
+
   if ('button' === clickedTagType.toLowerCase()) {
     onTabContentButtonsClick(event, widgetObject);
   }
 }
+
 function handleInnerTabsButtonsDisplay(tabsContents, isCollapsible, innerTabsHeightLimit) {
   if (!isCollapsible) {
     return;
   }
+
   var activeInnerTab = tabsContents.filter(function (tabsContent) {
-      return tabsContent.classList.contains('raven-inner-tab-active');
-    }),
-    innerTabScrollableHeight = activeInnerTab[0].querySelector('.raven-inner-tab-text > div').offsetHeight,
-    innerTabsLimitHeight = parseInt(innerTabsHeightLimit.size);
+    return tabsContent.classList.contains('raven-inner-tab-active');
+  }),
+      innerTabScrollableHeight = activeInnerTab[0].querySelector('.raven-inner-tab-text > div').offsetHeight,
+      innerTabsLimitHeight = parseInt(innerTabsHeightLimit.size);
+
   if (innerTabsLimitHeight && innerTabScrollableHeight > innerTabsLimitHeight) {
     activeInnerTab[0].classList.add('show-inner-tab-buttons');
   }
 }
+
 function onTabContentButtonsClick(event, widgetObject) {
   var $tabsContent = jQuery(event.currentTarget).find('.raven-inner-tab-content'),
-    $activeTabContent = $tabsContent.filter('.raven-inner-tab-active'),
-    buttonsElements = $activeTabContent.find('button');
+      $activeTabContent = $tabsContent.filter('.raven-inner-tab-active'),
+      buttonsElements = $activeTabContent.find('button');
   buttonsElements.toggleClass('show-button');
   $activeTabContent.toggleClass('show-full-height');
-  var eventType = $activeTabContent.hasClass('show-full-height') ? 'tabExpanded' : 'tabCollapsed';
+  var eventType = $activeTabContent.hasClass('show-full-height') ? 'tabExpanded' : 'tabCollapsed'; // Trigger event when collapsed/expanded clicked.
 
-  // Trigger event when collapsed/expanded clicked.
   (0, _eventTrigger.triggerEvent)(widgetObject, eventType, 'click');
 }
 
@@ -14761,33 +16821,41 @@ function onTabContentButtonsClick(event, widgetObject) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var PlayerBase = /*#__PURE__*/function () {
   function PlayerBase(playlistItem, videoIndex) {
     (0, _classCallCheck2["default"])(this, PlayerBase);
     this.playlistItem = playlistItem;
     this.positionInVideoList = videoIndex;
   }
+
   (0, _createClass2["default"])(PlayerBase, [{
     key: "formatDuration",
     value: function formatDuration(duration) {
       var dateObj = new Date(duration * 1000),
-        hours = dateObj.getUTCHours(),
-        minutes = dateObj.getUTCMinutes(),
-        seconds = dateObj.getSeconds();
+          hours = dateObj.getUTCHours(),
+          minutes = dateObj.getUTCMinutes(),
+          seconds = dateObj.getSeconds();
+
       if (hours !== 0) {
         return "".concat(hours.toString(), ":").concat(minutes.toString().padStart(2, '0'), ":").concat(seconds.toString().padStart(2, '0'));
       }
+
       return "".concat(minutes.toString(), ":").concat(seconds.toString().padStart(2, '0'));
     }
   }]);
   return PlayerBase;
 }();
+
 var _default = PlayerBase;
 exports["default"] = _default;
 
@@ -14795,23 +16863,36 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _playerBase2 = _interopRequireDefault(require("../video-playlist/player-base"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var playerHosted = /*#__PURE__*/function (_playerBase) {
   (0, _inherits2["default"])(playerHosted, _playerBase);
+
   var _super = _createSuper(playerHosted);
+
   function playerHosted(playlistItem, videoIndex) {
     var _this;
+
     (0, _classCallCheck2["default"])(this, playerHosted);
     _this = _super.call(this, playlistItem, videoIndex);
     _this.playerObject = null;
@@ -14823,10 +16904,12 @@ var playerHosted = /*#__PURE__*/function (_playerBase) {
     _this.isReady = false;
     return _this;
   }
+
   (0, _createClass2["default"])(playerHosted, [{
     key: "create",
     value: function create() {
       var _this2 = this;
+
       var videoPromise = new Promise(function (resolve) {
         var video = document.createElement('video');
         video.setAttribute('controls', '');
@@ -14837,19 +16920,21 @@ var playerHosted = /*#__PURE__*/function (_playerBase) {
         video.appendChild(source);
         video.appendChild(text);
         _this2.playerObject = video;
+
         _this2.playlistItem.tabContent.querySelector('div').replaceWith(_this2.playerObject);
+
         _this2.playerObject.addEventListener('canplay', function () {
           // Indication that the video is loaded and can be played and paused.
           _this2.isReady = true;
           resolve();
-        });
+        }); // Seeked event indicates that the seeking has been finished, so we reset the boolean for that.
 
-        // Seeked event indicates that the seeking has been finished, so we reset the boolean for that.
+
         _this2.playerObject.addEventListener('seeked', function () {
           _this2.isVideoSeeking = false;
-        });
+        }); // Seeking event indicates that the seeking is currently happening, so we change the boolean.
 
-        // Seeking event indicates that the seeking is currently happening, so we change the boolean.
+
         _this2.playerObject.addEventListener('seeking', function () {
           clearTimeout(_this2.seekTimeOut);
           _this2.isVideoSeeking = true;
@@ -14861,10 +16946,10 @@ var playerHosted = /*#__PURE__*/function (_playerBase) {
     key: "handleEnded",
     value: function handleEnded(callback) {
       var _this3 = this;
-      this.playerObject.addEventListener('ended', function () {
-        _this3.watchCount++;
 
-        // This property will prevent automatic pause trigger when video ended.
+      this.playerObject.addEventListener('ended', function () {
+        _this3.watchCount++; // This property will prevent automatic pause trigger when video ended.
+
         _this3.isVideoEnded = true;
         _this3.isVideoPlaying = false;
         callback(_this3.playlistItem);
@@ -14874,13 +16959,13 @@ var playerHosted = /*#__PURE__*/function (_playerBase) {
     key: "handlePaused",
     value: function handlePaused(callback) {
       var _this4 = this;
+
       this.playerObject.addEventListener('pause', function () {
         // Prevent pause trigger when the user is seeking video or when the video automatically trigger pause event when ended.
         _this4.seekTimeOut = setTimeout(function () {
           if (!_this4.isVideoSeeking && !_this4.isVideoEnded) {
-            callback(_this4.positionInVideoList);
+            callback(_this4.positionInVideoList); // Indication to know when there is a resume trigger event.
 
-            // Indication to know when there is a resume trigger event.
             _this4.isVideoPausedLocal = true;
           } else {
             _this4.isVideoEnded = false;
@@ -14892,6 +16977,7 @@ var playerHosted = /*#__PURE__*/function (_playerBase) {
     key: "handlePlayed",
     value: function handlePlayed(callback) {
       var _this5 = this;
+
       this.playerObject.addEventListener('play', function () {
         // Prevent play trigger when user is seeking video.
         if (!_this5.isVideoSeeking) {
@@ -14918,6 +17004,7 @@ var playerHosted = /*#__PURE__*/function (_playerBase) {
       if (!this.isReady) {
         return;
       }
+
       this.isVideoPlaying = true;
       this.playerObject.play();
     }
@@ -14927,6 +17014,7 @@ var playerHosted = /*#__PURE__*/function (_playerBase) {
       if (!this.isReady) {
         return;
       }
+
       this.isVideoPlaying = false;
       this.playerObject.pause();
     }
@@ -14938,6 +17026,7 @@ var playerHosted = /*#__PURE__*/function (_playerBase) {
   }]);
   return playerHosted;
 }(_playerBase2["default"]);
+
 var _default = playerHosted;
 exports["default"] = _default;
 
@@ -14945,26 +17034,40 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _typeof = require("@babel/runtime/helpers/typeof");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _playerBase2 = _interopRequireDefault(require("../video-playlist/player-base"));
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var playerVimeo = /*#__PURE__*/function (_playerBase) {
   (0, _inherits2["default"])(playerVimeo, _playerBase);
+
   var _super = _createSuper(playerVimeo);
+
   function playerVimeo(playlistItem, videoIndex) {
     var _this;
+
     (0, _classCallCheck2["default"])(this, playerVimeo);
     _this = _super.call(this, playlistItem, videoIndex);
     _this.apiProvider = elementorFrontend.utils.vimeo;
@@ -14974,10 +17077,12 @@ var playerVimeo = /*#__PURE__*/function (_playerBase) {
     _this.isReady = false;
     return _this;
   }
+
   (0, _createClass2["default"])(playerVimeo, [{
     key: "create",
     value: function create() {
       var _this2 = this;
+
       this.currentVideoID = this.apiProvider.getVideoIDFromURL(this.playlistItem.videoUrl);
       return new Promise(function (resolve) {
         _this2.apiProvider.onApiReady(function (apiObject) {
@@ -14985,9 +17090,8 @@ var playerVimeo = /*#__PURE__*/function (_playerBase) {
             id: _this2.currentVideoID,
             autoplay: false
           };
-          _this2.playerObject = new apiObject.Player(_this2.playlistItem.tabContent.querySelector('div'), playerOptions);
+          _this2.playerObject = new apiObject.Player(_this2.playlistItem.tabContent.querySelector('div'), playerOptions); // Indication that the video is loaded and can be played and paused.
 
-          // Indication that the video is loaded and can be played and paused.
           _this2.playerObject.ready().then(function () {
             _this2.isReady = true;
             resolve();
@@ -14999,6 +17103,7 @@ var playerVimeo = /*#__PURE__*/function (_playerBase) {
     key: "handleEnded",
     value: function handleEnded(callback) {
       var _this3 = this;
+
       this.playerObject.on('ended', function () {
         _this3.watchCount++;
         callback(_this3.playlistItem);
@@ -15008,11 +17113,13 @@ var playerVimeo = /*#__PURE__*/function (_playerBase) {
     key: "handlePaused",
     value: function handlePaused(callback) {
       var _this4 = this;
+
       this.playerObject.on('pause', function (event) {
         // Prevent "pause" event trigger when page loads with vimeo video and when vimeo video ended, or when entering/exiting full-screen mode.
         if (0 === event.percent || event.percent >= 1 || _this4.isVideoInFullScreenChange) {
           return;
         }
+
         callback(_this4.positionInVideoList);
       });
     }
@@ -15020,12 +17127,14 @@ var playerVimeo = /*#__PURE__*/function (_playerBase) {
     key: "handlePlayed",
     value: function handlePlayed(callback) {
       var _this5 = this;
+
       this.playerObject.on('play', function () {
         if (_this5.isVideoInFullScreenChange) {
           // Full screen change ended with all the extra events (pause and play).
           _this5.isVideoInFullScreenChange = false;
           return;
         }
+
         callback(_this5.playlistItem);
       });
     }
@@ -15033,6 +17142,7 @@ var playerVimeo = /*#__PURE__*/function (_playerBase) {
     key: "handleFullScreenChange",
     value: function handleFullScreenChange(callback) {
       var _this6 = this;
+
       this.playerObject.element.addEventListener('fullscreenchange', function () {
         callback(document.fullscreenElement);
         _this6.isVideoInFullScreenChange = true;
@@ -15051,6 +17161,7 @@ var playerVimeo = /*#__PURE__*/function (_playerBase) {
       if (!this.isReady) {
         return;
       }
+
       this.playerObject.play();
     }
   }, {
@@ -15059,6 +17170,7 @@ var playerVimeo = /*#__PURE__*/function (_playerBase) {
       if (!this.isReady) {
         return;
       }
+
       this.playerObject.pause();
     }
   }, {
@@ -15069,77 +17181,103 @@ var playerVimeo = /*#__PURE__*/function (_playerBase) {
   }, {
     key: "setVideoProviderData",
     value: function () {
-      var _setVideoProviderData = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var _setVideoProviderData = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
         var _this$currentVideoID;
+
         var videoId, response, videoData;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              if (!(!this.currentVideoID && 9 === !((_this$currentVideoID = this.currentVideoID) !== null && _this$currentVideoID !== void 0 && _this$currentVideoID.length))) {
-                _context.next = 2;
-                break;
-              }
-              return _context.abrupt("return");
-            case 2:
-              _context.next = 4;
-              return this.playerObject.getVideoId();
-            case 4:
-              videoId = _context.sent;
-              _context.next = 7;
-              return window.fetch('https://vimeo.com/api/v2/video/' + videoId + '.json');
-            case 7:
-              response = _context.sent;
-              _context.next = 10;
-              return response.json();
-            case 10:
-              videoData = _context.sent;
-              this.playlistItem.duration = this.formatDuration(videoData[0].duration);
-              this.playlistItem.video_title = videoData[0].title;
-              this.playlistItem.thumbnail = {
-                url: videoData[0].thumbnail_medium
-              };
-              return _context.abrupt("return", this.playlistItem);
-            case 15:
-            case "end":
-              return _context.stop();
+        return _regenerator["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (!(!this.currentVideoID && 9 === !((_this$currentVideoID = this.currentVideoID) === null || _this$currentVideoID === void 0 ? void 0 : _this$currentVideoID.length))) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
+                _context.next = 4;
+                return this.playerObject.getVideoId();
+
+              case 4:
+                videoId = _context.sent;
+                _context.next = 7;
+                return window.fetch('https://vimeo.com/api/v2/video/' + videoId + '.json');
+
+              case 7:
+                response = _context.sent;
+                _context.next = 10;
+                return response.json();
+
+              case 10:
+                videoData = _context.sent;
+                this.playlistItem.duration = this.formatDuration(videoData[0].duration);
+                this.playlistItem.video_title = videoData[0].title;
+                this.playlistItem.thumbnail = {
+                  url: videoData[0].thumbnail_medium
+                };
+                return _context.abrupt("return", this.playlistItem);
+
+              case 15:
+              case "end":
+                return _context.stop();
+            }
           }
         }, _callee, this);
       }));
+
       function setVideoProviderData() {
         return _setVideoProviderData.apply(this, arguments);
       }
+
       return setVideoProviderData;
     }()
   }]);
   return playerVimeo;
 }(_playerBase2["default"]);
+
 var _default = playerVimeo;
 exports["default"] = _default;
 
-},{"../video-playlist/player-base":76,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101,"@babel/runtime/helpers/typeof":106}],79:[function(require,module,exports){
+},{"../video-playlist/player-base":76,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101,"@babel/runtime/regenerator":108}],79:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _typeof = require("@babel/runtime/helpers/typeof");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _playerBase2 = _interopRequireDefault(require("../video-playlist/player-base"));
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var playerYoutube = /*#__PURE__*/function (_playerBase) {
   (0, _inherits2["default"])(playerYoutube, _playerBase);
+
   var _super = _createSuper(playerYoutube);
+
   function playerYoutube(playlistItem, videoIndex) {
     var _this;
+
     (0, _classCallCheck2["default"])(this, playerYoutube);
     _this = _super.call(this, playlistItem, videoIndex);
     _this.apiProvider = elementorFrontend.utils.youtube;
@@ -15153,10 +17291,12 @@ var playerYoutube = /*#__PURE__*/function (_playerBase) {
     _this.isReady = false;
     return _this;
   }
+
   (0, _createClass2["default"])(playerYoutube, [{
     key: "create",
     value: function create() {
       var _this2 = this;
+
       this.currentVideoID = this.apiProvider.getVideoIDFromURL(this.playlistItem.videoUrl);
       var videoPromise = new Promise(function (resolve) {
         _this2.apiProvider.onApiReady(function (apiObject) {
@@ -15177,6 +17317,7 @@ var playerYoutube = /*#__PURE__*/function (_playerBase) {
             }
           };
           _this2.playerObject = new apiObject.Player(_this2.playlistItem.tabContent.querySelector('div'), playerOptions);
+
           _this2.playerObject.addEventListener('onStateChange', function (event) {
             // Buffering state.
             if (3 === event.data) {
@@ -15199,11 +17340,13 @@ var playerYoutube = /*#__PURE__*/function (_playerBase) {
     key: "handleEnded",
     value: function handleEnded(callback) {
       var _this3 = this;
+
       this.playerObject.addEventListener('onStateChange', function (event) {
         // Ended state.
         if (0 === event.data) {
           _this3.watchCount++; // Prevent "video start" event when we seek to "0" on video ended event.
           // We seek to "0" to prevent the display of suggested videos by youtube when video ended.
+
           _this3.isVideoEnded = true;
           event.target.seekTo(0);
           event.target.stopVideo();
@@ -15216,24 +17359,25 @@ var playerYoutube = /*#__PURE__*/function (_playerBase) {
     key: "handlePaused",
     value: function handlePaused(callback) {
       var _this4 = this;
+
       this.playerObject.addEventListener('onStateChange', function (event) {
         // Pause state.
         if (2 === event.data) {
           // The pause event can be the start of seek event ([2,3] sequence) so we reset the sequence array and adding 2.
           _this4.seekSequenceArray = [];
+
           _this4.seekSequenceArray.push(2); // Save the current time when pause event occur.
 
-          _this4.pauseCurrentTime = _this4.playerObject.playerInfo.currentTime;
 
-          // We use here a setTimeout, since we don't want to fire the pause event before we can be sure that its not part of seek event.
+          _this4.pauseCurrentTime = _this4.playerObject.playerInfo.currentTime; // We use here a setTimeout, since we don't want to fire the pause event before we can be sure that its not part of seek event.
+
           _this4.seekTimeOut = setTimeout(function () {
             if (2 === _this4.seekSequenceArray.length && 2 === _this4.seekSequenceArray[0] && 3 === _this4.seekSequenceArray[1]) {
               _this4.seekSequenceArray = [];
               clearTimeout(_this4.seekTimeOut);
             } else {
-              callback(_this4.positionInVideoList);
+              callback(_this4.positionInVideoList); // Indication to know when there is a resume trigger event.
 
-              // Indication to know when there is a resume trigger event.
               _this4.isVideoPausedLocal = true;
             }
           }, 1000);
@@ -15244,6 +17388,7 @@ var playerYoutube = /*#__PURE__*/function (_playerBase) {
     key: "handlePlayed",
     value: function handlePlayed(callback) {
       var _this5 = this;
+
       this.playerObject.addEventListener('onStateChange', function (event) {
         // Prevent "video start" event when we seek to "0" on video ended event.
         if (1 === event.data && !_this5.isVideoEnded) {
@@ -15283,6 +17428,7 @@ var playerYoutube = /*#__PURE__*/function (_playerBase) {
       if (!this.isReady) {
         return;
       }
+
       this.isVideoPlaying = true;
       this.playerObject.playVideo();
     }
@@ -15292,6 +17438,7 @@ var playerYoutube = /*#__PURE__*/function (_playerBase) {
       if (!this.isReady) {
         return;
       }
+
       this.isVideoPlaying = false;
       this.playerObject.pauseVideo();
     }
@@ -15303,64 +17450,75 @@ var playerYoutube = /*#__PURE__*/function (_playerBase) {
   }, {
     key: "setVideoProviderData",
     value: function () {
-      var _setVideoProviderData = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regeneratorRuntime().mark(function _callee() {
+      var _setVideoProviderData = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee() {
         var _this$currentVideoID;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              if (this.isReady) {
-                _context.next = 2;
-                break;
-              }
-              return _context.abrupt("return");
-            case 2:
-              if (this.currentVideoID && 11 === ((_this$currentVideoID = this.currentVideoID) === null || _this$currentVideoID === void 0 ? void 0 : _this$currentVideoID.length)) {
-                this.playlistItem.thumbnail = {
-                  url: 'http://img.youtube.com/vi/' + this.playerObject.getVideoData().video_id + '/maxresdefault.jpg'
-                };
-                this.playlistItem.video_title = this.playerObject.getVideoData().title;
-                this.playlistItem.duration = this.formatDuration(this.playerObject.getDuration());
-              } else {
-                this.playlistItem.thumbnail = {
-                  url: ''
-                };
-                this.playlistItem.video_title = '';
-                this.playlistItem.duration = '';
-              }
-            case 3:
-            case "end":
-              return _context.stop();
+
+        return _regenerator["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                if (this.isReady) {
+                  _context.next = 2;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 2:
+                if (this.currentVideoID && 11 === ((_this$currentVideoID = this.currentVideoID) === null || _this$currentVideoID === void 0 ? void 0 : _this$currentVideoID.length)) {
+                  this.playlistItem.thumbnail = {
+                    url: 'http://img.youtube.com/vi/' + this.playerObject.getVideoData().video_id + '/maxresdefault.jpg'
+                  };
+                  this.playlistItem.video_title = this.playerObject.getVideoData().title;
+                  this.playlistItem.duration = this.formatDuration(this.playerObject.getDuration());
+                } else {
+                  this.playlistItem.thumbnail = {
+                    url: ''
+                  };
+                  this.playlistItem.video_title = '';
+                  this.playlistItem.duration = '';
+                }
+
+              case 3:
+              case "end":
+                return _context.stop();
+            }
           }
         }, _callee, this);
       }));
+
       function setVideoProviderData() {
         return _setVideoProviderData.apply(this, arguments);
       }
+
       return setVideoProviderData;
     }()
   }]);
   return playerYoutube;
 }(_playerBase2["default"]);
+
 var _default = playerYoutube;
 exports["default"] = _default;
 
-},{"../video-playlist/player-base":76,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101,"@babel/runtime/helpers/typeof":106}],80:[function(require,module,exports){
+},{"../video-playlist/player-base":76,"@babel/runtime/helpers/asyncToGenerator":89,"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/getPrototypeOf":94,"@babel/runtime/helpers/inherits":95,"@babel/runtime/helpers/interopRequireDefault":96,"@babel/runtime/helpers/possibleConstructorReturn":101,"@babel/runtime/regenerator":108}],80:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 // State transfer object.
-var PlaylistEvent = /*#__PURE__*/(0, _createClass2["default"])(function PlaylistEvent(ref) {
+var PlaylistEvent = function PlaylistEvent(ref) {
   (0, _classCallCheck2["default"])(this, PlaylistEvent);
   var event = ref.event,
-    tab = ref.tab,
-    playlist = ref.playlist,
-    video = ref.video;
+      tab = ref.tab,
+      playlist = ref.playlist,
+      video = ref.video;
   this.event = {
     type: event.type || '',
     time: event.time || 0,
@@ -15383,30 +17541,35 @@ var PlaylistEvent = /*#__PURE__*/(0, _createClass2["default"])(function Playlist
     title: video.title,
     duration: video.duration
   };
-});
+};
+
 var _default = PlaylistEvent;
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/createClass":91,"@babel/runtime/helpers/interopRequireDefault":96}],81:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":90,"@babel/runtime/helpers/interopRequireDefault":96}],81:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.handleVideosPanelScroll = handleVideosPanelScroll;
+
 // Handle the display of top/bottom shadows in playlist item's panel.
 function handleVideosPanelScroll(elements, event) {
   if (!event) {
     if (elements.$tabsItems[0].offsetHeight < elements.$tabsItems[0].scrollHeight) {
       elements.$tabsWrapper.addClass('bottom-shadow');
     }
+
     return;
   }
+
   if (event.target.scrollTop > 0) {
     elements.$tabsWrapper.addClass('top-shadow');
   } else {
     elements.$tabsWrapper.removeClass('top-shadow');
   }
+
   if (event.target.offsetHeight + event.target.scrollTop >= event.target.scrollHeight) {
     elements.$tabsWrapper.removeClass('bottom-shadow');
   } else {
@@ -15422,32 +17585,34 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.handleURLParams = handleURLParams;
 exports.setVideoParams = setVideoParams;
+
 // Handling the functionality for existing/not-existing url params.
 function handleURLParams(playlistId, playlistItemsArray) {
   var params = new URLSearchParams(location.search),
-    playlistName = params.get('playlist'),
-    defaultTabIndex = 1;
+      playlistName = params.get('playlist'),
+      defaultTabIndex = 1; // When there is no data in params, the first video in the list should be active by returning false.
 
-  // When there is no data in params, the first video in the list should be active by returning false.
   if (!playlistName) {
     return false;
-  }
+  } // When there is data in params, we return the tab number for the video.
 
-  // When there is data in params, we return the tab number for the video.
+
   if (playlistName === playlistId) {
     var videoId = params.get('video');
     var videoItem = playlistItemsArray.find(function (playlistItem) {
-        return videoId === playlistItem.dataItemId;
-      }),
-      tabIndex = videoItem ? videoItem.dataTab : defaultTabIndex;
+      return videoId === playlistItem.dataItemId;
+    }),
+        tabIndex = videoItem ? videoItem.dataTab : defaultTabIndex;
+
     if (!tabIndex) {
       setVideoParams(playlistId, playlistItemsArray, defaultTabIndex);
     }
+
     return tabIndex || false;
   }
-}
+} // Setting the playlist id and video id on the url.
 
-// Setting the playlist id and video id on the url.
+
 function setVideoParams(playlistId, playlistItemsArray, videoId) {
   var params = new URLSearchParams(location.search);
   params.set('playlist', playlistId);
@@ -15459,12 +17624,16 @@ function setVideoParams(playlistId, playlistItemsArray, videoId) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var $ = jQuery;
+
 var Video = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -15498,38 +17667,45 @@ var Video = _module["default"].extend({
   },
   onInit: function onInit() {
     elementorModules.frontend.handlers.Base.prototype.onInit.apply(this, arguments);
+
     if ('yes' === this.getElementSettings('lazyload')) {
       this.handleLazyLoad();
     }
+
     if ('yes' === this.getElementSettings('muted_autoplay_preview')) {
       this.handleMutedPreview();
     } else if ('yes' === this.getElementSettings('lazyload')) {
       this.handleLazyLoad();
     } else {
       this.handleMediaElement();
-    }
+    } // Control styles.
 
-    // Control styles.
+
     if ('yes' === this.getElementSettings('progress_bar')) {
       $('.elementor-widget-raven-video.raven-player-style2 .mejs-time').css('display', 'contents');
     } else {
       $('.elementor-widget-raven-video.raven-player-style3 .mejs-volume-button').css('width', '100%');
       $('.elementor-widget-raven-video.raven-player-style3 .mejs-volume-button button').css('float', 'right');
     }
+
     this.updateWidgetContainerMargin();
   },
   handleLazyLoad: function handleLazyLoad() {
     var _this = this;
+
     $(window).on('scroll', function () {
       var elementTop = _this.elements.$widgetWrapper.offset().top,
-        elementBottom = elementTop + _this.elements.$widgetWrapper.outerHeight(),
-        viewportTop = $(window).scrollTop(),
-        viewportBottom = viewportTop + $(window).height();
+          elementBottom = elementTop + _this.elements.$widgetWrapper.outerHeight(),
+          viewportTop = $(window).scrollTop(),
+          viewportBottom = viewportTop + $(window).height();
+
       if (elementBottom > viewportTop && elementTop < viewportBottom) {
         var videoFrame = _this.elements.$videoFrame,
-          lazyLoad = videoFrame.data('lazy-load');
+            lazyLoad = videoFrame.data('lazy-load');
+
         if (lazyLoad) {
           videoFrame.attr('src', lazyLoad);
+
           _this.handleMediaElement();
         }
       }
@@ -15537,56 +17713,75 @@ var Video = _module["default"].extend({
   },
   handleStickyScroll: function handleStickyScroll() {
     var _this2 = this;
+
     var height = this.elements.$widgetWrapper.outerHeight(true);
     var $offsetTop = this.elements.$widgetWrapper.offset().top;
     $(window).on('scroll', function () {
       if (!_this2.elements.$widgetWrapper.hasClass('sticky-close')) {
         var videoBoxTopPoint = $(window).scrollTop();
         var videoBoxMiddlePoint = $offsetTop + height / 2;
+
         if (videoBoxMiddlePoint < videoBoxTopPoint) {
           _this2.elements.$widgetContainer.css('height', height);
+
           _this2.elements.$widgetWrapper.addClass('sticky');
+
           _this2.elements.$videoCloseButton.show();
         } else {
           _this2.elements.$widgetWrapper.removeClass('sticky');
+
           _this2.elements.$videoCloseButton.hide();
         }
       }
     });
     this.elements.$videoCloseButton.on('click', function () {
       _this2.elements.$widgetWrapper.removeClass('sticky');
+
       _this2.elements.$widgetWrapper.addClass('sticky-close');
+
       _this2.elements.$videoCloseButton.hide();
     });
   },
   handleMutedPreview: function handleMutedPreview() {
     var _this3 = this;
+
     var mejsPlayer = this.elements.$videoFrame;
+
     if ('hosted' === this.getElementSettings('video_type')) {
       mejsPlayer = this.elements.$mejsPlayer;
     }
+
     var mejsPlayerControls = [],
-      self = this;
+        self = this;
+
     if (this.getElementSettings('fast_forward')) {
       mejsPlayerControls.push('skipback');
     }
+
     mejsPlayerControls.push('playpause');
+
     if (this.getElementSettings('fast_forward')) {
       mejsPlayerControls.push('jumpforward');
     }
+
     if (this.getElementSettings('current_time')) {
       mejsPlayerControls.push('current');
     }
+
     if (this.getElementSettings('progress_bar')) {
       mejsPlayerControls.push('progress');
     }
+
     mejsPlayerControls.push('duration', 'volume');
+
     if (this.getElementSettings('speed_options')) {
       mejsPlayerControls.push('speed');
     }
+
     if (this.getElementSettings('fullscreen')) {
       mejsPlayerControls.push('fullscreen');
     }
+
     mejsPlayer.mediaelementplayer({
       videoVolume: 'horizontal',
       pauseOtherPlayers: false,
@@ -15616,9 +17811,11 @@ var Video = _module["default"].extend({
           mutations.forEach(function (mutation) {
             if (mutation.type === 'attributes') {
               var $currentTime = self.elements.$widgetWrapper.find('.mejs-time-current'),
-                inlineStyle = $currentTime.attr('style');
+                  inlineStyle = $currentTime.attr('style');
+
               if (inlineStyle) {
                 var scaleX = inlineStyle.match(/scaleX\([0-9.]*\)/gi)[0].replace('scaleX(', '').replace(')', '');
+
                 if (scaleX) {
                   $currentTime.css('width', scaleX * 100 + '%');
                 }
@@ -15626,44 +17823,54 @@ var Video = _module["default"].extend({
             }
           });
         });
+
         if (target) {
           observer.observe(target, {
             attributes: true,
             attributeFilter: ['style']
           });
-        }
+        } // Hide large play button if muted preview and device frame active.
 
-        // Hide large play button if muted preview and device frame active.
+
         if ('yes' === self.getElementSettings('show_device_frame')) {
           self.elements.$widgetWrapper.find('.mejs-overlay-play:not(.raven-video-play-button-preview)').addClass('hide-large-button');
         }
+
         media.addEventListener('play', function () {
           if ('yes' === self.getElementSettings('sticky_on_scroll') && !self.getElementSettings('use_lightbox')) {
             self.handleStickyScroll();
           }
+
           if ('yes' === self.getElementSettings('show_device_frame')) {
             self.elements.$widgetWrapper.find('.mejs-overlay-play:not(.raven-video-play-button-preview)').removeClass('hide-large-button');
           }
         }, false);
         self.elements.$widgetWrapper.find('.mejs-controls').hide();
+
         if ('vimeo' === self.getElementSettings('video_type') || 'hosted' === self.getElementSettings('video_type')) {
           mejsPlayer[0].player.play();
           mejsPlayer[0].player.options.startVolume = 0;
           mejsPlayer[0].player.setMuted(true);
         }
+
         _this3.elements.$videoPlayPreviewButton.on('click', function () {
           var $controls = self.getElementSettings('youtube_controls');
+
           if ('hosted' === self.getElementSettings('video_type')) {
             $controls = self.getElementSettings('hosted_controls');
           }
+
           _this3.elements.$videoPlayPreviewButton.hide();
+
           if ('yes' !== self.getElementSettings('youtube_mute') && 'youtube' === self.getElementSettings('video_type') || 'yes' !== self.getElementSettings('vimeo_mute') && 'vimeo' === self.getElementSettings('video_type') || 'yes' !== self.getElementSettings('hosted_muted') && 'hosted' === self.getElementSettings('video_type')) {
             mejsPlayer[0].player.setMuted(false);
             mejsPlayer[0].player.setVolume(0.5);
           }
+
           if ($controls === 'yes' || 'vimeo' === self.getElementSettings('video_type')) {
             self.elements.$widgetWrapper.find('.mejs-controls').show();
           }
+
           self.elements.$widgetWrapper.find('.raven-video-muted-overlay').hide();
           mejsPlayer[0].player.play();
         });
@@ -15672,32 +17879,44 @@ var Video = _module["default"].extend({
   },
   handleMediaElement: function handleMediaElement() {
     var _this4 = this;
+
     var mejsPlayer = this.elements.$videoFrame;
+
     if ('hosted' === this.getElementSettings('video_type')) {
       mejsPlayer = this.elements.$mejsPlayer;
     }
+
     var mejsPlayerControls = [],
-      self = this;
+        self = this;
+
     if (this.getElementSettings('fast_forward')) {
       mejsPlayerControls.push('skipback');
     }
+
     mejsPlayerControls.push('playpause');
+
     if (this.getElementSettings('fast_forward')) {
       mejsPlayerControls.push('jumpforward');
     }
+
     if (this.getElementSettings('current_time')) {
       mejsPlayerControls.push('current');
     }
+
     if (this.getElementSettings('progress_bar')) {
       mejsPlayerControls.push('progress');
     }
+
     mejsPlayerControls.push('duration', 'volume');
+
     if (this.getElementSettings('speed_options')) {
       mejsPlayerControls.push('speed');
     }
+
     if (this.getElementSettings('fullscreen')) {
       mejsPlayerControls.push('fullscreen');
     }
+
     mejsPlayer.mediaelementplayer({
       videoVolume: 'horizontal',
       pauseOtherPlayers: false,
@@ -15727,9 +17946,11 @@ var Video = _module["default"].extend({
           mutations.forEach(function (mutation) {
             if (mutation.type === 'attributes') {
               var $currentTime = self.elements.$widgetWrapper.find('.mejs-time-current'),
-                inlineStyle = $currentTime.attr('style');
+                  inlineStyle = $currentTime.attr('style');
+
               if (inlineStyle) {
                 var scaleX = inlineStyle.match(/scaleX\([0-9.]*\)/gi)[0].replace('scaleX(', '').replace(')', '');
+
                 if (scaleX) {
                   $currentTime.css('width', scaleX * 100 + '%');
                 }
@@ -15737,33 +17958,37 @@ var Video = _module["default"].extend({
             }
           });
         });
+
         if (target) {
           observer.observe(target, {
             attributes: true,
             attributeFilter: ['style']
           });
         }
+
         media.addEventListener('play', function () {
           if ('yes' === _this4.getElementSettings('sticky_on_scroll') && !self.getElementSettings('use_lightbox')) {
             _this4.handleStickyScroll();
           }
+
           if ('yes' === _this4.getElementSettings('hosted_autoplay')) {
             self.elements.$widgetWrapper.find('.raven-video-mejs-hosted').css('visibility', 'visible');
           }
-        }, false);
+        }, false); // Hide large play button.
 
-        // Hide large play button.
         if ('yes' !== self.getElementSettings('large_play_button')) {
           self.elements.$widgetWrapper.find('.mejs-overlay-button').hide();
         } else {
           self.elements.$widgetWrapper.find('.mejs-overlay-play').show();
         }
+
         if ('vimeo' === self.getElementSettings('video_type') && ('yes' === self.getElementSettings('vimeo_mute') || 'yes' === self.getElementSettings('vimeo_autoplay'))) {
           mejsPlayer[0].player.options.startVolume = 0;
           mejsPlayer[0].player.setMuted(true);
         }
       }
     });
+
     if ('yes' !== this.getElementSettings('youtube_controls') && 'youtube' === this.getElementSettings('video_type') || 'yes' !== this.getElementSettings('hosted_controls') && 'hosted' === this.getElementSettings('video_type')) {
       this.elements.$widgetWrapper.find('.mejs-controls').hide();
     }
@@ -15772,49 +17997,57 @@ var Video = _module["default"].extend({
     if (!url) {
       return 0;
     }
+
     var ID = '';
     var youtubeUrl = url.replace(/(>|<)/gi, '').split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
+
     if (youtubeUrl[2] !== undefined) {
       ID = youtubeUrl[2].split(/[^0-9a-z_\-]/i);
       ID = ID[0];
     } else {
       ID = youtubeUrl;
     }
+
     return ID;
   },
   handleVideo: function handleVideo() {
     var mejsPlayer = this.elements.$videoFrame;
+
     if ('hosted' === this.getElementSettings('video_type')) {
       mejsPlayer = this.elements.$mejsPlayer;
     }
+
     if (!this.getElementSettings('use_lightbox')) {
       this.elements.$imageOverlay.remove();
       mejsPlayer[0].player.play();
       return;
     }
+
     var modal = this.elements.$videoWrapper.find('.raven-modal'),
-      mainContent = $('.jupiterx-main');
+        mainContent = $('.jupiterx-main');
+
     if (modal.css('display') === 'none') {
       modal.show();
-      mainContent.addClass('raven-lightbox-open');
+      mainContent.addClass('raven-lightbox-open'); // Update z-index for using multiple light-boxes in a page.
 
-      // Update z-index for using multiple light-boxes in a page.
       this.$element.css('z-index', parseInt(this.$element.css('z-index')) + 1);
     }
   },
   hideModal: function hideModal(event) {
     event.stopPropagation();
     var mejsPlayer = this.elements.$videoFrame;
+
     if ('hosted' === this.getElementSettings('video_type')) {
       mejsPlayer = this.elements.$mejsPlayer;
     }
+
     var modal = this.elements.$videoWrapper.find('.raven-modal'),
-      mainContent = $('.jupiterx-main');
+        mainContent = $('.jupiterx-main');
+
     if (modal.css('display') === 'block') {
       modal.hide();
-      mainContent.removeClass('raven-lightbox-open');
+      mainContent.removeClass('raven-lightbox-open'); // Revert z-index for using multiple light-boxes in a page.
 
-      // Revert z-index for using multiple light-boxes in a page.
       this.$element.css('z-index', 9999);
       mejsPlayer[0].player.pause();
     }
@@ -15823,6 +18056,7 @@ var Video = _module["default"].extend({
     if (this.elements.$widgetContainer.closest('.elementor-container').length > 0) {
       this.elements.$widgetContainer.removeAttr('style');
       var advancedTabMargin = this.elements.$widgetContainer.css('margin');
+
       if (advancedTabMargin) {
         this.$element.css('margin', advancedTabMargin);
         this.elements.$widgetContainer.css('margin', '0');
@@ -15839,6 +18073,7 @@ var Video = _module["default"].extend({
     }
   }
 });
+
 function _default($scope) {
   new Video({
     $element: $scope
@@ -15849,12 +18084,16 @@ function _default($scope) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var Products = _module["default"].extend({
   getDefaultSettings: function getDefaultSettings() {
     return {
@@ -15894,20 +18133,27 @@ var Products = _module["default"].extend({
   },
   bindEvents: function bindEvents() {
     var _this = this;
+
     var totalPages = this.elements.$productsWrapper.data('settings').total_pages || 0;
+
     if (this.getInstanceValue('pagination_type') === 'load_more' && totalPages > 1) {
       this.loadMore();
     }
+
     if (this.getInstanceValue('pagination_type') === 'infinite_load' && totalPages > 1) {
       this.infiniteLoad();
     }
+
     this.zoom();
     this.flexslider();
     this.wrapContentData();
+
     if (this.getInstanceValue('wishlist') === 'show') {
       this.wishlist();
     }
+
     this.initialize();
+
     if (this.getInstanceValue('general_layout') === 'grid') {
       this.gridRun();
       $(window).on('resize', function () {
@@ -15916,11 +18162,12 @@ var Products = _module["default"].extend({
         }, 500);
       });
     }
-    var self = this;
 
+    var self = this;
     /*
      This event is dispatched in showProducts method of the sellkit pro products filter.
      */
+
     document.addEventListener('sellkitpro:filterproducts:showproducts', function () {
       /*
        Refresh The elements so the other functions (zoom, initialize and ...)
@@ -15929,9 +18176,11 @@ var Products = _module["default"].extend({
       self.refreshElements();
       self.elements.$products.each(function (index, item) {
         var image = item.querySelector('img');
+
         if (image && self.getInstanceValue('layout') === 'custom' && self.getInstanceValue('general_layout') !== 'masonry') {
           image.parentElement.classList.add('raven-image-fit');
         }
+
         if (image && self.getInstanceValue('layout') === 'default') {
           image.parentElement.classList.remove('raven-image-fit');
         }
@@ -15940,6 +18189,7 @@ var Products = _module["default"].extend({
       self.flexslider();
       self.wrapContentData();
       self.initialize();
+
       if (_this.getInstanceValue('general_layout') === 'grid') {
         setTimeout(function () {
           return _this.gridRun();
@@ -15950,9 +18200,11 @@ var Products = _module["default"].extend({
       if (self.getInstanceValue('general_layout') === 'masonry') {
         self.masonryRun();
       }
+
       if (self.getInstanceValue('general_layout') === 'matrix') {
         self.matrixRun();
       }
+
       if (self.getInstanceValue('general_layout') === 'metro') {
         self.metroRun();
       }
@@ -15960,72 +18212,91 @@ var Products = _module["default"].extend({
   },
   initialize: function initialize() {
     var notGalleryEffect = true;
+
     if (typeof this.getInstanceValue('swap_effect') !== 'undefined' && this.getInstanceValue('swap_effect').includes('gallery')) {
       notGalleryEffect = false;
     }
+
     if (notGalleryEffect && this.getInstanceValue('general_layout') === 'masonry') {
       this.masonryRun();
     }
+
     var self = this;
+
     if (notGalleryEffect && this.getInstanceValue('general_layout') === 'matrix') {
       this.elements.$productsWrapper.imagesLoaded().progress(function () {
         self.matrixRun();
       });
     }
+
     if (notGalleryEffect && this.getInstanceValue('general_layout') === 'metro') {
       this.elements.$productsWrapper.imagesLoaded().progress(function () {
         self.metroRun();
       });
     }
+
     if (this.getInstanceValue('load_effect')) {
       this.handleAnitmation();
     }
+
     objectFitPolyfill(this.$element.find(this.getSettings('selectors.postImageFit')));
   },
   initializeOnFetch: function initializeOnFetch() {
     var notGalleryEffect = true;
+
     if (typeof this.getInstanceValue('swap_effect') !== 'undefined' && this.getInstanceValue('swap_effect').includes('gallery')) {
       notGalleryEffect = false;
     }
+
     if (notGalleryEffect && this.getInstanceValue('general_layout') === 'masonry') {
       this.masonryRun();
     }
+
     var self = this;
+
     if (notGalleryEffect && this.getInstanceValue('general_layout') === 'matrix') {
       this.elements.$productsWrapper.imagesLoaded().progress(function () {
         self.matrixRun();
       });
     }
+
     if (notGalleryEffect && this.getInstanceValue('general_layout') === 'metro') {
       this.elements.$productsWrapper.imagesLoaded().progress(function () {
         self.metroRun();
       });
     }
+
     if (!['metro', 'matrix'].includes(this.getInstanceValue('general_layout')) && this.getInstanceValue('load_effect')) {
       this.handleAnitmation();
     }
+
     objectFitPolyfill(this.$element.find(this.getSettings('selectors.postImageFit')));
   },
   onElementChange: function onElementChange(propertyName) {
     var _this2 = this;
+
     if (propertyName === 'metro_matrix_rows_gap') {
       if (this.getInstanceValue('general_layout') === 'metro') {
         this.metroRun();
       }
+
       if (this.getInstanceValue('general_layout') === 'matrix') {
         this.matrixRun();
       }
     }
+
     if (propertyName === 'metro_matrix_large_aspect_ratio' || propertyName === 'metro_matrix_large_aspect_ratio') {
       setTimeout(function () {
         if (_this2.getInstanceValue('general_layout') === 'metro') {
           _this2.metroRun();
         }
+
         if (_this2.getInstanceValue('general_layout') === 'matrix') {
           _this2.matrixRun();
         }
       }, 300);
     }
+
     if (propertyName === 'box_rows_gap' || propertyName === 'box_columns_gap' || propertyName === 'stroke_width') {
       if (this.getInstanceValue('general_layout') === 'masonry') {
         setTimeout(function () {
@@ -16035,16 +18306,20 @@ var Products = _module["default"].extend({
     }
   },
   handleProductsOrder: function handleProductsOrder(items) {
-    var _items$, _items$2;
-    if (this.getInstanceValue('general_layout') === 'metro' && (_items$ = items[0]) !== null && _items$ !== void 0 && (_items$ = _items$.parentNode) !== null && _items$ !== void 0 && _items$.parentNode.classList.contains('raven-product-full-width')) {
+    var _items$, _items$$parentNode, _items$2, _items$2$parentNode;
+
+    if (this.getInstanceValue('general_layout') === 'metro' && ((_items$ = items[0]) === null || _items$ === void 0 ? void 0 : (_items$$parentNode = _items$.parentNode) === null || _items$$parentNode === void 0 ? void 0 : _items$$parentNode.parentNode.classList.contains('raven-product-full-width'))) {
       return [].concat((0, _toConsumableArray2["default"])(items.slice(1, 3).reverse()), [items[0]], (0, _toConsumableArray2["default"])(items.slice(3, items.length)));
     }
-    if ((_items$2 = items[0]) !== null && _items$2 !== void 0 && (_items$2 = _items$2.parentNode) !== null && _items$2 !== void 0 && _items$2.parentNode.classList.contains('raven-product-full-width')) {
+
+    if ((_items$2 = items[0]) === null || _items$2 === void 0 ? void 0 : (_items$2$parentNode = _items$2.parentNode) === null || _items$2$parentNode === void 0 ? void 0 : _items$2$parentNode.parentNode.classList.contains('raven-product-full-width')) {
       return [items[0]].concat((0, _toConsumableArray2["default"])(items.slice(1, items.length).reverse()));
     }
+
     if (this.getInstanceValue('general_layout') === 'matrix') {
       return (0, _toConsumableArray2["default"])(items);
     }
+
     return (0, _toConsumableArray2["default"])(items.reverse());
   },
   createAnimationObserver: function createAnimationObserver(self, item, options, index, effect) {
@@ -16055,15 +18330,19 @@ var Products = _module["default"].extend({
           if (item.classList.contains('raven-product-loaded')) {
             return;
           }
+
           var delay = self.elements.$showedItems > 0 ? index - self.elements.$showedItems : index;
+
           if (effect === 'slide-right') {
             if (delay > self.elements.$showedItems) {
               delay -= self.elements.$showedItems;
             }
+
             if (self.elements.$showedItems > delay) {
               delay = self.elements.$showedItems - delay;
             }
           }
+
           setTimeout(function () {
             item.classList.add('raven-product-loaded');
             self.elements.$showedItems = index;
@@ -16076,36 +18355,45 @@ var Products = _module["default"].extend({
   },
   handleAnitmation: function handleAnitmation() {
     var _this3 = this;
+
     var items = (0, _toConsumableArray2["default"])(this.elements.$productsWrapper[0].querySelectorAll('.jupiterx-product-container'));
     var effect = this.getInstanceValue('load_effect'),
-      self = this;
+        self = this;
     this.elements.$productsWrapper.imagesLoaded().done(function () {
       var increment = 0;
+
       if (effect === 'slide-right') {
         _this3.setColumnsCount();
+
         var settings = _this3.getSettings(),
-          rows = parseInt(items.length / settings.columnsCount),
-          itemsLeft = items.length % settings.columnsCount;
+            rows = parseInt(items.length / settings.columnsCount),
+            itemsLeft = items.length % settings.columnsCount;
+
         if (items.length / settings.columnsCount <= 1) {
           items = (0, _toConsumableArray2["default"])(_this3.handleProductsOrder(items));
         } else {
           var itemsToRight = [];
           var tempItems = [];
+
           for (var row = 1; row <= rows; ++row) {
             tempItems = [];
+
             for (var i = itemsToRight.length; i < row * settings.columnsCount; ++i) {
               tempItems.push(items[i]);
             }
+
             itemsToRight.push.apply(itemsToRight, (0, _toConsumableArray2["default"])(_this3.handleProductsOrder(tempItems)));
           }
+
           if (itemsLeft > 0) {
             itemsToRight.push.apply(itemsToRight, (0, _toConsumableArray2["default"])(items.slice(-itemsLeft).reverse()));
           }
+
           items = itemsToRight;
         }
-      }
+      } // eslint-disable-next-line no-unused-vars
 
-      // eslint-disable-next-line no-unused-vars
+
       items.forEach(function (event, index) {
         if (!effect || document.body.classList.contains('elementor-editor-active')) {
           if (!event.classList.contains('raven-product-loaded')) {
@@ -16115,6 +18403,7 @@ var Products = _module["default"].extend({
             }, 200 + 100 * increment);
           }
         }
+
         if (effect) {
           var options = {
             threshold: 0.4
@@ -16127,40 +18416,51 @@ var Products = _module["default"].extend({
   setColumnsCount: function setColumnsCount() {
     var curDevice = elementorFrontend.getCurrentDeviceMode();
     var columnsKey = "columns_custom".concat(curDevice);
+
     if (curDevice === 'desktop') {
       columnsKey = 'columns_custom';
     }
+
     if (this.getInstanceValue('general_layout') === 'metro' || this.getInstanceValue('general_layout') === 'matrix') {
       columnsKey = 'number_of_products';
     }
+
     var columnValue = this.getInstanceValue(columnsKey);
+
     if (!this.getInstanceValue(columnsKey)) {
       columnValue = 1;
     }
+
     this.setSettings('columnsCount', parseInt(columnValue));
   },
   zoom: function zoom() {
     if (this.getInstanceValue('swap_effect') !== 'zoom_hover') {
       return;
     }
+
     this.elements.$productsWrapper.find('.jupiterx-wc-loop-product-image').zoom();
   },
   flexslider: function flexslider() {
     if (typeof this.getInstanceValue('swap_effect') === 'undefined') {
       return;
     }
+
     if (!this.getInstanceValue('swap_effect').includes('gallery')) {
       return;
     }
+
     var self = this;
     var controlNav = false;
     var directionNav = false;
+
     if (this.getInstanceValue('swap_effect') === 'gallery_arrows') {
       directionNav = true;
     }
+
     if (this.getInstanceValue('swap_effect') === 'gallery_pagination') {
       controlNav = true;
     }
+
     self.elements.$productsWrapper.find('.jupiterx-wc-loop-product-image').flexslider({
       selector: '.raven-swap-effect-gallery-slides > li',
       animation: 'slide',
@@ -16176,9 +18476,11 @@ var Products = _module["default"].extend({
         if (self.getInstanceValue('general_layout') === 'masonry') {
           self.masonryRun();
         }
+
         if (self.getInstanceValue('general_layout') === 'matrix') {
           self.matrixRun();
         }
+
         if (self.getInstanceValue('general_layout') === 'metro') {
           self.metroRun();
         }
@@ -16196,6 +18498,7 @@ var Products = _module["default"].extend({
     if ($indicator.length < 1) {
       return;
     }
+
     var observer = new IntersectionObserver(function (entries) {
       // eslint-disable-line no-undef
       entries.forEach(function (entry) {
@@ -16209,9 +18512,11 @@ var Products = _module["default"].extend({
   },
   infiniteLoad: function infiniteLoad() {
     var self = this;
+
     if (self.elements.$paginationContainer.length) {
       return;
     }
+
     self.elements.$productsContainer.imagesLoaded().always(function () {
       var options = {
         threshold: 1.0
@@ -16221,31 +18526,36 @@ var Products = _module["default"].extend({
   },
   fetch: function fetch() {
     var self = this;
+
     if (self.getSettings('state.isLoading')) {
       return;
     }
+
     self.setSettings('state.isLoading', true);
     var data = {
       post_id: elementorFrontend.config.post.id,
       model_id: this.getID(),
       'product-page': self.getSettings('state.paged')
-    };
+    }; // Set template ID in product archives as post_id.
 
-    // Set template ID in product archives as post_id.
     var isElementorProductArchive = jQuery('[data-elementor-type=product-archive]');
+
     if (isElementorProductArchive.data('elementor-id')) {
       data.raven_archive_query = JSON.stringify(jQuery('[data-raven-archive-query]').data('raven-archive-query'));
       data.post_id = isElementorProductArchive.data('elementor-id');
-    }
+    } // Orderby filter.
 
-    // Orderby filter.
+
     var urlParams = new URLSearchParams(window.location.search);
+
     if (null !== urlParams.get('orderby') && urlParams.get('orderby').length) {
       data.orderby = urlParams.get('orderby');
     }
+
     if (self.elements.$preLoader) {
       self.elements.$preLoader[0].classList.add('active-preloader');
     }
+
     wp.ajax.send('raven_products_query', {
       type: 'GET',
       data: data,
@@ -16253,17 +18563,23 @@ var Products = _module["default"].extend({
         self.setSettings('state.paged', self.getSettings('state.paged') + 1);
         self.elements.$productsContainer.append(res.products);
         var resultCount = self.elements.$productsContainer.siblings('.woocommerce-result-count');
+
         if (resultCount.length === 0) {
           resultCount = self.elements.$productsContainer.siblings('.raven-products-ordering-result-wrapper').find('.woocommerce-result-count');
         }
+
         resultCount.html(res.result_count);
+
         if (self.getInstanceValue('pagination_type') === 'load_more' && res.query_results.current_page === res.query_results.total_pages) {
           self.elements.$loadMoreButton.hide();
         }
+
         var totalPages = self.elements.$productsWrapper.data('settings').total_pages || 0;
+
         if (self.getInstanceValue('pagination_type') === 'infinite_load' && res.query_results.current_page !== res.query_results.total_pages && totalPages > 1) {
           self.infiniteLoad();
         }
+
         self.zoom();
         self.flexslider();
         self.initializeOnFetch();
@@ -16275,6 +18591,7 @@ var Products = _module["default"].extend({
       },
       complete: function complete() {
         self.setSettings('state.isLoading', false);
+
         if (self.elements.$preLoader) {
           self.elements.$preLoader[0].classList.remove('active-preloader');
         }
@@ -16294,10 +18611,12 @@ var Products = _module["default"].extend({
       data.nonce = nonceAdd;
       data.add_to_wishlist = productId;
       data.remove_from_wishlist = productId;
+
       if (state === 'remove') {
         action = 'remove_from_wishlist';
         data.nonce = nonceRemove;
       }
+
       wp.ajax.send(action, {
         type: 'GET',
         data: data
@@ -16306,6 +18625,7 @@ var Products = _module["default"].extend({
           $this.addClass('jupiterx-wishlist-remove');
           $this.data('state', 'remove');
         }
+
         if (action === 'remove_from_wishlist' && res.fragments.length === 0) {
           $this.removeClass('jupiterx-wishlist-remove');
           $this.data('state', 'add');
@@ -16315,32 +18635,41 @@ var Products = _module["default"].extend({
   },
   setGapSize: function setGapSize() {
     var _this$getInstanceValu;
+
     var curDevice = elementorFrontend.getCurrentDeviceMode();
     var gapKey = "metro_matrix_rows_gap_".concat(curDevice);
+
     if (curDevice === 'desktop') {
       gapKey = 'metro_matrix_rows_gap';
     }
+
     this.setSettings('gapSize', parseInt((_this$getInstanceValu = this.getInstanceValue(gapKey)) === null || _this$getInstanceValu === void 0 ? void 0 : _this$getInstanceValu.size));
   },
   gridRun: function gridRun() {
-    var _this$elements$$produ, _this$$element$, _elementorFrontend, _this$elements$$produ2;
+    var _this$elements$$produ, _this$$element$, _elementorFrontend, _elementorFrontend$co, _elementorFrontend$co2, _this$elements$$produ2;
+
     var itemsHeight = (_this$elements$$produ = this.elements.$productsContainer[0]) === null || _this$elements$$produ === void 0 ? void 0 : _this$elements$$produ.clientHeight,
-      containerHeight = (_this$$element$ = this.$element[0]) === null || _this$$element$ === void 0 ? void 0 : _this$$element$.clientHeight;
-    if (!((_elementorFrontend = elementorFrontend) !== null && _elementorFrontend !== void 0 && (_elementorFrontend = _elementorFrontend.config) !== null && _elementorFrontend !== void 0 && (_elementorFrontend = _elementorFrontend.experimentalFeatures) !== null && _elementorFrontend !== void 0 && _elementorFrontend.container)) {
+        containerHeight = (_this$$element$ = this.$element[0]) === null || _this$$element$ === void 0 ? void 0 : _this$$element$.clientHeight;
+
+    if (!((_elementorFrontend = elementorFrontend) === null || _elementorFrontend === void 0 ? void 0 : (_elementorFrontend$co = _elementorFrontend.config) === null || _elementorFrontend$co === void 0 ? void 0 : (_elementorFrontend$co2 = _elementorFrontend$co.experimentalFeatures) === null || _elementorFrontend$co2 === void 0 ? void 0 : _elementorFrontend$co2.container)) {
       return;
     }
+
     if (containerHeight >= itemsHeight) {
       this.$element[0].style.minHeight = 'unset';
       return;
     }
+
     this.$element[0].style.minHeight = ((_this$elements$$produ2 = this.elements.$productsContainer[0]) === null || _this$elements$$produ2 === void 0 ? void 0 : _this$elements$$produ2.clientHeight) + 'px';
   },
   masonryRun: function masonryRun() {
     var self = this,
-      isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+        isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+
     if (self.elements.$productsContainer.data('isotope')) {
       self.elements.$productsContainer.isotope('reloadItems').isotope();
     }
+
     self.elements.$productsContainer.isotope({
       itemSelector: '.product',
       masonry: {
@@ -16354,31 +18683,39 @@ var Products = _module["default"].extend({
   matrixRun: function matrixRun() {
     this.setGapSize();
     var self = this,
-      gap = this.getSettings().gapSize ? this.getSettings().gapSize : 0,
-      currentDevice = elementorFrontend.getCurrentDeviceMode(),
-      isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+        gap = this.getSettings().gapSize ? this.getSettings().gapSize : 0,
+        currentDevice = elementorFrontend.getCurrentDeviceMode(),
+        isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+
     if (self.elements.$productsContainer.data('isotope')) {
       self.elements.$productsContainer.isotope('reloadItems').isotope();
     }
+
     var normalSize = Math.floor((self.elements.$productsContainer.parent().width() + gap) / 3),
-      tripleSize = normalSize * 3;
+        tripleSize = normalSize * 3;
+
     if (currentDevice === 'mobile') {
       normalSize = normalSize * 3 - gap;
       tripleSize = normalSize;
     }
+
     var increment = 0;
     self.elements.$productsContainer.find('li.product').each(function (index, event) {
       var setWidth = normalSize;
+
       if (index === 0 || increment + 4 === index) {
         setWidth = tripleSize;
         increment = index;
+
         if (!event.classList.contains('raven-product-full-width')) {
           event.classList.add('raven-product-full-width');
         }
       }
+
       if (setWidth) {
         event.style.width = setWidth + 'px';
       }
+
       if (currentDevice === 'mobile') {
         event.style.paddingRight = 0;
       }
@@ -16404,37 +18741,46 @@ var Products = _module["default"].extend({
   metroRun: function metroRun() {
     this.setGapSize();
     var self = this,
-      gap = this.getSettings().gapSize ? this.getSettings().gapSize : 0,
-      currentDevice = elementorFrontend.getCurrentDeviceMode(),
-      isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+        gap = this.getSettings().gapSize ? this.getSettings().gapSize : 0,
+        currentDevice = elementorFrontend.getCurrentDeviceMode(),
+        isOriginLeft = document.body.classList.contains('rtl') ? false : true;
+
     if (self.elements.$productsContainer.data('isotope')) {
       self.elements.$productsContainer.isotope('reloadItems').isotope();
     }
+
     var normalSize = Math.floor((self.elements.$productsContainer.parent().width() + gap) / 4),
-      doubleSize = normalSize * 2;
+        doubleSize = normalSize * 2;
+
     if (currentDevice === 'tablet') {
       normalSize = normalSize * 2;
       doubleSize = normalSize * 2;
     }
+
     if (currentDevice === 'mobile') {
       normalSize = normalSize * 4;
       doubleSize = normalSize;
     }
+
     var increment = 0;
     self.elements.$productsContainer.find('li.product').each(function (index, event) {
       var setWidth = normalSize,
-        setHeight = normalSize;
+          setHeight = normalSize;
+
       if (index === 0 || increment + 3 === index) {
         setWidth = doubleSize;
         setHeight = doubleSize;
         increment = index;
+
         if (!event.classList.contains('raven-product-full-width')) {
           event.classList.add('raven-product-full-width');
         }
       }
+
       if (setWidth) {
         event.style.width = setWidth + 'px';
       }
+
       if ('overlay' === self.getInstanceValue('metro_matrix_content_layout')) {
         event.style.height = setHeight + 'px';
       }
@@ -16459,19 +18805,24 @@ var Products = _module["default"].extend({
     var contents = [selectors.productPrice, selectors.productTitle, selectors.categories, selectors.ratingWrapper];
     var btnLocation = this.getInstanceValue('pc_atc_button_location');
     var btnLocationOverlay = this.getInstanceValue('pc_atc_button_location_overlay');
+
     if (btnLocation && 'outside' === btnLocation || btnLocationOverlay && 'outside' === btnLocationOverlay) {
       contents.push(selectors.addToCartButton);
     }
+
     this.elements.$productsContainer.find('.product').each(function (index, product) {
       contents.forEach(function (content) {
         var dataElement = $(product).find(content)[0];
+
         if (dataElement) {
           dataElement.classList.add('raven-product-item-content');
         }
       });
+
       if (!product.classList.contains('has-data-wrapper')) {
         $(product).find('.raven-product-item-content').wrapAll('<div class="raven-product-data" />');
       }
+
       product.classList.add('has-data-wrapper');
     });
   },
@@ -16485,6 +18836,7 @@ var Products = _module["default"].extend({
     this.elements.$preLoader = this.$element.find(selectors.preLoader);
   }
 });
+
 function _default($scope) {
   new Products({
     $element: $scope
@@ -16813,6 +19165,9 @@ function _unsupportedIterableToArray(o, minLen) {
 
 module.exports = _unsupportedIterableToArray;
 },{"./arrayLikeToArray":85}],108:[function(require,module,exports){
+module.exports = require("regenerator-runtime");
+
+},{"regenerator-runtime":122}],109:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -16849,7 +19204,7 @@ function compile( expression ) {
 
 module.exports = compile;
 
-},{"@tannin/evaluate":109,"@tannin/postfix":111}],109:[function(require,module,exports){
+},{"@tannin/evaluate":110,"@tannin/postfix":112}],110:[function(require,module,exports){
 'use strict';
 
 /**
@@ -16965,7 +19320,7 @@ function evaluate( postfix, variables ) {
 
 module.exports = evaluate;
 
-},{}],110:[function(require,module,exports){
+},{}],111:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -16991,7 +19346,7 @@ function pluralForms( expression ) {
 
 module.exports = pluralForms;
 
-},{"@tannin/compile":108}],111:[function(require,module,exports){
+},{"@tannin/compile":109}],112:[function(require,module,exports){
 'use strict';
 
 var PRECEDENCE, OPENERS, TERMINATORS, PATTERN;
@@ -17121,7 +19476,7 @@ function postfix( expression ) {
 
 module.exports = postfix;
 
-},{}],112:[function(require,module,exports){
+},{}],113:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -17336,7 +19691,7 @@ var createI18n = function createI18n(initialData, initialDomain) {
 
 exports.createI18n = createI18n;
 
-},{"@babel/runtime/helpers/defineProperty":92,"@babel/runtime/helpers/interopRequireDefault":96,"tannin":121}],113:[function(require,module,exports){
+},{"@babel/runtime/helpers/defineProperty":92,"@babel/runtime/helpers/interopRequireDefault":96,"tannin":123}],114:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17455,7 +19810,7 @@ exports._nx = _nx;
 var isRTL = i18n.isRTL.bind(i18n);
 exports.isRTL = isRTL;
 
-},{"./create-i18n":112}],114:[function(require,module,exports){
+},{"./create-i18n":113}],115:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -17530,7 +19885,7 @@ Object.keys(_createI18n).forEach(function (key) {
 
 var _defaultI18n = require("./default-i18n");
 
-},{"./create-i18n":112,"./default-i18n":113,"./sprintf":115}],115:[function(require,module,exports){
+},{"./create-i18n":113,"./default-i18n":114,"./sprintf":116}],116:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -17582,7 +19937,7 @@ function sprintf(format) {
   }
 }
 
-},{"@babel/runtime/helpers/interopRequireDefault":96,"memize":119,"sprintf-js":116}],116:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":96,"memize":120,"sprintf-js":117}],117:[function(require,module,exports){
 /* global window, exports, define */
 
 !function() {
@@ -17815,7 +20170,7 @@ function sprintf(format) {
     /* eslint-enable quote-props */
 }(); // eslint-disable-line
 
-},{}],117:[function(require,module,exports){
+},{}],118:[function(require,module,exports){
 /*
  * International Telephone Input v17.0.18
  * https://github.com/jackocnr/intl-tel-input.git
@@ -19169,13 +21524,13 @@ function sprintf(format) {
         };
     }();
 });
-},{}],118:[function(require,module,exports){
+},{}],119:[function(require,module,exports){
 /**
  * Exposing intl-tel-input as a component
  */
 module.exports = require("./build/js/intlTelInput");
 
-},{"./build/js/intlTelInput":117}],119:[function(require,module,exports){
+},{"./build/js/intlTelInput":118}],120:[function(require,module,exports){
 (function (process){
 /**
  * Memize options object.
@@ -19346,7 +21701,7 @@ function memize( fn, options ) {
 module.exports = memize;
 
 }).call(this,require('_process'))
-},{"_process":120}],120:[function(require,module,exports){
+},{"_process":121}],121:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -19532,7 +21887,738 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],121:[function(require,module,exports){
+},{}],122:[function(require,module,exports){
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator, PromiseImpl) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new PromiseImpl(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+  typeof module === "object" ? module.exports : {}
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
+
+},{}],123:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -19753,7 +22839,7 @@ Tannin.prototype.dcnpgettext = function( domain, context, singular, plural, n ) 
 
 module.exports = Tannin;
 
-},{"@tannin/plural-forms":110}],122:[function(require,module,exports){
+},{"@tannin/plural-forms":111}],124:[function(require,module,exports){
 (function (process){
 /**!
 * tippy.js v6.3.7
@@ -22254,7 +25340,7 @@ exports.sticky = sticky;
 
 
 }).call(this,require('_process'))
-},{"@popperjs/core":123,"_process":120}],123:[function(require,module,exports){
+},{"@popperjs/core":125,"_process":121}],125:[function(require,module,exports){
 (function (process){
 /**
  * @popperjs/core v2.11.6 - MIT License
@@ -24260,4 +27346,4 @@ exports.preventOverflow = preventOverflow$1;
 
 
 }).call(this,require('_process'))
-},{"_process":120}]},{},[1]);
+},{"_process":121}]},{},[1]);

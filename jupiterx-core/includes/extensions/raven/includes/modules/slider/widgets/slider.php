@@ -32,6 +32,18 @@ class Slider extends Base_Widget {
 		return [ 'imagesloaded' ];
 	}
 
+	public function get_style_depends() {
+		return [
+			'e-swiper',
+			'swiper',
+			'e-animation-fadeInDown',
+			'e-animation-fadeInLeft',
+			'e-animation-fadeInRight',
+			'e-animation-fadeInUp',
+			'e-animation-zoomIn',
+		];
+	}
+
 	public static function get_button_sizes() {
 		return [
 			'xs' => esc_html__( 'Extra Small', 'jupiterx-core' ),
@@ -1319,6 +1331,7 @@ class Slider extends Base_Widget {
 
 	/**
 	 * @suppressWarnings(PHPMD.NPathComplexity)
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
 	protected function render() {
 		$settings = $this->get_settings_for_display();
@@ -1386,11 +1399,15 @@ class Slider extends Base_Widget {
 			// WPML compatibility.
 			$background = '';
 
-			$image_id = apply_filters( 'wpml_object_id', $slide['background_image']['id'], 'attachment', true );
+			$image_id = '';
 
-			if ( $image_id !== $slide['background_image']['id'] && ! empty( $slide['background_image']['id'] ) ) {
-				$attachment_url = wp_get_attachment_image_src( $image_id, 'full' );
-				$background     = "background-image: url($attachment_url[0])";
+			if ( $slide && isset( $slide['background_image'] ) && isset( $slide['background_image']['id'] ) ) {
+				$image_id = apply_filters( 'wpml_object_id', $slide['background_image']['id'], 'attachment', true );
+
+				if ( $image_id !== $slide['background_image']['id'] && ! empty( $slide['background_image']['id'] ) ) {
+					$attachment_url = wp_get_attachment_image_src( $image_id, 'full' );
+					$background     = "background-image: url($attachment_url[0])";
+				}
 			}
 
 			$slide_html = '<div style="' . $background . '" class="swiper-slide-bg' . $ken_class . '"></div>' . $slide_html;

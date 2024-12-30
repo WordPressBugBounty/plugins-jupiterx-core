@@ -29,6 +29,10 @@ class Testimonial_Carousel extends Base {
 		return 'raven-element-icon raven-element-icon-testimonial-carousel';
 	}
 
+	public function get_style_depends() {
+		return [ 'e-swiper', 'swiper' ];
+	}
+
 	protected function register_controls() {
 		$this->register_controls_section_slides();
 		$this->register_controls_section_additional_options();

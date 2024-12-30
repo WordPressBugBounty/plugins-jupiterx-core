@@ -40,7 +40,19 @@ class Posts_Carousel extends Base_Widget {
 	}
 
 	public function get_style_depends() {
-		return [ 'dashicons', 'e-animations', 'elementor-icons' ];
+		return [
+			'dashicons',
+			'elementor-icons',
+			'e-swiper',
+			'swiper',
+			'e-animation-grow',
+			'e-animation-shrink',
+			'e-animation-pulse',
+			'e-animation-pop',
+			'e-animation-grow-rotate',
+			'e-animation-wobble-skew',
+			'e-animation-buzz-out',
+		];
 	}
 
 	protected function register_skins() {

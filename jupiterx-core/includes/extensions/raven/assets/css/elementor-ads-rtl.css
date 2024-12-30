@@ -86,6 +86,7 @@
 #elementor-element-manager-wrap .components-panel__body.is-opened .components-panel__row:nth-child(3), #elementor-element-manager-wrap .components-panel__body.is-opened .components-panel__row:nth-child(4) {
   display: none !important;
 }
+
 #elementor-element-manager-wrap .components-panel__body.is-opened .components-panel__row:nth-child(2) table th:last-child,
 #elementor-element-manager-wrap .components-panel__body.is-opened .components-panel__row:nth-child(2) table td:last-child {
   display: none !important;

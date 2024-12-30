@@ -26,6 +26,27 @@ class Image extends Base_Widget {
 		return [ 'jupiterx-core-raven-parallax-scroll' ];
 	}
 
+	public function get_style_depends() {
+		return [
+			'e-animation-grow',
+			'e-animation-shrink',
+			'e-animation-pulse',
+			'e-animation-pop',
+			'e-animation-grow-rotate',
+			'e-animation-wobble-skew',
+			'e-animation-buzz-out',
+			'e-animation-bounce',
+			'e-animation-flash',
+			'e-animation-rubberBand',
+			'e-animation-shake',
+			'e-animation-headShake',
+			'e-animation-swing',
+			'e-animation-tada',
+			'e-animation-wobble',
+			'e-animation-jello',
+		];
+	}
+
 	protected function register_controls() {
 		$this->register_section_content();
 		$this->register_section_settings();

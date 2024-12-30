@@ -60,6 +60,18 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		$this->register_button_controls();
 	}
 
+	public function get_style_depends() {
+		return [
+			'e-animation-grow',
+			'e-animation-shrink',
+			'e-animation-pulse',
+			'e-animation-pop',
+			'e-animation-grow-rotate',
+			'e-animation-wobble-skew',
+			'e-animation-buzz-out',
+		];
+	}
+
 	protected function register_settings_controls() {
 		$this->start_controls_section(
 			'section_settings',

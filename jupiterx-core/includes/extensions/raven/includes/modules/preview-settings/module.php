@@ -102,7 +102,7 @@ class Module extends Module_Base {
 	public function modify_single_query() {
 		$id = get_the_ID();
 
-		if ( wp_doing_ajax() ) {
+		if ( wp_doing_ajax() && ! empty( $_REQUEST['editor_post_id'] ) ) { //phpcs:ignore 
 			$id = filter_var( $_REQUEST['editor_post_id'], FILTER_SANITIZE_NUMBER_INT ); //phpcs:ignore
 		}
 

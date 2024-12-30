@@ -5,9 +5,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-var _i18n = require("@wordpress/i18n");
-/* eslint no-undef: 0 */
 
+var _i18n = require("@wordpress/i18n");
+
+/* eslint no-undef: 0 */
 var JupiterxConditionManager = function JupiterxConditionManager() {
   var $ = jQuery;
   var checker = false;
@@ -15,6 +16,7 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
   var helper = {};
   helper.defaultList = $('#jupiterx-editor-conditions-response-list-default-items').html();
   helper.theme = 'light';
+
   function loadSectionTemplates() {
     wp.ajax.post({
       action: 'jupiterx_layout_builder',
@@ -26,25 +28,31 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       helper.posts = response;
     });
   }
+
   function addButton() {
     // Jupiterx condition button.
     var btn = $('#jupiterx-editor-condition-show-conditions-button').html();
+
     if ('active' === elementor.config.jx_editor_top_bar || 'default' === elementor.config.jx_editor_top_bar) {
       var editorHeader = $('.MuiBox-root'),
-        trigger = editorHeader.find('button[aria-label="Save Options"]');
+          trigger = editorHeader.find('button[aria-label="Save Options"]');
       trigger.parent().prev().addClass('layout_builder_publish_button');
       var btnClass = 'jx-editor-modal-trigger-top jx-editor-modal-trigger-top-light';
+
       if ('dark' === elementor.config.settings.editorPreferences.settings.ui_theme) {
         btnClass = 'jx-editor-modal-trigger-top jx-editor-modal-trigger-top-dark';
       }
+
       trigger.on('click', function () {
         setTimeout(function () {
           var span = $('.MuiMenu-list[role="menu"]').find('span').filter(function () {
             return $(this).text() === 'Display Conditions';
           });
+
           if (0 < span.length) {
             span.parent().parent().remove();
           }
+
           var divider = $('.MuiMenu-list[role="menu"]').find('hr').first().clone();
           $('.MuiMenu-list[role="menu"]').children().first().after(btn);
           $('.MuiMenu-list[role="menu"]').find('#jupiterx-editor-conditions-trigger').attr('class', btnClass);
@@ -53,34 +61,42 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
         }, 300);
       });
     }
+
     if ('inactive' === elementor.config.jx_editor_top_bar) {
       // Place button in menu.
       $(btn).insertBefore('#elementor-panel-footer-sub-menu-item-save-template');
       $('#jupiterx-editor-conditions-trigger').on('click', openModal);
     }
   }
+
   function openModal() {
     // Create modal if isn't created already.
     if (false === checker) {
       modal = createModal();
       loadSectionTemplates();
     }
+
     modal.show();
     document.querySelector('.jupiterx-conditions-modal').setAttribute('id', 'jupiterx-conditions-modal');
     $('.dialog-jx_save_conditions').addClass('elementor-button elementor-button-success');
     checkDarkMode();
     checkToAddClearForth();
   }
+
   function checkDarkMode() {
     helper.theme = 'light';
+
     if ($('#elementor-editor-wrapper').hasClass('raven-icon-theme-dark')) {
       helper.theme = 'dark';
     }
+
     var checkClass = $('.jupiterx-editor-condition-single-row-wrapper').hasClass('jupiterx-editor-condition-single-row-wrapper-dark');
+
     if ('dark' === helper.theme) {
       if (checkClass) {
         return;
       }
+
       $('.jupiterx-editor-condition-single-row-wrapper').addClass('jupiterx-editor-condition-single-row-wrapper-dark');
       $('.jupiterx-conditions-modal').addClass('jupiterx-conditions-modal-dark');
     } else {
@@ -88,15 +104,19 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       $('.jupiterx-conditions-modal').removeClass('jupiterx-conditions-modal-dark');
     }
   }
+
   function checkToAddClearForth() {
     $('.jx-fourth-condition').each(function () {
       var value = $(this).val();
+
       if ('all' === value) {
         return;
       }
+
       $(this).parent().find('.eicon-editor-close').css('display', 'inline-block');
     });
   }
+
   function createModal() {
     checker = true;
     modal = elementorCommon.dialogsManager.createWidget('lightbox', {
@@ -121,6 +141,7 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
     });
     return modal;
   }
+
   function createConditionArray() {
     var rows = document.querySelectorAll('.jupiterx-editor-condition-single-row-wrapper');
     var conditions = [];
@@ -130,19 +151,22 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       condition.conditionA = itemObj.find('.jx-first-condition').val();
       condition.conditionB = itemObj.find('.jx-second-condition').val();
       condition.conditionC = '';
+
       if (true !== itemObj.find('.jupiterx-editor-conditions-third-condition-wrapper').hasClass('jx-condition-hide')) {
         condition.conditionC = itemObj.find('.jx-third-condition').val();
       }
-      condition.conditionD = '';
 
-      // Fourth item is array always, and it includes value & label.
+      condition.conditionD = ''; // Fourth item is array always, and it includes value & label.
+
       if (true !== itemObj.find('.jupiterx-editor-conditions-fourth-condition-wrapper').hasClass('jx-condition-hide')) {
         condition.conditionD = [itemObj.find('.jx-fourth-condition').val(), itemObj.find('.jx-fourth-condition option:selected').text()];
       }
+
       conditions.push(condition);
     });
     return conditions;
   }
+
   function callAjaxToSave(conditionsArray) {
     wp.ajax.post({
       action: 'jupiterx_editor_save_conditions',
@@ -151,31 +175,38 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       nonce: elementor.ajax.requestConstants._nonce
     });
   }
+
   function addRow() {
     $(document).on('click', '#jupiterx-editor-condition-add-new-btn', function () {
       var row = $('#jupiterx-conditions-editor-row').html();
       var classes = 'jupiterx-editor-condition-single-row-wrapper';
+
       if ('dark' === helper.theme) {
         classes = classes + ' jupiterx-editor-condition-single-row-wrapper-dark';
         row = row.replace('jupiterx-editor-condition-single-row-wrapper', classes);
       }
+
       $('#jupiterx-editor-conditions-list').append(row);
     });
   }
+
   function removeRow() {
     $(document).on('click', '.jupiterx-editor-conditions-remove-row', function () {
       $(this).parent().remove();
     });
   }
+
   function closeModal() {
     $(document).on('click', '#jupiterx-conditions-close-modal', function () {
       $('.jupiterx-conditions-modal').css('display', 'none');
     });
   }
+
   function onFirstConditionChange() {
     $(document).on('change', '.jx-first-condition', function () {
       var value = $(this).val();
       $(this).attr('data-selected', value);
+
       if ('include' === value) {
         $(this).parent().find('.left-icon').removeClass('eicon-minus-square').addClass('eicon-plus-square');
       } else {
@@ -183,6 +214,7 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       }
     });
   }
+
   function onSecondConditionChange() {
     $(document).on('change', '.jx-second-condition', function () {
       var parent = $(this).parent().parent().parent();
@@ -192,15 +224,18 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       triggerConflict(parent);
     });
   }
+
   function decideToShowThirdCondition(parent, $value, $options) {
     if ('entire' === $value || 'maintenance' === $value || _.isEmpty($value)) {
       parent.find('.jupiterx-editor-conditions-third-condition-wrapper').addClass('jx-condition-hide');
       parent.find('.jupiterx-editor-conditions-fourth-condition-wrapper').addClass('jx-condition-hide');
       return;
     }
+
     parent.find('.jupiterx-editor-conditions-third-condition-wrapper').removeClass('jx-condition-hide');
     parent.find('.jx-third-condition').empty().html($options).trigger('change');
   }
+
   function onThirdConditionChange() {
     $(document).on('change', '.jx-third-condition', function () {
       var parent = $(this).parent().parent().parent();
@@ -209,17 +244,21 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       triggerConflict(parent);
     });
   }
+
   function decideToShowFourthCondition(parent, $value) {
     var exclude = ['all', 'front_page', 'error_404', 'date', 'search', 'woo_search', 'all_product_archive', 'shop_archive', 'shop_manager'];
+
     if (exclude.includes($value) || !$value.includes('_')) {
       parent.find('.jupiterx-editor-conditions-fourth-condition-wrapper').addClass('jx-condition-hide');
       return;
     }
+
     var $html = '<option value="all">' + (0, _i18n.__)('All', 'jupiterx-core') + '</option>';
     parent.find('.jupiterx-editor-conditions-fourth-condition-wrapper').removeClass('jx-condition-hide');
     parent.find('.jx-fourth-condition').empty().html($html);
     parent.find('.item-4th-special-select2').text((0, _i18n.__)('All', 'jupiterx-core'));
   }
+
   function openSearchForm() {
     // Start process onkeyup.
     $(document).on('mouseup', '.jupiterx-conditions-modal .dialog-lightbox-message', function (e) {
@@ -227,47 +266,47 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       var trigger1 = $('.item-4th-special-select2');
       var trigger2 = $('.jx-editor-condition-fourth-dropdown-icon');
       var cancel = ['LI', 'UL'];
+
       if (cancel.includes(e.target.nodeName)) {
         return;
-      }
+      } // Set default list on each time click
 
-      // Set default list on each time click
+
       $('.jx-editor-conditions-4th-search-box').val('');
-      container.find('ul').html(helper.defaultList);
+      container.find('ul').html(helper.defaultList); // Toggle dropdown using its triggers.
 
-      // Toggle dropdown using its triggers.
       if (trigger1.is(e.target) || trigger2.is(e.target)) {
         $(e.target).parent().find('.jx-condition-search').toggle();
         return;
-      }
+      } // Close dropdown if clicked outside of it.
 
-      // Close dropdown if clicked outside of it.
+
       if (!container.is(e.target) && container.has(e.target).length === 0) {
         container.hide();
       }
     });
   }
+
   function onSearchForFourth() {
     $(document).on('keyup', '.jx-editor-conditions-4th-search-box', function () {
       helper.parent = $(this).parent().parent().parent().parent();
       helper.value = $(this).val();
       helper.type = helper.parent.find('.jupiterx-editor-conditions-second-condition-wrapper select').val();
-      helper.sub = helper.parent.find('.jupiterx-editor-conditions-third-condition-wrapper select').val();
+      helper.sub = helper.parent.find('.jupiterx-editor-conditions-third-condition-wrapper select').val(); // If empty value set default list.
 
-      // If empty value set default list.
       if (_.isEmpty(helper.value)) {
         $(this).next().html(helper.defaultList);
         return;
-      }
+      } // Remove default and show searching... text.
 
-      // Remove default and show searching... text.
+
       $(this).next().find('.jx-ec-hidden-item').removeClass('jx-ec-hidden-item');
-      $(this).next().find('.jx-ec-default-visible').addClass('jx-ec-hidden-item');
+      $(this).next().find('.jx-ec-default-visible').addClass('jx-ec-hidden-item'); // Call ajax to get data.
 
-      // Call ajax to get data.
       callAjaxToFind();
     });
   }
+
   function callAjaxToFind() {
     wp.ajax.post({
       action: 'jupiterx_conditional_manager',
@@ -279,30 +318,30 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
     }).done(function (response) {
       if (response.length < 1) {
         return;
-      }
+      } // Manage data if there is any.
 
-      // Manage data if there is any.
+
       displaySearchResult(response);
     });
   }
+
   function displaySearchResult(response) {
-    var list = helper.parent.find('.jupiterx-editor-conditions-fourth-condition-wrapper ul');
+    var list = helper.parent.find('.jupiterx-editor-conditions-fourth-condition-wrapper ul'); // Empty list at first.
 
-    // Empty list at first.
-    list.empty();
+    list.empty(); // Attach data to list.
 
-    // Attach data to list.
     response.forEach(function (item) {
       if (!item.value) {
         return;
       }
+
       var listItem = '<li class="jx-ec-item" data-id="' + item.value + '">' + item.label + '</li>';
       list.append(listItem);
-    });
+    }); // Manage on list clic.
 
-    // Manage on list clic.
     manageItemSelection();
   }
+
   function manageItemSelection() {
     $(document).on('click', '.jx-ec-item', function () {
       var value = $(this).attr('data-id');
@@ -311,27 +350,25 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       var select = helper.parent.find('.jupiterx-editor-conditions-fourth-condition-wrapper select');
       var container = $('.jx-condition-search');
       $(this).parent().find('.jx-ec-item').removeClass('jx-ec-active');
-      $(this).addClass('jx-ec-active');
+      $(this).addClass('jx-ec-active'); // Set hidden select value.
 
-      // Set hidden select value.
       select.empty();
       select.append(option);
       select.val(value);
-      triggerConflict(helper.parent);
+      triggerConflict(helper.parent); // Set simulated select text.
 
-      // Set simulated select text.
-      helper.parent.find('.jupiterx-editor-conditions-fourth-condition-wrapper .item-4th-special-select2').text(text);
+      helper.parent.find('.jupiterx-editor-conditions-fourth-condition-wrapper .item-4th-special-select2').text(text); // Close list.
 
-      // Close list.
-      container.hide();
+      container.hide(); // Display clear icon if 'all' isn't value.
 
-      // Display clear icon if 'all' isn't value.
       if ('all' === value) {
         return;
       }
+
       helper.parent.find('.jupiterx-editor-conditions-fourth-condition-wrapper .jx-editor-condition-clear-forth').css('display', 'inline-block');
     });
   }
+
   function onForthClear() {
     $(document).on('click', '.jx-editor-condition-clear-forth', function () {
       var $html = '<option value="all">' + (0, _i18n.__)('All', 'jupiterx-core') + '</option>';
@@ -340,6 +377,7 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       $(this).css('display', 'none');
     });
   }
+
   function openModalOnSave() {
     $(document).on('click', '#elementor-panel-saver-button-publish', function () {
       if (false === elementor.config.jx_conditions) {
@@ -347,9 +385,10 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
         elementor.config.jx_conditions = true;
       }
     });
+
     if ('active' === elementor.config.jx_editor_top_bar || 'default' === elementor.config.jx_editor_top_bar) {
       var editorHeader = $('.MuiBox-root'),
-        trigger = editorHeader.find('.MuiButtonGroup-root').last().find('button').first();
+          trigger = editorHeader.find('.MuiButtonGroup-root').last().find('button').first();
       trigger.on('click', function () {
         if (false === elementor.config.jx_conditions) {
           $('#jupiterx-editor-conditions-trigger').trigger('click');
@@ -358,9 +397,9 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
         }
       });
     }
-  }
+  } // Adding conflict check after adding& changing each select.
 
-  // Adding conflict check after adding& changing each select.
+
   function triggerConflict(parent) {
     var toCheck = {
       conditionA: parent.find('.jx-first-condition').val(),
@@ -368,34 +407,43 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
     };
     var conditionC = parent.find('.jx-third-condition').val();
     toCheck.conditionC = conditionC;
+
     if (_.isEmpty(conditionC)) {
       toCheck.conditionC = '';
     }
-    var conditionD = [parent.find('.jx-fourth-condition').val(), parent.find('.jx-fourth-condition option:selected').text()];
-    toCheck.conditionD = conditionD;
 
-    // to sync with control panel rules if it's empty we set all as default.
+    var conditionD = [parent.find('.jx-fourth-condition').val(), parent.find('.jx-fourth-condition option:selected').text()];
+    toCheck.conditionD = conditionD; // to sync with control panel rules if it's empty we set all as default.
+
     if (_.isEmpty(conditionD[0])) {
       toCheck.conditionD = ['all', 'All'];
     }
+
     if ('entire' === toCheck.conditionB || 'maintenance' === toCheck.conditionB) {
       toCheck.conditionD = '';
     }
+
     var posts = helper.posts.posts;
     var conflict = false;
+
     if (1 > posts.length) {
       return;
     }
+
     posts.forEach(function (object) {
       var id = object.ID;
       var currentPost = elementor.config.initial_document.id;
+
       if (id === currentPost) {
         return;
       }
+
       var conditions = object.conditions;
+
       if (!Array.isArray(conditions)) {
         return;
       }
+
       conditions.forEach(function (condition) {
         if (_.isEqual(toCheck, condition)) {
           var text = (0, _i18n.__)('JupiterX recognized that you have set this condition for other templates', 'jupiterx-core') + ' : ' + object.post_title;
@@ -405,12 +453,15 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
         }
       });
     });
+
     if (true === conflict) {
       return;
     }
+
     parent.find('.jx-editor-row-show-conflict-error').css('display', 'none');
     parent.find('.jupiterx-editor-single-row-inner-wrapper').removeClass('jupiterx-row-has-error');
   }
+
   function initializeFunctions() {
     checkDarkMode();
     addButton();
@@ -426,6 +477,7 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
     openModalOnSave();
     disableElementorProPopup();
   }
+
   function disableElementorProPopup() {
     $('#elementor-panel-footer-saver-publish, .layout_builder_publish_button').on('click', function () {
       var checkerEpro = setTimeout(function () {
@@ -436,20 +488,21 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       }, 50);
     });
   }
+
   function displayTemplatesPopup() {
     if ('1' === elementor.config.jx_editor_first_load) {
       return;
     }
+
     var loaded = setInterval(function () {
       if (elementor.hasOwnProperty('elements')) {
-        clearInterval(loaded);
+        clearInterval(loaded); // If there is any element (old posts), we don't need to display templates popup.
 
-        // If there is any element (old posts), we don't need to display templates popup.
         if (elementor.elements.length > 0) {
           return;
-        }
+        } // Show the popup after 1 second that iframe is loaded.
 
-        // Show the popup after 1 second that iframe is loaded.
+
         var iframe = setInterval(function () {
           if ($('#elementor-preview-iframe').length > 0) {
             clearInterval(iframe);
@@ -462,60 +515,74 @@ var JupiterxConditionManager = function JupiterxConditionManager() {
       }
     }, 50);
   }
+
   function removeElementorBtn() {
     // Remove elementor pro condition btn if exists.
     $('#elementor-panel-footer-sub-menu-item-conditions').remove();
   }
-  function onPreviewLoaded() {
-    removeElementorBtn();
 
-    // Display templates popup on first load.
+  function onPreviewLoaded() {
+    removeElementorBtn(); // Display templates popup on first load.
+
     displayTemplatesPopup();
   }
+
   function init() {
     // Just run this if it's layout builder.
     if ('none' === elementor.config.jx_layout) {
       return;
     }
+
     var urlParams = new URLSearchParams(window.location.search);
     var isLayoutBuilder = urlParams.get('layout-builder');
+
     if (null === isLayoutBuilder) {
       return;
     }
+
     $('body').addClass('layout-builder-environment');
     elementor.on('panel:init', initializeFunctions);
     elementor.on('document:loaded', onPreviewLoaded);
   }
+
   return {
     init: init
   };
 };
+
 var _default = JupiterxConditionManager();
+
 exports["default"] = _default;
 
-},{"@wordpress/i18n":93}],2:[function(require,module,exports){
+},{"@wordpress/i18n":95}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var CustomCSSWIDGET = function CustomCSSWIDGET() {
   function addCustomCss(css, context) {
     if (!context) {
       return;
     }
+
     var model = context.model,
-      customCSS = model.get('settings').get('raven_custom_css_widget');
+        customCSS = model.get('settings').get('raven_custom_css_widget');
     var selector = '.elementor-element.elementor-element-' + model.get('id');
+
     if ('document' === model.get('elType')) {
       selector = elementor.config.document.settings.cssWrapperSelector;
     }
+
     if (customCSS) {
       css += customCSS.replace(/selector/g, selector);
     }
+
     return css;
   }
+
   function onNavigatorInit() {
     elementor.navigator.indicators.customCSS = {
       icon: 'code-bold',
@@ -524,15 +591,19 @@ var CustomCSSWIDGET = function CustomCSSWIDGET() {
       section: 'section_custom_css'
     };
   }
+
   function init() {
     elementor.hooks.addFilter('editor/style/styleText', addCustomCss);
     elementor.on('navigator:init', onNavigatorInit);
   }
+
   return {
     init: init
   };
 };
+
 var _default = CustomCSSWIDGET();
+
 exports["default"] = _default;
 
 },{}],3:[function(require,module,exports){
@@ -542,23 +613,29 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var CustomCSS = function CustomCSS() {
   function customCSS() {
     var pageCSS = elementor.settings.page.model.get('raven_custom_css');
+
     if (pageCSS) {
       pageCSS = pageCSS.replace(/selector/g, '.elementor-page-' + elementor.config.document.id);
       elementor.settings.page.getControlsCSS().elements.$stylesheetElement.append(pageCSS);
     }
   }
+
   function init() {
     elementor.on('preview:loaded', customCSS);
     elementor.settings.page.model.on('change', customCSS);
   }
+
   return {
     init: init
   };
 };
+
 var _default = CustomCSS();
+
 exports["default"] = _default;
 
 },{}],4:[function(require,module,exports){
@@ -568,10 +645,11 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
-/* eslint no-undef: 0 */
 
+/* eslint no-undef: 0 */
 var PreviewSettings = function PreviewSettings() {
   var $ = jQuery;
+
   function previewSettings() {
     var result = $e.run('document/save/update');
     result.done(function () {
@@ -579,36 +657,46 @@ var PreviewSettings = function PreviewSettings() {
       elementor.reloadPreview();
     });
   }
+
   function assignExtraClass() {
     if ('none' !== elementor.config.jx_layout) {
       $('#elementor-panel').addClass('jupiterx-template-type-' + elementor.config.jx_layout);
     }
+
     if ('product' === elementor.config.jx_post_type) {
       $('#elementor-panel').addClass('jupiterx-editor-post-type-' + elementor.config.jx_post_type);
     }
   }
+
   function removeThemeBuilderEditor() {
     /** Remove Elementor theme builder in editor. */
     $(document).on('click', '#elementor-panel-header-menu-button', function () {
       $('.elementor-panel-menu-item-site-editor').remove();
     });
   }
+
   function previewLoaded() {
     assignExtraClass();
+
     if ('pro' === elementor.config.jx_elementor) {
       return;
     }
+
     removeThemeBuilderEditor();
   }
+
   function init() {
     elementor.channels.editor.on('jupiterXApplyPreview', previewSettings);
     elementor.on('preview:loaded', previewLoaded);
   }
+
   return {
     init: init
   };
 };
+
 var _default = PreviewSettings();
+
 exports["default"] = _default;
 
 },{}],5:[function(require,module,exports){
@@ -618,12 +706,16 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _i18n = require("@wordpress/i18n");
+
 var $ = jQuery;
+
 var sellkitPreview = function sellkitPreview() {
   function lock() {
     $('.raven-sellkit-widgets-preview').parent().parent().attr('draggable', false).css('cursor', 'pointer').addClass('raven-sellkit-preview-widget-parent');
   }
+
   function onTouch() {
     $(document).on('click', '.raven-sellkit-widgets-preview, #elementor-panel-header-menu-button, #elementor-panel-header-add-button', function () {
       lock();
@@ -635,6 +727,7 @@ var sellkitPreview = function sellkitPreview() {
       if ($('#jupiterx-sellkit-widgets-preview-dialog').length === 0) {
         return;
       }
+
       if ($(event.target).closest('#jupiterx-sellkit-widgets-preview-dialog').length === 0) {
         $('#jupiterx-sellkit-widgets-preview-dialog').css('display', 'none');
       }
@@ -643,17 +736,21 @@ var sellkitPreview = function sellkitPreview() {
       if ($('#jupiterx-sellkit-widgets-preview-dialog').length === 0) {
         return;
       }
+
       if ($(event.target).closest('#jupiterx-sellkit-widgets-preview-dialog').length === 0) {
         $('#jupiterx-sellkit-widgets-preview-dialog').css('display', 'none');
       }
     });
     $(document).on('click mousedown', '.raven-sellkit-preview-widget-parent, #elementor-panel-category-sellkit .elementor-element', function (event) {
       var _window,
-        _this = this;
+          _this = this;
+
       var widgetName = $(event.target).parent().parent().find('.title').text();
+
       if (_.isEmpty((_window = window) === null || _window === void 0 ? void 0 : _window.hasSellkitPro.active) && widgetName !== 'Product Filter' && widgetName !== 'Personalised Coupons') {
         return;
       }
+
       $(this).off('click').off('dragend').off('dragstart');
       event.preventDefault();
       event.stopPropagation();
@@ -665,11 +762,13 @@ var sellkitPreview = function sellkitPreview() {
         var body = createBody();
         var footer = createCtaButton();
         var theme = '';
+
         if ($('#elementor-editor-wrapper').hasClass('raven-icon-theme-light') || $('#elementor-editor-wrapper').hasClass('raven-icon-theme-auto')) {
           theme = 'jupiterx-sellkit-widgets-preview-dialog-white';
         } else {
           theme = 'jupiterx-sellkit-widgets-preview-dialog-dark';
         }
+
         $('#jupiterx-sellkit-widgets-preview-dialog').empty().append(header + body + footer).css({
           display: 'block',
           top: Top,
@@ -682,26 +781,32 @@ var sellkitPreview = function sellkitPreview() {
     });
     goInstallSellkit();
   }
+
   function createHeader(title) {
     var closeIcon = '<i class="eicon-close sellkit-preview-close-dialog"></i>';
     return '<div class="sellkit-widget-preview-header"><span>' + title + closeIcon + '</span></div>';
   }
+
   function createBody() {
     var bodyMessage = (0, _i18n.__)('This widget requires <b>Sellkit Pro</b> to be installed and activated.', 'jupiterx-core');
     return '<div class="sellkit-widget-preview-body">' + bodyMessage + '</div>';
   }
+
   function createCtaButton() {
     var button = '<button id="jupiterx-sellkit-widget-preview-install">' + (0, _i18n.__)('INSTALL SELLKIT PRO', 'jupiterx-core') + '</button>';
     return '<div class="sellkit-widget-preview-footer">' + button + '</div>';
   }
+
   function dialog() {
     $(document.body).append('<div id="jupiterx-sellkit-widgets-preview-dialog"></div>');
   }
+
   function goInstallSellkit() {
     $(document).on('click', '#jupiterx-sellkit-widget-preview-install', function () {
       window.open('https://getsellkit.com/pricing/', '_blank');
     });
   }
+
   function forceUndraggAble() {
     var onceRun = setInterval(function () {
       if ($('.raven-sellkit-widgets-preview').length > 0) {
@@ -712,37 +817,43 @@ var sellkitPreview = function sellkitPreview() {
       }
     }, 500);
   }
+
   function init() {
     if (elementor.config.jx_version >= '2.0.0') {
       elementor.on('panel:init', forceUndraggAble);
     }
   }
+
   return {
     init: init
   };
 };
+
 var _default = sellkitPreview();
+
 exports["default"] = _default;
 
-},{"@wordpress/i18n":93}],6:[function(require,module,exports){
+},{"@wordpress/i18n":95}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _i18n = require("@wordpress/i18n");
+
 var Templates = function Templates() {
   // Find Elementor library remote template and prepend Jupiter X badge.
   function prependBadge() {
     var templateRemote = jQuery('#tmpl-elementor-template-library-template-remote'),
-      badgeHTML = "<# var ravenId = 'raven_' #>\n        <# if ( String( template_id ).substr( 0, ravenId.length ) === ravenId && typeof templatePro !== 'undefined' && templatePro ) { #>\n          <span class=\"raven-template-library-badge raven-template-library-jx-badge\">\n          </span>\n        <# } else if ( String( template_id ).substr( 0, ravenId.length ) === ravenId && typeof templatePro !== 'undefined' && ! templatePro ) { #>\n          <span class=\"raven-template-library-badge raven-template-pro\">\n            <# if ( typeof jupiterxPremium !== 'undefined' ) { #>\n              Activate to Unlock\n            <# } else { #>\n              Upgrade to Unlock\n            <# } #>\n          </span>\n        <# } #>\n\t  ";
+        badgeHTML = "<# var ravenId = 'raven_' #>\n        <# if ( String( template_id ).substr( 0, ravenId.length ) === ravenId && typeof templatePro !== 'undefined' && templatePro ) { #>\n          <span class=\"raven-template-library-badge raven-template-library-jx-badge\">\n          </span>\n        <# } else if ( String( template_id ).substr( 0, ravenId.length ) === ravenId && typeof templatePro !== 'undefined' && ! templatePro ) { #>\n          <span class=\"raven-template-library-badge raven-template-pro\">\n            <# if ( typeof jupiterxPremium !== 'undefined' ) { #>\n              Activate to Unlock\n            <# } else { #>\n              Upgrade to Unlock\n            <# } #>\n          </span>\n        <# } #>\n\t  ";
     var template = templateRemote.text();
     template = badgeHTML + template;
     templateRemote.text(template);
-  }
+  } // Run final init when xhr/ajax action request is by getting the templates library data.
 
-  // Run final init when xhr/ajax action request is by getting the templates library data.
+
   function onRequestInit() {
     jQuery(document).ajaxComplete(function (event, request, settings) {
       if (typeof settings.data !== 'undefined' && settings.data.indexOf('get_library_data') !== -1 && settings.data.indexOf('action=elementor_ajax') !== -1) {
@@ -750,23 +861,27 @@ var Templates = function Templates() {
       }
     });
   }
+
   function actuallyInit() {
     var layout = elementor.templates.layout;
+
     if (typeof layout === 'undefined') {
       return;
     }
-    var content = layout.modalContent;
 
-    // Add Jupiter X filter button.
+    var content = layout.modalContent; // Add Jupiter X filter button.
+
     function addFilter() {
       var filter = content.$el.find('#elementor-template-library-filter-toolbar-remote');
+
       if (!filter.length || filter.find('.raven-template-library-filter').length) {
         return;
       }
+
       filter.append("\n        <div class=\"raven-template-library-filter\">\n          <label class=\"raven-template-library-filter-button\">Jupiter X</label>\n        </div>\n      ");
       var button = filter.find('.raven-template-library-filter-button'),
-        input = content.$el.find('#elementor-template-library-filter-text'),
-        query = 'Jupiter X';
+          input = content.$el.find('#elementor-template-library-filter-text'),
+          query = 'Jupiter X';
       var isFiltered = false;
       button.on('click', function () {
         isFiltered = !isFiltered;
@@ -779,41 +894,44 @@ var Templates = function Templates() {
           elementor.templates.setFilter('text', "".concat(query, " - ").concat(input.val()));
         }
       });
-    }
+    } // Initially apply class on initial page display.
 
-    // Initially apply class on initial page display.
+
     addFilter();
-
     /**
      * Listen to whenever a library menu item is clicked.
      * Such as Blocks, Pages or My Templates.
      */
+
     content.listenTo(content, 'show', function () {
       // Whenever modal content is changing.
       addFilter();
     });
   }
+
   function goProButton() {
     elementor.hooks.addFilter('elementor/editor/template-library/template/action-button', function (viewId, data) {
       var ravenId = 'raven_';
+
       if (String(data.template_id).substr(0, ravenId.length) === ravenId && !data.templatePro) {
         return '#tmpl-elementor-template-library-get-raven-pro-button';
       }
+
       return viewId;
     }, 100);
   }
+
   function init() {
     // Removing default tabs.
     elementor.on('preview:loaded', function () {
       // eslint-disable-next-line no-undef
       if (!elementor.config.library_connect.is_connected && !elementorAppConfig.hasPro) {
         elementor.config.library_connect.is_connected = true;
-      }
+      } // eslint-disable-next-line no-undef
 
-      // eslint-disable-next-line no-undef
-      $e.components.get('library').defaultRoute = 'library/library/templatesJX';
 
-      // eslint-disable-next-line no-undef
+      $e.components.get('library').defaultRoute = 'library/library/templatesJX'; // eslint-disable-next-line no-undef
+
       if (!elementorAppConfig.hasPro) {
         if ($e.components.get('library').hasTab('templates/pages')) {
           // eslint-disable-line no-undef
@@ -831,23 +949,21 @@ var Templates = function Templates() {
         }
       }
     });
-
     elementor.on('preview:loaded', function () {
       var title = (0, _i18n.__)('Blocks', 'jupiterx-core');
-      var order = 10;
+      var order = 10; //eslint-disable-next-line no-undef
 
-      //eslint-disable-next-line no-undef
       if (elementorAppConfig.hasPro) {
         title = 'Jupiter X';
         order = 0;
-      }
+      } // eslint-disable-next-line no-undef
 
-      // eslint-disable-next-line no-undef
+
       if ($e.components.get('library').hasTab('library/templatesJX')) {
         return;
-      }
+      } // eslint-disable-next-line no-undef
 
-      // eslint-disable-next-line no-undef
+
       $e.components.get('library').addTab('library/templatesJX', {
         title: title,
         filter: {
@@ -863,14 +979,17 @@ var Templates = function Templates() {
     goProButton();
     onRequestInit();
   }
+
   return {
     init: init
   };
 };
+
 var _default = Templates();
+
 exports["default"] = _default;
 
-},{"@wordpress/i18n":93}],7:[function(require,module,exports){
+},{"@wordpress/i18n":95}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -880,6 +999,7 @@ exports["default"] = void 0;
 var WooCommerceSettingsModule = elementorModules.editor.utils.Module.extend({
   onInit: function onInit() {
     var _this = this;
+
     elementor.channels.editor.on('kit_settings:section_woocommerce_notices:activated', function (e) {
       _this.onSelect2DropdownChange(e);
     });
@@ -902,9 +1022,8 @@ var WooCommerceSettingsModule = elementorModules.editor.utils.Module.extend({
         $e.route('panel/global/raven-settings-woocommerce');
         elementor.$previewContents.find('.elementor-editor-preview .jupiterx-demo-woocommerce-notices').remove();
       });
-    });
+    }); // eslint-disable-next-line no-undef
 
-    // eslint-disable-next-line no-undef
     $e.routes.on('run:before', function (event, panelName) {
       if ('panel/global/menu' === panelName) {
         elementor.$previewContents.find('.elementor-editor-preview .jupiterx-demo-woocommerce-notices').remove();
@@ -914,10 +1033,10 @@ var WooCommerceSettingsModule = elementorModules.editor.utils.Module.extend({
   onSelect2DropdownChange: function onSelect2DropdownChange(e) {
     var selected = [];
     var $ = jQuery,
-      wrapper = e.el,
-      select2 = $(wrapper).find('.elementor-select2'),
-      defaultValue = select2.val(),
-      self = this;
+        wrapper = e.el,
+        select2 = $(wrapper).find('.elementor-select2'),
+        defaultValue = select2.val(),
+        self = this;
     this.onChangeAndDefault(defaultValue);
     select2.on('change', function () {
       selected = $(this).val();
@@ -927,23 +1046,27 @@ var WooCommerceSettingsModule = elementorModules.editor.utils.Module.extend({
   onChangeAndDefault: function onChangeAndDefault(selected) {
     // Remove it after it is added, in case user removed it from values.
     var options = ['wc_error', 'wc_message', 'wc_info'];
+
     for (var type in options) {
       if (!selected.includes(options[type])) {
         var prefix = options[type].replace('wc_', '');
         elementor.$previewContents.find(".elementor-editor-preview .jupiterx-woocommerce-notice-settings-wrapper-".concat(prefix)).remove();
       }
     }
+
     for (var i in selected) {
       if ('wc_error' === selected[i]) {
         if (elementor.$previewContents.find(".elementor-editor-preview .jupiterx-woocommerce-notice-settings-wrapper-error").length < 1) {
           this.getNoticeHtmlByAjax('error', 'error');
         }
       }
+
       if ('wc_message' === selected[i]) {
         if (elementor.$previewContents.find(".elementor-editor-preview .jupiterx-woocommerce-notice-settings-wrapper-message").length < 1) {
           this.getNoticeHtmlByAjax('message', 'success');
         }
       }
+
       if ('wc_info' === selected[i]) {
         if (elementor.$previewContents.find(".elementor-editor-preview .jupiterx-woocommerce-notice-settings-wrapper-info").length < 1) {
           this.getNoticeHtmlByAjax('info', 'notice');
@@ -1000,8 +1123,9 @@ var Checkbox = elementor.modules.controls.BaseData.extend({
   },
   onReady: function onReady() {
     var self = this,
-      initialValue = self.ui.mainInput.val() || '';
+        initialValue = self.ui.mainInput.val() || '';
     var arr = initialValue.split(',');
+
     if (arr.length) {
       self.ui.controlCheckbox.each(function () {
         if (this.checked) {
@@ -1013,9 +1137,11 @@ var Checkbox = elementor.modules.controls.BaseData.extend({
       });
       self.ui.mainInput.val(arr.join(','));
     }
+
     self.ui.controlCheckbox.on('click', function () {
       var oldVal = self.ui.mainInput.val() || '';
       var oldArr = oldVal.split(',');
+
       if (oldArr.length) {
         if (this.checked) {
           oldArr.push(this.value);
@@ -1023,6 +1149,7 @@ var Checkbox = elementor.modules.controls.BaseData.extend({
           var index = oldArr.indexOf(this.value);
           oldArr.splice(index, 1);
         }
+
         self.ui.mainInput.val(oldArr.join(','));
         self.ui.mainInput.trigger('input');
       }
@@ -1061,12 +1188,15 @@ var FileUploader = elementor.modules.controls.BaseMultiple.extend({
   onFileInputChange: function onFileInputChange(event) {
     var self = this;
     this.hideWarnings();
+
     if (event.target.files.length === 0) {
       return;
     }
+
     if (!this.checkFileSize(event.target.files[0])) {
       return;
     }
+
     var formData = new FormData();
     formData.append('action', 'raven_control_file_upload');
     formData.append('file', event.target.files[0]);
@@ -1111,11 +1241,13 @@ var FileUploader = elementor.modules.controls.BaseMultiple.extend({
   },
   checkFileSize: function checkFileSize(file) {
     var uploadLimit = parseFloat(this.ui.fileUploaderInput.data('max-upload-limit'));
+
     if (file.size > uploadLimit) {
       this.ui.fileUploaderWarning.show();
       this.ui.fileUploaderSizeWarning.show();
       return false;
     }
+
     return true;
   },
   stripHash: function stripHash(filename) {
@@ -1146,10 +1278,13 @@ var FileUploader = elementor.modules.controls.BaseMultiple.extend({
   },
   onRender: function onRender() {
     _.extend(elementor.modules.controls.BaseMultiple.prototype.onRender.apply(this, arguments));
+
     var files = this.getControlValue('files');
+
     if (!files || files.length === 0) {
       return;
     }
+
     this.showFile(files[0].name);
   }
 });
@@ -1240,23 +1375,29 @@ var Presets = elementor.modules.controls.BaseData.extend({
     var $preset = $(e.currentTarget);
     $preset.siblings('.raven-element-presets-item').removeClass('active');
     $preset.addClass('active');
+
     var preset = _.find(this.getPresets(), {
       id: $preset.data('preset-id')
     });
+
     this.applyPreset(this.elementDefaultSettings(), preset);
     this.selectPreset(preset.id);
   },
   applyPreset: function applyPreset() {
     var settings = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
     var preset = arguments.length > 1 ? arguments[1] : undefined;
+
     for (var setting in preset.widget.settings) {
       if (this.model.get('name') === setting) {
         continue;
       }
+
       var control = this.elementSettingsModel.controls[setting];
+
       if (typeof control === 'undefined') {
         continue;
       }
+
       if (control.is_repeater) {
         this.elementSettingsModel.get(setting).reset();
         settings[setting] = new window.Backbone.Collection(preset.widget.settings[setting], {
@@ -1264,52 +1405,66 @@ var Presets = elementor.modules.controls.BaseData.extend({
         });
         continue;
       }
+
       settings[setting] = preset.widget.settings[setting];
     }
+
     this.elementSettingsModel.set(settings);
   },
   createRepeaterItemModel: function createRepeaterItemModel(attrs, options, controlView) {
     options = options || {};
     options.controls = controlView.elementSettingsModel.get('fields');
+
     if (!attrs._id) {
       attrs._id = elementor.helpers.getUniqueID();
     }
+
     return new window.elementorModules.editor.elements.models.BaseSettings(attrs, options);
   },
   elementDefaultSettings: function elementDefaultSettings() {
     var self = this,
-      controls = self.elementSettingsModel.controls,
-      settings = {};
+        controls = self.elementSettingsModel.controls,
+        settings = {};
     jQuery.each(controls, function (controlName, control) {
       if (controlName === 'raven_presets') {
         return;
       }
+
       settings[controlName] = control["default"];
     });
     return settings;
   },
   loadPresets: function loadPresets(widget) {
     var _this = this;
+
     if (this.isPresetDataLoaded()) {
       if (this.getPresets().length === 0) {
         return;
       }
+
       this.insertPresets();
+
       if (this.ui.presetItem.length === 0) {
         this.render();
       }
+
       return;
     }
+
     this.ui.presetItems.addClass('loading');
     wp.ajax.post('raven_element_presets', {
       raven_element: widget
     }).done(function (data) {
       _this.ui.presetItems.removeClass('loading');
+
       _this.setPresets(data);
+
       _this.insertPresets();
+
       _this.render();
     }).fail(function () {
       _this.ui.presetItems.removeClass('loading');
+
       _this.setPresets([]);
     });
   },
@@ -1329,6 +1484,7 @@ var Presets = elementor.modules.controls.BaseData.extend({
     if (!window.ravenPresets) {
       return [];
     }
+
     return window.ravenPresets[this.elementSettingsModel.get('widgetType')] || [];
   },
   setPresets: function setPresets(presets) {
@@ -1338,6 +1494,7 @@ var Presets = elementor.modules.controls.BaseData.extend({
     if (window.ravenPresets[this.elementSettingsModel.get('widgetType')]) {
       return true;
     }
+
     return false;
   },
   onBeforeDestroy: function onBeforeDestroy() {
@@ -1359,14 +1516,17 @@ var Query = elementor.modules.controls.Select2.extend({
   isTitlesReceived: false,
   getSelect2Placeholder: function getSelect2Placeholder() {
     var text,
-      value = '';
+        value = '';
+
     if (this.model.get('select2options')) {
       text = this.model.get('select2options').placeholder;
     }
+
     if (this.model.get('default')) {
       value = this.model.get('default');
       text = this.model.get('default_title');
     }
+
     return {
       id: value,
       text: text
@@ -1378,29 +1538,38 @@ var Query = elementor.modules.controls.Select2.extend({
       ajax: {
         transport: _.debounce(function (params, success, failure) {
           var action = 'raven_control_query_autocomplete',
-            query = _.extend({}, self.model.get('query') || {}),
-            settings = self.container.model.get('settings'),
-            wooCommerceSettings = ['woocommerce_cart_page_id', 'woocommerce_checkout_page_id', 'woocommerce_myaccount_page_id', 'woocommerce_terms_page_id', 'woocommerce_shop_page_id'];
+              query = _.extend({}, self.model.get('query') || {}),
+              settings = self.container.model.get('settings'),
+              wooCommerceSettings = ['woocommerce_cart_page_id', 'woocommerce_checkout_page_id', 'woocommerce_myaccount_page_id', 'woocommerce_terms_page_id', 'woocommerce_shop_page_id'];
+
           var ids = self.getControlValue() || [];
+
           if (!_.isArray(ids)) {
             ids = [ids];
           }
+
           var source = query.source,
-            controlQuery = query.control_query;
+              controlQuery = query.control_query;
           delete query.source;
           delete query.control_query;
+
           for (var key in controlQuery) {
             query[key] = settings.get(controlQuery[key]);
           }
+
           query.s = params.data.q;
+
           if (_.isEmpty(query.exclude)) {
             query.exclude = [];
           }
+
           var push = true;
+
           if (wooCommerceSettings.includes(self.model.get('name'))) {
             for (var item in wooCommerceSettings) {
               if (wooCommerceSettings[item] !== self.model.get('name')) {
                 var itemValue = jQuery("select[data-setting=\"".concat(wooCommerceSettings[item], "\"]"));
+
                 if (!_.isEmpty(itemValue.val())) {
                   query.exclude.push(itemValue.val());
                 } else {
@@ -1409,9 +1578,11 @@ var Query = elementor.modules.controls.Select2.extend({
               }
             }
           }
+
           if (!_.isEmpty(ids) && push) {
             query.exclude = ids;
           }
+
           var data = {
             source: source,
             query: query
@@ -1432,27 +1603,34 @@ var Query = elementor.modules.controls.Select2.extend({
   },
   getValueTitles: function getValueTitles() {
     var self = this,
-      wooCommerceSettings = ['woocommerce_cart_page_id', 'woocommerce_checkout_page_id', 'woocommerce_myaccount_page_id', 'woocommerce_terms_page_id', 'woocommerce_shop_page_id'];
+        wooCommerceSettings = ['woocommerce_cart_page_id', 'woocommerce_checkout_page_id', 'woocommerce_myaccount_page_id', 'woocommerce_terms_page_id', 'woocommerce_shop_page_id'];
     var ids = self.getControlValue() || [];
+
     if (!ids || _.isArray(ids) && !ids.length) {
       return;
     } else if (!_.isArray(ids)) {
       ids = [ids];
     }
+
     var settings = self.container.model.get('settings'),
-      query = _.extend({}, self.model.get('query') || {}),
-      action = 'raven_control_query_autocomplete';
+        query = _.extend({}, self.model.get('query') || {}),
+        action = 'raven_control_query_autocomplete';
+
     var source = query.source,
-      controlQuery = query.control_query;
+        controlQuery = query.control_query;
     delete query.source;
     delete query.control_query;
+
     for (var key in controlQuery) {
       query[key] = settings.get(controlQuery[key]);
     }
+
     query.include = ids;
+
     if (wooCommerceSettings.includes(this.model.get('name'))) {
       query.model_name = this.model.get('name');
     }
+
     var data = {
       source: source,
       query: query,
@@ -1467,18 +1645,23 @@ var Query = elementor.modules.controls.Select2.extend({
       },
       success: function success(_ref) {
         var results = _ref.results;
+
         if (self.isDestroyed) {
           return;
         }
+
         var options = {};
+
         if (!_.isEmpty(results)) {
           results.forEach(function (item) {
             options[item.id] = item.text;
           });
         }
+
         self.isTitlesReceived = true;
         self.model.set('options', options);
         self.render();
+
         if (wooCommerceSettings.includes(self.model.get('name')) && results.length > 0) {
           self.$el.find('select').val(results[0].id).trigger('change');
         }
@@ -1491,6 +1674,7 @@ var Query = elementor.modules.controls.Select2.extend({
   },
   onReady: function onReady() {
     setTimeout(elementor.modules.controls.Select2.prototype.onReady.apply(this, arguments));
+
     if (!this.isTitlesReceived) {
       this.getValueTitles();
     }
@@ -1503,10 +1687,13 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
 (function ($, window) {
   var RavenEditor = function RavenEditor() {
     var self = this;
+
     function initComponents() {
       var components = {
         templates: require('./components/templates')["default"],
@@ -1516,17 +1703,19 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
         sellkitPreview: require('./components/sellkit-preview')["default"],
         JupiterxConditionManager: require('./components/conditions')["default"]
       };
+
       for (var component in components) {
         components[component].init();
-      }
+      } // eslint-disable-next-line no-unused-expressions
 
-      // eslint-disable-next-line no-unused-expressions
-      require('./global-widget/global-widget')["default"];
-      // eslint-disable-next-line no-unused-expressions
-      require('./components/woocommerce-settings')["default"];
-      // eslint-disable-next-line no-unused-expressions
+
+      require('./global-widget/global-widget')["default"]; // eslint-disable-next-line no-unused-expressions
+
+      require('./components/woocommerce-settings')["default"]; // eslint-disable-next-line no-unused-expressions
+
       require('./utils/video-playlist/video-playlist')["default"];
     }
+
     function initControls() {
       self.controls = {
         media: require('./controls/media')["default"],
@@ -1535,17 +1724,22 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
         presets: require('./controls/presets')["default"],
         query: require('./controls/query')["default"]
       };
+
       for (var control in self.controls) {
         elementor.addControlView("raven_".concat(control), self.controls[control]);
       }
     }
+
     function checkWidgetIsActive(widget) {
       var activeElements = window.jupiterxOptions.activeElements;
+
       if ((0, _typeof2["default"])(window.jupiterxOptions.activeElements) === 'object') {
         activeElements = Object.values(window.jupiterxOptions.activeElements);
       }
+
       return !!activeElements.includes(widget);
     }
+
     function initWidgets() {
       var widgets = {
         'raven-form': checkWidgetIsActive('forms') && require('./widgets/form')["default"],
@@ -1559,120 +1753,144 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
         'raven-media-gallery': checkWidgetIsActive('media-gallery') && require('./widgets/media-gallery')["default"],
         'raven-shopping-cart': checkWidgetIsActive('shopping-cart') && require('./widgets/shopping-cart')["default"]
       };
+
       for (var widget in widgets) {
         elementor.hooks.addAction("panel/open_editor/widget/".concat(widget), widgets[widget]);
       }
-    }
-
-    // Some widgets require a rerender after preview loaded,
+    } // Some widgets require a rerender after preview loaded,
     // to fully sync with their settings recieved after initial load.
+
+
     function rerenderWidgets() {
       if (!elementor.previewView || !elementor.previewView._getNestedViews) {
         return;
       }
+
       var widgets = ['raven-code-highlight', 'raven-my-account', 'raven-product-data-tabs', 'raven-product-add-to-cart', 'raven-product-additional-cart', 'raven-cart', 'raven-shopping-cart'];
+
       var _loop = function _loop(widget) {
         var views = elementor.previewView._getNestedViews().filter(function (view) {
           return 'widget' === view.model.get('elType') && widgets[widget] === view.model.get('widgetType');
         });
+
         _.each(views, function (view) {
           return view.renderHTML();
         });
       };
+
       for (var widget in widgets) {
         _loop(widget);
       }
     }
+
     function initUtils() {
       self.utils = {
         Module: require('./utils/module')["default"],
         Form: require('./utils/form/form')["default"]
       };
     }
+
     function onElementorReady() {
       initComponents();
       initControls();
     }
+
     function onFrontendInit() {
       initWidgets();
     }
+
     function onPreviewLoaded() {
       $(document).on('click', '#elementor-panel-header-menu-button', function () {
         // eslint-disable-next-line no-undef
         if (!elementorAppConfig.hasPro) {
           $('.elementor-panel-menu-item-notes').remove();
         }
-        $('.elementor-panel-menu-item-apps').remove();
-      });
 
-      // eslint-disable-next-line no-undef
+        $('.elementor-panel-menu-item-apps').remove();
+      }); // eslint-disable-next-line no-undef
+
       if (elementorCommon.config.experimentalFeatures.editor_v2) {
         var helpLink = jQuery('a.MuiButtonBase-root[aria-label="Help"]');
+
         if (helpLink.length > 0) {
           helpLink.parent().remove();
         }
       }
+
       initUtils();
       setWidgetsDarkIcon();
       addLayoutBuilderButton();
     }
+
     function onDocumentLoaded() {
       setTimeout(rerenderWidgets, 0);
     }
+
     function onElementResetStyle(model) {
       if (model.get('elType') !== 'widget') {
         return;
       }
+
       resetElementPresets(model);
       elementor.channels.data.trigger('raven:element:after:reset:style', model);
     }
+
     function setWidgetsDarkIcon(value) {
       var uiThemeType = '';
+
       if (typeof elementor.settings.editorPreferences !== 'undefined') {
         $('#elementor-editor-wrapper').removeClass('raven-icon-theme-dark raven-icon-theme-light raven-icon-theme-auto');
         var uiTheme = typeof value !== 'undefined' ? value.attributes.ui_theme : elementor.settings.editorPreferences.model.get('ui_theme');
         uiThemeType = uiTheme;
+
         if ('auto' === uiTheme) {
           if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
             uiTheme = 'dark';
           }
         }
+
         $('#elementor-editor-wrapper').addClass('raven-icon-theme-' + uiTheme);
       }
+
       window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function (event) {
         if ('auto' !== uiThemeType) {
           return;
         }
+
         var uiTheme = event.matches ? 'dark' : 'light',
-          elementorEditor = document.getElementById('elementor-editor-wrapper');
+            elementorEditor = document.getElementById('elementor-editor-wrapper');
+
         if (!elementorEditor) {
           return;
         }
+
         elementorEditor.className = '';
         elementorEditor.classList.add("raven-icon-theme-".concat(uiTheme));
       });
     }
+
     function addLayoutBuilderButton() {
       if (window.elementorCommon.config.experimentalFeatures.editor_v2) {
         var elementorOptionsId = 'header.MuiPaper-root .MuiGrid-root:first-child .eui-stack:first-child';
         $(document).on('click', "".concat(elementorOptionsId, ", ").concat(elementorOptionsId, " > *"), function () {
           var elementorSubMenu = document.getElementsByClassName('MuiMenuItem-root');
           var wrapper = document.getElementsByClassName('MuiList-root');
+
           if (elementorSubMenu.length > 1) {
             elementorSubMenu = elementorSubMenu[1];
           }
+
           if (!elementorSubMenu || !wrapper) {
             return;
           }
-          if (wrapper[0].querySelector('.MuiMenuItem-root:first-child .MuiListItemText-root').textContent === 'Theme Builder') {
-            wrapper[0].querySelector('.MuiMenuItem-root:first-child .MuiListItemText-root').innerHTML = '<span class="raven-custom-button-layout-builder">Layout Builder</span>';
 
-            // Remove current click event.
+          if (wrapper[0].querySelector('.MuiMenuItem-root:first-child .MuiListItemText-root').textContent === 'Theme Builder') {
+            wrapper[0].querySelector('.MuiMenuItem-root:first-child .MuiListItemText-root').innerHTML = '<span class="raven-custom-button-layout-builder">Layout Builder</span>'; // Remove current click event.
+
             var layoutBuilderButton = wrapper[0].querySelector('.MuiMenuItem-root:first-child');
             var newLayoutBuilderButton = layoutBuilderButton.cloneNode(true);
-            layoutBuilderButton.parentNode.replaceChild(newLayoutBuilderButton, layoutBuilderButton);
+            layoutBuilderButton.parentNode.replaceChild(newLayoutBuilderButton, layoutBuilderButton); // Add new click event.
 
-            // Add new click event.
             wrapper[0].querySelector('.MuiMenuItem-root:first-child').addEventListener('click', function (event) {
               event.preventDefault();
               window.location.href = window.jupiterXControlPanelURL + '#/layout-builder';
@@ -1681,40 +1899,48 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
         });
       }
     }
+
     function resetElementPresets(model) {
       var controls = model.get('settings').controls;
+
       if (!controls.raven_presets) {
         return;
       }
+
       model.setSetting('raven_presets', null);
     }
+
     function destroyElement() {
       var editorBody = elementorFrontend.elements.$body[0];
+
       if ($(editorBody).find('.raven-adnav-menu-parent-segment').length === 0) {
         return;
       }
+
       $(editorBody).find('.raven-adnav-menu-parent-segment').removeClass('raven-adnav-menu-parent-segment');
+
       if ($(editorBody).hasClass('raven-adnav-menu-effect-pushed')) {
         $(editorBody).removeClass('raven-adnav-menu-effect-pushed').removeAttr('style');
       }
     }
+
     function onElementorInit() {
       onElementorReady();
       elementor.on('frontend:init', onFrontendInit);
       elementor.on('preview:loaded', onPreviewLoaded);
       elementor.on('document:loaded', onDocumentLoaded);
       elementor.channels.data.bind('element:after:reset:style', onElementResetStyle);
+
       if (typeof elementor.settings.editorPreferences !== 'undefined') {
         elementor.settings.editorPreferences.model.on('change', setWidgetsDarkIcon);
       }
-      elementor.channels.data.on('element:destroy', destroyElement);
 
-      // Remove Elementor Pro dynamic tags teaser.
+      elementor.channels.data.on('element:destroy', destroyElement); // Remove Elementor Pro dynamic tags teaser.
       // The following is the selector of a Marionette script tag. If we use remove(), Marionette will
       // throw error. So we use empty() to just remove its children while keeping the script tag.
-      $('#tmpl-elementor-dynamic-tags-promo').empty();
 
-      // eslint-disable-next-line no-undef
+      $('#tmpl-elementor-dynamic-tags-promo').empty(); // eslint-disable-next-line no-undef
+
       if (!elementorAppConfig.hasPro) {
         var elTypes = ['widget', 'section', 'column', 'container'];
         setTimeout(function () {
@@ -1729,10 +1955,11 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
         }, 300);
       }
     }
-    $(window).on('elementor:init', onElementorInit);
-  };
 
-  // TODO: It should be removed after fixing the issue by E pro.
+    $(window).on('elementor:init', onElementorInit);
+  }; // TODO: It should be removed after fixing the issue by E pro.
+
+
   if (_.isUndefined(window.elementorDevTools)) {
     window.elementorDevTools = {
       deprecation: {
@@ -1740,43 +1967,59 @@ var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
       }
     };
   }
+
   window.ravenEditor = new RavenEditor();
 })(jQuery, window);
 
-},{"./components/conditions":1,"./components/custom-css":3,"./components/custom-css-widget":2,"./components/preview-settings":4,"./components/sellkit-preview":5,"./components/templates":6,"./components/woocommerce-settings":7,"./controls/checkbox":8,"./controls/file-uploader":9,"./controls/media":10,"./controls/presets":11,"./controls/query":12,"./global-widget/global-widget":20,"./utils/form/form":36,"./utils/module":41,"./utils/video-playlist/video-playlist":45,"./widgets/advanced-nav-menu":46,"./widgets/categories":47,"./widgets/flip-box":48,"./widgets/form":49,"./widgets/media-gallery":63,"./widgets/my-account":64,"./widgets/posts":65,"./widgets/shopping-cart":66,"./widgets/stripe-button":67,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/typeof":85}],14:[function(require,module,exports){
+},{"./components/conditions":1,"./components/custom-css":3,"./components/custom-css-widget":2,"./components/preview-settings":4,"./components/sellkit-preview":5,"./components/templates":6,"./components/woocommerce-settings":7,"./controls/checkbox":8,"./controls/file-uploader":9,"./controls/media":10,"./controls/presets":11,"./controls/query":12,"./global-widget/global-widget":20,"./utils/form/form":36,"./utils/module":41,"./utils/video-playlist/video-playlist":45,"./widgets/advanced-nav-menu":46,"./widgets/categories":47,"./widgets/flip-box":48,"./widgets/form":49,"./widgets/media-gallery":63,"./widgets/my-account":64,"./widgets/posts":65,"./widgets/shopping-cart":66,"./widgets/stripe-button":67,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/typeof":86}],14:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.Templates = void 0;
+
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var Templates = /*#__PURE__*/function (_window$$e$modules$Co) {
   (0, _inherits2["default"])(Templates, _window$$e$modules$Co);
+
   var _super = _createSuper(Templates);
+
   function Templates() {
     (0, _classCallCheck2["default"])(this, Templates);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(Templates, [{
     key: "onAfterApply",
     value: function onAfterApply() {
       var _this = this;
+
       var args = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
       var result = arguments.length > 1 ? arguments[1] : undefined;
       window.$e.data.deleteCache(this.component, 'document/global/global-widget/templates', args.query);
       Object.entries(result.data).forEach(function (_ref) {
         var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
-          templateID = _ref2[0],
-          data = _ref2[1];
+            templateID = _ref2[0],
+            data = _ref2[1];
+
         window.$e.data.setCache(_this.component, 'document/global/global-widget/templates/'.concat(templateID), {}, data);
       });
     }
@@ -1788,41 +2031,57 @@ var Templates = /*#__PURE__*/function (_window$$e$modules$Co) {
   }]);
   return Templates;
 }(window.$e.modules.CommandData);
+
 exports.Templates = Templates;
 var _default = Templates;
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81,"@babel/runtime/helpers/slicedToArray":83}],15:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82,"@babel/runtime/helpers/slicedToArray":84}],15:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.SaveTemplates = void 0;
+
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var SaveTemplates = /*#__PURE__*/function (_window$$e$modules$Co) {
   (0, _inherits2["default"])(SaveTemplates, _window$$e$modules$Co);
+
   var _super = _createSuper(SaveTemplates);
+
   function SaveTemplates() {
     (0, _classCallCheck2["default"])(this, SaveTemplates);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(SaveTemplates, [{
     key: "apply",
     value: function apply() {
       var self = this;
       var templateModels = this.getCurrentTemplatesModels(this.component.changedContainersId);
+
       if (!templateModels.length) {
         return;
       }
+
       return new Promise(function (resolve, reject) {
         window.elementorCommon.ajax.addRequest('update_templates', {
           data: {
@@ -1858,18 +2117,23 @@ var SaveTemplates = /*#__PURE__*/function (_window$$e$modules$Co) {
       var templatesData = [];
       Object.entries(changedContainersId).forEach(function (_ref) {
         var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
-          templateID = _ref2[0],
-          containerId = _ref2[1];
+            templateID = _ref2[0],
+            containerId = _ref2[1];
+
         var templateData = window.$e.data.getCache(self.component, 'document/global/global-widget/templates/'.concat(templateID));
+
         if (!templateData) {
           if (window.$e.devTools) {
             window.$e.devTools.log.warn('window.$e.data.getCache( component, `document/global/global-widget/templates/'.concat(templateID, '` ) - not found.'));
           }
         }
+
         var container = elementor.getContainer(containerId);
+
         if (!container) {
           return;
         }
+
         templatesData.push(new window.Backbone.Model({
           id: templateID,
           elType: 'widget',
@@ -1885,11 +2149,12 @@ var SaveTemplates = /*#__PURE__*/function (_window$$e$modules$Co) {
   }]);
   return SaveTemplates;
 }(window.$e.modules.CommandInternalBase);
+
 exports.SaveTemplates = SaveTemplates;
 var _default = SaveTemplates;
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81,"@babel/runtime/helpers/slicedToArray":83}],16:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82,"@babel/runtime/helpers/slicedToArray":84}],16:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1907,40 +2172,56 @@ Object.defineProperty(exports, "Unlink", {
     return _unlink.Unlink;
   }
 });
+
 var _link = require("./link");
+
 var _unlink = require("./unlink");
 
 },{"./link":17,"./unlink":18}],17:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.Link = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _globalWidget = _interopRequireDefault(require("../../global-widget"));
+
 var _i18n = require("@wordpress/i18n");
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var Link = /*#__PURE__*/function (_window$$e$modules$ed) {
   (0, _inherits2["default"])(Link, _window$$e$modules$ed);
+
   var _super = _createSuper(Link);
+
   function Link() {
     (0, _classCallCheck2["default"])(this, Link);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(Link, [{
     key: "validateArgs",
     value: function validateArgs(args) {
       this.requireContainer(args);
       this.requireArgumentConstructor('data', Object, args);
       var _args$containers = args.containers,
-        containers = _args$containers === void 0 ? [args.container] : _args$containers;
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
       containers.forEach(function (container) {
         if ('global' === container.model.get('widgetType')) {
           throw Error("Invalid container, id: '".concat(container.id, "' is already global."));
@@ -1961,18 +2242,21 @@ var Link = /*#__PURE__*/function (_window$$e$modules$ed) {
     key: "apply",
     value: function apply(args) {
       var _this = this;
+
       var self = this;
       var data = args.data,
-        _args$containers2 = args.containers,
-        containers = _args$containers2 === void 0 ? [args.container] : _args$containers2;
+          _args$containers2 = args.containers,
+          containers = _args$containers2 === void 0 ? [args.container] : _args$containers2;
       containers.forEach(function (container) {
         var widgetModel = container.model,
-          widgetModelIndex = widgetModel.collection.indexOf(widgetModel);
+            widgetModelIndex = widgetModel.collection.indexOf(widgetModel);
         data.elType = data.type;
         data.settings = widgetModel.get('settings').attributes;
         data.widgetType = widgetModel.get('widgetType');
+
         var elementModel = _globalWidget["default"].addGlobalWidget.apply(_this, [data.template_id, data]),
-          elementModelAttributes = elementModel.attributes;
+            elementModelAttributes = elementModel.attributes;
+
         window.$e.data.setCache(self.component, 'document/global/global-widget/templates/'.concat(data.template_id), {}, data);
         window.$e.run('document/elements/create', {
           container: container.parent,
@@ -1995,37 +2279,53 @@ var Link = /*#__PURE__*/function (_window$$e$modules$ed) {
   }]);
   return Link;
 }(window.$e.modules.editor.document.CommandHistoryBase);
+
 exports.Link = Link;
 var _default = Link;
 exports["default"] = _default;
 
-},{"../../global-widget":20,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81,"@wordpress/i18n":93}],18:[function(require,module,exports){
+},{"../../global-widget":20,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82,"@wordpress/i18n":95}],18:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _typeof = require("@babel/runtime/helpers/typeof");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.Unlink = void 0;
+
+var _regenerator = _interopRequireDefault(require("@babel/runtime/regenerator"));
+
 var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/asyncToGenerator"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _globalWidget = _interopRequireDefault(require("../../global-widget"));
+
 var _i18n = require("@wordpress/i18n");
-function _regeneratorRuntime() { "use strict"; /*! regenerator-runtime -- Copyright (c) 2014-present, Facebook, Inc. -- license (MIT): https://github.com/facebook/regenerator/blob/main/LICENSE */ _regeneratorRuntime = function _regeneratorRuntime() { return e; }; var t, e = {}, r = Object.prototype, n = r.hasOwnProperty, o = Object.defineProperty || function (t, e, r) { t[e] = r.value; }, i = "function" == typeof Symbol ? Symbol : {}, a = i.iterator || "@@iterator", c = i.asyncIterator || "@@asyncIterator", u = i.toStringTag || "@@toStringTag"; function define(t, e, r) { return Object.defineProperty(t, e, { value: r, enumerable: !0, configurable: !0, writable: !0 }), t[e]; } try { define({}, ""); } catch (t) { define = function define(t, e, r) { return t[e] = r; }; } function wrap(t, e, r, n) { var i = e && e.prototype instanceof Generator ? e : Generator, a = Object.create(i.prototype), c = new Context(n || []); return o(a, "_invoke", { value: makeInvokeMethod(t, r, c) }), a; } function tryCatch(t, e, r) { try { return { type: "normal", arg: t.call(e, r) }; } catch (t) { return { type: "throw", arg: t }; } } e.wrap = wrap; var h = "suspendedStart", l = "suspendedYield", f = "executing", s = "completed", y = {}; function Generator() {} function GeneratorFunction() {} function GeneratorFunctionPrototype() {} var p = {}; define(p, a, function () { return this; }); var d = Object.getPrototypeOf, v = d && d(d(values([]))); v && v !== r && n.call(v, a) && (p = v); var g = GeneratorFunctionPrototype.prototype = Generator.prototype = Object.create(p); function defineIteratorMethods(t) { ["next", "throw", "return"].forEach(function (e) { define(t, e, function (t) { return this._invoke(e, t); }); }); } function AsyncIterator(t, e) { function invoke(r, o, i, a) { var c = tryCatch(t[r], t, o); if ("throw" !== c.type) { var u = c.arg, h = u.value; return h && "object" == _typeof(h) && n.call(h, "__await") ? e.resolve(h.__await).then(function (t) { invoke("next", t, i, a); }, function (t) { invoke("throw", t, i, a); }) : e.resolve(h).then(function (t) { u.value = t, i(u); }, function (t) { return invoke("throw", t, i, a); }); } a(c.arg); } var r; o(this, "_invoke", { value: function value(t, n) { function callInvokeWithMethodAndArg() { return new e(function (e, r) { invoke(t, n, e, r); }); } return r = r ? r.then(callInvokeWithMethodAndArg, callInvokeWithMethodAndArg) : callInvokeWithMethodAndArg(); } }); } function makeInvokeMethod(e, r, n) { var o = h; return function (i, a) { if (o === f) throw new Error("Generator is already running"); if (o === s) { if ("throw" === i) throw a; return { value: t, done: !0 }; } for (n.method = i, n.arg = a;;) { var c = n.delegate; if (c) { var u = maybeInvokeDelegate(c, n); if (u) { if (u === y) continue; return u; } } if ("next" === n.method) n.sent = n._sent = n.arg;else if ("throw" === n.method) { if (o === h) throw o = s, n.arg; n.dispatchException(n.arg); } else "return" === n.method && n.abrupt("return", n.arg); o = f; var p = tryCatch(e, r, n); if ("normal" === p.type) { if (o = n.done ? s : l, p.arg === y) continue; return { value: p.arg, done: n.done }; } "throw" === p.type && (o = s, n.method = "throw", n.arg = p.arg); } }; } function maybeInvokeDelegate(e, r) { var n = r.method, o = e.iterator[n]; if (o === t) return r.delegate = null, "throw" === n && e.iterator["return"] && (r.method = "return", r.arg = t, maybeInvokeDelegate(e, r), "throw" === r.method) || "return" !== n && (r.method = "throw", r.arg = new TypeError("The iterator does not provide a '" + n + "' method")), y; var i = tryCatch(o, e.iterator, r.arg); if ("throw" === i.type) return r.method = "throw", r.arg = i.arg, r.delegate = null, y; var a = i.arg; return a ? a.done ? (r[e.resultName] = a.value, r.next = e.nextLoc, "return" !== r.method && (r.method = "next", r.arg = t), r.delegate = null, y) : a : (r.method = "throw", r.arg = new TypeError("iterator result is not an object"), r.delegate = null, y); } function pushTryEntry(t) { var e = { tryLoc: t[0] }; 1 in t && (e.catchLoc = t[1]), 2 in t && (e.finallyLoc = t[2], e.afterLoc = t[3]), this.tryEntries.push(e); } function resetTryEntry(t) { var e = t.completion || {}; e.type = "normal", delete e.arg, t.completion = e; } function Context(t) { this.tryEntries = [{ tryLoc: "root" }], t.forEach(pushTryEntry, this), this.reset(!0); } function values(e) { if (e || "" === e) { var r = e[a]; if (r) return r.call(e); if ("function" == typeof e.next) return e; if (!isNaN(e.length)) { var o = -1, i = function next() { for (; ++o < e.length;) if (n.call(e, o)) return next.value = e[o], next.done = !1, next; return next.value = t, next.done = !0, next; }; return i.next = i; } } throw new TypeError(_typeof(e) + " is not iterable"); } return GeneratorFunction.prototype = GeneratorFunctionPrototype, o(g, "constructor", { value: GeneratorFunctionPrototype, configurable: !0 }), o(GeneratorFunctionPrototype, "constructor", { value: GeneratorFunction, configurable: !0 }), GeneratorFunction.displayName = define(GeneratorFunctionPrototype, u, "GeneratorFunction"), e.isGeneratorFunction = function (t) { var e = "function" == typeof t && t.constructor; return !!e && (e === GeneratorFunction || "GeneratorFunction" === (e.displayName || e.name)); }, e.mark = function (t) { return Object.setPrototypeOf ? Object.setPrototypeOf(t, GeneratorFunctionPrototype) : (t.__proto__ = GeneratorFunctionPrototype, define(t, u, "GeneratorFunction")), t.prototype = Object.create(g), t; }, e.awrap = function (t) { return { __await: t }; }, defineIteratorMethods(AsyncIterator.prototype), define(AsyncIterator.prototype, c, function () { return this; }), e.AsyncIterator = AsyncIterator, e.async = function (t, r, n, o, i) { void 0 === i && (i = Promise); var a = new AsyncIterator(wrap(t, r, n, o), i); return e.isGeneratorFunction(r) ? a : a.next().then(function (t) { return t.done ? t.value : a.next(); }); }, defineIteratorMethods(g), define(g, u, "Generator"), define(g, a, function () { return this; }), define(g, "toString", function () { return "[object Generator]"; }), e.keys = function (t) { var e = Object(t), r = []; for (var n in e) r.push(n); return r.reverse(), function next() { for (; r.length;) { var t = r.pop(); if (t in e) return next.value = t, next.done = !1, next; } return next.done = !0, next; }; }, e.values = values, Context.prototype = { constructor: Context, reset: function reset(e) { if (this.prev = 0, this.next = 0, this.sent = this._sent = t, this.done = !1, this.delegate = null, this.method = "next", this.arg = t, this.tryEntries.forEach(resetTryEntry), !e) for (var r in this) "t" === r.charAt(0) && n.call(this, r) && !isNaN(+r.slice(1)) && (this[r] = t); }, stop: function stop() { this.done = !0; var t = this.tryEntries[0].completion; if ("throw" === t.type) throw t.arg; return this.rval; }, dispatchException: function dispatchException(e) { if (this.done) throw e; var r = this; function handle(n, o) { return a.type = "throw", a.arg = e, r.next = n, o && (r.method = "next", r.arg = t), !!o; } for (var o = this.tryEntries.length - 1; o >= 0; --o) { var i = this.tryEntries[o], a = i.completion; if ("root" === i.tryLoc) return handle("end"); if (i.tryLoc <= this.prev) { var c = n.call(i, "catchLoc"), u = n.call(i, "finallyLoc"); if (c && u) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } else if (c) { if (this.prev < i.catchLoc) return handle(i.catchLoc, !0); } else { if (!u) throw new Error("try statement without catch or finally"); if (this.prev < i.finallyLoc) return handle(i.finallyLoc); } } } }, abrupt: function abrupt(t, e) { for (var r = this.tryEntries.length - 1; r >= 0; --r) { var o = this.tryEntries[r]; if (o.tryLoc <= this.prev && n.call(o, "finallyLoc") && this.prev < o.finallyLoc) { var i = o; break; } } i && ("break" === t || "continue" === t) && i.tryLoc <= e && e <= i.finallyLoc && (i = null); var a = i ? i.completion : {}; return a.type = t, a.arg = e, i ? (this.method = "next", this.next = i.finallyLoc, y) : this.complete(a); }, complete: function complete(t, e) { if ("throw" === t.type) throw t.arg; return "break" === t.type || "continue" === t.type ? this.next = t.arg : "return" === t.type ? (this.rval = this.arg = t.arg, this.method = "return", this.next = "end") : "normal" === t.type && e && (this.next = e), y; }, finish: function finish(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.finallyLoc === t) return this.complete(r.completion, r.afterLoc), resetTryEntry(r), y; } }, "catch": function _catch(t) { for (var e = this.tryEntries.length - 1; e >= 0; --e) { var r = this.tryEntries[e]; if (r.tryLoc === t) { var n = r.completion; if ("throw" === n.type) { var o = n.arg; resetTryEntry(r); } return o; } } throw new Error("illegal catch attempt"); }, delegateYield: function delegateYield(e, r, n) { return this.delegate = { iterator: values(e), resultName: r, nextLoc: n }, "next" === this.method && (this.arg = t), y; } }, e; }
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var Unlink = /*#__PURE__*/function (_window$$e$modules$ed) {
   (0, _inherits2["default"])(Unlink, _window$$e$modules$ed);
+
   var _super = _createSuper(Unlink);
+
   function Unlink() {
     (0, _classCallCheck2["default"])(this, Unlink);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(Unlink, [{
     key: "validateArgs",
     value: function validateArgs(args) {
@@ -2035,7 +2335,7 @@ var Unlink = /*#__PURE__*/function (_window$$e$modules$ed) {
     key: "getHistory",
     value: function getHistory(args) {
       var _args$containers = args.containers,
-        containers = _args$containers === void 0 ? [args.container] : _args$containers;
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
       return {
         title: elementor.helpers.getModelLabel(containers[0].model),
         type: (0, _i18n.__)('Unlink Widget', 'jupiterx-core')
@@ -2044,89 +2344,115 @@ var Unlink = /*#__PURE__*/function (_window$$e$modules$ed) {
   }, {
     key: "apply",
     value: function () {
-      var _apply = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regeneratorRuntime().mark(function _callee(args) {
+      var _apply = (0, _asyncToGenerator2["default"])( /*#__PURE__*/_regenerator["default"].mark(function _callee(args) {
         var _args$containers2, containers, ids, data;
-        return _regeneratorRuntime().wrap(function _callee$(_context) {
-          while (1) switch (_context.prev = _context.next) {
-            case 0:
-              _args$containers2 = args.containers, containers = _args$containers2 === void 0 ? [args.container] : _args$containers2;
-              ids = containers.map(function (container) {
-                return container.model.get('templateID');
-              });
-              _context.next = 4;
-              return window.$e.data.get('document/global/templates', {
-                ids: ids
-              });
-            case 4:
-              data = _context.sent;
-              containers.forEach(function (container) {
-                var id = container.model.get('templateID'),
-                  elementModel = _globalWidget["default"].createGlobalModel.apply(this, [id, data.data[id]]);
-                window.$e.run('document/elements/create', {
-                  container: container.parent,
-                  model: {
-                    id: window.elementorCommon.helpers.getUniqueId(),
-                    elType: 'widget',
-                    widgetType: elementModel.get('widgetType'),
-                    settings: window.elementorCommon.helpers.cloneObject(elementModel.get('settings').attributes),
-                    defaultEditSettings: window.elementorCommon.helpers.cloneObject(elementModel.get('editSettings').attributes)
-                  },
-                  options: {
-                    at: container.model.collection.indexOf(container.model),
-                    edit: true
-                  }
+
+        return _regenerator["default"].wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _args$containers2 = args.containers, containers = _args$containers2 === void 0 ? [args.container] : _args$containers2;
+                ids = containers.map(function (container) {
+                  return container.model.get('templateID');
                 });
-                window.$e.run('document/elements/delete', {
-                  container: container
+                _context.next = 4;
+                return window.$e.data.get('document/global/templates', {
+                  ids: ids
                 });
-              });
-            case 6:
-            case "end":
-              return _context.stop();
+
+              case 4:
+                data = _context.sent;
+                containers.forEach(function (container) {
+                  var id = container.model.get('templateID'),
+                      elementModel = _globalWidget["default"].createGlobalModel.apply(this, [id, data.data[id]]);
+
+                  window.$e.run('document/elements/create', {
+                    container: container.parent,
+                    model: {
+                      id: window.elementorCommon.helpers.getUniqueId(),
+                      elType: 'widget',
+                      widgetType: elementModel.get('widgetType'),
+                      settings: window.elementorCommon.helpers.cloneObject(elementModel.get('settings').attributes),
+                      defaultEditSettings: window.elementorCommon.helpers.cloneObject(elementModel.get('editSettings').attributes)
+                    },
+                    options: {
+                      at: container.model.collection.indexOf(container.model),
+                      edit: true
+                    }
+                  });
+                  window.$e.run('document/elements/delete', {
+                    container: container
+                  });
+                });
+
+              case 6:
+              case "end":
+                return _context.stop();
+            }
           }
         }, _callee);
       }));
+
       function apply(_x) {
         return _apply.apply(this, arguments);
       }
+
       return apply;
     }()
   }]);
   return Unlink;
 }(window.$e.modules.editor.document.CommandHistoryBase);
+
 exports.Unlink = Unlink;
 var _default = Unlink;
 exports["default"] = _default;
 
-},{"../../global-widget":20,"@babel/runtime/helpers/asyncToGenerator":71,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81,"@babel/runtime/helpers/typeof":85,"@wordpress/i18n":93}],19:[function(require,module,exports){
+},{"../../global-widget":20,"@babel/runtime/helpers/asyncToGenerator":71,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82,"@babel/runtime/regenerator":88,"@wordpress/i18n":95}],19:[function(require,module,exports){
 "use strict";
 
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _typeof = require("@babel/runtime/helpers/typeof");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.Component = void 0;
+
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _get2 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var commandsData = _interopRequireWildcard(require("./commands/commands-data/templates"));
+
 var commands = _interopRequireWildcard(require("./commands/commands/"));
+
 var commandsInternal = _interopRequireWildcard(require("./commands/commands-internal/save-templates"));
+
 var hooks = _interopRequireWildcard(require("./hooks/"));
-function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var Component = /*#__PURE__*/function (_window$$e$modules$Co) {
   (0, _inherits2["default"])(Component, _window$$e$modules$Co);
+
   var _super = _createSuper(Component);
+
   function Component() {
     var _this;
+
     (0, _classCallCheck2["default"])(this, Component);
     _this = _super.call(this);
     _this.notLoadedTemplatesIds = [];
@@ -2134,6 +2460,7 @@ var Component = /*#__PURE__*/function (_window$$e$modules$Co) {
     _this.changedContainersId = {};
     return _this;
   }
+
   (0, _createClass2["default"])(Component, [{
     key: "getNamespace",
     value: function getNamespace() {
@@ -2154,6 +2481,7 @@ var Component = /*#__PURE__*/function (_window$$e$modules$Co) {
     key: "onRoutePanelElementsGlobal",
     value: function onRoutePanelElementsGlobal() {
       var self = this;
+
       if (self.notLoadedTemplatesIds.length) {
         window.$e.data.get('document/global/templates', {
           ids: self.notLoadedTemplatesIds
@@ -2190,12 +2518,14 @@ var Component = /*#__PURE__*/function (_window$$e$modules$Co) {
         if (targetContainer !== container && parseInt(container.model.get('templateID')) === parseInt(targetContainer.model.get('templateID'))) {
           modelsToUpdate.forEach(function (modelName) {
             var model = targetContainer[modelName];
+
             if (model instanceof window.Backbone.Model) {
               var accordingTo = 'settings' === modelName ? targetContainer.settings.attributes : model.changed;
               Object.entries(accordingTo).forEach(function (_ref) {
                 var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
-                  key = _ref2[0],
-                  setting = _ref2[1];
+                    key = _ref2[0],
+                    setting = _ref2[1];
+
                 container[modelName].set(key, setting);
               });
             }
@@ -2207,32 +2537,41 @@ var Component = /*#__PURE__*/function (_window$$e$modules$Co) {
   }]);
   return Component;
 }(window.$e.modules.ComponentBase);
+
 exports.Component = Component;
 var _default = Component;
 exports["default"] = _default;
 
-},{"./commands/commands-data/templates":14,"./commands/commands-internal/save-templates":15,"./commands/commands/":16,"./hooks/":28,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/get":75,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81,"@babel/runtime/helpers/slicedToArray":83,"@babel/runtime/helpers/typeof":85}],20:[function(require,module,exports){
+},{"./commands/commands-data/templates":14,"./commands/commands-internal/save-templates":15,"./commands/commands/":16,"./hooks/":28,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/get":75,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/interopRequireWildcard":79,"@babel/runtime/helpers/possibleConstructorReturn":82,"@babel/runtime/helpers/slicedToArray":84}],20:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
 var _component = _interopRequireDefault(require("./component"));
+
 var _i18n = require("@wordpress/i18n");
+
 var GlobalWidget = elementorModules.editor.utils.Module.extend({
   panelWidgets: new window.Backbone.Collection(),
   isFirst: false,
   onInit: function onInit() {
     var activeElements = window.jupiterxOptions.activeElements;
+
     if ((0, _typeof2["default"])(window.jupiterxOptions.activeElements) === 'object') {
       activeElements = Object.values(window.jupiterxOptions.activeElements);
     }
+
     if (elementor.helpers.hasPro() || !activeElements.includes('global-widget')) {
       return;
     }
+
     this.onElementorInit();
     this.onElementorInitComponents();
     elementor.on('preview:loaded', this.onElementorPreviewLoaded);
@@ -2259,12 +2598,14 @@ var GlobalWidget = elementorModules.editor.utils.Module.extend({
       if (model.get('templateID')) {
         return require('./widget/view')["default"];
       }
+
       return DefaultView;
     });
     elementor.hooks.addFilter('element/model', function (DefaultModel, attrs) {
       if (attrs.templateID) {
         return require('./widget/model')["default"];
       }
+
       return DefaultModel;
     });
   },
@@ -2307,12 +2648,15 @@ var GlobalWidget = elementorModules.editor.utils.Module.extend({
       var saveGroup = _.findWhere(groups, {
         name: 'save'
       });
+
       if (!saveGroup) {
         return groups;
       }
+
       var saveAction = _.findWhere(saveGroup.actions, {
         name: 'save'
       });
+
       saveAction.callback = widget.save.bind(widget);
       delete saveAction.shortcut;
       return groups;
@@ -2328,6 +2672,7 @@ var GlobalWidget = elementorModules.editor.utils.Module.extend({
             collection: self.panelWidgets
           }
         });
+
         return regionViews;
       });
     });
@@ -2345,6 +2690,7 @@ var GlobalWidget = elementorModules.editor.utils.Module.extend({
     if (this.isFirst) {
       return;
     }
+
     this.addPanelPage();
     window.$e.routes.register('panel/editor', 'global', function (args) {
       elementor.getPanelView().setPage('globalWidget', 'Global Editing', {
@@ -2366,37 +2712,50 @@ var globalWidgetObject = new GlobalWidget();
 var _default = globalWidgetObject;
 exports["default"] = _default;
 
-},{"./component":19,"./views/global-templates-view":30,"./views/panel-page":32,"./widget/model":33,"./widget/view":34,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/typeof":85,"@wordpress/i18n":93}],21:[function(require,module,exports){
+},{"./component":19,"./views/global-templates-view":30,"./views/panel-page":32,"./widget/model":33,"./widget/view":34,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/typeof":86,"@wordpress/i18n":95}],21:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.BaseGlobalWidgetPrepareUpdate = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var BaseGlobalWidgetPrepareUpdate = /*#__PURE__*/function (_window$$e$modules$ho) {
   (0, _inherits2["default"])(BaseGlobalWidgetPrepareUpdate, _window$$e$modules$ho);
+
   var _super = _createSuper(BaseGlobalWidgetPrepareUpdate);
+
   function BaseGlobalWidgetPrepareUpdate() {
     (0, _classCallCheck2["default"])(this, BaseGlobalWidgetPrepareUpdate);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(BaseGlobalWidgetPrepareUpdate, [{
     key: "getConditions",
     value: function getConditions(args) {
       var _args$containers = args.containers,
-        containers = _args$containers === void 0 ? [args.container] : _args$containers;
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
       return containers.some(function (container) {
         if (container.renderer && container.renderer.model) {
           return container.renderer.model.get('templateID');
         }
+
         return undefined;
       });
     }
@@ -2404,12 +2763,13 @@ var BaseGlobalWidgetPrepareUpdate = /*#__PURE__*/function (_window$$e$modules$ho
     key: "apply",
     value: function apply(args) {
       var _args$containers2 = args.containers,
-        containers = _args$containers2 === void 0 ? [args.container] : _args$containers2,
-        component = window.$e.components.get('document/global');
+          containers = _args$containers2 === void 0 ? [args.container] : _args$containers2,
+          component = window.$e.components.get('document/global');
       var globalWidgetContainers = containers.filter(function (container) {
         if (container.renderer && container.renderer.model) {
           return container.renderer.model.get('templateID');
         }
+
         return undefined;
       });
       component.lastChangedContainers = globalWidgetContainers.map(function (container) {
@@ -2422,34 +2782,49 @@ var BaseGlobalWidgetPrepareUpdate = /*#__PURE__*/function (_window$$e$modules$ho
   }]);
   return BaseGlobalWidgetPrepareUpdate;
 }(window.$e.modules.hookData.After);
+
 exports.BaseGlobalWidgetPrepareUpdate = BaseGlobalWidgetPrepareUpdate;
 var _default = BaseGlobalWidgetPrepareUpdate;
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],22:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],22:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.GlobalWidgetLoadTemplates = void 0;
+
 var _slicedToArray2 = _interopRequireDefault(require("@babel/runtime/helpers/slicedToArray"));
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _globalWidget = _interopRequireDefault(require("../../../../global-widget"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var GlobalWidgetLoadTemplates = /*#__PURE__*/function (_window$$e$modules$ho) {
   (0, _inherits2["default"])(GlobalWidgetLoadTemplates, _window$$e$modules$ho);
+
   var _super = _createSuper(GlobalWidgetLoadTemplates);
+
   function GlobalWidgetLoadTemplates() {
     (0, _classCallCheck2["default"])(this, GlobalWidgetLoadTemplates);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(GlobalWidgetLoadTemplates, [{
     key: "initialize",
     value: function initialize() {
@@ -2475,12 +2850,15 @@ var GlobalWidgetLoadTemplates = /*#__PURE__*/function (_window$$e$modules$ho) {
     key: "apply",
     value: function apply() {
       var _this = this;
+
       GlobalWidgetLoadTemplates.calledOnce = true;
       Object.entries(elementor.config.widget_templates).forEach(function (_ref) {
         var _ref2 = (0, _slicedToArray2["default"])(_ref, 2),
-          id = _ref2[0],
-          data = _ref2[1];
+            id = _ref2[0],
+            data = _ref2[1];
+
         _globalWidget["default"].addGlobalWidget.apply(_this, [id, data]);
+
         _this.addTemplateToCache(id);
       });
     }
@@ -2491,9 +2869,11 @@ var GlobalWidgetLoadTemplates = /*#__PURE__*/function (_window$$e$modules$ho) {
       var container = elementor.getPreviewContainer().findChildrenRecursive(function (i) {
         return parseInt(i.model.get('templateID')) === parseInt(id);
       });
+
       if (!container) {
         return this.component.notLoadedTemplatesIds.push(id);
       }
+
       var args = {
         id: container.model.get('templateID'),
         elType: 'widget',
@@ -2508,33 +2888,47 @@ var GlobalWidgetLoadTemplates = /*#__PURE__*/function (_window$$e$modules$ho) {
   }]);
   return GlobalWidgetLoadTemplates;
 }(window.$e.modules.hookData.After);
+
 exports.GlobalWidgetLoadTemplates = GlobalWidgetLoadTemplates;
 var _default = GlobalWidgetLoadTemplates;
 exports["default"] = _default;
 
-},{"../../../../global-widget":20,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81,"@babel/runtime/helpers/slicedToArray":83}],23:[function(require,module,exports){
+},{"../../../../global-widget":20,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82,"@babel/runtime/helpers/slicedToArray":84}],23:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.GlobalWidgetPrepareUpdateElementSetSettings = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _baseGlobalWidgetPrepareUpdate = _interopRequireDefault(require("../../../base-global-widget-prepare-update"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var GlobalWidgetPrepareUpdateElementSetSettings = /*#__PURE__*/function (_BaseGlobalWidgetPrep) {
   (0, _inherits2["default"])(GlobalWidgetPrepareUpdateElementSetSettings, _BaseGlobalWidgetPrep);
+
   var _super = _createSuper(GlobalWidgetPrepareUpdateElementSetSettings);
+
   function GlobalWidgetPrepareUpdateElementSetSettings() {
     (0, _classCallCheck2["default"])(this, GlobalWidgetPrepareUpdateElementSetSettings);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(GlobalWidgetPrepareUpdateElementSetSettings, [{
     key: "getCommand",
     value: function getCommand() {
@@ -2548,30 +2942,43 @@ var GlobalWidgetPrepareUpdateElementSetSettings = /*#__PURE__*/function (_BaseGl
   }]);
   return GlobalWidgetPrepareUpdateElementSetSettings;
 }(_baseGlobalWidgetPrepareUpdate["default"]);
+
 exports.GlobalWidgetPrepareUpdateElementSetSettings = GlobalWidgetPrepareUpdateElementSetSettings;
 
-},{"../../../base-global-widget-prepare-update":21,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],24:[function(require,module,exports){
+},{"../../../base-global-widget-prepare-update":21,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],24:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.GlobalWidgetDoUpdate = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var GlobalWidgetDoUpdate = /*#__PURE__*/function (_window$$e$modules$ho) {
   (0, _inherits2["default"])(GlobalWidgetDoUpdate, _window$$e$modules$ho);
+
   var _super = _createSuper(GlobalWidgetDoUpdate);
+
   function GlobalWidgetDoUpdate() {
     (0, _classCallCheck2["default"])(this, GlobalWidgetDoUpdate);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(GlobalWidgetDoUpdate, [{
     key: "getCommand",
     value: function getCommand() {
@@ -2591,7 +2998,7 @@ var GlobalWidgetDoUpdate = /*#__PURE__*/function (_window$$e$modules$ho) {
     key: "apply",
     value: function apply() {
       var component = window.$e.components.get('document/global'),
-        containers = component.lastChangedContainers;
+          containers = component.lastChangedContainers;
       containers.forEach(function (container) {
         return component.updateGlobalsRecursive(container);
       });
@@ -2600,31 +3007,45 @@ var GlobalWidgetDoUpdate = /*#__PURE__*/function (_window$$e$modules$ho) {
   }]);
   return GlobalWidgetDoUpdate;
 }(window.$e.modules.hookData.After);
+
 exports.GlobalWidgetDoUpdate = GlobalWidgetDoUpdate;
 
-},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],25:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],25:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.GlobalWidgetPrepareUpdateRepeaterInsert = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _baseGlobalWidgetPrepareUpdate = _interopRequireDefault(require("../../../base-global-widget-prepare-update"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var GlobalWidgetPrepareUpdateRepeaterInsert = /*#__PURE__*/function (_BaseGlobalWidgetPrep) {
   (0, _inherits2["default"])(GlobalWidgetPrepareUpdateRepeaterInsert, _BaseGlobalWidgetPrep);
+
   var _super = _createSuper(GlobalWidgetPrepareUpdateRepeaterInsert);
+
   function GlobalWidgetPrepareUpdateRepeaterInsert() {
     (0, _classCallCheck2["default"])(this, GlobalWidgetPrepareUpdateRepeaterInsert);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(GlobalWidgetPrepareUpdateRepeaterInsert, [{
     key: "getCommand",
     value: function getCommand() {
@@ -2638,31 +3059,45 @@ var GlobalWidgetPrepareUpdateRepeaterInsert = /*#__PURE__*/function (_BaseGlobal
   }]);
   return GlobalWidgetPrepareUpdateRepeaterInsert;
 }(_baseGlobalWidgetPrepareUpdate["default"]);
+
 exports.GlobalWidgetPrepareUpdateRepeaterInsert = GlobalWidgetPrepareUpdateRepeaterInsert;
 
-},{"../../../base-global-widget-prepare-update":21,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],26:[function(require,module,exports){
+},{"../../../base-global-widget-prepare-update":21,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],26:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.GlobalWidgetPrepareUpdateRepeaterRemove = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _baseGlobalWidgetPrepareUpdate = _interopRequireDefault(require("../../../base-global-widget-prepare-update"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var GlobalWidgetPrepareUpdateRepeaterRemove = /*#__PURE__*/function (_BaseGlobalWidgetPrep) {
   (0, _inherits2["default"])(GlobalWidgetPrepareUpdateRepeaterRemove, _BaseGlobalWidgetPrep);
+
   var _super = _createSuper(GlobalWidgetPrepareUpdateRepeaterRemove);
+
   function GlobalWidgetPrepareUpdateRepeaterRemove() {
     (0, _classCallCheck2["default"])(this, GlobalWidgetPrepareUpdateRepeaterRemove);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(GlobalWidgetPrepareUpdateRepeaterRemove, [{
     key: "getCommand",
     value: function getCommand() {
@@ -2676,30 +3111,43 @@ var GlobalWidgetPrepareUpdateRepeaterRemove = /*#__PURE__*/function (_BaseGlobal
   }]);
   return GlobalWidgetPrepareUpdateRepeaterRemove;
 }(_baseGlobalWidgetPrepareUpdate["default"]);
+
 exports.GlobalWidgetPrepareUpdateRepeaterRemove = GlobalWidgetPrepareUpdateRepeaterRemove;
 
-},{"../../../base-global-widget-prepare-update":21,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],27:[function(require,module,exports){
+},{"../../../base-global-widget-prepare-update":21,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],27:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.GlobalWidgetSaveTemplates = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var GlobalWidgetSaveTemplates = /*#__PURE__*/function (_window$$e$modules$ho) {
   (0, _inherits2["default"])(GlobalWidgetSaveTemplates, _window$$e$modules$ho);
+
   var _super = _createSuper(GlobalWidgetSaveTemplates);
+
   function GlobalWidgetSaveTemplates() {
     (0, _classCallCheck2["default"])(this, GlobalWidgetSaveTemplates);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(GlobalWidgetSaveTemplates, [{
     key: "getCommand",
     value: function getCommand() {
@@ -2716,8 +3164,9 @@ var GlobalWidgetSaveTemplates = /*#__PURE__*/function (_window$$e$modules$ho) {
       if (!Object.keys(window.$e.components.get('document/global').changedContainersId).length) {
         return false;
       }
+
       var _args$document = args.document,
-        document = _args$document === void 0 ? elementor.documents.getCurrent() : _args$document;
+          document = _args$document === void 0 ? elementor.documents.getCurrent() : _args$document;
       return document.config.panel.has_elements && args.status && -1 !== ['private', 'publish'].indexOf(args.status);
     }
   }, {
@@ -2728,19 +3177,14 @@ var GlobalWidgetSaveTemplates = /*#__PURE__*/function (_window$$e$modules$ho) {
   }]);
   return GlobalWidgetSaveTemplates;
 }(window.$e.modules.hookData.After);
+
 exports.GlobalWidgetSaveTemplates = GlobalWidgetSaveTemplates;
 
-},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],28:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],28:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
-});
-Object.defineProperty(exports, "GlobalWidgetDoUpdate", {
-  enumerable: true,
-  get: function get() {
-    return _globalWidgetDoUpdate.GlobalWidgetDoUpdate;
-  }
 });
 Object.defineProperty(exports, "GlobalWidgetHistoryUpdate", {
   enumerable: true,
@@ -2758,6 +3202,12 @@ Object.defineProperty(exports, "GlobalWidgetPrepareUpdateElementSetSettings", {
   enumerable: true,
   get: function get() {
     return _globalWidgetPrepareUpdateElementSetSettings.GlobalWidgetPrepareUpdateElementSetSettings;
+  }
+});
+Object.defineProperty(exports, "GlobalWidgetDoUpdate", {
+  enumerable: true,
+  get: function get() {
+    return _globalWidgetDoUpdate.GlobalWidgetDoUpdate;
   }
 });
 Object.defineProperty(exports, "GlobalWidgetPrepareUpdateRepeaterInsert", {
@@ -2778,36 +3228,55 @@ Object.defineProperty(exports, "GlobalWidgetSaveTemplates", {
     return _globalWidgetSaveTemplates.GlobalWidgetSaveTemplates;
   }
 });
+
 var _globalWidgetHistoryUpdate = require("./ui/elements/set-settings/global-widget-history-update");
+
 var _globalWidgetLoadTemplates = require("./data/document/attach-preview/global-widget-load-templates");
+
 var _globalWidgetPrepareUpdateElementSetSettings = require("./data/document/elements/set-setting/global-widget-prepare-update-element-set-settings");
+
 var _globalWidgetDoUpdate = require("./data/document/history/end-log/global-widget-do-update");
+
 var _globalWidgetPrepareUpdateRepeaterInsert = require("./data/document/repeater/insert/global-widget-prepare-update-repeater-insert");
+
 var _globalWidgetPrepareUpdateRepeaterRemove = require("./data/document/repeater/remove/global-widget-prepare-update-repeater-remove");
+
 var _globalWidgetSaveTemplates = require("./data/document/save/global-widget-save-templates");
 
 },{"./data/document/attach-preview/global-widget-load-templates":22,"./data/document/elements/set-setting/global-widget-prepare-update-element-set-settings":23,"./data/document/history/end-log/global-widget-do-update":24,"./data/document/repeater/insert/global-widget-prepare-update-repeater-insert":25,"./data/document/repeater/remove/global-widget-prepare-update-repeater-remove":26,"./data/document/save/global-widget-save-templates":27,"./ui/elements/set-settings/global-widget-history-update":29}],29:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.GlobalWidgetHistoryUpdate = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var GlobalWidgetHistoryUpdate = /*#__PURE__*/function (_window$$e$modules$ho) {
   (0, _inherits2["default"])(GlobalWidgetHistoryUpdate, _window$$e$modules$ho);
+
   var _super = _createSuper(GlobalWidgetHistoryUpdate);
+
   function GlobalWidgetHistoryUpdate() {
     (0, _classCallCheck2["default"])(this, GlobalWidgetHistoryUpdate);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(GlobalWidgetHistoryUpdate, [{
     key: "getCommand",
     value: function getCommand() {
@@ -2827,7 +3296,7 @@ var GlobalWidgetHistoryUpdate = /*#__PURE__*/function (_window$$e$modules$ho) {
     key: "getConditions",
     value: function getConditions(args) {
       var _args$containers = args.containers,
-        containers = _args$containers === void 0 ? [args.container] : _args$containers;
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
       return !elementor.documents.getCurrent().history.getActive() && containers.some(function (container) {
         return container.model.get('templateID');
       });
@@ -2836,7 +3305,7 @@ var GlobalWidgetHistoryUpdate = /*#__PURE__*/function (_window$$e$modules$ho) {
     key: "apply",
     value: function apply(args) {
       var _args$containers2 = args.containers,
-        containers = _args$containers2 === void 0 ? [args.container] : _args$containers2;
+          containers = _args$containers2 === void 0 ? [args.container] : _args$containers2;
       containers.forEach(function (container) {
         return window.$e.components.get('document/global').updateGlobalsRecursive(container);
       });
@@ -2844,9 +3313,10 @@ var GlobalWidgetHistoryUpdate = /*#__PURE__*/function (_window$$e$modules$ho) {
   }]);
   return GlobalWidgetHistoryUpdate;
 }(window.$e.modules.hookUI.After);
+
 exports.GlobalWidgetHistoryUpdate = GlobalWidgetHistoryUpdate;
 
-},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],30:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],30:[function(require,module,exports){
 "use strict";
 
 module.exports = elementor.modules.layouts.panel.pages.elements.views.Elements.extend({
@@ -2855,6 +3325,7 @@ module.exports = elementor.modules.layouts.panel.pages.elements.views.Elements.e
     if (this.collection.length) {
       return null;
     }
+
     return require('./no-templates');
   },
   onFilterEmpty: function onFilterEmpty() {}
@@ -2874,6 +3345,7 @@ module.exports = GlobalWidgetsView.extend({
 "use strict";
 
 var _i18n = require("@wordpress/i18n");
+
 module.exports = window.Marionette.ItemView.extend({
   id: 'raven-panel-global-widget',
   template: '#tmpl-raven-panel-global-widget',
@@ -2910,11 +3382,14 @@ module.exports = window.Marionette.ItemView.extend({
   },
   initUnlinkDialog: function initUnlinkDialog() {
     var _this = this;
+
     var dialog;
+
     this.getUnlinkDialog = function () {
       if (!dialog) {
         dialog = _this.buildUnlinkDialog();
       }
+
       return dialog;
     };
   },
@@ -2933,30 +3408,44 @@ module.exports = window.Marionette.ItemView.extend({
   }
 });
 
-},{"@wordpress/i18n":93}],33:[function(require,module,exports){
+},{"@wordpress/i18n":95}],33:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.Model = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _get2 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var _globalWidget = _interopRequireDefault(require("../global-widget"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var Model = /*#__PURE__*/function (_elementor$modules$el) {
   (0, _inherits2["default"])(Model, _elementor$modules$el);
+
   var _super = _createSuper(Model);
+
   function Model() {
     (0, _classCallCheck2["default"])(this, Model);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(Model, [{
     key: "initSettings",
     value: function initSettings() {
@@ -2965,6 +3454,7 @@ var Model = /*#__PURE__*/function (_elementor$modules$el) {
       if (window.$e.commands.is('document/elements/create')) {
         return this.initSettingsFromTemplate();
       }
+
       (0, _get2["default"])((0, _getPrototypeOf2["default"])(Model.prototype), "initSettings", this).call(this);
     }
   }, {
@@ -2977,42 +3467,57 @@ var Model = /*#__PURE__*/function (_elementor$modules$el) {
     key: "initSettingsFromTemplate",
     value: function initSettingsFromTemplate() {
       var id = this.get('templateID'),
-        component = window.$e.components.get('document/global'),
-        data = window.$e.data.getCache(component, 'document/global/global-widget/templates/'.concat(id)) || this.attributes,
-        elementModel = _globalWidget["default"].createGlobalModel.apply(this, [id, data]);
+          component = window.$e.components.get('document/global'),
+          data = window.$e.data.getCache(component, 'document/global/global-widget/templates/'.concat(id)) || this.attributes,
+          elementModel = _globalWidget["default"].createGlobalModel.apply(this, [id, data]);
+
       this.set('settings', elementModel.get('settings'));
       elementorFrontend.config.elements.data[this.cid] = this.get('settings');
     }
   }]);
   return Model;
 }(elementor.modules.elements.models.Element);
+
 exports.Model = Model;
 var _default = Model;
 exports["default"] = _default;
 
-},{"../global-widget":20,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/get":75,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],34:[function(require,module,exports){
+},{"../global-widget":20,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/get":75,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],34:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.View = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _get2 = _interopRequireDefault(require("@babel/runtime/helpers/get"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var View = /*#__PURE__*/function (_elementor$modules$el) {
   (0, _inherits2["default"])(View, _elementor$modules$el);
+
   var _super = _createSuper(View);
+
   function View() {
     (0, _classCallCheck2["default"])(this, View);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(View, [{
     key: "className",
     value: function className() {
@@ -3049,6 +3554,7 @@ var View = /*#__PURE__*/function (_elementor$modules$el) {
       if (this.container) {
         return this.container;
       }
+
       var container = (0, _get2["default"])((0, _getPrototypeOf2["default"])(View.prototype), "getContainer", this).call(this);
       container.label = container.label + ' (global)';
       return container;
@@ -3063,6 +3569,7 @@ var View = /*#__PURE__*/function (_elementor$modules$el) {
     key: "removeInlineAddingAttributes",
     value: function removeInlineAddingAttributes() {
       var globalWidgetElementDom = this.el.querySelector('.elementor-inline-editing');
+
       if (globalWidgetElementDom) {
         globalWidgetElementDom.classList.remove('elementor-inline-editing');
       }
@@ -3070,36 +3577,49 @@ var View = /*#__PURE__*/function (_elementor$modules$el) {
   }]);
   return View;
 }(elementor.modules.elements.views.Widget);
+
 exports.View = View;
 var _default = View;
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/get":75,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],35:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/get":75,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],35:[function(require,module,exports){
 "use strict";
 
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _typeof = require("@babel/runtime/helpers/typeof");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.Component = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var hooks = _interopRequireWildcard(require("./hooks/"));
-function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var Component = /*#__PURE__*/function (_window$$e$modules$Co) {
   (0, _inherits2["default"])(Component, _window$$e$modules$Co);
+
   var _super = _createSuper(Component);
+
   function Component() {
     (0, _classCallCheck2["default"])(this, Component);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(Component, [{
     key: "getNamespace",
     value: function getNamespace() {
@@ -3113,20 +3633,25 @@ var Component = /*#__PURE__*/function (_window$$e$modules$Co) {
   }]);
   return Component;
 }(window.$e.modules.ComponentBase);
+
 exports.Component = Component;
 var _default = Component;
 exports["default"] = _default;
 
-},{"./hooks/":39,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81,"@babel/runtime/helpers/typeof":85}],36:[function(require,module,exports){
+},{"./hooks/":39,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/interopRequireWildcard":79,"@babel/runtime/helpers/possibleConstructorReturn":82}],36:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _module = _interopRequireDefault(require("../module"));
+
 var _component = _interopRequireDefault(require("./component"));
+
 var Form = _module["default"].extend({
   // TODO: Translation ready.
   selectOptions: {
@@ -3143,22 +3668,23 @@ var Form = _module["default"].extend({
   action: null,
   onInit: function onInit() {
     var _this = this;
+
     elementor.channels.editor.on('section:activated', this.onSectionActivated);
+
     if (this.onElementChange) {
       elementor.channels.editor.on('change', function (controlView, elementView) {
         _this.onElementChange(controlView.model.get('name'), controlView, elementView);
       });
     }
+
     this.onElementorInitComponents();
   },
   updateList: function updateList(params) {
-    var self = this;
+    var self = this; // Set fetching option.
 
-    // Set fetching option.
     self.setOptions(this.selectOptions.fetching);
-    self.setSelectedOption();
+    self.setSelectedOption(); // Send AJAX request to fetch list.
 
-    // Send AJAX request to fetch list.
     wp.ajax.send('raven_form_editor', {
       data: _.extend({}, {
         params: params
@@ -3172,12 +3698,15 @@ var Form = _module["default"].extend({
   },
   updateFieldMapping: function updateFieldMapping() {
     var self = this;
+
     _.each(self.fields, function (field, fieldKey) {
       var control = self.getControl(fieldKey);
       var controlView = self.getControlView(fieldKey);
       var options = {};
       var fieldItems = self.getRepeaterItemsByLabel('fields', field.filter);
+
       _.extend(options, self.selectOptions["default"], fieldItems);
+
       self.setOptions(options, control, controlView);
     });
   },
@@ -3190,10 +3719,12 @@ var Form = _module["default"].extend({
   setOptions: function setOptions(options) {
     var control = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : null;
     var controlView = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : null;
+
     if (control === null) {
       control = this.getListControl();
       controlView = this.getListControlView();
     }
+
     control.set('options', options);
     controlView.render();
   },
@@ -3205,21 +3736,27 @@ var Form = _module["default"].extend({
   getRepeaterItemsByLabel: function getRepeaterItemsByLabel(propertyName, filter) {
     var items = {};
     var fieldItems = this.getElementSettings(this.model, propertyName);
+
     _.filter(fieldItems, function (item) {
       if (filter && item.type !== filter) {
         return;
       }
+
       if ('step' === item.type) {
         return;
       }
+
       items[item._id] = item.type;
+
       if (item.placeholder) {
         items[item._id] = item.placeholder;
       }
+
       if (item.label) {
         items[item._id] = item.label;
       }
     });
+
     return items;
   },
   onElementorInitComponents: function onElementorInitComponents() {
@@ -3228,6 +3765,7 @@ var Form = _module["default"].extend({
     }));
   }
 });
+
 var _default = Form;
 exports["default"] = _default;
 
@@ -3235,24 +3773,36 @@ exports["default"] = _default;
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.FormFieldsSanitizeCustomId = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var FormFieldsSanitizeCustomId = /*#__PURE__*/function (_window$$e$modules$ho) {
   (0, _inherits2["default"])(FormFieldsSanitizeCustomId, _window$$e$modules$ho);
+
   var _super = _createSuper(FormFieldsSanitizeCustomId);
+
   function FormFieldsSanitizeCustomId() {
     (0, _classCallCheck2["default"])(this, FormFieldsSanitizeCustomId);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(FormFieldsSanitizeCustomId, [{
     key: "getCommand",
     value: function getCommand() {
@@ -3277,53 +3827,68 @@ var FormFieldsSanitizeCustomId = /*#__PURE__*/function (_window$$e$modules$ho) {
     key: "apply",
     value: function apply(args) {
       var _args$containers = args.containers,
-        containers = _args$containers === void 0 ? [args.container] : _args$containers,
-        settings = args.settings,
-        customId = settings.field_custom_id;
+          containers = _args$containers === void 0 ? [args.container] : _args$containers,
+          settings = args.settings,
+          customId = settings.field_custom_id;
+
       if (customId.match(/[^\w]/g)) {
         // Re-render with old settings.
         containers.forEach(function (container) {
           var panelView = container.panel.getControlView('fields'),
-            currentItemView = panelView.children.findByModel(container.settings),
-            idView = currentItemView.children.find(function (view) {
-              return 'field_custom_id' === view.model.get('name');
-            });
+              currentItemView = panelView.children.findByModel(container.settings),
+              idView = currentItemView.children.find(function (view) {
+            return 'field_custom_id' === view.model.get('name');
+          });
           idView.render();
           idView.$el.find('input').trigger('focus');
         });
         return false;
       }
+
       return true;
     }
   }]);
   return FormFieldsSanitizeCustomId;
 }(window.$e.modules.hookData.Dependency);
+
 exports.FormFieldsSanitizeCustomId = FormFieldsSanitizeCustomId;
 var _default = FormFieldsSanitizeCustomId;
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],38:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],38:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.FormFieldsSetCustomId = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var FormFieldsSetCustomId = /*#__PURE__*/function (_window$$e$modules$ho) {
   (0, _inherits2["default"])(FormFieldsSetCustomId, _window$$e$modules$ho);
+
   var _super = _createSuper(FormFieldsSetCustomId);
+
   function FormFieldsSetCustomId() {
     (0, _classCallCheck2["default"])(this, FormFieldsSetCustomId);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(FormFieldsSetCustomId, [{
     key: "getCommand",
     value: function getCommand() {
@@ -3348,19 +3913,22 @@ var FormFieldsSetCustomId = /*#__PURE__*/function (_window$$e$modules$ho) {
     key: "apply",
     value: function apply(args, model) {
       var _args$containers = args.containers,
-        containers = _args$containers === void 0 ? [args.container] : _args$containers,
-        isDuplicate = window.$e.commands.isCurrentFirstTrace('document/repeater/duplicate');
+          containers = _args$containers === void 0 ? [args.container] : _args$containers,
+          isDuplicate = window.$e.commands.isCurrentFirstTrace('document/repeater/duplicate');
       containers.forEach(function (container) {
         var itemContainer = container.repeaters.fields.children.find(function (childrenContainer) {
           // Sometimes, one of children is {Empty}.
           if (childrenContainer) {
             return model.get('_id') === childrenContainer.id;
           }
+
           return false;
         });
+
         if (!isDuplicate && itemContainer.settings.get('field_custom_id')) {
           return;
         }
+
         window.$e.run('document/elements/settings', {
           container: itemContainer,
           settings: {
@@ -3376,11 +3944,12 @@ var FormFieldsSetCustomId = /*#__PURE__*/function (_window$$e$modules$ho) {
   }]);
   return FormFieldsSetCustomId;
 }(window.$e.modules.hookData.After);
+
 exports.FormFieldsSetCustomId = FormFieldsSetCustomId;
 var _default = FormFieldsSetCustomId;
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],39:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],39:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3404,32 +3973,47 @@ Object.defineProperty(exports, "FormFieldsUpdateShortCode", {
     return _formFieldsUpdateShortcode.FormFieldsUpdateShortCode;
   }
 });
+
 var _formFieldsSanitizeCustomId = require("./data/form-fields-sanitize-custom-id");
+
 var _formFieldsSetCustomId = require("./data/form-fields-set-custom-id");
+
 var _formFieldsUpdateShortcode = require("./ui/form-fields-update-shortcode");
 
 },{"./data/form-fields-sanitize-custom-id":37,"./data/form-fields-set-custom-id":38,"./ui/form-fields-update-shortcode":40}],40:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.FormFieldsUpdateShortCode = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var FormFieldsUpdateShortCode = /*#__PURE__*/function (_window$$e$modules$ho) {
   (0, _inherits2["default"])(FormFieldsUpdateShortCode, _window$$e$modules$ho);
+
   var _super = _createSuper(FormFieldsUpdateShortCode);
+
   function FormFieldsUpdateShortCode() {
     (0, _classCallCheck2["default"])(this, FormFieldsUpdateShortCode);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(FormFieldsUpdateShortCode, [{
     key: "getCommand",
     value: function getCommand() {
@@ -3451,32 +4035,34 @@ var FormFieldsUpdateShortCode = /*#__PURE__*/function (_window$$e$modules$ho) {
       if (!window.$e.routes.isPartOf('panel/editor') || undefined === args.settings.field_custom_id) {
         return false;
       }
+
       return true;
     }
   }, {
     key: "apply",
     value: function apply(args) {
       var _args$containers = args.containers,
-        containers = _args$containers === void 0 ? [args.container] : _args$containers;
+          containers = _args$containers === void 0 ? [args.container] : _args$containers;
       containers.forEach(function (container) {
         var panelView = container.panel.getControlView('fields'),
-          currentItemView = panelView.children.find(function (view) {
-            return container.id === view.model.get('_id');
-          }),
-          shortcodeView = currentItemView.children.find(function (view) {
-            return 'shortcode' === view.model.get('name');
-          });
+            currentItemView = panelView.children.find(function (view) {
+          return container.id === view.model.get('_id');
+        }),
+            shortcodeView = currentItemView.children.find(function (view) {
+          return 'shortcode' === view.model.get('name');
+        });
         shortcodeView.render();
       });
     }
   }]);
   return FormFieldsUpdateShortCode;
 }(window.$e.modules.hookUI.After);
+
 exports.FormFieldsUpdateShortCode = FormFieldsUpdateShortCode;
 var _default = FormFieldsUpdateShortCode;
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],41:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],41:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3489,6 +4075,7 @@ var Module = elementorModules.editor.utils.Module.extend({
     if (!this.panel) {
       return;
     }
+
     var control = this.panel.getCurrentPageView().collection.findWhere({
       name: propertyName
     });
@@ -3498,6 +4085,7 @@ var Module = elementorModules.editor.utils.Module.extend({
     if (!this.panel) {
       return;
     }
+
     var control = this.getControl(propertyName);
     var view = this.panel.getCurrentPageView().children.findByModelCid(control.cid);
     return view;
@@ -3507,10 +4095,12 @@ var Module = elementorModules.editor.utils.Module.extend({
   },
   addControlSpinner: function addControlSpinner(name) {
     var $el = this.getControlView(name).$el,
-      $input = $el.find(':input');
+        $input = $el.find(':input');
+
     if ($input.attr('disabled') || $el.find('.elementor-control-spinner').length > 0) {
       return;
     }
+
     $input.attr('disabled', true);
     $el.find('.elementor-control-title').after('<span style="display:inline-flex" class="elementor-control-spinner"><span class="fa fa-spinner fa-spin"></span>&nbsp;</span>');
   },
@@ -3523,6 +4113,7 @@ var Module = elementorModules.editor.utils.Module.extend({
     if (!model) {
       return null;
     }
+
     var value = model.get('settings').get(name);
     return value instanceof window.Backbone.Collection ? value.toJSON() : value;
   }
@@ -3533,29 +4124,41 @@ exports["default"] = _default;
 },{}],42:[function(require,module,exports){
 "use strict";
 
+var _interopRequireWildcard = require("@babel/runtime/helpers/interopRequireWildcard");
+
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-var _typeof = require("@babel/runtime/helpers/typeof");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.Component = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 var hooks = _interopRequireWildcard(require("./hooks/"));
-function _getRequireWildcardCache(e) { if ("function" != typeof WeakMap) return null; var r = new WeakMap(), t = new WeakMap(); return (_getRequireWildcardCache = function _getRequireWildcardCache(e) { return e ? t : r; })(e); }
-function _interopRequireWildcard(e, r) { if (!r && e && e.__esModule) return e; if (null === e || "object" != _typeof(e) && "function" != typeof e) return { "default": e }; var t = _getRequireWildcardCache(r); if (t && t.has(e)) return t.get(e); var n = { __proto__: null }, a = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var u in e) if ("default" !== u && Object.prototype.hasOwnProperty.call(e, u)) { var i = a ? Object.getOwnPropertyDescriptor(e, u) : null; i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u]; } return n["default"] = e, t && t.set(e, n), n; }
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var Component = /*#__PURE__*/function (_window$$e$modules$Co) {
   (0, _inherits2["default"])(Component, _window$$e$modules$Co);
+
   var _super = _createSuper(Component);
+
   function Component() {
     (0, _classCallCheck2["default"])(this, Component);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(Component, [{
     key: "getNamespace",
     value: function getNamespace() {
@@ -3569,11 +4172,12 @@ var Component = /*#__PURE__*/function (_window$$e$modules$Co) {
   }]);
   return Component;
 }(window.$e.modules.ComponentBase);
+
 exports.Component = Component;
 var _default = Component;
 exports["default"] = _default;
 
-},{"./hooks/":43,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81,"@babel/runtime/helpers/typeof":85}],43:[function(require,module,exports){
+},{"./hooks/":43,"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/interopRequireWildcard":79,"@babel/runtime/helpers/possibleConstructorReturn":82}],43:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3585,30 +4189,43 @@ Object.defineProperty(exports, "ActiveTab", {
     return _activeTab.ActiveTab;
   }
 });
+
 var _activeTab = require("./ui/document/elements/settings/active-tab");
 
 },{"./ui/document/elements/settings/active-tab":44}],44:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = exports.ActiveTab = void 0;
+
 var _classCallCheck2 = _interopRequireDefault(require("@babel/runtime/helpers/classCallCheck"));
+
 var _createClass2 = _interopRequireDefault(require("@babel/runtime/helpers/createClass"));
+
 var _inherits2 = _interopRequireDefault(require("@babel/runtime/helpers/inherits"));
+
 var _possibleConstructorReturn2 = _interopRequireDefault(require("@babel/runtime/helpers/possibleConstructorReturn"));
+
 var _getPrototypeOf2 = _interopRequireDefault(require("@babel/runtime/helpers/getPrototypeOf"));
+
 function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = (0, _getPrototypeOf2["default"])(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = (0, _getPrototypeOf2["default"])(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return (0, _possibleConstructorReturn2["default"])(this, result); }; }
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Date.prototype.toString.call(Reflect.construct(Date, [], function () {})); return true; } catch (e) { return false; } }
+
 var ActiveTab = /*#__PURE__*/function (_window$$e$modules$ho) {
   (0, _inherits2["default"])(ActiveTab, _window$$e$modules$ho);
+
   var _super = _createSuper(ActiveTab);
+
   function ActiveTab() {
     (0, _classCallCheck2["default"])(this, ActiveTab);
     return _super.apply(this, arguments);
   }
+
   (0, _createClass2["default"])(ActiveTab, [{
     key: "getCommand",
     value: function getCommand() {
@@ -3641,26 +4258,34 @@ var ActiveTab = /*#__PURE__*/function (_window$$e$modules$ho) {
   }]);
   return ActiveTab;
 }(window.$e.modules.hookData.After);
+
 exports.ActiveTab = ActiveTab;
 var _default = ActiveTab;
 exports["default"] = _default;
 
-},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":81}],45:[function(require,module,exports){
+},{"@babel/runtime/helpers/classCallCheck":72,"@babel/runtime/helpers/createClass":73,"@babel/runtime/helpers/getPrototypeOf":76,"@babel/runtime/helpers/inherits":77,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/possibleConstructorReturn":82}],45:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 var _typeof2 = _interopRequireDefault(require("@babel/runtime/helpers/typeof"));
+
 var _module = _interopRequireDefault(require("../module"));
+
 var _component = _interopRequireDefault(require("./component"));
+
 var VideoPlaylist = _module["default"].extend({
   onInit: function onInit() {
     var activeElements = window.jupiterxOptions.activeElements;
+
     if ((0, _typeof2["default"])(window.jupiterxOptions.activeElements) === 'object') {
       activeElements = Object.values(window.jupiterxOptions.activeElements);
     }
+
     if (!activeElements.includes('video-playlist')) {
       return;
     }
+
     this.onElementorInitComponents();
     elementor.on('document:loaded', this.onElementorLoaded());
   },
@@ -3685,18 +4310,23 @@ var VideoPlaylist = _module["default"].extend({
     window.$e.components.register(new _component["default"]());
   }
 });
+
 new VideoPlaylist();
 
-},{"../module":41,"./component":42,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/typeof":85}],46:[function(require,module,exports){
+},{"../module":41,"./component":42,"@babel/runtime/helpers/interopRequireDefault":78,"@babel/runtime/helpers/typeof":86}],46:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 var _i18n = require("@wordpress/i18n");
+
 function _default(panel, model, view) {
   var AdvancedNavMenu = _module["default"].extend({
     panel: panel,
@@ -3770,17 +4400,18 @@ function _default(panel, model, view) {
       if (section.model.id !== model.get('id')) {
         return;
       }
+
       if ('section_layout' === activeSection) {
         this.populatePointerAnimations();
       }
+
       if ('section_content' === activeSection) {
         this.watchMenuRepeater();
       }
     },
     onElementChange: function onElementChange(controlView) {
-      var controlName = controlView.model.get('name');
+      var controlName = controlView.model.get('name'); // Populate "Pointer Animations" based on "Pointer Type".
 
-      // Populate "Pointer Animations" based on "Pointer Type".
       if ('pointer_type' === controlName) {
         this.populatePointerAnimations();
       }
@@ -3791,17 +4422,21 @@ function _default(panel, model, view) {
       var newAnimOptions = this.pointerOptions[pointerType];
       pointerAnimView.model.set('options', newAnimOptions);
       pointerAnimView.render();
+
       if (!pointerAnimView.$el.find('select').val()) {
         pointerAnimView.$el.find('select').val('none').change();
         pointerAnimView.render();
       }
     },
     watchMenuRepeater: function watchMenuRepeater() {
-      var _this$menuRepeater;
+      var _this$menuRepeater, _this$menuRepeater$$e;
+
       this.menuRepeater = this.getControlView('menu');
-      if (!((_this$menuRepeater = this.menuRepeater) !== null && _this$menuRepeater !== void 0 && (_this$menuRepeater = _this$menuRepeater.$el) !== null && _this$menuRepeater !== void 0 && _this$menuRepeater.length)) {
+
+      if (!((_this$menuRepeater = this.menuRepeater) === null || _this$menuRepeater === void 0 ? void 0 : (_this$menuRepeater$$e = _this$menuRepeater.$el) === null || _this$menuRepeater$$e === void 0 ? void 0 : _this$menuRepeater$$e.length)) {
         return;
       }
+
       this.fixMargins();
       this.menuRepeater.on('add:child', this.onRowAddRemove);
       this.menuRepeater.on('remove:child', this.onRowAddRemove);
@@ -3820,6 +4455,7 @@ function _default(panel, model, view) {
           row.$el.css('margin-left', '0');
           return;
         }
+
         row.$el.css('margin-left', '10px');
       });
     },
@@ -3828,19 +4464,23 @@ function _default(panel, model, view) {
     },
     onRowDelete: function onRowDelete(event) {
       var rowIndex = jQuery(event.target).closest('.elementor-repeater-fields').index();
+
       if (0 !== rowIndex || 'menu' === this.currentOrder[1].type) {
         return;
       }
+
       this.printError();
       event.preventDefault();
       event.stopPropagation();
     },
     updateOrders: function updateOrders() {
       var _this = this;
+
       this.currentOrder = [];
       this.menuRepeater.children.each(function (row) {
         var index = row.itemIndex - 1;
         var type = row.model.get('item_type');
+
         _this.currentOrder.push({
           index: index,
           type: type
@@ -3852,28 +4492,30 @@ function _default(panel, model, view) {
     },
     onSortUpdate: function onSortUpdate(event, data) {
       var _this$currentOrder$;
+
       this.updateOrders();
       var oldIndex = parseInt(data.item.data('oldIndex'));
-      var newIndex = parseInt(data.item.index());
+      var newIndex = parseInt(data.item.index()); // If resorting results in the first row to be a "Sub Menu", prevent it and print an error.
 
-      // If resorting results in the first row to be a "Sub Menu", prevent it and print an error.
       if (0 === newIndex && 'submenu' === this.currentOrder[oldIndex].type || 0 === oldIndex && 'submenu' === ((_this$currentOrder$ = this.currentOrder[1]) === null || _this$currentOrder$ === void 0 ? void 0 : _this$currentOrder$.type)) {
         this.printError();
         event.preventDefault();
         return;
       }
+
       setTimeout(this.menuRepeater.onSortUpdate.apply(this.menuRepeater, arguments), 0);
     },
     // eslint-disable-next-line no-unused-vars
     onTypeChange: function onTypeChange(row, control, event) {
       var changedControl = control.model.get('name');
+
       if ('item_type' !== changedControl) {
         return;
       }
-      this.updateOrders();
-      var index = parseInt(row.itemIndex - 1);
 
-      // If the type of first row is changed to "Sub Menu", change it back to "Menu" and print an error.
+      this.updateOrders();
+      var index = parseInt(row.itemIndex - 1); // If the type of first row is changed to "Sub Menu", change it back to "Menu" and print an error.
+
       if (0 === index && 'submenu' === row.model.get('item_type')) {
         row.model.set('item_type', 'menu');
         row.render();
@@ -3881,10 +4523,12 @@ function _default(panel, model, view) {
         this.view.renderHTML();
         return;
       }
+
       this.fixMargins();
     },
     printError: function printError() {
       var _this2 = this;
+
       this.menuRepeater.$el.prev('.elementor-control-menu-error').remove();
       var message = (0, _i18n.__)('First item must be of type "Menu".', 'jupiterx-core');
       var node = "\n\t\t\t\t<div class=\"elementor-control elementor-control-menu-error elementor-control-type-raw_html elementor-label-inline elementor-control-separator-default\">\n\t\t\t\t\t<div class=\"elementor-control-content\">\n\t\t\t\t\t\t<div class=\"elementor-control-raw-html elementor-panel-alert elementor-panel-alert-danger\">".concat(message, "</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t");
@@ -3894,20 +4538,24 @@ function _default(panel, model, view) {
       }, 5000);
     }
   });
+
   new AdvancedNavMenu({
     $element: view.$el
   });
 }
 
-},{"../utils/module":41,"@babel/runtime/helpers/interopRequireDefault":78,"@wordpress/i18n":93}],47:[function(require,module,exports){
+},{"../utils/module":41,"@babel/runtime/helpers/interopRequireDefault":78,"@wordpress/i18n":95}],47:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 function _default(panel, model, view) {
   var Categories = _module["default"].extend({
     panel: panel,
@@ -3922,6 +4570,7 @@ function _default(panel, model, view) {
       if (propertyName !== 'source') {
         return;
       }
+
       var specificCategoriesControl = this.getControlView('specific_categories');
       specificCategoriesControl.setValue('');
       specificCategoriesControl.render();
@@ -3938,22 +4587,30 @@ function _default(panel, model, view) {
     },
     onSuccess: function onSuccess(response) {
       var _this = this;
+
       var options = {};
       var controlIds = ['specific_categories', 'exclude'];
+
       _.each(response, function (term) {
         options[term.term_id] = term.name;
       });
+
       _.each(controlIds, function (controlId) {
         var control = _this.getControl(controlId);
+
         var controlView = _this.getControlView(controlId);
+
         control.set('options', options);
+
         if (!controlView) {
           return;
         }
+
         controlView.render();
       });
     }
   });
+
   new Categories({
     $element: view.$el
   });
@@ -3963,11 +4620,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 function _default(panel, model, view) {
   var FlipBox = _module["default"].extend({
     panel: panel,
@@ -3978,15 +4638,19 @@ function _default(panel, model, view) {
     },
     onSectionActivated: function onSectionActivated(sectionName, editor) {
       var editedElement = editor.getOption('editedElementView');
+
       if ('raven-flip-box' !== editedElement.model.get('widgetType')) {
         return;
       }
+
       var isSideBSection = -1 !== ['section_side_back_content', 'section_style_back'].indexOf(sectionName);
       editedElement.$el.toggleClass('raven-flip-box--flipped', isSideBSection);
       var $backLayer = editedElement.$el.find('.raven-flip-box__back');
+
       if (isSideBSection) {
         $backLayer.css('transition', 'none');
       }
+
       if (!isSideBSection) {
         setTimeout(function () {
           $backLayer.css('transition', '');
@@ -3994,6 +4658,7 @@ function _default(panel, model, view) {
       }
     }
   });
+
   new FlipBox({
     $element: view.$el
   });
@@ -4006,6 +4671,7 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 function _default(panel, model, view) {
   var formActions = {
     mailchimp: require('./forms/mailchimp')["default"],
@@ -4021,6 +4687,7 @@ function _default(panel, model, view) {
     steps: require('./forms/steps')["default"],
     itiTel: require('./forms/tel-field')["default"]
   };
+
   for (var action in formActions) {
     formActions[action](panel, model, view);
   }
@@ -4030,11 +4697,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _form = _interopRequireDefault(require("../../utils/form/form"));
+
 function _default(panel, model, view) {
   var ActiveCampaign = _form["default"].extend({
     panel: panel,
@@ -4043,12 +4713,15 @@ function _default(panel, model, view) {
     remoteFields: [],
     onSectionActivated: function onSectionActivated(activeSection, section) {
       var _this = this;
+
       if (activeSection !== "section_".concat(this.action)) {
         return;
       }
+
       if (section.model.id !== model.get('id')) {
         return;
       }
+
       this.addControlSpinner('activecampaign_fields_mapping');
       this.updateList({
         activecampaign_api_key_source: this.getControlValue('activecampaign_api_key_source') || 'default',
@@ -4061,16 +4734,19 @@ function _default(panel, model, view) {
     },
     updateFieldMapping: function updateFieldMapping() {
       var _this2 = this;
+
       var fieldsMapControlView = this.getControlView('activecampaign_fields_mapping');
       fieldsMapControlView.children.each(function (repeaterRow) {
         repeaterRow.children.each(function (repeaterRowField) {
           var fieldName = repeaterRowField.model.get('name');
           var fieldModel = repeaterRowField.model;
+
           if (fieldName === 'activecampaign_remote_field') {
             fieldModel.set('options', _this2.getRemoteFields());
           } else if (fieldName === 'activecampaign_local_field') {
             fieldModel.set('options', _this2.getFormFields());
           }
+
           repeaterRowField.render();
         });
       });
@@ -4090,21 +4766,27 @@ function _default(panel, model, view) {
       var options = {};
       var lists = {};
       var activecampaignList = this.getElementSettings(this.model, "".concat(self.action, "_list"));
+
       if (response.success[0].lists.length === 0) {
         self.setOptions(this.selectOptions.noList);
         self.setSelectedOption();
         return;
       }
+
       _.each(response.success[0].lists, function (list) {
         lists[list.id] = list.name;
       });
+
       _.extend(options, {
         0: 'select one'
       }, lists);
+
       self.setOptions(options);
+
       if (!activecampaignList.length) {
         self.setSelectedOption();
       }
+
       this.remoteFields = response.success[0].fields;
       this.updateFieldMapping(this.remoteFields);
     },
@@ -4116,6 +4798,7 @@ function _default(panel, model, view) {
           activecampaign_api_url: this.getControlValue('activecampaign_api_url')
         });
       }
+
       if (setting === 'mailchimp_list') {
         this.clearFieldMapping();
         this.onListUpdate();
@@ -4135,6 +4818,7 @@ function _default(panel, model, view) {
       }, this.getRepeaterItemsByLabel('fields'));
     }
   });
+
   new ActiveCampaign({
     $element: view.$el
   });
@@ -4144,11 +4828,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _crmBase = _interopRequireDefault(require("./crm/crm-base"));
+
 function _default(panel, model, view) {
   var ConvertKit = _crmBase["default"].extend({
     panel: panel,
@@ -4158,11 +4845,13 @@ function _default(panel, model, view) {
       if (!this.additionalData.hasOwnProperty('tags')) {
         return;
       }
+
       var tagsControl = this.getControlView("".concat(this.action, "_tags"));
       tagsControl.model.set('options', this.additionalData.tags);
       tagsControl.render();
     }
   });
+
   new ConvertKit({
     $element: view.$el
   });
@@ -4172,15 +4861,22 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = void 0;
+
 var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
+
 var _module = _interopRequireDefault(require("../../../utils/module"));
+
 var _i18n = require("@wordpress/i18n");
-function ownKeys(e, r) { var t = Object.keys(e); if (Object.getOwnPropertySymbols) { var o = Object.getOwnPropertySymbols(e); r && (o = o.filter(function (r) { return Object.getOwnPropertyDescriptor(e, r).enumerable; })), t.push.apply(t, o); } return t; }
-function _objectSpread(e) { for (var r = 1; r < arguments.length; r++) { var t = null != arguments[r] ? arguments[r] : {}; r % 2 ? ownKeys(Object(t), !0).forEach(function (r) { (0, _defineProperty2["default"])(e, r, t[r]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(t)) : ownKeys(Object(t)).forEach(function (r) { Object.defineProperty(e, r, Object.getOwnPropertyDescriptor(t, r)); }); } return e; }
+
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2["default"])(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
 var _default = _module["default"].extend({
   panel: null,
   model: null,
@@ -4214,6 +4910,7 @@ var _default = _module["default"].extend({
     if (activeSection !== "section_".concat(this.action) || section.model.id !== this.model.get('id')) {
       return;
     }
+
     this.init();
   },
   init: function init() {
@@ -4227,6 +4924,7 @@ var _default = _module["default"].extend({
   },
   ajaxUpdateList: function ajaxUpdateList() {
     var _this = this;
+
     var currentValue = this.getControlValue("".concat(this.action, "_list"));
     this.setListOptions(this.listOptions.fetching);
     this.setListSelection('fetching');
@@ -4245,34 +4943,47 @@ var _default = _module["default"].extend({
       },
       success: function success(response) {
         _this.removeControlSpinner("".concat(_this.action, "_list"));
+
         var lists = {};
+
         if (response.success[0].lists.length === 0) {
           _this.setListOptions(_this.listOptions.noList);
+
           _this.setListSelection('noList');
+
           return;
         }
+
         _.each(response.success[0].lists, function (list, id) {
           lists[id] = list;
         });
+
         var options = _objectSpread(_objectSpread({}, _this.listOptions.none), lists);
+
         _this.setListOptions(options);
+
         if (options[currentValue]) {
           _this.setListSelection(currentValue);
+
           return;
         }
+
         if (_.isEmpty(_this.listView.$el.val())) {
           _this.setListSelection('none');
         }
       },
       error: function error() {
         _this.removeControlSpinner("".concat(_this.action, "_list"));
+
         _this.listView.$el.find('option').text((0, _i18n.__)('Error! nonce mismatch', 'jupiterx-core'));
+
         _this.listView.$el.find('select').attr('disabled', 'disabled');
       }
     });
   },
   ajaxUpdateAdditionalData: function ajaxUpdateAdditionalData() {
     var _this2 = this;
+
     var params = {};
     params["".concat(this.action, "_api_key_source")] = this.getControlValue("".concat(this.action, "_api_key_source")) || 'default';
     params["".concat(this.action, "_custom_api_key")] = this.getControlValue("".concat(this.action, "_custom_api_key"));
@@ -4288,6 +4999,7 @@ var _default = _module["default"].extend({
       },
       success: function success(response) {
         _this2.additionalData = response.success[0];
+
         _this2.updateControls();
       },
       complete: function complete() {
@@ -4297,27 +5009,36 @@ var _default = _module["default"].extend({
   },
   updateControls: function updateControls() {
     var _this3 = this;
+
     this.mappingRepeater.children.each(function (row) {
       row.children.each(function (control) {
         var fieldModel = control.model;
         var fieldName = fieldModel.get('name');
+
         switch (fieldName) {
           case 'remote_field':
             if (!_this3.additionalData.hasOwnProperty('custom_fields')) {
               break;
             }
+
             var currentOptions = fieldModel.get('options');
+
             var newOptions = _objectSpread(_objectSpread(_objectSpread({}, _this3.fieldNoneOption), currentOptions), _this3.additionalData.custom_fields);
+
             fieldModel.set('options', newOptions);
             break;
+
           case 'local_field':
             fieldModel.set('options', _this3.localFields);
             break;
+
           default:
             break;
         }
+
         control.render();
       });
+
       _this3.fixTitleField(row);
     });
     this.sortSelectOptions();
@@ -4326,16 +5047,20 @@ var _default = _module["default"].extend({
   },
   onElementChange: function onElementChange(controlView) {
     var setting = controlView.model.get('name');
+
     switch (setting) {
       case "".concat(this.action, "_api_key_source"):
       case "".concat(this.action, "_custom_api_key"):
         this.ajaxUpdateList();
         break;
+
       case "".concat(this.action, "_list"):
         var listId = this.getListId();
+
         if (listId && !this.listOptions.hasOwnProperty(listId)) {
           this.ajaxUpdateAdditionalData();
         }
+
         break;
     }
   },
@@ -4345,14 +5070,15 @@ var _default = _module["default"].extend({
   // Set Options of the "List" select control.
   setListOptions: function setListOptions(options) {
     this.listView.model.set('options', options);
-    this.listView.render();
+    this.listView.render(); // Sort options so that the "Select..." option comes first.
 
-    // Sort options so that the "Select..." option comes first.
     var select = this.listView.$el.find('select');
     var firstOption = select.find('option[value="none"]');
+
     if (!firstOption.length) {
       return;
     }
+
     var helper = firstOption[0];
     firstOption.remove();
     select.prepend(helper);
@@ -4363,11 +5089,14 @@ var _default = _module["default"].extend({
   // Sort mapping fields options so that the "-NONE-" option comes first.
   sortSelectOptions: function sortSelectOptions() {
     var selects = this.mappingRepeater.$el.find('select');
+
     _.each(selects, function (select) {
       var firstOption = jQuery(select).find('option[value=""]');
+
       if (!firstOption.length) {
         return;
       }
+
       var helper = firstOption[0];
       firstOption.remove();
       select.prepend(helper);
@@ -4376,9 +5105,11 @@ var _default = _module["default"].extend({
   getFormFields: function getFormFields() {
     var items = {};
     var formFieldsRepeater = this.getElementSettings(this.model, 'fields');
+
     _.each(formFieldsRepeater, function (item) {
       items[item._id] = item.label;
     });
+
     return items;
   },
   // Find required remote fields, lock them, remove their repeater row styles, and add a star next to them.
@@ -4406,6 +5137,7 @@ var _default = _module["default"].extend({
     if (rowView.data) {
       rowView = rowView.data.rowView;
     }
+
     var remoteFieldSelect = rowView.$el.find('select[data-setting="remote_field"]');
     var label = remoteFieldSelect.find("option[value=\"".concat(remoteFieldSelect.val(), "\"]")).first().text();
     rowView.$el.find('div.elementor-repeater-row-item-title').text(label);
@@ -4418,31 +5150,39 @@ var _default = _module["default"].extend({
   toggleSpinner: function toggleSpinner(state) {
     var containers = jQuery(".elementor-control.elementor-control-".concat(this.action, "_list")).nextAll();
     containers.css('opacity', state ? 0.5 : 1);
+
     if (state) {
       var spinner = "\n\t\t\t\t<span style=\"position: absolute; top: 15px; right: 15px;\" class=\"elementor-control-spinner\">\n\t\t\t\t\t<span style=\"font-size: 20px\" class=\"fa fa-spinner fa-spin\"></span>\n\t\t\t\t\t&nbsp;\n\t\t\t\t</span>\n\t\t\t";
       containers.first().prepend(spinner);
       return;
     }
+
     containers.first().find('span.elementor-control-spinner').remove();
   },
   // Placed to be overridden if needed.
+
   /* eslint-disable no-unused-vars */
   add_additional_api_data: function add_additional_api_data(params) {},
+
   /* eslint-enable no-unused-vars */
   // Placed to be overridden if needed.
   updateAdditionalControls: function updateAdditionalControls() {}
 });
+
 exports["default"] = _default;
 
-},{"../../../utils/module":41,"@babel/runtime/helpers/defineProperty":74,"@babel/runtime/helpers/interopRequireDefault":78,"@wordpress/i18n":93}],53:[function(require,module,exports){
+},{"../../../utils/module":41,"@babel/runtime/helpers/defineProperty":74,"@babel/runtime/helpers/interopRequireDefault":78,"@wordpress/i18n":95}],53:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _form = _interopRequireDefault(require("../../utils/form/form"));
+
 function _default(panel, model, view) {
   var Discord = _form["default"].extend({
     panel: panel,
@@ -4452,11 +5192,12 @@ function _default(panel, model, view) {
       if (activeSection !== "section_".concat(this.action)) {
         return;
       }
+
       if (section.model.id !== model.get('id')) {
         return;
-      }
+      } // Populate the <Form Fields> select2 field with user selected fields.
 
-      // Populate the <Form Fields> select2 field with user selected fields.
+
       var fields = this.getFormFields();
       var discordFormFieldsView = this.getControlView('discord_form_fields');
       discordFormFieldsView.model.set('options', fields);
@@ -4466,21 +5207,27 @@ function _default(panel, model, view) {
       var items = {};
       var fieldItems = this.getElementSettings(this.model, 'fields');
       var excludeTypes = ['recaptcha', 'recaptcha_v3', 'file', 'step'];
+
       _.filter(fieldItems, function (item) {
         if (excludeTypes.includes(item.type)) {
           return;
         }
+
         items[item._id] = item.type;
+
         if (item.placeholder) {
           items[item._id] = item.placeholder;
         }
+
         if (item.label) {
           items[item._id] = item.label;
         }
       });
+
       return items;
     }
   });
+
   new Discord({
     $element: view.$el
   });
@@ -4490,11 +5237,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _crmBase = _interopRequireDefault(require("./crm/crm-base"));
+
 function _default(panel, model, view) {
   var Drip = _crmBase["default"].extend({
     panel: panel,
@@ -4504,11 +5254,13 @@ function _default(panel, model, view) {
       if (!this.additionalData.hasOwnProperty('tags')) {
         return;
       }
+
       var tagsControl = this.getControlView("".concat(this.action, "_tags"));
       tagsControl.model.set('options', this.additionalData.tags);
       tagsControl.render();
     }
   });
+
   new Drip({
     $element: view.$el
   });
@@ -4518,11 +5270,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _form = _interopRequireDefault(require("../../utils/form/form"));
+
 function _default(panel, model, view) {
   var Email = _form["default"].extend({
     panel: panel,
@@ -4532,13 +5287,17 @@ function _default(panel, model, view) {
       if (activeSection !== "section_".concat(this.action)) {
         return;
       }
+
       if (section.model.id !== model.get('id')) {
         return;
       }
+
       var replyToOptionsControl = this.getControlView('email_reply_to_options');
+
       if (!replyToOptionsControl) {
         return;
       }
+
       replyToOptionsControl.model.set('options', this.getEmailFields());
       replyToOptionsControl.render();
     },
@@ -4548,6 +5307,7 @@ function _default(panel, model, view) {
       }, this.getRepeaterItemsByLabel('fields', 'email'));
     }
   });
+
   new Email({
     $element: view.$el
   });
@@ -4557,11 +5317,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _form = _interopRequireDefault(require("../../utils/form/form"));
+
 function _default(panel, model, view) {
   var Email2 = _form["default"].extend({
     panel: panel,
@@ -4571,13 +5334,17 @@ function _default(panel, model, view) {
       if (activeSection !== "section_".concat(this.action)) {
         return;
       }
+
       if (section.model.id !== model.get('id')) {
         return;
       }
+
       var replyToOptionsControl = this.getControlView('email_reply_to_options2');
+
       if (!replyToOptionsControl) {
         return;
       }
+
       replyToOptionsControl.model.set('options', this.getEmailFields());
       replyToOptionsControl.render();
     },
@@ -4587,6 +5354,7 @@ function _default(panel, model, view) {
       }, this.getRepeaterItemsByLabel('fields', 'email'));
     }
   });
+
   new Email2({
     $element: view.$el
   });
@@ -4596,11 +5364,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _crmBase = _interopRequireDefault(require("./crm/crm-base"));
+
 function _default(panel, model, view) {
   var GetResponse = _crmBase["default"].extend({
     panel: panel,
@@ -4610,11 +5381,13 @@ function _default(panel, model, view) {
       if (!this.additionalData.hasOwnProperty('tags')) {
         return;
       }
+
       var tagsControl = this.getControlView("".concat(this.action, "_tags"));
       tagsControl.model.set('options', this.additionalData.tags);
       tagsControl.render();
     }
   });
+
   new GetResponse({
     $element: view.$el
   });
@@ -4624,11 +5397,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("./../../utils/module"));
+
 function _default(panel, model, view) {
   var Hubspot = _module["default"].extend({
     panel: panel,
@@ -4638,12 +5414,15 @@ function _default(panel, model, view) {
     },
     onSectionActivated: function onSectionActivated(activeSection, section) {
       var _this = this;
+
       if (section.model.id !== model.get('id')) {
         return;
       }
+
       if (activeSection !== "section_".concat(this.action)) {
         return;
       }
+
       this.updateFieldMapping();
       this.getControlView('hubspot_mapping').on('add:child', function () {
         _this.updateFieldMapping();
@@ -4651,14 +5430,17 @@ function _default(panel, model, view) {
     },
     updateFieldMapping: function updateFieldMapping() {
       var _this2 = this;
+
       var fieldsMapControlView = this.getControlView('hubspot_mapping');
       fieldsMapControlView.children.each(function (repeaterRow) {
         repeaterRow.children.each(function (repeaterRowField) {
           var fieldName = repeaterRowField.model.get('name');
           var fieldModel = repeaterRowField.model;
+
           if (fieldName === 'hubspot_local_form_field') {
             fieldModel.set('options', _this2.getFormFields());
           }
+
           repeaterRowField.render();
         });
       });
@@ -4666,12 +5448,15 @@ function _default(panel, model, view) {
     getRepeaterItemsByLabel: function getRepeaterItemsByLabel(propertyName, filter) {
       var items = {};
       var fieldItems = this.getElementSettings(model, propertyName);
+
       _.filter(fieldItems, function (item) {
         if (filter && item.type !== filter) {
           return;
         }
+
         items[item._id] = item.label;
       });
+
       return items;
     },
     getFormFields: function getFormFields() {
@@ -4680,6 +5465,7 @@ function _default(panel, model, view) {
       }, this.getRepeaterItemsByLabel('fields'));
     }
   });
+
   new Hubspot({
     $element: view.$el
   });
@@ -4689,11 +5475,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _form = _interopRequireDefault(require("../../utils/form/form"));
+
 function _default(panel, model, view) {
   var Mailchimp = _form["default"].extend({
     panel: panel,
@@ -4702,12 +5491,15 @@ function _default(panel, model, view) {
     remoteFields: [],
     onSectionActivated: function onSectionActivated(activeSection, section) {
       var _this = this;
+
       if (activeSection !== "section_".concat(this.action)) {
         return;
       }
+
       if (section.model.id !== model.get('id')) {
         return;
       }
+
       this.addControlSpinner('mailchimp_fields_mapping');
       this.addControlSpinner('mailchimp_groups');
       this.updateList({
@@ -4720,16 +5512,19 @@ function _default(panel, model, view) {
     },
     updateFieldMapping: function updateFieldMapping() {
       var _this2 = this;
+
       var fieldsMapControlView = this.getControlView('mailchimp_fields_mapping');
       fieldsMapControlView.children.each(function (repeaterRow) {
         repeaterRow.children.each(function (repeaterRowField) {
           var fieldName = repeaterRowField.model.get('name');
           var fieldModel = repeaterRowField.model;
+
           if (fieldName === 'mailchimp_remote_field') {
             fieldModel.set('options', _this2.getRemoteFields());
           } else if (fieldName === 'mailchimp_local_field') {
             fieldModel.set('options', _this2.getFormFields());
           }
+
           repeaterRowField.render();
         });
       });
@@ -4748,19 +5543,25 @@ function _default(panel, model, view) {
       var options = {};
       var lists = {};
       var mailchimpList = this.getElementSettings(this.model, "".concat(self.action, "_list"));
+
       if (response.success[0].lists.length === 0) {
         self.setOptions(this.selectOptions.noList);
         self.setSelectedOption();
         return;
       }
+
       _.each(response.success[0].lists, function (list) {
         lists[list.id] = list.name;
       });
+
       _.extend(options, self.selectOptions["default"], lists);
+
       self.setOptions(options);
+
       if (!mailchimpList.length) {
         self.setSelectedOption();
       }
+
       this.onListUpdate();
     },
     onElementChange: function onElementChange(setting) {
@@ -4774,6 +5575,7 @@ function _default(panel, model, view) {
             mailchimp_api_key: this.getControlValue('mailchimp_api_key')
           });
           break;
+
         case 'mailchimp_list':
           this.clearFieldMapping();
           this.unselectGroups();
@@ -4783,6 +5585,7 @@ function _default(panel, model, view) {
     },
     onListUpdate: function onListUpdate() {
       var _this3 = this;
+
       this.updateGroupOptions(this.selectOptions.fetching);
       this.addControlSpinner('mailchimp_fields_mapping');
       this.addControlSpinner('mailchimp_groups');
@@ -4799,9 +5602,13 @@ function _default(panel, model, view) {
         },
         success: function success(response) {
           _this3.updateGroupOptions(response.success[0].list_details.groups);
+
           _this3.remoteFields = response.success[0].list_details.fields;
+
           _this3.updateFieldMapping(_this3.remoteFields);
+
           _this3.removeControlSpinner('mailchimp_fields_mapping');
+
           _this3.removeControlSpinner('mailchimp_groups');
         }
       });
@@ -4830,6 +5637,7 @@ function _default(panel, model, view) {
       controlView.render();
     }
   });
+
   new Mailchimp({
     $element: view.$el
   });
@@ -4839,17 +5647,21 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _crmBase = _interopRequireDefault(require("./crm/crm-base"));
+
 function _default(panel, model, view) {
   var MailerLite = _crmBase["default"].extend({
     panel: panel,
     model: model,
     action: 'mailerlite'
   });
+
   new MailerLite({
     $element: view.$el
   });
@@ -4859,11 +5671,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _form = _interopRequireDefault(require("../../utils/form/form"));
+
 function _default(panel, model, view) {
   var Steps = _form["default"].extend({
     panel: panel,
@@ -4874,9 +5689,11 @@ function _default(panel, model, view) {
     totalSteps: null,
     onInit: function onInit() {
       this.init();
+
       if (this.sectionName !== this.panel.content.currentView.activeSection) {
         return;
       }
+
       elementor.channels.editor.on('section:activated', this.onSectionActivated);
     },
     // eslint-disable-next-line no-unused-vars
@@ -4884,9 +5701,11 @@ function _default(panel, model, view) {
       if (activeSection !== this.sectionName) {
         return;
       }
+
       if (section.model.id !== model.get('id')) {
         return;
       }
+
       this.init();
     },
     init: function init() {
@@ -4903,10 +5722,12 @@ function _default(panel, model, view) {
     },
     getRowsView: function getRowsView() {
       var _this = this;
+
       this.fieldViews = [];
       this.totalSteps = 0;
       this.fieldsRepeater.children.each(function (repeaterRow) {
         _this.fieldViews.push(repeaterRow);
+
         if ('step' === repeaterRow.model.get('type')) {
           _this.totalSteps++;
         }
@@ -4918,6 +5739,7 @@ function _default(panel, model, view) {
     toggleFirstStepLock: function toggleFirstStepLock() {
       var row1 = this.fieldViews[0];
       var shouldRemoveTools, shouldDisableSort;
+
       if ('step' !== row1.model.get('type')) {
         shouldRemoveTools = false;
         shouldDisableSort = false;
@@ -4928,6 +5750,7 @@ function _default(panel, model, view) {
         shouldRemoveTools = true;
         shouldDisableSort = true;
       }
+
       row1.$el.find('.elementor-repeater-row-tool').css('display', shouldRemoveTools ? 'none' : 'table-cell');
       row1.$el.find('.elementor-repeater-row-tools').toggleClass('ui-sortable-handle', !shouldDisableSort);
       row1.toggleSort(!shouldDisableSort);
@@ -4938,12 +5761,14 @@ function _default(panel, model, view) {
     },
     styleStepRows: function styleStepRows() {
       var className = 'dark' === elementor.getPreferences().ui_theme ? 'raven-step-row dark' : 'raven-step-row';
+
       _.each(this.fieldViews, function (field) {
         field.$el.toggleClass(className, 'step' === field.model.get('type'));
       });
     },
     setChangeListeners: function setChangeListeners() {
       var _this2 = this;
+
       _.each(this.fieldViews, function (fieldView) {
         var typeControl = fieldView.children.find(function (option) {
           return 'type' === option.model.get('name');
@@ -4961,9 +5786,11 @@ function _default(panel, model, view) {
       var newIsStep = 'step' === event.target.value;
       var prevIsStep = 'step' === event.data.prevType;
       var firstIsStep = 'step' === this.fieldViews[0].model.get('type');
+
       if (1 !== index && !prevIsStep && newIsStep && !firstIsStep) {
         this.createStep1();
       }
+
       setTimeout(this.refresh, 0);
     },
     createStep1: function createStep1() {
@@ -4980,6 +5807,7 @@ function _default(panel, model, view) {
       this.fieldViews[0].model.set('type', 'step');
     }
   });
+
   new Steps({
     $element: view.$el
   });
@@ -4989,11 +5817,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _form = _interopRequireDefault(require("../../utils/form/form"));
+
 function _default(panel, model, view) {
   var itiTel = _form["default"].extend({
     panel: panel,
@@ -5010,10 +5841,12 @@ function _default(panel, model, view) {
       if (activeSection !== this.sectionName || section.model.id !== model.get('id')) {
         return;
       }
+
       this.refresh();
     },
     refresh: function refresh() {
       var _this = this;
+
       var fieldsRepeater = this.getControlView('fields');
       this.select2s = [];
       fieldsRepeater.children.each(function (row) {
@@ -5021,9 +5854,11 @@ function _default(panel, model, view) {
           return 'type' === option.model.get('name');
         }).$el.find('select');
         typeControl.off('change', _this.refresh).change(_this.refresh);
+
         if ('tel' !== typeControl.val()) {
           return;
         }
+
         var allowDropdownControl = row.children.find(function (option) {
           return 'iti_tel_allow_dropdown' === option.model.get('name');
         }).$el.find('input');
@@ -5040,26 +5875,32 @@ function _default(panel, model, view) {
     },
     getCountries: function getCountries() {
       var _this2 = this;
+
       require('intl-tel-input');
+
       _.each(window.intlTelInputGlobals.getCountryData(), function (country) {
         _this2.countries[country.iso2] = country.name;
       });
     }
   });
+
   new itiTel({
     $element: view.$el
   });
 }
 
-},{"../../utils/form/form":36,"@babel/runtime/helpers/interopRequireDefault":78,"intl-tel-input":97}],63:[function(require,module,exports){
+},{"../../utils/form/form":36,"@babel/runtime/helpers/interopRequireDefault":78,"intl-tel-input":99}],63:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 function _default(panel, model, view) {
   var Categories = _module["default"].extend({
     panel: panel,
@@ -5070,9 +5911,11 @@ function _default(panel, model, view) {
     totalCategories: null,
     onInit: function onInit() {
       this.init();
+
       if (this.sectionName !== this.panel.content.currentView.activeSection) {
         return;
       }
+
       elementor.channels.editor.on('section:activated', this.onSectionActivated);
     },
     // eslint-disable-next-line no-unused-vars
@@ -5080,9 +5923,11 @@ function _default(panel, model, view) {
       if (activeSection !== this.sectionName) {
         return;
       }
+
       if (section.model.id !== model.get('id')) {
         return;
       }
+
       this.init();
     },
     init: function init() {
@@ -5099,10 +5944,12 @@ function _default(panel, model, view) {
     },
     getRowsView: function getRowsView() {
       var _this = this;
+
       this.fieldViews = [];
       this.totalCategories = 0;
       this.fieldsRepeater.children.each(function (repeaterRow) {
         _this.fieldViews.push(repeaterRow);
+
         if ('category' === repeaterRow.model.get('item_type')) {
           _this.totalCategories++;
         }
@@ -5114,6 +5961,7 @@ function _default(panel, model, view) {
     toggleFirstCategoryLock: function toggleFirstCategoryLock() {
       var row1 = this.fieldViews[0];
       var shouldRemoveTools, shouldDisableSort;
+
       if ('category' !== row1.model.get('item_type')) {
         shouldRemoveTools = false;
         shouldDisableSort = false;
@@ -5124,6 +5972,7 @@ function _default(panel, model, view) {
         shouldRemoveTools = true;
         shouldDisableSort = true;
       }
+
       row1.$el.find('.elementor-repeater-row-tool').css('display', shouldRemoveTools ? 'none' : 'table-cell');
       row1.$el.find('.elementor-repeater-row-tools').toggleClass('ui-sortable-handle', !shouldDisableSort);
       row1.toggleSort(!shouldDisableSort);
@@ -5134,12 +5983,14 @@ function _default(panel, model, view) {
     },
     styleCategoryRows: function styleCategoryRows() {
       var className = 'dark' === elementor.getPreferences().ui_theme ? 'raven-category-row dark' : 'raven-category-row';
+
       _.each(this.fieldViews, function (field) {
         field.$el.toggleClass(className, 'category' === field.model.get('item_type'));
       });
     },
     setChangeListeners: function setChangeListeners() {
       var _this2 = this;
+
       _.each(this.fieldViews, function (fieldView) {
         var typeControl = fieldView.children.find(function (option) {
           return 'item_type' === option.model.get('name');
@@ -5157,9 +6008,11 @@ function _default(panel, model, view) {
       var newIsCategory = 'category' === event.target.value;
       var prevIsCategory = 'category' === event.data.prevType;
       var firstIsCategory = 'category' === this.fieldViews[0].model.get('item_type');
+
       if (1 !== index && !prevIsCategory && newIsCategory && !firstIsCategory) {
         this.createCategory1();
       }
+
       setTimeout(this.refresh, 0);
     },
     createCategory1: function createCategory1() {
@@ -5176,6 +6029,7 @@ function _default(panel, model, view) {
       this.fieldViews[0].model.set('item_type', 'category');
     }
   });
+
   new Categories({
     $element: view.$el
   });
@@ -5185,11 +6039,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 function _default(panel, model, view) {
   var MyAccount = _module["default"].extend({
     panel: panel,
@@ -5207,6 +6064,7 @@ function _default(panel, model, view) {
       if ('section_content_content' !== activeSection || section.model.id !== model.get('id')) {
         return;
       }
+
       this.init();
     },
     init: function init() {
@@ -5223,13 +6081,16 @@ function _default(panel, model, view) {
     },
     getViews: function getViews() {
       var _this = this;
+
       this.hideSwitchers = [];
       this.repeaterTitles = [];
       this.repeater.children.each(function (row) {
         _this.repeaterTitles.push(row.$el.find('.elementor-repeater-row-item-title'));
+
         if ('yes' === row.model.get('is_default')) {
           _this.deleteRemoveButton(row);
         }
+
         row.children.each(function (control) {
           if ('hide_tab' === control.model.get('name')) {
             _this.hideSwitchers.push(control.$el.find('input'));
@@ -5239,12 +6100,14 @@ function _default(panel, model, view) {
     },
     firstSyncHideIcons: function firstSyncHideIcons() {
       var _this2 = this;
+
       _.each(this.hideSwitchers, function (switcher, index) {
         _this2.repeaterTitles[index].toggleClass('raven-my-account-hide-tab', switcher[0].checked);
       });
     },
     addChangeListeners: function addChangeListeners() {
       var _this3 = this;
+
       _.each(this.hideSwitchers, function (switcher, index) {
         switcher.off('change', _this3.onToggleHide).on('change', {
           index: index
@@ -5269,28 +6132,31 @@ function _default(panel, model, view) {
     },
     updateTabs: function updateTabs(navItems) {
       var _this4 = this;
+
       var endpoints = Object.keys(navItems);
       var labels = Object.values(navItems);
+
       if (!endpoints.length) {
         return;
-      }
+      } // Remove tabs of deactivated plugins.
 
-      // Remove tabs of deactivated plugins.
+
       this.repeater.children.each(function (item) {
         if (item.model && 'yes' === item.model.get('is_default') && !endpoints.includes(item.model.get('field_key'))) {
           _this4.removeTab(item.model.get('_id'));
         }
       });
-      this.refresh();
+      this.refresh(); // Add tabs of newly activated plugins.
 
-      // Add tabs of newly activated plugins.
       if (!this.repeater.children.length) {
         return;
       }
+
       _.each(endpoints, function (endpoint, index) {
         var hasKey = _this4.repeater.children.some(function (item) {
           return item.model && endpoint === item.model.get('field_key');
         });
+
         if (!hasKey) {
           _this4.addMissingTab(endpoint, labels[index]);
         }
@@ -5308,6 +6174,7 @@ function _default(panel, model, view) {
     },
     addMissingTab: function addMissingTab(tabKey, tabLabel) {
       var _this5 = this;
+
       this.repeater.onButtonAddRowClick();
       var newTab = this.repeater.children.last();
       setTimeout(function () {
@@ -5317,10 +6184,12 @@ function _default(panel, model, view) {
         newTab.model.set('tab_name', tabLabel);
         newTab.render();
         view.renderHTML();
+
         _this5.refresh();
       }, 200);
     }
   });
+
   new MyAccount({
     $element: view.$el
   });
@@ -5330,16 +6199,20 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 function _default(panel, model, view) {
   var Posts = _module["default"].extend({
     panel: panel,
     onInit: function onInit() {
       var _this = this;
+
       if (this.onElementChange) {
         elementor.channels.editor.on('change', function (controlView) {
           _this.onElementChange(controlView.model.get('name'), controlView);
@@ -5357,6 +6230,7 @@ function _default(panel, model, view) {
       controlView.container.settings.set('query_excludes_ids', []);
     }
   });
+
   new Posts({
     $element: view.$el
   });
@@ -5366,11 +6240,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 function _default(panel, model, view) {
   var ShoppingCart = _module["default"].extend({
     panel: panel,
@@ -5383,17 +6260,21 @@ function _default(panel, model, view) {
       if (section.model.id !== model.get('id')) {
         return;
       }
+
       var editedElement = section.getOption('editedElementView');
       var overlayColor = this.getElementSettings(model, 'content_effect_blur_content'),
-        BlurContent = this.getElementSettings(model, 'content_effect_content_overlay');
+          BlurContent = this.getElementSettings(model, 'content_effect_content_overlay');
+
       if (['section_cart_quick_view', 'section_cart_quick_view_content'].includes(activeSection)) {
         editedElement.$el.addClass('jupiterx-raven-cart-quick-view-overlay');
+
         if (overlayColor === 'enabled' || BlurContent === 'enabled') {
           editedElement.$el.find('.jupiterx-shopping-cart-content-effect-enabled-overlay').addClass('jupiterx-shopping-cart-overlay-activated');
         }
       }
     }
   });
+
   new ShoppingCart({
     $element: view.$el
   });
@@ -5403,11 +6284,14 @@ function _default(panel, model, view) {
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports["default"] = _default;
+
 var _module = _interopRequireDefault(require("../utils/module"));
+
 function _default(panel, model, view) {
   var StripeButton = _module["default"].extend({
     panel: panel,
@@ -5419,9 +6303,11 @@ function _default(panel, model, view) {
     },
     onSectionActive: function onSectionActive() {
       var _this = this;
+
       return elementor.ajax.addRequest('get_stripe_tax_rates', {
         success: function success(data) {
           _this.updateOptions('stripe_test_env_tax_rates_list', data.test_api_key);
+
           _this.updateOptions('stripe_live_env_tax_rates_list', data.live_api_key);
         }
       }, true);
@@ -5435,6 +6321,7 @@ function _default(panel, model, view) {
       if (!this.panel) {
         return;
       }
+
       var control = this.panel.getCurrentPageView().collection.findWhere({
         name: propertyName
       });
@@ -5444,12 +6331,14 @@ function _default(panel, model, view) {
       if (!this.panel) {
         return;
       }
+
       var control = this.getControl(propertyName);
       var view = this.panel // eslint-disable-line
       .getCurrentPageView().children.findByModelCid(control.cid);
       return view;
     }
   });
+
   new StripeButton({
     $element: view.$el
   });
@@ -5588,7 +6477,7 @@ function _get(target, property, receiver) {
 }
 
 module.exports = _get;
-},{"./superPropBase":84}],76:[function(require,module,exports){
+},{"./superPropBase":85}],76:[function(require,module,exports){
 function _getPrototypeOf(o) {
   module.exports = _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
     return o.__proto__ || Object.getPrototypeOf(o);
@@ -5616,7 +6505,7 @@ function _inherits(subClass, superClass) {
 }
 
 module.exports = _inherits;
-},{"./setPrototypeOf":82}],78:[function(require,module,exports){
+},{"./setPrototypeOf":83}],78:[function(require,module,exports){
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : {
     "default": obj
@@ -5625,6 +6514,62 @@ function _interopRequireDefault(obj) {
 
 module.exports = _interopRequireDefault;
 },{}],79:[function(require,module,exports){
+var _typeof = require("../helpers/typeof");
+
+function _getRequireWildcardCache() {
+  if (typeof WeakMap !== "function") return null;
+  var cache = new WeakMap();
+
+  _getRequireWildcardCache = function _getRequireWildcardCache() {
+    return cache;
+  };
+
+  return cache;
+}
+
+function _interopRequireWildcard(obj) {
+  if (obj && obj.__esModule) {
+    return obj;
+  }
+
+  if (obj === null || _typeof(obj) !== "object" && typeof obj !== "function") {
+    return {
+      "default": obj
+    };
+  }
+
+  var cache = _getRequireWildcardCache();
+
+  if (cache && cache.has(obj)) {
+    return cache.get(obj);
+  }
+
+  var newObj = {};
+  var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor;
+
+  for (var key in obj) {
+    if (Object.prototype.hasOwnProperty.call(obj, key)) {
+      var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null;
+
+      if (desc && (desc.get || desc.set)) {
+        Object.defineProperty(newObj, key, desc);
+      } else {
+        newObj[key] = obj[key];
+      }
+    }
+  }
+
+  newObj["default"] = obj;
+
+  if (cache) {
+    cache.set(obj, newObj);
+  }
+
+  return newObj;
+}
+
+module.exports = _interopRequireWildcard;
+},{"../helpers/typeof":86}],80:[function(require,module,exports){
 function _iterableToArrayLimit(arr, i) {
   if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
   var _arr = [];
@@ -5653,13 +6598,13 @@ function _iterableToArrayLimit(arr, i) {
 }
 
 module.exports = _iterableToArrayLimit;
-},{}],80:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 function _nonIterableRest() {
   throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 }
 
 module.exports = _nonIterableRest;
-},{}],81:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 var _typeof = require("../helpers/typeof");
 
 var assertThisInitialized = require("./assertThisInitialized");
@@ -5673,7 +6618,7 @@ function _possibleConstructorReturn(self, call) {
 }
 
 module.exports = _possibleConstructorReturn;
-},{"../helpers/typeof":85,"./assertThisInitialized":70}],82:[function(require,module,exports){
+},{"../helpers/typeof":86,"./assertThisInitialized":70}],83:[function(require,module,exports){
 function _setPrototypeOf(o, p) {
   module.exports = _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
     o.__proto__ = p;
@@ -5684,7 +6629,7 @@ function _setPrototypeOf(o, p) {
 }
 
 module.exports = _setPrototypeOf;
-},{}],83:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 var arrayWithHoles = require("./arrayWithHoles");
 
 var iterableToArrayLimit = require("./iterableToArrayLimit");
@@ -5698,7 +6643,7 @@ function _slicedToArray(arr, i) {
 }
 
 module.exports = _slicedToArray;
-},{"./arrayWithHoles":69,"./iterableToArrayLimit":79,"./nonIterableRest":80,"./unsupportedIterableToArray":86}],84:[function(require,module,exports){
+},{"./arrayWithHoles":69,"./iterableToArrayLimit":80,"./nonIterableRest":81,"./unsupportedIterableToArray":87}],85:[function(require,module,exports){
 var getPrototypeOf = require("./getPrototypeOf");
 
 function _superPropBase(object, property) {
@@ -5711,7 +6656,7 @@ function _superPropBase(object, property) {
 }
 
 module.exports = _superPropBase;
-},{"./getPrototypeOf":76}],85:[function(require,module,exports){
+},{"./getPrototypeOf":76}],86:[function(require,module,exports){
 function _typeof(obj) {
   "@babel/helpers - typeof";
 
@@ -5729,7 +6674,7 @@ function _typeof(obj) {
 }
 
 module.exports = _typeof;
-},{}],86:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 var arrayLikeToArray = require("./arrayLikeToArray");
 
 function _unsupportedIterableToArray(o, minLen) {
@@ -5742,7 +6687,10 @@ function _unsupportedIterableToArray(o, minLen) {
 }
 
 module.exports = _unsupportedIterableToArray;
-},{"./arrayLikeToArray":68}],87:[function(require,module,exports){
+},{"./arrayLikeToArray":68}],88:[function(require,module,exports){
+module.exports = require("regenerator-runtime");
+
+},{"regenerator-runtime":102}],89:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -5779,7 +6727,7 @@ function compile( expression ) {
 
 module.exports = compile;
 
-},{"@tannin/evaluate":88,"@tannin/postfix":90}],88:[function(require,module,exports){
+},{"@tannin/evaluate":90,"@tannin/postfix":92}],90:[function(require,module,exports){
 'use strict';
 
 /**
@@ -5895,7 +6843,7 @@ function evaluate( postfix, variables ) {
 
 module.exports = evaluate;
 
-},{}],89:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -5921,7 +6869,7 @@ function pluralForms( expression ) {
 
 module.exports = pluralForms;
 
-},{"@tannin/compile":87}],90:[function(require,module,exports){
+},{"@tannin/compile":89}],92:[function(require,module,exports){
 'use strict';
 
 var PRECEDENCE, OPENERS, TERMINATORS, PATTERN;
@@ -6051,7 +6999,7 @@ function postfix( expression ) {
 
 module.exports = postfix;
 
-},{}],91:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -6266,7 +7214,7 @@ var createI18n = function createI18n(initialData, initialDomain) {
 
 exports.createI18n = createI18n;
 
-},{"@babel/runtime/helpers/defineProperty":74,"@babel/runtime/helpers/interopRequireDefault":78,"tannin":100}],92:[function(require,module,exports){
+},{"@babel/runtime/helpers/defineProperty":74,"@babel/runtime/helpers/interopRequireDefault":78,"tannin":103}],94:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6385,7 +7333,7 @@ exports._nx = _nx;
 var isRTL = i18n.isRTL.bind(i18n);
 exports.isRTL = isRTL;
 
-},{"./create-i18n":91}],93:[function(require,module,exports){
+},{"./create-i18n":93}],95:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6460,7 +7408,7 @@ Object.keys(_createI18n).forEach(function (key) {
 
 var _defaultI18n = require("./default-i18n");
 
-},{"./create-i18n":91,"./default-i18n":92,"./sprintf":94}],94:[function(require,module,exports){
+},{"./create-i18n":93,"./default-i18n":94,"./sprintf":96}],96:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -6512,7 +7460,7 @@ function sprintf(format) {
   }
 }
 
-},{"@babel/runtime/helpers/interopRequireDefault":78,"memize":98,"sprintf-js":95}],95:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":78,"memize":100,"sprintf-js":97}],97:[function(require,module,exports){
 /* global window, exports, define */
 
 !function() {
@@ -6745,7 +7693,7 @@ function sprintf(format) {
     /* eslint-enable quote-props */
 }(); // eslint-disable-line
 
-},{}],96:[function(require,module,exports){
+},{}],98:[function(require,module,exports){
 /*
  * International Telephone Input v17.0.18
  * https://github.com/jackocnr/intl-tel-input.git
@@ -8099,13 +9047,13 @@ function sprintf(format) {
         };
     }();
 });
-},{}],97:[function(require,module,exports){
+},{}],99:[function(require,module,exports){
 /**
  * Exposing intl-tel-input as a component
  */
 module.exports = require("./build/js/intlTelInput");
 
-},{"./build/js/intlTelInput":96}],98:[function(require,module,exports){
+},{"./build/js/intlTelInput":98}],100:[function(require,module,exports){
 (function (process){
 /**
  * Memize options object.
@@ -8276,7 +9224,7 @@ function memize( fn, options ) {
 module.exports = memize;
 
 }).call(this,require('_process'))
-},{"_process":99}],99:[function(require,module,exports){
+},{"_process":101}],101:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -8462,7 +9410,738 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],100:[function(require,module,exports){
+},{}],102:[function(require,module,exports){
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+  "use strict";
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunctionPrototype[toStringTagSymbol] =
+    GeneratorFunction.displayName = "GeneratorFunction";
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      prototype[method] = function(arg) {
+        return this._invoke(method, arg);
+      };
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      if (!(toStringTagSymbol in genFun)) {
+        genFun[toStringTagSymbol] = "GeneratorFunction";
+      }
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator, PromiseImpl) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new PromiseImpl(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  Gp[toStringTagSymbol] = "Generator";
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+  typeof module === "object" ? module.exports : {}
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
+
+},{}],103:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -8683,4 +10362,4 @@ Tannin.prototype.dcnpgettext = function( domain, context, singular, plural, n ) 
 
 module.exports = Tannin;
 
-},{"@tannin/plural-forms":89}]},{},[13]);
+},{"@tannin/plural-forms":91}]},{},[13]);

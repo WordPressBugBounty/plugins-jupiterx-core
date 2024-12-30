@@ -44,6 +44,18 @@ abstract class Post_Base extends Action_Base {
 		);
 	}
 
+	public function get_style_depends() {
+		return [
+			'e-animation-grow',
+			'e-animation-shrink',
+			'e-animation-pulse',
+			'e-animation-pop',
+			'e-animation-grow-rotate',
+			'e-animation-wobble-skew',
+			'e-animation-buzz-out',
+		];
+	}
+
 	/**
 	 * Register settings controls.
 	 *
@@ -2832,7 +2844,7 @@ abstract class Post_Base extends Action_Base {
 			return;
 		}
 
-		if ( 'yes' !== $this->skin->get_instance_value( 'custom_excerpt' ) ) {
+		if ( 'yes' === $this->skin->get_instance_value( 'custom_excerpt' ) ) {
 			echo '<div class="raven-post-excerpt">' . get_the_excerpt() . '</div>'; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			return;
 		}

@@ -26,6 +26,10 @@ class Reviews extends Base {
 		return 'raven-element-icon raven-element-icon-reviews';
 	}
 
+	public function get_style_depends() {
+		return [ 'e-swiper', 'swiper' ];
+	}
+
 	public function get_inline_css_depends() {
 		$slides = $this->get_settings_for_display( 'slides' );
 

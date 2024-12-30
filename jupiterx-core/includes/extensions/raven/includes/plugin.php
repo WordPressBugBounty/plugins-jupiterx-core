@@ -1128,6 +1128,7 @@ final class Plugin {
 
 		wp_localize_script( 'jupiterx-core-raven-editor', 'jupiterxOptions', [
 			'activeElements' => $active_elements,
+			'nonce' => wp_create_nonce( 'jupiterx-core-raven-editor' ),
 		] );
 	}
 
@@ -1649,12 +1650,16 @@ final class Plugin {
 	 * @return void
 	 */
 	public function sync_libraries() {
-		// phpcs:ignore WordPress.Security.NonceVerification
-		if ( empty( $_POST['library'] ) ) {
+		check_ajax_referer( 'jupiterx-core-raven-editor', 'nonce' );
+
+		if ( ! current_user_can( 'edit_others_posts' ) || ! current_user_can( 'edit_others_pages' ) ) {
+			wp_send_json_error( 'You do not have access to this section', 'jupiterx-core' );
+		}
+
+		if ( empty( $_POST['library'] ) ) { // phpcs:ignore
 			wp_send_json_error( __( 'library field is missing', 'jupiterx-core' ) );
 		}
 
-		// phpcs:ignore WordPress.Security.NonceVerification
 		$library = sanitize_text_field( wp_unslash( $_POST['library'] ) );
 
 		if ( 'presets' === $library && isset( $this->core_modules['preset'] ) ) {

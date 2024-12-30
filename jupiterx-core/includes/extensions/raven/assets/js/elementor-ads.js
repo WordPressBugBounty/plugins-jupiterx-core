@@ -2,15 +2,16 @@
 "use strict";
 
 /* eslint no-undef: 0 */
-
 (function ($, window) {
   function hideProKits() {
     if (true === elementorAppConfig.is_pro) {
       return;
     }
+
     var queryString = window.location.search;
     var urlParams = new URLSearchParams(queryString);
     var page = urlParams.get('page');
+
     if ('elementor-app' === page) {
       var interval = setInterval(function () {
         if ($('.e-kit-library__kit-item-subscription-plan-badge').length > 0) {
@@ -20,6 +21,7 @@
       }, 500);
     }
   }
+
   function elementorLibraryModification() {
     $(document).on('click', '.elementor-add-template-button', function () {
       var interval = setInterval(function () {
@@ -28,20 +30,22 @@
           clearInterval(interval);
         }
       }, 100);
-    });
+    }); // Hide the Apps from the elementor admin top bar.
 
-    // Hide the Apps from the elementor admin top bar.
     $('#e-admin-top-bar-root .e-admin-top-bar__secondary-area-buttons a:not([data-info])').hide();
     $('#e-admin-top-bar-root .e-admin-top-bar__secondary-area > a[data-info*="Connect"]').hide();
   }
+
   function init() {
     if ($('body').hasClass('sticky-menu')) {
       hideProKits();
     }
+
     if ($('body').hasClass('theme-jupiterx')) {
       elementorLibraryModification();
     }
   }
+
   $(window).on('load', init);
 })(jQuery, window);
 

@@ -14,6 +14,18 @@ class Skin_Cover extends Skin_Base {
 		return __( 'Cover', 'jupiterx-core' );
 	}
 
+	public function get_style_depends() {
+		return [
+			'e-animation-grow',
+			'e-animation-shrink',
+			'e-animation-pulse',
+			'e-animation-pop',
+			'e-animation-grow-rotate',
+			'e-animation-wobble-skew',
+			'e-animation-buzz-out',
+		];
+	}
+
 	protected function add_skin_hover_effect() {
 		$this->add_control(
 			'hover_effect',

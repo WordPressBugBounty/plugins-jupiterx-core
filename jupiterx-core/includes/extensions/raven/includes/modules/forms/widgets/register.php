@@ -32,7 +32,15 @@ class Register extends Form {
 	}
 
 	public function get_style_depends() {
-		return [ 'e-animations' ];
+		return [
+			'e-animation-grow',
+			'e-animation-shrink',
+			'e-animation-pulse',
+			'e-animation-pop',
+			'e-animation-grow-rotate',
+			'e-animation-wobble-skew',
+			'e-animation-buzz-out',
+		];
 	}
 
 	private function maps() {

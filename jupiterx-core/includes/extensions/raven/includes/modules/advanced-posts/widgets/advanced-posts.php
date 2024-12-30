@@ -27,7 +27,16 @@ class Advanced_Posts extends Base_Widget {
 	}
 
 	public function get_style_depends() {
-		return [ 'dashicons', 'e-animations' ];
+		return [
+			'dashicons',
+			'e-animation-grow',
+			'e-animation-shrink',
+			'e-animation-pulse',
+			'e-animation-pop',
+			'e-animation-grow-rotate',
+			'e-animation-wobble-skew',
+			'e-animation-buzz-out',
+		];
 	}
 
 	public function get_script_depends() {

@@ -1707,7 +1707,7 @@ class Nav_Menu extends Base_Widget {
 					'value' => '4',
 				],
 				'selectors' => [
-					'{{WRAPPER}} .raven-nav-menu-mobile .raven-nav-menu li > a.raven-menu-item-active, {{WRAPPER}} .raven-nav-menu-mobile .raven-nav-menu li > a:active, {{WRAPPER}} .raven-nav-menu-mobile .raven-nav-menu > li.current-menu-ancestor > a.raven-menu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .raven-nav-menu-mobile .raven-nav-menu li > a.raven-menu-item-active, {{WRAPPER}} .raven-nav-menu-mobile .raven-nav-menu li > a:active, {{WRAPPER}} .raven-nav-menu-mobile .raven-nav-menu > li.current-menu-ancestor > a.raven-menu-item, {{WRAPPER}} li.menu-item.current-menu-ancestor > a.raven-submenu-item.has-submenu' => 'color: {{VALUE}};',
 				],
 			]
 		);
