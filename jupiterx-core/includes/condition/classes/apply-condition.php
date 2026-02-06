@@ -393,7 +393,10 @@ class Apply_Condition {
 		if ( $is_thankyou_page ) {
 			// Higher priority than default content which applies for all templates at line 357.
 			add_filter( 'the_content', function() use ( $id ) {
+				ob_start();
+
 				echo Elementor::instance()->frontend->get_builder_content_for_display( $id, true ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				return ob_get_clean();
 			}, 20 );
 
 			// Prevents infinite loop.

@@ -996,6 +996,22 @@ class Advanced_Posts extends Base_Widget {
 			]
 		);
 
+		$this->add_control(
+			'related_to_current_post', [
+				'label'              => esc_html__( 'Related to current post', 'jupiterx-core' ),
+				'description'        => esc_html__( 'Display related posts based on the post type taxonomy. While this option is enabled, the Source option is ignored.', 'jupiterx-core' ),
+				'type'               => 'switcher',
+				'label_on'           => esc_html__( 'Yes', 'jupiterx-core' ),
+				'label_off'          => esc_html__( 'No', 'jupiterx-core' ),
+				'return_value'       => 'true',
+				'default'            => '',
+				'frontend_available' => true,
+				'condition' => [
+					'is_archive_template' => '',
+				],
+			]
+		);
+
 		$this->add_group_control(
 			'raven-posts',
 			[
@@ -1036,6 +1052,21 @@ class Advanced_Posts extends Base_Widget {
 					'menu_order' => esc_html__( 'Menu Order', 'jupiterx-core' ),
 					'rand' => esc_html__( 'Random', 'jupiterx-core' ),
 				],
+				'frontend_available' => true,
+			]
+		);
+
+		$this->add_control(
+			'ignore_repetitive',
+			[
+				'label' => esc_html__( 'Ignore Repetitive Posts', 'jupiterx-core' ),
+				'description' => __( 'Exclude posts that have already been displayed on other pages.', 'jupiterx-core' ),
+				'type' => 'switcher',
+				'default' => 'no',
+				'label_on' => esc_html__( 'Yes', 'jupiterx-core' ),
+				'label_off' => esc_html__( 'No', 'jupiterx-core' ),
+				'frontend_available' => true,
+				'condition' => [ 'query_orderby' => 'rand' ],
 			]
 		);
 

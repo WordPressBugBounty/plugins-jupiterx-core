@@ -439,6 +439,19 @@ class Tabs extends Base_Widget {
 			]
 		);
 
+		$this->add_control(
+			'scroll_to_beginning',
+			[
+				'label' => esc_html__( 'Scroll To Beginning Of Tab', 'jupiterx-core' ),
+				'type' => 'switcher',
+				'label_on' => esc_html__( 'On', 'jupiterx-core' ),
+				'label_off' => esc_html__( 'Off', 'jupiterx-core' ),
+				'default' => 'yes',
+				'render_type' => 'template',
+				'frontend_available' => true,
+			]
+		);
+
 		$this->end_controls_section();
 	}
 
@@ -928,8 +941,8 @@ class Tabs extends Base_Widget {
 				'type' => 'select',
 				'options' => [
 					'left' => esc_html__( 'Left', 'jupiterx-core' ),
-					'right' => esc_html( 'Right', 'jupiterx-core' ),
-					'top' => esc_html( 'Top', 'jupiterx-core' ),
+					'right' => esc_html__( 'Right', 'jupiterx-core' ),
+					'top' => esc_html__( 'Top', 'jupiterx-core' ),
 				],
 				'default' => 'left',
 				'selectors_dictionary' => [

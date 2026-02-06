@@ -443,10 +443,14 @@ class Ajax_Handler {
 				// Set correct file permissions.
 				@chmod( $new_file, 0644 );
 
-				$this->uploaded_files = array_merge( $this->uploaded_files, [ $this->get_file_url( $filename ) ] );
+				if ( ! isset( $this->uploaded_files[ $id ] ) ) {
+					$this->uploaded_files[ $id ] = [];
+				}
+
+				$this->uploaded_files[ $id ] = array_merge( $this->uploaded_files[ $id ], [ $this->get_file_url( $filename ) ] );
 			}
 
-			$this->record['fields'][ $id ] = implode( ', ', $this->uploaded_files );
+			$this->record['fields'][ $id ] = isset( $this->uploaded_files[ $id ] ) && is_array( $this->uploaded_files[ $id ] ) ? implode( ', ', $this->uploaded_files[ $id ] ) : '';
 		}
 
 		return $this;

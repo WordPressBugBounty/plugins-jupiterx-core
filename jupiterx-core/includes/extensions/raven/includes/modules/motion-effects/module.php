@@ -78,6 +78,7 @@ class Module extends Module_Base {
 
 		if ( $is_widget ) {
 			$selector .= ' > .elementor-widget-container';
+			$selector .= ' , {{WRAPPER}} > :not(.elementor-element-overlay, .elementor-editor-element-settings, .elementor-editor-highlighted, .elementor-editor-section-settings, .elementor-editor-widget-settings, .elementor-editor-column-settings, .elementor-editor-active, .elementor-editor-lock )';
 		}
 
 		// Group Control: MOTION_EFFECTS (if the $element is a Section → exclude Mouse Effects).

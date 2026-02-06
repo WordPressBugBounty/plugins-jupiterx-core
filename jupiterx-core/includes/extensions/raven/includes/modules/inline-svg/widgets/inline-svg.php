@@ -275,6 +275,10 @@ class Inline_Svg extends Base_Widget {
 
 		$svg_content = wp_remote_retrieve_body( $response );
 
+		if ( ! $svg_content ) {
+			return;
+		}
+
 		// Sanitize SVG content
 		$svg_content = jupiterx_svg_sanitizer( $svg_content );
 
@@ -327,6 +331,10 @@ class Inline_Svg extends Base_Widget {
 	 * @since 2.5.9
 	 */
 	private function check_svg_width( $svg, $classes ) {
+		if ( ! $svg ) {
+			return $classes;
+		}
+
 		$svg_       = simplexml_load_string( $svg );
 		$attributes = $svg_->attributes();
 

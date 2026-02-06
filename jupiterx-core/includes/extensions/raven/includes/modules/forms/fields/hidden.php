@@ -52,6 +52,7 @@ class Hidden extends Field_Base {
 				'id' => 'field-' . $field_id,
 				'name' => 'fields[' . $field_id . ']',
 				'value' => $field['field_value'],
+				'data-custom-id' => $this->get_custom_id(),
 			]
 		);
 		?>

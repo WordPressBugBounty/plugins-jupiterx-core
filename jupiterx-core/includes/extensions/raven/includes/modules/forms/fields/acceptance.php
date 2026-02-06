@@ -48,6 +48,7 @@ class Acceptance extends Field_Base {
 			'type' => 'checkbox',
 			'name' => 'fields[' . $this->get_id() . ']',
 			'id' => 'form-field-' . $this->get_id() . '-' . $this->generate_random_string(),
+			'data-custom-id' => $this->get_custom_id(),
 		];
 
 		if ( 'true' === $this->get_required() ) {

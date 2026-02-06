@@ -90,7 +90,7 @@ class Recaptcha_V3 extends Field_Base {
 		$site_key   = get_option( 'elementor_raven_recaptcha_v3_site_key' );
 		$secret_key = get_option( 'elementor_raven_recaptcha_v3_secret_key' );
 
-		$html = '<div class="raven-field-subgroup" id="form-field-' . esc_attr( $this->get_id() ) . '">';
+		$html = '<div class="raven-field-subgroup" id="form-field-' . esc_attr( $this->get_id() ) . '"  data-custom-id=' . $this->get_custom_id() . '>';
 
 		if ( ! empty( $site_key ) && ! empty( $secret_key ) ) {
 			$this->widget->add_render_attribute( 'recaptcha-' . $this->get_id(), [

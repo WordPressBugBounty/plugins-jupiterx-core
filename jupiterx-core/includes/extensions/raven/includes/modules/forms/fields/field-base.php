@@ -85,6 +85,15 @@ abstract class Field_Base {
 	}
 
 	/**
+	 * Get custom field ID
+	 *
+	 * @since 4.14.0
+	 */
+	public function get_custom_id() {
+		return ! empty( $this->field['field_custom_id'] ) ? esc_attr( $this->field['field_custom_id'] ) : '';
+	}
+
+	/**
 	 * Get field type.
 	 *
 	 * Retrieve the field type.
@@ -377,6 +386,7 @@ abstract class Field_Base {
 			'class' => $this->get_class(),
 			'placeholder' => $this->get_placeholder(),
 			'data-type' => $this->field['type'],
+			'data-custom-id' => $this->get_custom_id(),
 		];
 
 		if ( 'true' === $this->get_required() ) {

@@ -116,6 +116,7 @@ class Products extends Base_Widget {
 								'ids',
 								'categories_tags',
 								'current_archive_query',
+								'search_result',
 							],
 						],
 					],
@@ -5067,7 +5068,12 @@ class Products extends Base_Widget {
 			return;
 		}
 
-		$query         = Module::query( $this, $settings );
+		$query = Module::query( $this, $settings );
+
+		if ( 'search_result' === $settings['query_filter'] && 'no_search_query' === $query ) {
+			return;
+		}
+
 		$products      = $query->get_content();
 		$query_results = $products['query_results'];
 		$layout        = empty( $settings['layout'] ) ? 'default' : $settings['layout'];

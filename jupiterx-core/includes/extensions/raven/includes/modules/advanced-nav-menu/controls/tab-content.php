@@ -770,6 +770,15 @@ class Tab_Content {
 			],
 		] );
 
+		$widget->add_control( 'close_menu_on_scroll', [
+			'label'        => esc_html__( 'Close Menu On Scroll', 'jupiterx-core' ),
+			'description'  => esc_html__( 'Auto-close menu (dropdown, offcanvas, mobile menu) when scrolling on real mobile devices.', 'jupiterx-core' ),
+			'type'         => 'switcher',
+			'default'      => 'yes',
+			'return_value' => 'yes',
+			'frontend_available' => true,
+		] );
+
 		$widget->end_controls_section();
 	}
 

@@ -265,7 +265,7 @@ class JupiterX_Core_Control_Panel_Templates {
 	 */
 	private function get_meta_options( $meta_name, $result ) {
 		$options = [];
-		if ( ! isset( $result['meta_fields'] ) ) {
+		if ( ! isset( $result['meta_fields'] ) || ! is_array( $result['meta_fields'] ) ) {
 			return $options;
 		}
 

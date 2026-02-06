@@ -1267,6 +1267,12 @@ class Post_Navigation extends Base_Widget {
 		$next_post = get_next_post( $in_same_term, '', $taxonomy );
 		$prev_post = get_previous_post( $in_same_term, '', $taxonomy );
 
+		// Add class when only previous link exists (no next post, no all-posts link).
+		$has_all_posts_link = ! empty( $settings['link_all_posts'] );
+		if ( $prev_post && ! $next_post && ! $has_all_posts_link && empty( $settings['next_only'] ) ) {
+			$this->add_render_attribute( 'wrapper', 'class', 'raven-post-navigation-previous-only' );
+		}
+
 		if ( function_exists( 'jupiterx_elementor_modify_post_navigation' ) ) {
 			jupiterx_elementor_modify_post_navigation();
 		}

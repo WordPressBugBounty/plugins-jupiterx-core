@@ -585,13 +585,16 @@ class Nav_Menu extends Base_Widget {
 						'title' => is_rtl() ? __( 'Left', 'jupiterx-core' ) : __( 'Right', 'jupiterx-core' ),
 						'icon' => is_rtl() ? 'eicon-text-align-left' : 'eicon-text-align-right',
 					],
-					'justify' => [
+					'space-between' => [
 						'title' => __( 'Justify', 'jupiterx-core' ),
 						'icon' => 'eicon-text-align-justify',
 					],
 				],
 				'default' => 'left',
 				'prefix_class' => 'raven%s-nav-menu-align-',
+				'selectors' => [
+					'{{WRAPPER}} .raven-nav-menu-vertical .raven-nav-menu li > a' => 'justify-content: {{VALUE}} !important;',
+				],
 			]
 		);
 
@@ -1652,7 +1655,9 @@ class Nav_Menu extends Base_Widget {
 					],
 				],
 				'default' => 'left',
-				'prefix_class' => 'raven%s-mobile-nav-menu-align-',
+				'selectors' => [
+					'{{WRAPPER}} .raven-nav-menu-mobile .raven-nav-menu li > a' => 'justify-content: {{VALUE}} !important;',
+				],
 			]
 		);
 

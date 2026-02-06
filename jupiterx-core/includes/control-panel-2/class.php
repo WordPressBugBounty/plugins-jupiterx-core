@@ -85,6 +85,7 @@ class JupiterX_Control_Panel_2 {
 			'control-panel-2/includes/class-sellkit-box',
 			'control-panel-2/includes/class-popup',
 			'control-panel-2/includes/class-enable-widgets',
+			'control-panel-2/includes/class-promotion-banner',
 			'control-panel-2/includes/setup-wizard/class-condition-generator',
 			'control-panel-2/includes/setup-wizard/class-setup-wizard',
 			'control-panel-2/includes/class-theme-update',
@@ -429,6 +430,7 @@ class JupiterX_Control_Panel_2 {
 
 		return $parent_file;
 	}
+
 
 	/**
 	 * Get localize data.

@@ -2,8 +2,8 @@
 Contributors: artbees
 Tags: jupiter, jupiterx
 Requires at least: 5.6
-Tested up to: 6.8
-Stable tag: 4.11.1
+Tested up to: 6.9
+Stable tag: 4.14.0
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -29,6 +29,38 @@ It's worth mentioning that, some of the features are disabled for the Jupiter X 
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= 4.14.0 =
+* Added "Use Site's Logo" toggle option in Site Logo widget to improve UX and visibility, replacing the legacy dynamic tag.
+* Added "Close Menu On Scroll" option in Advanced Menu widget.
+* Added "ID" field rendering to form frontend.
+* Fixed redirection to parent item link on mobile menu for Advanced menu Widget.
+* Fixed Post Navigation widget RTL layout, grid wrapping, arrow positioning, grid collapse, and navigation state detection issues.
+* Fixed Motion Effects incompatibility with Elementor's Optimized Markup option.
+* Fixed popup Conditions/Triggers visibility issue on save dropdown menu for small screens.
+* Fixed Custom Search Templates issues with Products Widget and product carousel Widget.
+* Fixed form widget multiple file upload issue when having several File Upload fields.
+* Fixed fatal error on inline SVG.
+* Improved development mode tooltip in general settings for clarity.
+
+= 4.13.0 =
+* Added Related to Current Post option in Advanced Posts widget.
+* Added Scroll to Beginning option in Advanced Tab widget.
+* Added promotion banner system to Control Panel.
+* Fixed Navigation Menu vertical mode alignment issue.
+* Fixed disappearing Custom Snippets content issue.
+* Fixed unintentional scrolling when switching between tabs in Advanced Tab widget.
+* Fixed Overlay issue on Off-Canvas layout in Advanced Menu widget.
+* Fixed behavior of Toggle Menu Icon on mobile and tablet devices in Advanced Menu Widget.
+
+= 4.12.0 =
+* Added AND logic between popup triggers.
+* Fixed issues related to popup triggers behavior.
+* Fixed column count in Counter widget.
+* Fixed Elementor cache and shortcode context for JupiterX Global Widgets.
+* Added option to exclude repetitive posts in Advanced Posts widget.
+* Fixed couple of warnings in Advanced Posts widget.
+* Fixed warning in post widget.
+
 = 4.11.1 =
 * Fixed a security issue.
 * Added Play Icon section to the Media Carousel widget style tab.
