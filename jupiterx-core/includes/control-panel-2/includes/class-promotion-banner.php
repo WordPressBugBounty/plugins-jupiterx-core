@@ -63,19 +63,34 @@ class JupiterX_Core_Control_Panel_Promotion_Banner {
 	private function get_banners() {
 		return [
 			[
-				'id'                => 'jupiter-bf20205-promotion',
-				'heading'           => '20% OFF Bulk Plans',
-				'description'       => 'AS LOW AS $16 PER SITE',
-				'mainImageURL'      => jupiterx_core()->plugin_url() . 'assets/images/promotions/black-friday-2025.png',
+				'id'                => 'jupiter-new-templates-2026-promotion',
+				'heading'           => '10 New Website Templates Are Live!',
+				'description'       => "AI, BUSINESS, CLINICS,\nRESTAURANTS, AGENCIES & MORE",
 				'backgroundImage'   => '',
-				'couponCode'        => '2025BF20',
-				'ctaText'           => 'SHOP SALE',
-				'ctaSubText'        => 'ENDS 2 DEC 23:59 (GMT +3)',
-				'ctaUrl'            => 'https://jupiterx.com/pricing?utm_campaign=BF2025Deal&utm_source=JXCpanel',
+				'mainImageURL'      => jupiterx_core()->plugin_url() . 'assets/images/promotions/ new-templates.png',
+				'couponCode'        => '',
+				'ctaText'           => 'SEE WHAT\'S NEW',
+				'ctaSubText'        => 'ENDS MARCH 8, 2026',
+				'ctaUrl'            => admin_url( 'admin.php?page=jupiterx#/ready-made-websites' ),
 				'isDismissible'     => true,
-				'startsAt'          => '2025-11-27T00:00:00+03:00',
-				'expiresAt'         => '2025-12-02T23:59:00+03:00',
+				'startsAt'          => '',
+				'expiresAt'         => '2026-03-08T23:59:59+00:00',
 				'jupiterxAdminOnly' => true,
+				'customCSS'         => '
+					.jx-promotion-banner__cta .cta-subtext {
+						display: none;
+					}
+					.jx-promotion-banner__title {
+						margin-inline-start: -30px;
+						position: relative;
+						z-index: 1;
+					}
+					.jx-promotion-banner__description {
+						text-align: end;
+						white-space: normal;
+						line-height: 1.3;
+					}
+				',
 			],
 		];
 	}
@@ -255,6 +270,8 @@ class JupiterX_Core_Control_Panel_Promotion_Banner {
 					'has_cta'        => $has_cta,
 					'bg_style'       => $bg_style,
 					'is_dismissible' => ! empty( $banner['isDismissible'] ),
+					'banner_id'      => $promotion_id,
+					'custom_css'     => isset( $banner['customCSS'] ) ? $banner['customCSS'] : '',
 				]
 			);
 		}
@@ -276,7 +293,9 @@ class JupiterX_Core_Control_Panel_Promotion_Banner {
 			return;
 		}
 
-		if ( empty( $this->get_active_banners() ) ) {
+		$active_banners = $this->get_active_banners();
+
+		if ( empty( $active_banners ) ) {
 			return;
 		}
 
@@ -294,6 +313,13 @@ class JupiterX_Core_Control_Panel_Promotion_Banner {
 			jupiterx_core()->version()
 		);
 
+		// Output custom CSS for each active banner.
+		$custom_css = $this->get_custom_css( $active_banners );
+
+		if ( ! empty( $custom_css ) ) {
+			wp_add_inline_style( 'jupiterx-admin-promotion-banner', $custom_css );
+		}
+
 		wp_enqueue_script(
 			'jupiterx-admin-promotion-banner',
 			jupiterx_core()->plugin_url() . 'includes/control-panel-2/assets/js/promotion-banner.js',
@@ -309,6 +335,36 @@ class JupiterX_Core_Control_Panel_Promotion_Banner {
 				'ajaxUrl' => admin_url( 'admin-ajax.php' ),
 			]
 		);
+	}
+
+	/**
+	 * Get custom CSS for active banners.
+	 *
+	 * @since 4.13.0
+	 *
+	 * @param array $active_banners Active banners array.
+	 *
+	 * @return string
+	 */
+	private function get_custom_css( array $active_banners ) {
+		$css = '';
+
+		foreach ( $active_banners as $banner ) {
+			if ( empty( $banner['id'] ) ) {
+				continue;
+			}
+
+			$banner_class = 'jx-promotion-banner--' . sanitize_html_class( $banner['id'] );
+
+			if ( ! empty( $banner['customCSS'] ) ) {
+				$css .= "\n/* Custom CSS for {$banner['id']} */\n";
+				$css .= ".{$banner_class} {\n";
+				$css .= "\t" . str_replace( "\n", "\n\t", trim( $banner['customCSS'] ) ) . "\n";
+				$css .= "}\n";
+			}
+		}
+
+		return $css;
 	}
 
 	/**
@@ -340,6 +396,8 @@ class JupiterX_Core_Control_Panel_Promotion_Banner {
 		$has_cta        = $context['has_cta'];
 		$bg_style       = $context['bg_style'];
 		$is_dismissible = $context['is_dismissible'];
+		$banner_id      = isset( $context['banner_id'] ) ? $context['banner_id'] : '';
+		$custom_css     = isset( $context['custom_css'] ) ? $context['custom_css'] : '';
 
 		include $template;
 	}

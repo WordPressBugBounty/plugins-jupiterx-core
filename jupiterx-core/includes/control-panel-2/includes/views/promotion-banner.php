@@ -9,7 +9,7 @@
 
 ?>
 <div
-	class="jx-promotion-banner<?php echo empty( $description ) ? ' jx-promotion-banner--compact' : ''; ?><?php echo ! empty( $image_url ) ? ' jx-promotion-banner--has-image' : ''; ?>"
+	class="jx-promotion-banner<?php echo empty( $description ) ? ' jx-promotion-banner--compact' : ''; ?><?php echo ! empty( $image_url ) ? ' jx-promotion-banner--has-image' : ''; ?><?php echo ! empty( $banner_id ) ? ' jx-promotion-banner--' . esc_attr( sanitize_html_class( $banner_id ) ) : ''; ?>"
 	data-jx-promotion-id="<?php echo esc_attr( $promotion_id ); ?>"
 	data-jx-promotion-nonce="<?php echo esc_attr( $nonce ); ?>"
 	<?php echo ! empty( $bg_style ) ? 'style="' . esc_attr( $bg_style ) . '"' : ''; ?>
@@ -31,11 +31,11 @@
 
 				<?php if ( ! empty( $description ) || $has_code ) : ?>
 					<div class="jx-promotion-banner__description-cell">
-						<?php if ( ! empty( $description ) ) : ?>
-							<div class="jx-promotion-banner__description">
-								<?php echo esc_html( $description ); ?>
-							</div>
-						<?php endif; ?>
+					<?php if ( ! empty( $description ) ) : ?>
+						<div class="jx-promotion-banner__description">
+							<?php echo nl2br( esc_html( $description ) ); ?>
+						</div>
+					<?php endif; ?>
 
 						<?php if ( $has_code ) : ?>
 							<div class="jx-promotion-banner__code">

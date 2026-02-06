@@ -63,73 +63,93 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Install_Template' ) ) {
 			return strtolower( $this->template_name );
 		}
 
-		private $template_file_name;
+	private $template_date;
 
-		public function setTemplateFileName( $template_file_name ) {
-			$this->template_file_name = $template_file_name;
-		}
+	public function setTemplateDate( $template_date ) {
+		$this->template_date = $template_date;
+	}
 
-		public function getTemplateFileName() {
-			return $this->template_file_name;
-		}
+	public function getTemplateDate() {
+		return $this->template_date;
+	}
 
-		private $template_remote_address;
+	private $template_has_simplicity = false;
 
-		public function setTemplateRemoteAddress( $template_remote_address ) {
-			$this->template_remote_address = $template_remote_address;
-		}
+	public function setTemplateHasSimplicity( $template_has_simplicity ) {
+		$this->template_has_simplicity = filter_var( $template_has_simplicity, FILTER_VALIDATE_BOOLEAN );
+	}
 
-		public function getTemplateRemoteAddress() {
-			return $this->template_remote_address;
-		}
+	public function getTemplateHasSimplicity() {
+		return $this->template_has_simplicity;
+	}
 
-		private $template_content_file_name;
+	private $template_file_name;
 
-		public function setTemplateContentFileName( $template_content_file_name ) {
-			$this->template_content_file_name = $template_content_file_name;
-		}
+	public function setTemplateFileName( $template_file_name ) {
+		$this->template_file_name = $template_file_name;
+	}
 
-		public function getTemplateContentFileName() {
-			return $this->template_content_file_name;
-		}
+	public function getTemplateFileName() {
+		return $this->template_file_name;
+	}
 
-		private $widget_file_name;
+	private $template_remote_address;
 
-		public function setWidgetFileName( $widget_file_name ) {
-			$this->widget_file_name = $widget_file_name;
-		}
+	public function setTemplateRemoteAddress( $template_remote_address ) {
+		$this->template_remote_address = $template_remote_address;
+	}
 
-		public function getWidgetFileName() {
-			return $this->widget_file_name;
-		}
+	public function getTemplateRemoteAddress() {
+		return $this->template_remote_address;
+	}
 
-		/**
-		 * Settings filename.
-		 *
-		 * @since 1.0
-		 * @var string
-		 */
-		private $settings_file_name;
+	private $template_content_file_name;
 
-		/**
-		 * Set Settings filename.
-		 *
-		 * @since 1.0
-		 * @param string $settings_file_name Settings filename.
-		 */
-		public function set_settings_file_name( $settings_file_name ) {
-			$this->settings_file_name = $settings_file_name;
-		}
+	public function setTemplateContentFileName( $template_content_file_name ) {
+		$this->template_content_file_name = $template_content_file_name;
+	}
 
-		/**
-		 * Get Settings filename.
-		 *
-		 * @since 1.0
-		 * @return string Settings filename.
-		 */
-		public function get_settings_file_name() {
-			return $this->settings_file_name;
-		}
+	public function getTemplateContentFileName() {
+		return $this->template_content_file_name;
+	}
+
+	private $widget_file_name;
+
+	public function setWidgetFileName( $widget_file_name ) {
+		$this->widget_file_name = $widget_file_name;
+	}
+
+	public function getWidgetFileName() {
+		return $this->widget_file_name;
+	}
+
+	/**
+	 * Settings filename.
+	 *
+	 * @since 1.0
+	 * @var string
+	 */
+	private $settings_file_name;
+
+	/**
+	 * Set Settings filename.
+	 *
+	 * @since 1.0
+	 * @param string $settings_file_name Settings filename.
+	 */
+	public function set_settings_file_name( $settings_file_name ) {
+		$this->settings_file_name = $settings_file_name;
+	}
+
+	/**
+	 * Get Settings filename.
+	 *
+	 * @since 1.0
+	 * @return string Settings filename.
+	 */
+	public function get_settings_file_name() {
+		return $this->settings_file_name;
+	}
 
 		private $upload_dir;
 
@@ -234,12 +254,16 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Install_Template' ) ) {
 				wp_send_json_error( 'You do not have access to this section.', 'jupiterx-core' );
 			}
 
-			$template_id    = ( isset( $_POST['template_id'] ) ? intval( $_POST['template_id'] ) : 0 );
-			$this->setTemplateID( $template_id );
-			$template_name  = ( isset( $_POST['template_name'] ) ? sanitize_text_field( $_POST['template_name'] ) : null );
-			$import_media   = ( isset( $_POST['import_media'] ) ? sanitize_text_field( $_POST['import_media'] ) : false );
-			$type           = ( isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : null );
-			$partial_import = ( isset( $_POST['partial_import'] ) ? filter_var( $_POST['partial_import'], FILTER_VALIDATE_BOOLEAN ) : false );
+		$template_id    = ( isset( $_POST['template_id'] ) ? intval( $_POST['template_id'] ) : 0 );
+		$this->setTemplateID( $template_id );
+		$template_name  = ( isset( $_POST['template_name'] ) ? sanitize_text_field( $_POST['template_name'] ) : null );
+		$template_date  = ( isset( $_POST['template_date'] ) ? sanitize_text_field( $_POST['template_date'] ) : null );
+		$this->setTemplateDate( $template_date );
+		$import_media   = ( isset( $_POST['import_media'] ) ? sanitize_text_field( $_POST['import_media'] ) : false );
+		$type           = ( isset( $_POST['type'] ) ? sanitize_text_field( $_POST['type'] ) : null );
+		$partial_import = ( isset( $_POST['partial_import'] ) ? filter_var( $_POST['partial_import'], FILTER_VALIDATE_BOOLEAN ) : false );
+		$template_has_simplicity = ( isset( $_POST['check_simplicity_during_import'] ) ? filter_var( $_POST['check_simplicity_during_import'], FILTER_VALIDATE_BOOLEAN ) : false );
+		$this->setTemplateHasSimplicity( $template_has_simplicity );
 
 			jupiterx_log(
 				"[Control Panel > Templates] To install a template (step: {$type}), the following data is expected to be an array consisting of 'template_id', 'template_name', 'import_media', 'type' and 'partial_import'.",
@@ -889,6 +913,17 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Install_Template' ) ) {
 
 				// Include wordpress-importer class.
 				JupiterX_Core_Control_Panel_Helpers::include_wordpress_importer();
+
+			// Optional template date passed from UI (EventSource uses GET).
+			if ( ! empty( $_GET['template_date'] ) ) {
+				$this->setTemplateDate( sanitize_text_field( $_GET['template_date'] ) );
+			}
+
+			// Optional flag indicating if this is a 2026+ template (EventSource uses GET).
+			if ( isset( $_GET['check_simplicity_during_import'] ) ) {
+				$this->setTemplateHasSimplicity( filter_var( $_GET['check_simplicity_during_import'], FILTER_VALIDATE_BOOLEAN ) );
+			}
+
 				$this->reinitialize_data_sse( $template_name, $template_id );
 
 				// Set importer options as an array.
@@ -982,7 +1017,7 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Install_Template' ) ) {
 			return json_decode( $response, true );
 		}
 
-		/**
+	/**
 		 * Send a Server-Sent Events message.
 		 *
 		 *
@@ -1294,12 +1329,14 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Install_Template' ) ) {
 					update_option( 'jet-blog-settings', $data['options']['jet_blog_settings'] );
 				}
 
-				// Set Jupiter X custom siderbars option.
-				if ( isset( $data['options']['jupiterx_custom_sidebars'] ) ) {
-					jupiterx_update_option( 'custom_sidebars', $data['options']['jupiterx_custom_sidebars'] );
-				}
+			// Set Jupiter X custom siderbars option.
+			if ( isset( $data['options']['jupiterx_custom_sidebars'] ) ) {
+				jupiterx_update_option( 'custom_sidebars', $data['options']['jupiterx_custom_sidebars'] );
+			}
 
-				// Set elementor default kit.
+			// Note: Simplicity mode will be set in finalizeImporting() based on template type (check_simplicity_during_import)
+
+			// Set elementor default kit.
 				if ( isset( $data['options']['elementor_active_kit'] ) ) {
 					update_option( 'elementor_active_kit', $data['options']['elementor_active_kit'] );
 				} else if ( class_exists( 'Elementor\Plugin' ) ) {
@@ -1384,9 +1421,33 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Install_Template' ) ) {
 
 				jupiterx_update_option( 'jupiterx_selected_google_fonts', null );
 
-				// Enable simplicity mode.
-				update_option( 'jupiterx_disable_theme_default_settings', '0' );
-				jupiterx_update_option( 'disable_theme_default_settings', '0' );
+				// Handle simplicity mode based on template type
+				// New templates (2026+) are built with simplicity ON
+				// Old templates (pre-2026) are built with simplicity OFF
+				if ( $this->getTemplateHasSimplicity() ) {
+					// Enable simplicity mode for 2026+ templates
+					update_option( 'jupiterx_disable_theme_default_settings', '1' );
+					jupiterx_update_option( 'disable_theme_default_settings', '1' );
+				} else {
+					// Disable simplicity mode for pre-2026 templates
+					update_option( 'jupiterx_disable_theme_default_settings', '0' );
+					jupiterx_update_option( 'disable_theme_default_settings', '0' );
+				}
+
+				// Regenerate conditions index.
+				global $wpdb;
+
+				$valid_ids = $wpdb->get_col(
+					$wpdb->prepare(
+						"SELECT post_id FROM {$wpdb->postmeta} WHERE meta_key = %s",
+						'jupiterx-condition-rules'
+					)
+				);
+
+				// Ensure unique IDs and string format
+				$valid_ids = array_unique( array_map( 'strval', $valid_ids ) );
+
+				update_option( 'jupiterx-posts-with-conditions', $valid_ids );
 
 				wp_cache_flush();
 				jupiterx_core_flush_cache();

@@ -3,7 +3,7 @@ Contributors: artbees
 Tags: jupiter, jupiterx
 Requires at least: 5.6
 Tested up to: 6.9
-Stable tag: 4.14.0
+Stable tag: 4.14.1
 Requires PHP: 7.0
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -29,6 +29,10 @@ It's worth mentioning that, some of the features are disabled for the Jupiter X 
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= 4.14.1 =
+* Fixed incompatibilities with new ready-made templates.
+* Fixed Swiper autoloop bug in Testimonial Carousel widget.
+
 = 4.14.0 =
 * Added "Use Site's Logo" toggle option in Site Logo widget to improve UX and visibility, replacing the legacy dynamic tag.
 * Added "Close Menu On Scroll" option in Advanced Menu widget.

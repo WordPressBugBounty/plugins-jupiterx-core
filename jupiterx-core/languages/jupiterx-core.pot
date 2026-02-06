@@ -1,14 +1,14 @@
-# Copyright (c) 2025 Jupiter X Core.
+# Copyright (c) 2026 Jupiter X Core.
 msgid ""
 msgstr ""
-"Project-Id-Version: Jupiter X Core 4.14.0\n"
+"Project-Id-Version: Jupiter X Core 4.14.1\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/jupiterx-core\n"
 "Last-Translator: Artbees Team <info@artbees.net>\n"
 "Language-Team: Artbees Team <info@artbees.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-12-31T14:15:32+00:00\n"
+"POT-Creation-Date: 2026-02-06T08:47:53+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: jupiterx-core\n"
@@ -1784,30 +1784,30 @@ msgstr ""
 msgid "SSL connection error. Code: template-assets-get"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-install-template.php:719
+#: includes/control-panel-2/includes/class-install-template.php:743
 #: includes/extensions/raven/includes/modules/forms/widgets/form.php:2695
 msgid "Completed"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-install-template.php:747
+#: includes/control-panel-2/includes/class-install-template.php:771
 msgid "Plugins are activated,"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-install-template.php:774
+#: includes/control-panel-2/includes/class-install-template.php:798
 msgid "Data of plugins have imported."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-install-template.php:1238
+#: includes/control-panel-2/includes/class-install-template.php:1273
 #, php-format
 msgid "Error importing settings! Please check that you uploaded (%s) a settings export file."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-install-template.php:1243
+#: includes/control-panel-2/includes/class-install-template.php:1278
 #, php-format
 msgid "Error importing settings! template Please check that you uploaded (%s) a settings export file."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-install-template.php:2111
+#: includes/control-panel-2/includes/class-install-template.php:2172
 msgid "There is a problem in downloading the template."
 msgstr ""
 
@@ -16602,7 +16602,7 @@ msgid "This file type is not allowed."
 msgstr ""
 
 #: includes/extensions/raven/includes/modules/forms/fields/file.php:152
-#: includes/extensions/raven/assets/js/frontend.js:10382
+#: includes/extensions/raven/assets/js/frontend.js:10383
 msgid "This file size is not allowed."
 msgstr ""
 
@@ -25116,6 +25116,11 @@ msgstr ""
 msgid "Let's do this!"
 msgstr ""
 
+#: includes/control-panel-2/dist/control-panel.js:103
+#, js-format
+msgid "This template was created with <a href=\"%s\" target=\"_blank\"><strong>Simplicity Mode</strong></a> enabled. To make the most of this template's features, we need to turn on Simplicity Mode. Remember, once you go with this template, it's best to keep Simplicity Mode on to ensure everything runs smoothly."
+msgstr ""
+
 #. translators: %s: Simplicity Mode help link.
 #: includes/control-panel-2/dist/control-panel.js:103
 #: includes/control-panel-2/dist/control-panel.js:16023
@@ -26068,15 +26073,15 @@ msgstr ""
 msgid "Error! nonce mismatch"
 msgstr ""
 
-#: includes/extensions/raven/assets/js/frontend.js:10406
+#: includes/extensions/raven/assets/js/frontend.js:10407
 msgid "Please first update/publish the changes."
 msgstr ""
 
-#: includes/extensions/raven/assets/js/frontend.js:10581
+#: includes/extensions/raven/assets/js/frontend.js:10582
 msgid "Following messages are visible only for admin users."
 msgstr ""
 
-#: includes/extensions/raven/assets/js/frontend.js:17433
+#: includes/extensions/raven/assets/js/frontend.js:17434
 msgid "No headings were found on this page."
 msgstr ""
 

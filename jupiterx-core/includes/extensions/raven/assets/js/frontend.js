@@ -9013,7 +9013,7 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
         propertyName += '_' + device;
       }
 
-      return this.getElementSettings(propertyName).size || 0;
+      return Number(this.getElementSettings(propertyName).size) || 0;
     }
   }, {
     key: "getSwiperOptions",
@@ -9030,6 +9030,7 @@ var CarouselBase = /*#__PURE__*/function (_elementorModules$fro) {
         slidesPerGroup: this.getSlidesToScroll('desktop'),
         spaceBetween: this.getSpaceBetween(),
         loop: 'yes' === elementSettings.loop,
+        loopedSlides: elementSettings.loopedSlides,
         speed: elementSettings.speed,
         effect: this.getEffect(),
         preventClicksPropagation: false,
