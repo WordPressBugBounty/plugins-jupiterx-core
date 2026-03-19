@@ -129,84 +129,94 @@ class JupiterX_Core_Control_Panel_Popup {
 	}
 
 	/**
-	 * Import popup template base on file type.
-	 *
-	 * @return void
-	 * @since 3.7.0
-	 * @SuppressWarnings(PHPMD.NPathComplexity)
-	 */
-	public function import_popup_templates() {
-		$file = filter_var_array( $_FILES, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
+     * Import popup template base on file type.
+     *
+     * @return void
+     * @since 3.7.0
+     * @SuppressWarnings(PHPMD.NPathComplexity)
+     */
+    public function import_popup_templates() {
+        // --- SECURITY PATCH: Verify permissions and nonce ---
+        if ( ! current_user_can( 'manage_options' ) ) {
+            wp_die( esc_html__( 'You do not have permission to import popups.', 'jupiterx-core' ) );
+        }
 
-		if ( empty( $file ) ) {
-			wp_die( esc_html__( 'Empty file.', 'jupiterx-core' ) );
-		}
+        if ( ! isset( $_POST['jupiterx_import_popup_nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_POST['jupiterx_import_popup_nonce'] ) ), 'jupiterx_import_popup_action' ) ) {
+            wp_die( esc_html__( 'Security check failed. Please refresh the page and try again.', 'jupiterx-core' ) );
+        }
+        // --- END SECURITY PATCH ---
 
-		$file = $file['file'];
+        $file = filter_var_array( $_FILES, FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 
-		if ( 'application/zip' !== $file['type'] && 'application/json' !== $file['type'] ) {
-			wp_die( esc_html__( 'Format not allowed', 'jupiterx-core' ) );
-		}
+        if ( empty( $file ) ) {
+            wp_die( esc_html__( 'Empty file.', 'jupiterx-core' ) );
+        }
 
-		$path = $file['tmp_name'];
+        $file = $file['file'];
 
-		$templates = [];
+        if ( 'application/zip' !== $file['type'] && 'application/json' !== $file['type'] ) {
+            wp_die( esc_html__( 'Format not allowed', 'jupiterx-core' ) );
+        }
 
-		if ( 'application/zip' === $file['type'] ) {
-			$extracted_files = Plugin::instance()->uploads_manager->extract_and_validate_zip( $path, [ 'json' ] );
+        $path = $file['tmp_name'];
 
-			if ( is_wp_error( $extracted_files ) ) {
-				Plugin::instance()->uploads_manager->remove_file_or_dir( $extracted_files['extraction_directory'] );
+        $templates = [];
 
-				return $extracted_files;
-			}
+        if ( 'application/zip' === $file['type'] ) {
+            $extracted_files = Elementor\Plugin::instance()->uploads_manager->extract_and_validate_zip( $path, [ 'json' ] );
 
-			foreach ( $extracted_files['files'] as $file_path ) {
-				$import_result = $this->import_popup_template( $file_path );
+            if ( is_wp_error( $extracted_files ) ) {
+                Elementor\Plugin::instance()->uploads_manager->remove_file_or_dir( $extracted_files['extraction_directory'] );
 
-				if ( is_wp_error( $import_result ) ) {
-					Plugin::instance()->uploads_manager->remove_file_or_dir( $extracted_files['extraction_directory'] );
+                return $extracted_files;
+            }
 
-					return $import_result;
-				}
+            foreach ( $extracted_files['files'] as $file_path ) {
+                $import_result = $this->import_popup_template( $file_path );
 
-				$templates[] = $import_result;
-			}
+                if ( is_wp_error( $import_result ) ) {
+                    Elementor\Plugin::instance()->uploads_manager->remove_file_or_dir( $extracted_files['extraction_directory'] );
 
-			Plugin::instance()->uploads_manager->remove_file_or_dir( $extracted_files['extraction_directory'] );
-		}
+                    return $import_result;
+                }
 
-		if ( 'application/json' === $file['type'] ) {
-			$templates = $this->import_popup_template( $path );
-		}
+                $templates[] = $import_result;
+            }
 
-		if ( ! empty( $templates ) && is_array( $templates ) ) {
-			$popups = add_query_arg(
-				[
-					'post_type' => 'jupiterx-popups',
-				],
-				admin_url( 'edit.php' )
-			);
+            Elementor\Plugin::instance()->uploads_manager->remove_file_or_dir( $extracted_files['extraction_directory'] );
+        }
 
-			wp_safe_redirect( $popups );
+        if ( 'application/json' === $file['type'] ) {
+            $templates = $this->import_popup_template( $path );
+        }
 
-			die();
-		}
+        if ( ! empty( $templates ) && is_array( $templates ) ) {
+            $popups = add_query_arg(
+                [
+                    'post_type' => 'jupiterx-popups',
+                ],
+                admin_url( 'edit.php' )
+            );
 
-		if ( ! empty( $templates ) && ! is_array( $templates ) ) {
-			$edit = add_query_arg(
-				[
-					'post' => $templates,
-					'action' => 'elementor',
-				],
-				admin_url( 'post.php' )
-			);
+            wp_safe_redirect( $popups );
 
-			wp_safe_redirect( $edit );
+            die();
+        }
 
-			die();
-		}
-	}
+        if ( ! empty( $templates ) && ! is_array( $templates ) ) {
+            $edit = add_query_arg(
+                [
+                    'post' => $templates,
+                    'action' => 'elementor',
+                ],
+                admin_url( 'post.php' )
+            );
+
+            wp_safe_redirect( $edit );
+
+            die();
+        }
+    }
 
 	/**
 	 * Import popup template functionality.

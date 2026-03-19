@@ -1,14 +1,14 @@
 # Copyright (c) 2026 Jupiter X Core.
 msgid ""
 msgstr ""
-"Project-Id-Version: Jupiter X Core 4.14.1\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/jupiterx-core\n"
+"Project-Id-Version: Jupiter X Core 4.14.2\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/bit-jx-core\n"
 "Last-Translator: Artbees Team <info@artbees.net>\n"
 "Language-Team: Artbees Team <info@artbees.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-06T08:47:53+00:00\n"
+"POT-Creation-Date: 2026-03-19T09:45:46+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: jupiterx-core\n"
@@ -190,9 +190,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/video/widgets/video.php:943
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5566
-#: includes/control-panel-2/dist/control-panel.js:11316
-#: includes/control-panel-2/dist/control-panel.js:15192
 msgid "Yes"
 msgstr ""
 
@@ -444,7 +441,6 @@ msgstr ""
 #: includes/admin/tgmpa/tgmpa-plugin-list.php:29
 #: includes/admin/tgmpa/tgmpa-plugin-list.php:38
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9751
 msgid "Optional"
 msgstr ""
 
@@ -724,8 +720,6 @@ msgstr ""
 #: includes/extensions/raven/includes/core/library/documents/archive.php:72
 #: includes/extensions/raven/includes/modules/preview-settings/module.php:536
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:877
-#: includes/control-panel-2/dist/control-panel.js:901
 msgid "Archive"
 msgstr ""
 
@@ -850,13 +844,6 @@ msgstr ""
 #: includes/extensions/raven/assets/js/editor.js:261
 #: includes/extensions/raven/assets/js/editor.js:376
 #: includes/extensions/raven/assets/js/editor.js:378
-#: includes/control-panel-2/dist/control-panel.js:124
-#: includes/control-panel-2/dist/control-panel.js:155
-#: includes/control-panel-2/dist/control-panel.js:173
-#: includes/control-panel-2/dist/control-panel.js:187
-#: includes/control-panel-2/dist/control-panel.js:714
-#: includes/control-panel-2/dist/control-panel.js:8236
-#: includes/control-panel-2/dist/control-panel.js:15764
 msgid "All"
 msgstr ""
 
@@ -1108,7 +1095,6 @@ msgstr ""
 #: includes/condition/templates/condition-templates.php:60
 #: includes/condition/templates/condition-templates.php:68
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:1011
 msgid "Select an option"
 msgstr ""
 
@@ -1117,8 +1103,6 @@ msgstr ""
 #: includes/popups/conditions/general.php:47
 #: includes/popups/conditions/general.php:57
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:876
-#: includes/control-panel-2/dist/control-panel.js:889
 msgid "Entire Site"
 msgstr ""
 
@@ -1129,8 +1113,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/product-meta/widgets/product-meta.php:408
 #: includes/popups/conditions/singular.php:50
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:878
-#: includes/control-panel-2/dist/control-panel.js:890
 msgid "Singular"
 msgstr ""
 
@@ -1145,19 +1127,11 @@ msgstr ""
 #: includes/condition/templates/condition-templates.php:62
 #: includes/condition/templates/condition-templates.php:70
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:880
-#: includes/control-panel-2/dist/control-panel.js:892
-#: includes/control-panel-2/dist/control-panel.js:902
-#: includes/control-panel-2/dist/control-panel.js:912
 msgid "User Attributes"
 msgstr ""
 
 #: includes/condition/templates/condition-templates.php:76
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:881
-#: includes/control-panel-2/dist/control-panel.js:893
-#: includes/control-panel-2/dist/control-panel.js:903
-#: includes/control-panel-2/dist/control-panel.js:913
 msgid "WPML"
 msgstr ""
 
@@ -1165,9 +1139,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/table-of-contents/widgets/table-of-contents.php:131
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:358
-#: includes/control-panel-2/dist/control-panel.js:370
-#: includes/control-panel-2/dist/control-panel.js:7975
 msgid "Include"
 msgstr ""
 
@@ -1176,9 +1147,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/table-of-contents/widgets/table-of-contents.php:171
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:359
-#: includes/control-panel-2/dist/control-panel.js:371
-#: includes/control-panel-2/dist/control-panel.js:7978
 msgid "Exclude"
 msgstr ""
 
@@ -1190,8 +1158,6 @@ msgstr ""
 #: includes/condition/templates/condition-templates.php:217
 #: includes/condition/templates/condition-templates.php:235
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:8243
-#: includes/control-panel-2/dist/control-panel.js:8828
 msgid "Searching..."
 msgstr ""
 
@@ -1203,9 +1169,6 @@ msgstr ""
 #: includes/condition/templates/condition-templates.php:242
 #: includes/condition/templates/condition-templates.php:249
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:7491
-#: includes/control-panel-2/dist/control-panel.js:7500
-#: includes/control-panel-2/dist/control-panel.js:8347
 msgid "Display Conditions"
 msgstr ""
 
@@ -1218,14 +1181,11 @@ msgstr ""
 #: includes/customizer/api/includes/section/class-popup.php:247
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:7459
-#: includes/control-panel-2/dist/control-panel.js:17096
 msgid "Close"
 msgstr ""
 
 #: includes/condition/templates/condition-templates.php:289
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:7818
 msgid "Set the conditions that determine where your Template is used throughout your site."
 msgstr ""
 
@@ -1235,7 +1195,6 @@ msgstr ""
 
 #: includes/condition/templates/condition-templates.php:302
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:7890
 msgid "Add Condition"
 msgstr ""
 
@@ -1250,8 +1209,6 @@ msgstr ""
 #: includes/control-panel-2/class.php:530
 #: includes/customizer/settings/settings.php:106
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6101
-#: includes/control-panel-2/dist/control-panel.js:14000
 msgid "Layout Builder"
 msgstr ""
 
@@ -1260,7 +1217,6 @@ msgstr ""
 #: includes/control-panel-2/class.php:538
 #: includes/post-type/custom-snippets.php:34
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4545
 msgid "Custom Snippets"
 msgstr ""
 
@@ -1269,7 +1225,6 @@ msgstr ""
 #: includes/control-panel-2/class.php:547
 #: includes/post-type/custom-fonts.php:30
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3137
 msgid "Custom Fonts"
 msgstr ""
 
@@ -1358,22 +1313,18 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/team-members/widgets/team-members.php:331
 #: includes/extensions/raven/includes/modules/tooltip/module.php:105
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11417
-#: includes/control-panel-2/dist/control-panel.js:14764
 msgid "Settings"
 msgstr ""
 
 #: includes/control-panel-2/class.php:264
 #: includes/control-panel-2/class.php:265
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13148
 msgid "Setup Wizard"
 msgstr ""
 
 #: includes/control-panel-2/class.php:276
 #: includes/control-panel-2/class.php:277
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:1516
 msgid "Help"
 msgstr ""
 
@@ -1407,14 +1358,11 @@ msgstr ""
 
 #: includes/control-panel-2/class.php:589
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10350
-#: includes/control-panel-2/dist/control-panel.js:10740
 msgid "Custom Post Types"
 msgstr ""
 
 #: includes/control-panel-2/class.php:593
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10393
 msgid "White Label"
 msgstr ""
 
@@ -1425,10 +1373,6 @@ msgstr ""
 #: includes/popups/conditions/woo-commerce.php:36
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:879
-#: includes/control-panel-2/dist/control-panel.js:891
-#: includes/control-panel-2/dist/control-panel.js:911
-#: includes/control-panel-2/dist/control-panel.js:7996
 msgid "WooCommerce"
 msgstr ""
 
@@ -1466,8 +1410,6 @@ msgstr ""
 #: includes/popups/class.php:239
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:7098
-#: includes/control-panel-2/dist/control-panel.js:14777
 msgid "Export"
 msgstr ""
 
@@ -1496,8 +1438,6 @@ msgstr ""
 
 #: includes/control-panel-2/includes/class-custom-fonts.php:104
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16132
-#: includes/control-panel-2/dist/control-panel.js:16280
 msgid "Preview"
 msgstr ""
 
@@ -1820,7 +1760,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/pricing-table/classes/controls.php:405
 #: includes/extensions/raven/includes/modules/table-of-contents/widgets/table-of-contents.php:68
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12164
 msgid "Header"
 msgstr ""
 
@@ -1831,7 +1770,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/pricing-table/classes/controls.php:287
 #: includes/extensions/raven/includes/modules/pricing-table/classes/controls.php:1093
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12023
 msgid "Footer"
 msgstr ""
 
@@ -1856,7 +1794,6 @@ msgstr ""
 
 #: includes/control-panel-2/includes/class-layout-builder.php:233
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7014
 msgid "No Instance"
 msgstr ""
 
@@ -1910,10 +1847,10 @@ msgstr ""
 
 #: includes/control-panel-2/includes/class-popup.php:53
 #: includes/control-panel-2/includes/class-popup.php:71
-#: includes/control-panel-2/includes/class-popup.php:312
-#: includes/control-panel-2/includes/class-popup.php:347
-#: includes/control-panel-2/includes/class-popup.php:374
-#: includes/control-panel-2/includes/class-popup.php:394
+#: includes/control-panel-2/includes/class-popup.php:322
+#: includes/control-panel-2/includes/class-popup.php:357
+#: includes/control-panel-2/includes/class-popup.php:384
+#: includes/control-panel-2/includes/class-popup.php:404
 #: includes/control-panel-2/includes/setup-wizard/class-setup-wizard.php:165
 #: includes/control-panel-2/includes/setup-wizard/class-setup-wizard.php:207
 #: includes/control-panel-2/includes/setup-wizard/class-setup-wizard.php:265
@@ -1929,27 +1866,35 @@ msgstr ""
 msgid "Import Now"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-popup.php:142
+#: includes/control-panel-2/includes/class-popup.php:141
+msgid "You do not have permission to import popups."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-popup.php:145
+msgid "Security check failed. Please refresh the page and try again."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-popup.php:152
 msgid "Empty file."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-popup.php:148
+#: includes/control-panel-2/includes/class-popup.php:158
 msgid "Format not allowed"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-popup.php:223
+#: includes/control-panel-2/includes/class-popup.php:233
 msgid "No data found in file"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-popup.php:247
+#: includes/control-panel-2/includes/class-popup.php:257
 msgid "New Popup"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-popup.php:252
+#: includes/control-panel-2/includes/class-popup.php:262
 msgid "Can't create popup."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-popup.php:321
+#: includes/control-panel-2/includes/class-popup.php:331
 msgid "There is something wrong while passing data."
 msgstr ""
 
@@ -2381,7 +2326,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/nav-menu/widgets/nav-menu.php:424
 #: includes/extensions/raven/includes/modules/site-logo/widgets/site-logo.php:136
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11575
 msgid "Primary"
 msgstr ""
 
@@ -2397,7 +2341,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/nav-menu/widgets/nav-menu.php:425
 #: includes/extensions/raven/includes/modules/site-logo/widgets/site-logo.php:137
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11593
 msgid "Secondary"
 msgstr ""
 
@@ -2432,7 +2375,6 @@ msgstr ""
 
 #: includes/control-panel-2/includes/setup-wizard/class-setup-wizard.php:484
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11566
 msgid "Accent"
 msgstr ""
 
@@ -2502,24 +2444,6 @@ msgstr ""
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
 #: includes/extensions/raven/assets/js/product-variation-gallery.js:64
-#: includes/control-panel-2/dist/control-panel.js:2589
-#: includes/control-panel-2/dist/control-panel.js:2645
-#: includes/control-panel-2/dist/control-panel.js:2805
-#: includes/control-panel-2/dist/control-panel.js:2942
-#: includes/control-panel-2/dist/control-panel.js:3244
-#: includes/control-panel-2/dist/control-panel.js:3471
-#: includes/control-panel-2/dist/control-panel.js:3807
-#: includes/control-panel-2/dist/control-panel.js:4054
-#: includes/control-panel-2/dist/control-panel.js:4196
-#: includes/control-panel-2/dist/control-panel.js:4358
-#: includes/control-panel-2/dist/control-panel.js:4561
-#: includes/control-panel-2/dist/control-panel.js:4681
-#: includes/control-panel-2/dist/control-panel.js:4707
-#: includes/control-panel-2/dist/control-panel.js:5000
-#: includes/control-panel-2/dist/control-panel.js:6381
-#: includes/control-panel-2/dist/control-panel.js:7312
-#: includes/control-panel-2/dist/control-panel.js:10455
-#: includes/control-panel-2/dist/control-panel.js:16270
 msgid "Remove"
 msgstr ""
 
@@ -2530,12 +2454,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/forms/widgets/form.php:700
 #: includes/extensions/raven/includes/modules/image-accordion/widgets/image-accordion.php:267
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3416
-#: includes/control-panel-2/dist/control-panel.js:4148
-#: includes/control-panel-2/dist/control-panel.js:4829
-#: includes/control-panel-2/dist/control-panel.js:6685
-#: includes/control-panel-2/dist/control-panel.js:11634
-#: includes/control-panel-2/dist/control-panel.js:12734
 msgid "Back"
 msgstr ""
 
@@ -2821,12 +2739,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/global-widget/views/panel-template.php:14
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2582
-#: includes/control-panel-2/dist/control-panel.js:2639
-#: includes/control-panel-2/dist/control-panel.js:3213
-#: includes/control-panel-2/dist/control-panel.js:4023
-#: includes/control-panel-2/dist/control-panel.js:4645
-#: includes/control-panel-2/dist/control-panel.js:7081
 msgid "Edit"
 msgstr ""
 
@@ -4750,14 +4662,11 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/woocommerce-settings/controls.php:301
 #: includes/extensions/raven/includes/modules/woocommerce-settings/controls.php:572
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2605
-#: includes/control-panel-2/dist/control-panel.js:2626
 msgid "Normal"
 msgstr ""
 
 #: includes/customizer/api/includes/control/group/class-typography.php:74
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2627
 msgid "Italic"
 msgstr ""
 
@@ -4787,7 +4696,6 @@ msgstr ""
 
 #: includes/customizer/api/includes/control/group/class-typography.php:159
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2606
 msgid "Bold"
 msgstr ""
 
@@ -4879,7 +4787,6 @@ msgstr ""
 #: includes/customizer/settings/404/popup.php:14
 #: includes/extensions/raven/includes/modules/breadcrumbs/widgets/breadcrumbs.php:381
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13424
 msgid "404"
 msgstr ""
 
@@ -5196,7 +5103,6 @@ msgstr ""
 #: includes/widgets/widget-posts.php:125
 #: includes/widgets/widget-social.php:33
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6362
 msgid "Title"
 msgstr ""
 
@@ -6146,7 +6052,6 @@ msgstr ""
 
 #: includes/customizer/settings/checkout-cart/popup.php:52
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11584
 msgid "Body Text"
 msgstr ""
 
@@ -6225,8 +6130,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/video-playlist/widgets/video-playlist.php:457
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4589
-#: includes/control-panel-2/dist/control-panel.js:6548
 msgid "Name"
 msgstr ""
 
@@ -6337,7 +6240,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/team-members/widgets/team-members.php:361
 #: includes/extensions/raven/includes/modules/video-playlist/widgets/video-playlist.php:738
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12926
 msgid "Layout"
 msgstr ""
 
@@ -6372,7 +6274,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/nav-menu/widgets/nav-menu.php:91
 #: includes/extensions/raven/includes/modules/nav-menu/widgets/nav-menu.php:143
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:1626
 msgid "Menu"
 msgstr ""
 
@@ -6474,7 +6375,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/video-playlist/widgets/video-playlist.php:1014
 #: includes/extensions/raven/includes/modules/video-playlist/widgets/video-playlist.php:1228
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11109
 msgid "Size"
 msgstr ""
 
@@ -6495,9 +6395,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/site-logo/widgets/site-logo.php:83
 #: includes/extensions/raven/includes/modules/site-logo/widgets/site-logo.php:215
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12329
-#: includes/control-panel-2/dist/control-panel.js:12350
-#: includes/control-panel-2/dist/control-panel.js:12357
 msgid "Logo"
 msgstr ""
 
@@ -6608,7 +6505,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/woocommerce-settings/controls.php:61
 #: includes/extensions/raven/includes/plugin.php:855
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13448
 msgid "Cart"
 msgstr ""
 
@@ -6893,7 +6789,6 @@ msgstr ""
 #: includes/post-type/class.php:63
 #: includes/widgets/widget-posts.php:41
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13397
 msgid "Portfolio"
 msgstr ""
 
@@ -6990,7 +6885,6 @@ msgstr ""
 #: includes/widgets/widget-posts.php:58
 #: includes/widgets/widget-posts.php:69
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15841
 msgid "Category"
 msgstr ""
 
@@ -7285,7 +7179,6 @@ msgstr ""
 #: includes/customizer/settings/product-list/settings.php:314
 #: includes/extensions/raven/includes/modules/carousel/widgets/reviews.php:22
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13381
 msgid "Reviews"
 msgstr ""
 
@@ -7417,7 +7310,6 @@ msgstr ""
 
 #: includes/customizer/settings/sidebar/divider.php:61
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14755
 msgid "Widgets"
 msgstr ""
 
@@ -7552,7 +7444,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/team-members/widgets/team-members.php:87
 #: includes/extensions/raven/includes/modules/video-playlist/widgets/video-playlist.php:1578
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12927
 msgid "Content"
 msgstr ""
 
@@ -7575,7 +7466,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/products/widgets/products.php:3339
 #: includes/extensions/raven/includes/modules/products/widgets/products.php:4653
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12925
 msgid "Typography"
 msgstr ""
 
@@ -10335,7 +10225,6 @@ msgstr ""
 
 #: includes/extensions/raven/includes/core/dynamic-tags/tags/action/contact-url.php:119
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13389
 msgid "Contact"
 msgstr ""
 
@@ -11648,7 +11537,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/tabs/widgets/tabs.php:75
 #: includes/templates/class.php:147
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15846
 msgid "Content Type"
 msgstr ""
 
@@ -13595,7 +13483,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/motion-effects/motion-controls.php:356
 #: includes/extensions/raven/includes/modules/progress-tracker/widgets/progress-tracker.php:107
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:8595
 msgid "Direction"
 msgstr ""
 
@@ -13641,7 +13528,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/woocommerce-breadcrumbs/widgets/woocommerce-breadcrumbs.php:28
 #: includes/templates/class.php:143
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15842
 msgid "Style"
 msgstr ""
 
@@ -14359,7 +14245,6 @@ msgstr ""
 
 #: includes/extensions/raven/includes/modules/call-to-action/widgets/call-to-action.php:864
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12924
 msgid "Colors"
 msgstr ""
 
@@ -14959,11 +14844,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/cart/widgets/cart.php:281
 #: includes/extensions/raven/includes/modules/cart/widgets/cart.php:282
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3379
-#: includes/control-panel-2/dist/control-panel.js:4112
-#: includes/control-panel-2/dist/control-panel.js:4973
-#: includes/control-panel-2/dist/control-panel.js:6354
-#: includes/control-panel-2/dist/control-panel.js:16676
 msgid "Update"
 msgstr ""
 
@@ -15082,8 +14962,6 @@ msgstr ""
 
 #: includes/extensions/raven/includes/modules/cart/widgets/cart.php:1852
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11644
-#: includes/control-panel-2/dist/control-panel.js:12742
 msgid "Customize"
 msgstr ""
 
@@ -15331,7 +15209,6 @@ msgstr ""
 
 #: includes/extensions/raven/includes/modules/code-highlight/module.php:32
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10202
 msgid "CSS"
 msgstr ""
 
@@ -15844,7 +15721,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/forms/actions/mailerlite.php:71
 #: includes/extensions/raven/includes/plugin.php:1621
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14266
 msgid "API Key"
 msgstr ""
 
@@ -15970,7 +15846,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/forms/actions/download.php:41
 #: includes/extensions/raven/includes/modules/forms/actions/download.php:68
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14673
 msgid "Download"
 msgstr ""
 
@@ -16421,11 +16296,15 @@ msgstr ""
 
 #: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:408
 #: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:415
-#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:438
+#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:455
 msgid "There was an error while trying to upload your file."
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:429
+#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:433
+msgid "Sorry, this file type is not permitted for security reasons."
+msgstr ""
+
+#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:446
 msgid "Upload directory is not writable or does not exist."
 msgstr ""
 
@@ -17154,7 +17033,6 @@ msgstr ""
 
 #: includes/extensions/raven/includes/modules/forms/widgets/form.php:2601
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4620
 msgid "Inactive"
 msgstr ""
 
@@ -17183,7 +17061,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/forms/widgets/reset-password.php:72
 #: includes/extensions/raven/includes/modules/forms/widgets/social-login.php:223
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16599
 msgid "Enable"
 msgstr ""
 
@@ -17231,7 +17108,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/forms/widgets/reset-password.php:360
 #: includes/extensions/raven/includes/modules/forms/widgets/social-login.php:242
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4594
 msgid "Actions"
 msgstr ""
 
@@ -17361,8 +17237,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/forms/widgets/register.php:767
 #: includes/extensions/raven/includes/modules/forms/widgets/social-login.php:227
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10203
-#: includes/control-panel-2/dist/control-panel.js:16599
 msgid "Disable"
 msgstr ""
 
@@ -17488,7 +17362,6 @@ msgstr ""
 
 #: includes/extensions/raven/includes/modules/global-widget/views/panel-template.php:22
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:8707
 msgid "Loading..."
 msgstr ""
 
@@ -17700,9 +17573,6 @@ msgstr ""
 
 #: includes/extensions/raven/includes/modules/image-accordion/widgets/image-accordion.php:110
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11720
-#: includes/control-panel-2/dist/control-panel.js:12651
-#: includes/control-panel-2/dist/control-panel.js:12815
 msgid "Button text"
 msgstr ""
 
@@ -18096,7 +17966,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/video/widgets/video.php:326
 #: includes/extensions/raven/includes/modules/video/widgets/video.php:376
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10623
 msgid "Loop"
 msgstr ""
 
@@ -18225,8 +18094,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/product-gallery/widgets/product-gallery.php:421
 #: includes/extensions/raven/includes/modules/team-members/widgets/team-members.php:733
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10880
-#: includes/control-panel-2/dist/control-panel.js:11043
 msgid "Image Width"
 msgstr ""
 
@@ -18245,7 +18112,6 @@ msgstr ""
 
 #: includes/extensions/raven/includes/modules/marquee/widgets/testimonial.php:71
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9800
 msgid "Testimonial"
 msgstr ""
 
@@ -19047,7 +18913,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/payments/widgets/stripe-button.php:316
 #: includes/extensions/raven/includes/modules/woocommerce-settings/controls.php:80
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13456
 msgid "Checkout"
 msgstr ""
 
@@ -19881,7 +19746,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/photo-album/widgets/photo-album.php:18
 #: includes/extensions/raven/includes/plugin.php:830
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9801
 msgid "Photo Album"
 msgstr ""
 
@@ -20149,7 +20013,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/product-data-tabs/widgets/product-data-tabs.php:50
 #: includes/extensions/raven/includes/modules/team-members/widgets/team-members.php:368
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13492
 msgid "Standard"
 msgstr ""
 
@@ -20837,8 +20700,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/product-reviews/classes/reviews.php:324
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:1234
-#: includes/control-panel-2/dist/control-panel.js:6738
 msgid "Submit"
 msgstr ""
 
@@ -21548,7 +21409,6 @@ msgstr ""
 
 #: includes/extensions/raven/includes/modules/social-share/module.php:44
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:1239
 msgid "OK"
 msgstr ""
 
@@ -21640,7 +21500,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/sticky-media-scroller/widgets/sticky-media-scroller.php:230
 #: includes/extensions/raven/includes/modules/video/widgets/video.php:146
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9008
 msgid "Start Time"
 msgstr ""
 
@@ -21652,7 +21511,6 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/sticky-media-scroller/widgets/sticky-media-scroller.php:243
 #: includes/extensions/raven/includes/modules/video/widgets/video.php:156
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9018
 msgid "End Time"
 msgstr ""
 
@@ -23190,7 +23048,6 @@ msgstr ""
 #: includes/templates/class.php:91
 #: includes/templates/class.php:126
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15888
 msgid "e.g. Portfolio, Real estate, Minimal, Dark, ..."
 msgstr ""
 
@@ -23212,25 +23069,21 @@ msgstr ""
 
 #: includes/templates/class.php:116
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15962
 msgid "Done"
 msgstr ""
 
 #: includes/templates/class.php:144
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15843
 msgid "Header Type"
 msgstr ""
 
 #: includes/templates/class.php:145
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15844
 msgid "Menu Type"
 msgstr ""
 
 #: includes/templates/class.php:146
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15845
 msgid "Components"
 msgstr ""
 
@@ -23240,7 +23093,6 @@ msgstr ""
 
 #: includes/templates/class.php:192
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15796
 msgid "Clear"
 msgstr ""
 
@@ -23499,261 +23351,197 @@ msgstr ""
 msgid "Maintenance Mode On"
 msgstr ""
 
-#. translators: %s Jupiter X version
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:1610
 #, js-format
 msgid "Version %s"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:1617
 msgid "Theme styles"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:1497
 msgid "Learn more about Jupiter X."
 msgstr ""
 
-#. translators: %s Tab name
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:1505
 #, js-format
 msgid "Learn more about %s"
 msgstr ""
 
-#. translators: 1: Documentation page url
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5587
 #, js-format
 msgid "Our <a href=\"%1$s\" target=\"_blank\">documentation</a> could not help? <br> Contact our support team and we will get back to you <strong>within 24 hours</strong>."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5595
 msgid "Got any questions? Ask away and we will get back to you shortly."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5603
 msgid "Help Desk"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5612
 msgid "Contact support"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
 #: includes/extensions/raven/assets/js/editor.js:3404
-#: includes/control-panel-2/dist/control-panel.js:1245
-#: includes/control-panel-2/dist/control-panel.js:2806
-#: includes/control-panel-2/dist/control-panel.js:16010
-#: includes/control-panel-2/dist/control-panel.js:17096
 msgid "Cancel"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5525
 msgid "Revoke successful"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5537
-#: includes/control-panel-2/dist/control-panel.js:5560
 msgid "Revoke API key"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5539
 msgid "Please wait while your API key is being revoked."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5551
 msgid "Revoke was unsuccessful"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5553
 msgid "An error occured while revoking the license, please try again."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5568
 msgid "You are about to remove API key from this website. Are you sure you want to continue?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5318
 msgid "Thanks for registration!"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5330
-#: includes/control-panel-2/dist/control-panel.js:5353
 msgid "Register Jupiter X"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5332
 msgid "Please wait while your API key is being verified."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5344
 msgid "Oops! Registration was unsuccessful"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5346
 msgid "An error occured while registering the license, please try again."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5365
 msgid "Artbees API Key"
 msgstr ""
 
-#. translators: %s Link to help
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5376
 #, js-format
 msgid "Please check <a class=\"dashboard-register-tooltip-link\" target=\"_blank\" href=\"%s\">this</a> to learn how to find your API key."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5396
 msgid "Insert Envato purchase code"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5410
-#: includes/control-panel-2/dist/control-panel.js:14215
 msgid "Email Address"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5415
 msgid "This address will be used to provide you technical support"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5428
-#: includes/control-panel-2/dist/control-panel.js:14225
 msgid "Envato Purchase Code"
 msgstr ""
 
-#. translators: %s Link to help
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5439
 #, js-format
 msgid "Please check <a class=\"dashboard-register-tooltip-link\" target=\"_blank\" href=\"%s\">this</a> to learn how to find your purchase code."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5459
 msgid "Or insert API key"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5467
-#: includes/control-panel-2/dist/control-panel.js:14281
 msgid "I consent to Artbees Themes collecting my personal information according to its Privacy policy and Terms of use."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5113
 msgid "License Settings"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5119
 msgid "Warning: <strong>Another domain</strong> is registered with this license and your license may be <strong>deactivated</strong> in future releases. If you have your api_key or purchase key, please revoke and reactivate your license. Otherwise, please contact <a href=\"https://my.artbees.net/create-ticket/\" target=\"_blank\">Artbees support</a>"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5123
 msgid "Status: <strong>Active</strong>"
 msgstr ""
 
-#. translators: %s License registered email
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5133
 #, js-format
 msgid "License is registered to <strong>%s.</strong>"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5142
 msgid "License is registered."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5146
 msgid "View license"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5156
 msgid "Revoke license"
 msgstr ""
 
-#. translators: %s License expiry date
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5166
 #, js-format
 msgid "Premium support has expired on <strong>%s.</strong>"
 msgstr ""
 
-#. translators: %s License expiry date
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5173
 #, js-format
 msgid "Premium support expires in <strong>%s.</strong>"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5183
 msgid "Renew support"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5183
 msgid "Extend support"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5190
 msgid "My account"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5193
-#: includes/control-panel-2/dist/control-panel.js:5232
 msgid "Managing multiple licenses? Save up to 70% with our new <strong> Bulk plans."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5195
-#: includes/control-panel-2/dist/control-panel.js:5234
 msgid "Learn More"
 msgstr ""
 
-#. translators: %s Artbees support link
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5209
 #, js-format
 msgid "An error occured while validating your license. Please try reloading the page. If the problem still persists, contact <a href=\"%s\" target=\"_blank\">Artbees support</a>."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:5215
 msgid "Status: Not active"
 msgstr ""
 
@@ -23763,377 +23551,258 @@ msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5225
-#: includes/control-panel-2/dist/control-panel.js:16564
 msgid "Register license"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3142
-#: includes/control-panel-2/dist/control-panel.js:3956
-#: includes/control-panel-2/dist/control-panel.js:4550
-#: includes/control-panel-2/dist/control-panel.js:6523
-#: includes/control-panel-2/dist/control-panel.js:6530
-#: includes/control-panel-2/dist/control-panel.js:9716
 msgid "Add New"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3379
-#: includes/control-panel-2/dist/control-panel.js:4112
-#: includes/control-panel-2/dist/control-panel.js:4974
-#: includes/control-panel-2/dist/control-panel.js:6533
-#: includes/control-panel-2/dist/control-panel.js:9731
 msgid "Create"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2788
-#: includes/control-panel-2/dist/control-panel.js:2943
-#: includes/control-panel-2/dist/control-panel.js:3245
-#: includes/control-panel-2/dist/control-panel.js:3808
-#: includes/control-panel-2/dist/control-panel.js:4055
-#: includes/control-panel-2/dist/control-panel.js:4359
-#: includes/control-panel-2/dist/control-panel.js:4708
-#: includes/control-panel-2/dist/control-panel.js:6360
-#: includes/control-panel-2/dist/control-panel.js:6385
-#: includes/control-panel-2/dist/control-panel.js:6541
-#: includes/control-panel-2/dist/control-panel.js:7316
-#: includes/control-panel-2/dist/control-panel.js:9732
-#: includes/control-panel-2/dist/control-panel.js:10852
-#: includes/control-panel-2/dist/control-panel.js:11013
-#: includes/control-panel-2/dist/control-panel.js:11315
-#: includes/control-panel-2/dist/control-panel.js:14575
 msgid "Discard"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6483
-#: includes/control-panel-2/dist/control-panel.js:9684
 msgid "Enable Unfiltered File Uploads"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6488
-#: includes/control-panel-2/dist/control-panel.js:9686
 msgid "Enable and Import"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6495
-#: includes/control-panel-2/dist/control-panel.js:9687
 msgid "Import Without Enabling"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:6501
 msgid "Before you enable unfiltered file upload, note that such files include a security risk. Jupiter does run a process to remove possible malicious code, but there is still a risk involved when using such files."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:6504
 msgid "If you do not enable uploading unfiltered files, any SVG or JSON (including Lottie files) used in the uploaded template will not be imported."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6580
-#: includes/control-panel-2/dist/control-panel.js:15209
-#: includes/control-panel-2/dist/control-panel.js:16122
 msgid "Import"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:150
-#: includes/control-panel-2/dist/control-panel.js:709
 msgid "Search..."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:291
 msgid "Type to search"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:925
 msgid "Where do you want to display this template?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:926
 msgid "Set conditions that determine where in your website this template is displayed. To display templates globally across your website, use “Entire site”."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/extensions/raven/assets/js/editor.js:451
-#: includes/control-panel-2/dist/control-panel.js:1090
 msgid "JupiterX recognized that you have set this condition for other templates"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:1102
 msgid "Add Conditions"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:1119
-#: includes/control-panel-2/dist/control-panel.js:5781
 msgid "Save and Close"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7268
-#: includes/control-panel-2/dist/control-panel.js:7284
 msgid "Apply Changes"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7272
 msgid "Applying..."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7306
 msgid "Remove Post Meta Option"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7321
 msgid "Are you sure you want to remove this post meta override for"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7408
 msgid "Posts using this template in meta options"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7409
 msgid "View and edit the post meta overrides"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7450
 msgid "No post is using this template through meta options."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7094
 msgid "Rename"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3221
-#: includes/control-panel-2/dist/control-panel.js:4031
-#: includes/control-panel-2/dist/control-panel.js:4666
-#: includes/control-panel-2/dist/control-panel.js:7102
 msgid "Delete"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7115
 msgid "Display in"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7124
-#: includes/control-panel-2/dist/control-panel.js:7158
 msgid "Edit Conditions"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:89
-#: includes/control-panel-2/dist/control-panel.js:7133
-#: includes/control-panel-2/dist/control-panel.js:7189
 msgid "Post Meta Conditions"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6618
 msgid "Only .JSON or .ZIP files are allowed."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2678
-#: includes/control-panel-2/dist/control-panel.js:2709
-#: includes/control-panel-2/dist/control-panel.js:2740
-#: includes/control-panel-2/dist/control-panel.js:2771
-#: includes/control-panel-2/dist/control-panel.js:6709
-#: includes/control-panel-2/dist/control-panel.js:10463
 msgid "Upload"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6711
 msgid "Import Template"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6712
 msgid "Drag & drop .JSON or .ZIP file"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6713
 msgid "or"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6716
 msgid "Select File"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6351
 msgid "Edit Template Name"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6375
 msgid "Remove item"
 msgstr ""
 
-#. translators: %s Title
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6393
 #, js-format
 msgid "Are you sure you want to remove this item %s ?"
 msgstr ""
 
-#. translators: 1: Opening HTML span tag, 2: Closing HTML span tag.
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6093
 #, js-format
 msgid "Layout Builder requires %1$s Elementor %2$s to be installed and activated."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:6104
 msgid "Layout builder provides a complete visual overview of all parts of your website so you can easily customize your website down to the last detail"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4818
-#: includes/control-panel-2/dist/control-panel.js:5021
 msgid "Add Custom Snippet"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4819
 msgid "Edit Custom Snippet"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4836
 msgid "1. What is the name of this custom snippet?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3429
-#: includes/control-panel-2/dist/control-panel.js:4163
-#: includes/control-panel-2/dist/control-panel.js:4844
 msgid "Enter a name"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4851
 msgid "2. Where do you want to insert your custom snippet?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4875
 msgid "3. In which priority the custom snippet will be inserted?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4912
 msgid "4. What is the content of this custom snippet?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4927
 msgid "5. In which condition do you want to insert this code?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4947
 msgid "Active this immediately after it is created."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4559
-#: includes/control-panel-2/dist/control-panel.js:4659
-#: includes/control-panel-2/dist/control-panel.js:4679
-#: includes/control-panel-2/dist/control-panel.js:4948
 msgid "Activate"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3394
-#: includes/control-panel-2/dist/control-panel.js:4126
-#: includes/control-panel-2/dist/control-panel.js:4992
 msgid "Saving"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5019
 msgid "Add Your First Custom Snippet"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5020
 msgid "Customize your site even further with custom codes. Anything from adding tracking codes, meta titles, and other scripts to setting display conditions, locations, and priority. All within one place."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4558
-#: includes/control-panel-2/dist/control-panel.js:4678
 msgid "Bulk Actions"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4560
-#: includes/control-panel-2/dist/control-panel.js:4680
 msgid "Inactivate"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4566
-#: includes/control-panel-2/dist/control-panel.js:4686
 msgid "Apply"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4659
 msgid "Deactivate"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4351
-#: includes/control-panel-2/dist/control-panel.js:4700
 msgid "Remove the custom snippet"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4361
-#: includes/control-panel-2/dist/control-panel.js:4710
 msgid "Are you sure you want to delete this snippet? This action can’t be undone."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2468
 msgid "Upload or select the font file"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2477
 msgid "Select Font"
 msgstr ""
 
@@ -24150,429 +23819,331 @@ msgid "Preview: "
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2572
-#: includes/control-panel-2/dist/control-panel.js:2634
-#: includes/control-panel-2/dist/control-panel.js:3122
 msgid "Almost before we knew it, we had left the ground."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2628
 msgid "Oblique"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2652
 msgid "WOFF File"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2657
 msgid "The Web Open Font Format, used by Modern Browsers"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2668
-#: includes/control-panel-2/dist/control-panel.js:2699
-#: includes/control-panel-2/dist/control-panel.js:2730
-#: includes/control-panel-2/dist/control-panel.js:2761
 msgid "Upload a file or paste a url in this field"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2683
 msgid "WOFF2 File"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2688
 msgid "The Web Open Font Format 2, used by Super Modern Browsers"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2714
 msgid "TTF File"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2719
 msgid "TrueType Fonts, used for better supporting Safari, Android, iOS"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2745
 msgid "SVG File"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2750
 msgid "SVG fonts allow SVG to be used as glyphs when displaying text, used by Legacy iOS"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2780
-#: includes/control-panel-2/dist/control-panel.js:10851
-#: includes/control-panel-2/dist/control-panel.js:11012
 msgid "Save"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2798
 msgid "Remove the custom font variation"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2808
 msgid "Are you sure you want to delete this font variation?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2817
 msgid "Wrong format"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2819
-#: includes/control-panel-2/dist/control-panel.js:3691
 msgid "Ok"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2821
 msgid "Please upload or select a valid format for this field."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3405
 msgid "Add New Font Family"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3406
 msgid "Edit Font Family"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3423
 msgid "1. What is the name of this font family?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3436
 msgid "2. Specify the variations for this font family"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3455
 msgid "Add Font Variations"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3490
 msgid "Add Your First Custom Font"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3491
 msgid "Not satisfied by popular or over-used fonts? Add custom web fonts from other font vendors and use them across your device."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3492
 msgid "Add Custom Font"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3149
 msgid "Font Family Name"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2935
-#: includes/control-panel-2/dist/control-panel.js:3237
 msgid "Remove the custom font"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:2945
-#: includes/control-panel-2/dist/control-panel.js:3247
 msgid "Are you sure you want to delete this font? This action can’t be undone."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3663
 msgid "Name:"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3668
 msgid "CSS Prefix:"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3673
 msgid "Icons Count:"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3689
 msgid "Duplicate icon set prefix"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3693
 msgid "The Icon Set prefix already exists in your site. In order to avoid conflicts we recommend to use a unique prefix per Icon Set."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3578
 msgid "Upload Icon File"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3581
 msgid "Please upload Fontastic, Fontello or Icomoon package as a .zip file"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4137
 msgid "Add New Icon Set"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4138
 msgid "Edit Icon Set"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4155
 msgid "1. What is the name of this icon set?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4170
 msgid "2. Icons"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4215
 msgid "Add Your First Custom Icon"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4216
 msgid "Add even more icons to Jupiter's icon collection and use them across your website."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4217
 msgid "Add Custom Icon"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3951
 msgid "Custom icons"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3963
 msgid "Icon Set Name"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:4047
 msgid "Remove the icon set"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3810
-#: includes/control-panel-2/dist/control-panel.js:4057
 msgid "Are you sure you want to delete this icon set? This action can’t be undone."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:3800
 msgid "Remove the custom icon"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10922
-#: includes/control-panel-2/dist/control-panel.js:11084
-#: includes/control-panel-2/dist/control-panel.js:11112
 msgid "Hard Crop"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11008
 msgid "Edit Image Size"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10862
-#: includes/control-panel-2/dist/control-panel.js:11023
 msgid "Size Name"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10899
-#: includes/control-panel-2/dist/control-panel.js:11061
 msgid "Image Height"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11312
 msgid "Remove Image Size"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11322
 msgid "Are you sure you want to remove this image size?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10847
 msgid "Add New Image Size"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11190
 msgid "Add a New Size"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11172
 msgid "Could not connect to Artbees server, please try again and if the issue persists contact support"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:1905
 msgid "Global Features"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:1919
 msgid "Layout Building Blocks"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:1939
 msgid "General Widgets"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:1991
 msgid "WooCommerce Widgets"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11483
 msgid "Important Notice: Read Carefully Before Proceeding"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11487
 msgid "Confirm"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11493
 msgid "If you are upgrading from JupiterX version 3.7 or earlier, please note that enabling Simplicity Mode will disable your current Customizer and meta post settings. You will need to reconfigure specific features manually using Elementor and Layout Builder."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11497
 msgid "Strongly Advised: Do not activate Simplicity Mode on live and production website without conducting comprehensive tests. Make sure you have a complete backup of your website before enabling this feature."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9790
 msgid "Clients"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9791
 msgid "Animated Columns"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9792
 msgid "Banner Builder"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9793
 msgid "Edge Slider"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9794
 msgid "Employees"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9795
 msgid "FAQ"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9796
 msgid "News"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9797
 msgid "Pricing Tables"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9798
 msgid "FlexSlider"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9799
 msgid "Tab Slider"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10013
 msgid "Saving…"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10013
 msgid "Save settings"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10063
 msgid "Regenerating…"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10063
 msgid "Regenerate assets"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10067
 msgid "Styles, Javascript and image files of Elementor and theme are saved in the uploads folder. Recreate those files, according to the most recent settings."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10076
 msgid "Simplicity Mode"
 msgstr ""
 
-#. translators: %s Simplicity learn more link
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10088
 #, js-format
 msgid "Simplicity Mode offers a simplified and intuitive website-building experience for customers who rely on Elementor and the Layout Builder. By enabling Simplicity Mode, you can declutter your workspace by removing complex customizer settings, excessive meta options, and unnecessary CSS and JS code. With this option, you'll experience improved website performance and faster loading times, enabling you to work efficiently and seamlessly. <a target=\"_blank\" href=\"%s\">Learn more</a>"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10102
 msgid "Development Mode"
 msgstr ""
 
@@ -24581,296 +24152,236 @@ msgid "Enable this during development to force recompilation of compiled assets 
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10121
 msgid "Cache Busting"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10122
 msgid "Handling Cache in Jupiter X"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10126
 msgid "Enable cache busting technique."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10135
 msgid "SVG Support"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10140
 msgid "Enable this option to upload SVG to WordPress Media Library."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10148
 msgid "Smooth Scroll"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10154
 msgid "Enable this option to activate automatic smooth scroll on anchor links."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10163
 msgid "Google IP Anonymization"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10168
 msgid "Enable IP Anonymization for Google Analytics."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10177
 msgid "Multilingual Customizer"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10182
 msgid "Enable separate Customizer options for each language. It's recommended to disable this option for performance issues."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10189
 msgid "Google & Adobe Fonts"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10201
 msgid "JavaScript (Web Font Loader)"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10206
 msgid "By default, Jupiter X loads the Google and Adobe font via Javascript ( Web Font Loader ). If facing any issue, you can select CSS option"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10209
 msgid "By default, Jupiter X loads the Google via Javascript ( Web Font Loader ). If facing any issue, you can select CSS option"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10215
 msgid "Google Analytics ID"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10216
 msgid "Adding Google Analytics code into Jupiter X"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10230
 msgid "Adobe Fonts Project ID"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10231
 msgid "Using Adobe fonts (formerly Typekit) in Jupiter X"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10253
 msgid "Tracking Codes After <code>&lt;head&gt;</code> Tag"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10272
 msgid "Tracking Codes Before <code>&lt;/head&gt;</code> Tag"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10291
 msgid "Tracking Codes After <code>&lt;body&gt;</code> Tag"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10310
 msgid "Tracking Codes Before <code>&lt;/body&gt;</code> Tag"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10329
 msgid "JupiterX Feature Management"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10331
 msgid "In this panel, select the JupiterX modules that best fit your website's needs. Disabling unnecessary features can improve your Elementor building experience and increase your page speed."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10353
 msgid "Enable Jupiter X features (Customizer, Meta options, etc.) for these post types."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10379
 msgid "No custom post type was found."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10394
 msgid "Enabling white label in Jupiter X"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10403
 msgid "Enable the while label settings."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10411
 msgid "Control Panel Tabs"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10414
 msgid "Enable or disable control panel tabs."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10436
 msgid "Control Panel Logo"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10443
 msgid "Select an image"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10468
 msgid "Change control panel logo."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10472
 msgid "Text Occurrence"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10484
 msgid "Replace 'Jupiter X' text to the entire admin pages."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10488
 msgid "Menu Icon"
 msgstr ""
 
-#. translators: Icons url
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10503
 #, js-format
 msgid "<a href=\"%s\" target=\"_blank\">Choose</a> an icon and paste the class name."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10516
 msgid "Help Links"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10523
 msgid "Enable help links from Theme settings."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10531
 msgid "Menu Help"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10538
 msgid "Enable help link from menu."
 msgstr ""
 
-#. translators: Child theme url
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10545
 #, js-format
 msgid "For further customization on theme name, slug, thumbnail and description that appears in Appearance &gt; Themes, please install the <a href=\"%s\" target=\"_blank\">Child theme</a>."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10560
 msgid "Product Media Settings"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10565
 msgid "JupiterX adds video capability to product gallery images. To learn more <a href=\"https://help.jupiterx.com/article/439-adding-a-video-to-the-product-gallery-in-jupiter-x\" target=\"_blank\">click here</a>."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10574
 msgid "Show Media Controls"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10586
 msgid "Quantity Field Switch"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10597
 msgid "Autoplay Video"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10612
 msgid "Play Video Inline"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10635
 msgid "Mute Video Sound"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10650
 msgid "Theme Accent Color"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10662
 msgid "Twitter Consumer Key"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10673
 msgid "Twitter Consumer Secret"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10684
 msgid "Twitter Access Token"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10695
 msgid "Twitter Access Token Secret"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10706
 msgid "MailChimp API Key"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10717
 msgid "Mailchimp List ID"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:10728
 msgid "Google Maps API Key"
 msgstr ""
 
@@ -24878,9 +24389,7 @@ msgstr ""
 msgid "Current version: "
 msgstr ""
 
-#. translators: %s version
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16714
 #, js-format
 msgid "View version %s details"
 msgstr ""
@@ -24890,29 +24399,23 @@ msgid "New version: "
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16665
 msgid "Updated"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16669
 msgid "Queued"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16673
 msgid "Updating"
 msgstr ""
 
-#. translators: 1: Site health url, 2: API error message.
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16797
 #, js-format
 msgid "There is a problem in fetching the updates from API. Please check <a href=\"%1$s\" target=\"_blank\">Site Health</a> to fix possible issues. If the issue persists, please contact support. (%2$s)"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16808
 msgid "You are all good. Everything is up to date."
 msgstr ""
 
@@ -24921,7 +24424,6 @@ msgid "This section is disabled because you have not registered a license yet. "
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16582
 msgid "Check for updates"
 msgstr ""
 
@@ -24930,95 +24432,74 @@ msgid "Last checked on "
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16543
 msgid "at"
 msgstr ""
 
-#. translators: %s State
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16599
 #, js-format
 msgid "%s auto update"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16617
 msgid "Update all"
 msgstr ""
 
-#. translators: 1: Product name 2: Product type
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17091
 #, js-format
 msgid "Reinstall %1$s %2$s"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17095
 msgid "Reinstall"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17095
 msgid "Reload"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17043
 msgid "Reinstallation process started."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17066
 msgid "The package updated successfully."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17077
 msgid "The process faced an error. Please try again later. If the issue persists, please contact support."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17103
 msgid "We highly recommend you to back up your site to prevent possible data loss before you proceed."
 msgstr ""
 
-#. translators: 1: Product name 2: Product version 3: Product type
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17109
 #, js-format
 msgid "Are you sure you want to reinstall <strong>%1$s v%2$s</strong> %3$s?"
 msgstr ""
 
-#. translators: The selected version.
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17169
 #, js-format
 msgid "Reinstall v%s"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17245
 msgid "Rollback versions"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17246
 msgid "Controlling theme and plugins version in Jupiter X"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17260
 msgid "Refresh data"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17263
 msgid "Experiencing an issue with current version of Jupiter X or its bundled plugins? Rollback to previous versions."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:17271
 msgid "An error occurred while fetching data. Please try later again. If the issue persists, please contact support."
 msgstr ""
 
@@ -25026,93 +24507,71 @@ msgstr ""
 msgid "You are viewing recent debug logs (max last 10,000 lines) of your site. "
 msgstr ""
 
-#. translators: %s Link to help
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14884
 #, js-format
 msgid "The log file is located in <code>%1$s</code> and size is <code>%2$s</code>."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14902
 msgid "Refresh Logs"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14915
 msgid "Clear Logs"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14920
 msgid "Please be cautious about sharing sensitive logs. It may contain your purchase code and email so better to share it in a private message."
 msgstr ""
 
-#. translators: %s Link to help
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14930
 #, js-format
 msgid "If you don't need to log the errors, it's recommended to disable Debug Log as explained in this <a href='%s' target='_blank'>article</a>."
 msgstr ""
 
-#. translators: %s Link to help
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14872
 #, js-format
 msgid "To start logging and viewing the logs, you need to enable Debug Log as explained in this <a href=\"%s\" target=\"_blank\">article</a>."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14656
 msgid "Error!"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14669
 msgid "Export Done"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14676
 msgid "Export has been finished successfully."
 msgstr ""
 
-#. translators: %s Export step name
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14685
 #, js-format
 msgid "Exporting %s..."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14692
 msgid "Please wait for the export to finish..."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14729
 msgid "Filename"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14746
 msgid "Site Content"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14773
 msgid "Custom Tables"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15191
-#: includes/control-panel-2/dist/control-panel.js:16006
-#: includes/control-panel-2/dist/control-panel.js:16384
 msgid "Important Notice"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16012
 msgid "Let's do this!"
 msgstr ""
 
@@ -25121,409 +24580,316 @@ msgstr ""
 msgid "This template was created with <a href=\"%s\" target=\"_blank\"><strong>Simplicity Mode</strong></a> enabled. To make the most of this template's features, we need to turn on Simplicity Mode. Remember, once you go with this template, it's best to keep Simplicity Mode on to ensure everything runs smoothly."
 msgstr ""
 
-#. translators: %s: Simplicity Mode help link.
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16023
 #, js-format
 msgid "You are currently using <a href=\"%s\" target=\"_blank\"><strong>Simplicity Mode</strong></a> on your website. To make the most of this template's features, we need to turn off Simplicity Mode. Remember, once you go with this template, it's best to keep Simplicity Mode off to ensure everything runs smoothly."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16166
 msgid "Plugins Used:"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15255
-#: includes/control-panel-2/dist/control-panel.js:15291
 msgid "Downloading package..."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15264
-#: includes/control-panel-2/dist/control-panel.js:15299
 msgid "Installing required plugins..."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15270
-#: includes/control-panel-2/dist/control-panel.js:15305
 msgid "Importing content..."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15282
 msgid "Creating database backup..."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14994
 msgid "An error occurred while importing the template, please try again."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15144
-#: includes/control-panel-2/dist/control-panel.js:16346
 msgid "Something went wrong!"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15158
-#: includes/control-panel-2/dist/control-panel.js:16359
 msgid "All Done!"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15163
 msgid "The template is successfully imported."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15172
 msgid "Importing is in progress..."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15195
 msgid "All of your current content, settings, widgets, etc. will be removed and the new content will be imported."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15197
 msgid "Are you sure you want to continue?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15204
 msgid "Choose how you want to import this template"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15219
 msgid "Full Import"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15221
 msgid "Your current content, settings, widgets, etc. will be removed and the database will be reset. New page contents and settings will be imported."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15229
 msgid "Content Import"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15231
 msgid "Keep your current content, settings, widgets, etc. Only the new page contents will be imported."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15239
 msgid "Include media (copyrighted)."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15242
 msgid "Notice: While importing the media, SVG support will be enabled if it was disabled before."
 msgstr ""
 
-#. translators: 1: Template filters count
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15930
 #, js-format
 msgid "Filters (%d)"
 msgstr ""
 
-#. translators: 1: Templates count
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15937
 #, js-format
 msgid "%d template was found."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15947
 msgid "Filters & Refine"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:15954
 msgid "Clear Filters"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14954
 msgid "No template found."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14955
 msgid "Clear some filters and try again."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16351
 msgid "An error occurred while removing the template, please try again."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16364
 msgid "The template is removed."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16372
 msgid "Removing the Template"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16377
 msgid "Please wait until the uninstalling process is finished."
 msgstr ""
 
-#. translators: %s Template name
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16392
 #, js-format
 msgid "Yes, remove %s"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16396
 msgid "Removing the template will delete all of your current data and settings. Do you want to proceed?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16252
 msgid "Installed Template"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:16253
 msgid "Installing a Template"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11886
-#: includes/control-panel-2/dist/control-panel.js:15605
 msgid "Templates"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5994
 msgid "Icon Library"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9722
 msgid "Import Templates"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9729
 msgid "Add New Popup Template"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9744
 msgid "Template Name"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9696
 msgid "Before you enable unfiltered files upload, note that such files include a security risk. Elementor does run a process to remove possible malicious code, but there is still risk involved when using such files."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9699
 msgid "If you do not enable uploading unfiltered files, any SVG or JSON (including lottie) files used in the uploaded template will not be imported."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:8318
 msgid "popup builder"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:7817
 msgid "Where Do You Want to Display Your Template?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:7819
 msgid "For example, choose \"Entire Site\" to display the template across your site."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9035
 msgid "Select Timezone"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9516
 msgid "Logic between Triggers"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9526
 msgid "Or"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9527
 msgid "And"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9537
 msgid "Add Trigger Rule"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9421
 msgid "Trigger Rules"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:9422
 msgid "Define trigger rules that will show Popup when conditions are met."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:8347
 msgid "Display this popup on specific pages."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:8348
 msgid "Display this popup based on specific events and user interactions."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:7496
-#: includes/control-panel-2/dist/control-panel.js:7504
 msgid "Triggers"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:7676
 msgid "Publish Settings"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:7768
 msgid "Save & Close"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:7768
 msgid "NEXT"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5648
 msgid "New in JupiterX v2.5: Manage Elementor Features"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5782
 msgid "Remind Me Later"
 msgstr ""
 
-#. translators: %s: elements link in jupiterx control panel
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5792
 #, js-format
 msgid "You can disable the unused features to achieve the highest site performance possible. Just uncheck the features you don’t need from the section below to disable them. You can always enable/disable these features from <a href=\"%s\" target=\"_blank\">JupiterX Settings</a>."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5807
 msgid "Deselect All"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:5807
 msgid "Select All"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12534
 msgid "Skip setup wizard?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12536
 msgid "Are you sure you want to cancel the setup wizard? Canceling the wizard will discard any changes made during the setup process."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12539
 msgid "Continue Wizard"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12506
-#: includes/control-panel-2/dist/control-panel.js:12542
-#: includes/control-panel-2/dist/control-panel.js:12603
-#: includes/control-panel-2/dist/control-panel.js:14299
 msgid "Skip Wizard"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14202
 msgid "Let's Get Started!"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14204
 msgid "Begin your website-building journey by registering your Jupiter X license."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14205
 msgid "It gives you access to updates, premium plugins, customer support and more."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14242
 msgid "Back to Envato Registration"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14242
 msgid "Register with API key"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14254
 msgid "How to find my purchase code?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14294
 msgid "Registration failed, please double-check the information provided and enter the correct account details."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12610
-#: includes/control-panel-2/dist/control-panel.js:14307
 msgid "Continue"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11548
 msgid "Custom 2"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11557
 msgid "Custom 1"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11709
 msgid "Lorem ipsum dolor sit amet consectetur. Pellentesque ullamcorper nulla urna pellentesque leo integer nulla porttitor. In massa non risus turpis sapien nulla."
 msgstr ""
 
@@ -25532,7 +24898,6 @@ msgid " This is a link."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13265
 msgid "Splash Some Color!"
 msgstr ""
 
@@ -25541,49 +24906,38 @@ msgid "Time to add your personal touch. Choose from a vibrant "
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13270
 msgid "color palette to make your website shine."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12638
 msgid "Lorem ipsum dolor sit amet consectetur. Pellentesque ullamcorper nulla."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11712
-#: includes/control-panel-2/dist/control-panel.js:12642
 msgid "This is a link."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12755
 msgid "Body Font Size"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12773
 msgid "Heading Ratio"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12796
 msgid "Body and Button"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12801
-#: includes/control-panel-2/dist/control-panel.js:12807
 msgid "Lorem ipsum dolor sit amet consectetur. Orci auctor magnis lobortis in ut nunc lectus. Vitae quisque tortor et amet libero ac integer in. Volutpat lectus sed phasellus."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12804
 msgid "Scelerisque diam aliquam praesent vitae elementum risus. Lorem ipsum dolor sit amet consectetur. Orci auctor magnis lobortis in ut nunc lectus. Vitae quisque tortor et amet libero ac integer in. Volutpat lectus sed phasellus nisi purus. Scelerisque diam aliquam praesent."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14429
 msgid "Font It Up!"
 msgstr ""
 
@@ -25596,58 +24950,46 @@ msgid "Select from a collection of stylish fonts that match your "
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14436
 msgid "website's personality."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12287
-#: includes/control-panel-2/dist/control-panel.js:12340
 msgid "Upload Logo"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12296
 msgid "Select Logo"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12332
 msgid "Upload a logo to establish your brand recognition. (optional)"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12167
 msgid "Select your default header. This will be your global header."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12175
 msgid "Change Header"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12202
 msgid "Header Templates"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12026
 msgid "Select your default footer. This will be your global footer."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12034
 msgid "Change Footer"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12061
 msgid "Footer Templates"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14092
 msgid "Structure Your Space!"
 msgstr ""
 
@@ -25656,7 +24998,6 @@ msgid " It's time to arrange the elements of your website like a pro."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14097
 msgid "Pick from a range of header and footer layouts that"
 msgstr ""
 
@@ -25664,295 +25005,236 @@ msgstr ""
 msgid "suit your content and style. "
 msgstr ""
 
-#. translators: %s is the name of the active tile/section
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:11911
 #, js-format
 msgid "No Templates Found for the %s."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13349
 msgid "Homepage"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13357
 msgid "About"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13365
 msgid "Services"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13373
 msgid "Benefits"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13408
 msgid "Single Post"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13416
 msgid "Post Archive"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13432
 msgid "Shop Archive"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13440
 msgid "Single Product"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13604
 msgid "Change"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13682
 msgid "Import Your Website's Building Blocks!"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13683
 msgid "Give yourself a head start! Within just a few clicks, activate extra"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13684
 msgid "features and import a selection of dummy pages that serve as a"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13685
 msgid "foundation for your own content creation."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13688
 msgid "Website Type"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13493
 msgid "Suitable for corporate, blog, portfolio or startup websites"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13496
 msgid "Online Shop"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13497
 msgid "Suitable for E-Commerce websites"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13692
 msgid "Import Static Page Templates"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13693
 msgid "Pre-built templates for common pages to give you inspiration and save time."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13715
 msgid "Import Dynamic Page Templates"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13716
 msgid "Pre-built templates for dynamic pages such as archive, product page, cart, and more."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13742
 msgid "Import sample content"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13745
 msgid "Enabling this option will add dummy blog posts, projects, and products to populate all templates and layouts, demonstrating what your finished site may appear as when launched live. Get a complete vision."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13785
 msgid "Install required plugins"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13791
 msgid "Setup Colors"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13797
 msgid "Setup Typography"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13803
 msgid "Import Layout"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13809
 msgid "Import Content"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13936
 msgid "Your website is almost ready!"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13937
 msgid "You're nearly there! Here's a quick checklist outlining the steps"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13938
 msgid "we will undertake to finalize your website setup. Simply click"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13939
 msgid "the \"Complete Setup\" button to wrap up the process."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13953
 msgid "Retry"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13968
 msgid "Complete Setup"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13977
 msgid "You're all set!"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13978
 msgid "Congratulations! Your website is ready to make its"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13979
 msgid "grand debut. Now you can start adding new content,"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13980
 msgid "edit or customize your website."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13986
 msgid "View Website"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13989
 msgid "Customize your website"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13993
 msgid "Global Styles"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:13994
 msgid "Manage global typography, colors, and more."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14001
 msgid "Manage site header, footer, single pages, and more."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14007
 msgid "Jupiter X Settings"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14008
 msgid "Theme settings, modules, white label options, and more."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14013
 msgid "Need help?"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14017
 msgid "Documentation"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14018
 msgid "Read our in-depth tutorials, articles, and tips."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14024
 msgid "Submit a Ticket"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14025
 msgid "Ask your questions directly from our dedicated support team."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14031
 msgid "Jupiter X Facebook Group"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14032
 msgid "Learn, share tips, and connect with Jupiter X community."
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12923
 msgid "Registration"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:12928
 msgid "Done!"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14556
 msgid "New Update Ready for JupiterX!"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14572
 msgid "Update JupiterX Theme Now"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:103
-#: includes/control-panel-2/dist/control-panel.js:14581
 msgid "We noticed you've updated the JupiterX Core Plugin – great job staying up-to-date! But wait, your JupiterX theme version seems to be a step behind. To ensure your site runs smoothly and to avoid any hiccups, it's important to update your theme as well. It's just a click away!"
 msgstr ""
 
@@ -26091,88 +25373,4 @@ msgstr ""
 
 #: includes/extensions/raven/assets/js/product-variation-gallery.js:128
 msgid "Use Image"
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:2562
-#: includes/control-panel-2/dist/control-panel.js:2598
-msgid "Weight:"
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:2566
-#: includes/control-panel-2/dist/control-panel.js:2619
-msgid "Style:"
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:2570
-#: includes/control-panel-2/dist/control-panel.js:2632
-msgid "Preview:"
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:3066
-#: includes/control-panel-2/dist/control-panel.js:3083
-msgid "No preview available"
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:3342
-msgid "Please add at least one font variation with a font file."
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:3358
-msgid "An error occurred while saving."
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:5218
-msgid "You need to register your license to be able to take advantage of lifetime auto-updates, install extensions and import hundreds of ready-made demo content."
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:6610
-msgid "Please select a file"
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:10107
-msgid "This option should be enabled while your website is in development."
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:13268
-msgid "Time to add your personal touch. Choose from a vibrant"
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:14095
-msgid "It's time to arrange the elements of your website like a pro."
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:14099
-msgid "suit your content and style."
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:14432
-msgid "Words have power, so let's make them look amazing."
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:14434
-msgid "Select from a collection of stylish fonts that match your"
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:14879
-msgid "You are viewing recent debug logs (max last 10,000 lines) of your site."
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:16541
-msgid "Last checked on"
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:16560
-msgid "This section is disabled because you have not registered a license yet."
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:16707
-msgid "Current version:"
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:16716
-msgid "New version:"
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:16950
-msgid "Please check file or folder permissions on your server."
 msgstr ""

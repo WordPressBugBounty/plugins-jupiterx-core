@@ -376,7 +376,7 @@ class Ajax_Handler {
 		wp_send_json_error( $this->response );
 	}
 
-	/**
+		/**
 	 * Upload all the form files.
 	 *
 	 * @return $this
@@ -419,10 +419,27 @@ class Ajax_Handler {
 				}
 
 				$uploads_dir    = $this->get_ensure_upload_dir();
-				$file_extension = pathinfo( $file['name'], PATHINFO_EXTENSION );
+
+				// --- SECURITY PATCH: Validate file type & enforce strict blacklist ---
+				$wp_filetype = wp_check_filetype_and_ext( $file['tmp_name'], $file['name'] );
+				$ext         = empty( $wp_filetype['ext'] ) ? '' : strtolower( $wp_filetype['ext'] );
+				$type        = empty( $wp_filetype['type'] ) ? '' : $wp_filetype['type'];
+
+				// Comprehensive blacklist including .phar, .svg, and other dangerous executables
+				$blacklist = [ 'php', 'php3', 'php4', 'php5', 'php6', 'phps', 'php7', 'php8', 'phtml', 'shtml', 'pht', 'phar', 'svg', 'dfxp', 'xhtml', 'html', 'htm', 'js', 'exe', 'cgi', 'py', 'sh', 'bat', 'htaccess', 'htpasswd' ];
+
+				if ( ! $ext || ! $type || in_array( $ext, $blacklist, true ) ) {
+					$this
+						->add_response( 'errors', esc_html__( 'Sorry, this file type is not permitted for security reasons.', 'jupiterx-core' ) )
+						->set_success( false );
+					return $this;
+				}
+				
+				$file_extension = $ext;
 				$filename       = wp_unique_filename( $uploads_dir, wp_hash( $file['name'] . time() ) . '.' . $file_extension );
 				$filename       = sanitize_file_name( $filename );
 				$new_file       = trailingslashit( $uploads_dir ) . $filename;
+				// --- END SECURITY PATCH ---
 
 				if ( ! is_dir( $uploads_dir ) || ! is_writable( $uploads_dir ) ) {
 					$this

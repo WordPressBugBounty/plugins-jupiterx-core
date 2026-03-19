@@ -873,6 +873,20 @@ final class JupiterX_Popups {
 			return false;
 		}
 
+		// --- SECURITY PATCH ---
+		$post = get_post( $popup_id );
+
+		// 1. Ensure the requested ID is actually a JupiterX popup, not a standard post/page
+		if ( ! $post || self::POST_TYPE !== $post->post_type ) {
+			return false;
+		}
+
+		// 2. Ensure the popup is published, unless the user has explicit permission to read private/draft posts
+		if ( 'publish' !== $post->post_status && ! current_user_can( 'read_post', $popup_id ) ) {
+			return false;
+		}
+		// --- END SECURITY PATCH ---
+
 		$plugin = Elementor\Plugin::instance();
 
 		$content = $plugin->frontend->get_builder_content( $popup_id );
