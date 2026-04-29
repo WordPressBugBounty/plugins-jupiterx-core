@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS;
 
+defined( 'ABSPATH' ) || die();
+
 use Sabberworm\CSS\Parsing\OutputException;
 
 class OutputFormat {
@@ -106,7 +108,7 @@ class OutputFormat {
 		} else if(method_exists('\\Sabberworm\\CSS\\OutputFormatter', $sMethodName)) {
 			return call_user_func_array(array($this->getFormatter(), $sMethodName), $aArguments);
 		} else {
-			throw new \Exception('Unknown OutputFormat method called: '.$sMethodName);
+			throw new \Exception( esc_html( 'Unknown OutputFormat method called: ' . $sMethodName ) );
 		}
 	}
 	

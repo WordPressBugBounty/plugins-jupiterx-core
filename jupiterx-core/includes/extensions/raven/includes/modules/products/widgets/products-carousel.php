@@ -138,7 +138,6 @@ class Products_Carousel extends Base_Widget {
 								'ids',
 								'categories_tags',
 								'current_archive_query',
-								'search_result',
 							],
 						],
 					],
@@ -3086,9 +3085,6 @@ class Products_Carousel extends Base_Widget {
 		$this->end_controls_section();
 	}
 
-	/**
-	 * @SuppressWarnings(PHPMD.NPathComplexity)
-	 */
 	protected function render() {
 		$settings                 = $this->get_settings();
 		$is_current_archive_query = 'current_archive_query' === $settings['query_filter'];
@@ -3100,12 +3096,7 @@ class Products_Carousel extends Base_Widget {
 		$display_settings = $this->get_settings_for_display();
 		$widget_title     = $display_settings['widget_title'];
 		$query            = Module::query( $this, $settings );
-
-		if ( 'search_result' === $settings['query_filter'] && 'no_search_query' === $query ) {
-			return;
-		}
-
-		$products = $query->get_content();
+		$products         = $query->get_content();
 
 		// Return when we don't have any products to show.
 		if ( $products['query_results']->total < 1 ) {

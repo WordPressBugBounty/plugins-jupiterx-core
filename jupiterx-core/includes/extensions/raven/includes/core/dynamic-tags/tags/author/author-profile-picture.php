@@ -36,7 +36,23 @@ class Author_Profile_Picture extends Data_Tag {
 			];
 		}
 
-		$author = get_userdata( get_post()->post_author );
+		$post = get_post();
+
+		if ( ! $post instanceof \WP_Post ) {
+			return [
+				'id'  => '',
+				'url' => '',
+			];
+		}
+
+		$author = get_userdata( (int) $post->post_author );
+
+		if ( ! $author instanceof \WP_User ) {
+			return [
+				'id'  => '',
+				'url' => '',
+			];
+		}
 
 		return [
 			'id'  => '',

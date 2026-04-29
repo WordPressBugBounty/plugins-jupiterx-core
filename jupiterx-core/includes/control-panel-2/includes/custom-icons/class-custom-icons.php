@@ -81,6 +81,15 @@ class JupiterX_Core_Control_Panel_Custom_Icons {
 
 		$paged = filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT );
 
+		$orderby_req = isset( $_GET['orderby'] ) ? sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) : 'date'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$order_req   = isset( $_GET['order'] ) ? strtoupper( sanitize_text_field( wp_unslash( $_GET['order'] ) ) ) : 'DESC'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! in_array( $orderby_req, [ 'date', 'modified' ], true ) ) {
+			$orderby_req = 'date';
+		}
+		if ( ! in_array( $order_req, [ 'ASC', 'DESC' ], true ) ) {
+			$order_req = 'DESC';
+		}
+
 		/**
 		 * Filter List Table query arguments.
 		 *
@@ -92,6 +101,8 @@ class JupiterX_Core_Control_Panel_Custom_Icons {
 			'post_type'      => self::POST_TYPE,
 			'paged'          => $paged,
 			'posts_per_page' => 20,
+			'orderby'        => $orderby_req,
+			'order'          => $order_req,
 		] );
 
 		$query = new \WP_Query( $args );
@@ -115,19 +126,27 @@ class JupiterX_Core_Control_Panel_Custom_Icons {
 		$columns = apply_filters( 'jupiterx_custom_icon_list_table_' . self::POST_TYPE . '_columns', [
 			'labels' => [
 				esc_html__( 'Author', 'jupiterx-core' ),
-				esc_html__( 'Created on', 'jupiterx-core' ),
+				esc_html__( 'Published date', 'jupiterx-core' ),
+				esc_html__( 'Last modified', 'jupiterx-core' ),
 			],
 			'values' => [ '' ],
 		], $posts );
+
+		$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 
 		// columns value.
 		foreach ( $posts as $post ) {
 			$columns['values'][ "post_{$post->ID}" ] = [
 				get_the_author_meta( 'user_login', get_post_field( 'post_author', $post->ID ) ),
-				get_the_time( 'Y-m-d', $post->ID ),
+				'',
+				'',
 			];
 
 			$post->user_url = get_edit_user_link( get_the_author_meta( 'ID', get_post_field( 'post_author', $post->ID ) ) );
+			$post->custom_date = get_the_date( 'M d, Y', $post->ID );
+			$post->custom_modified_date = get_the_modified_date( 'M d, Y', $post->ID );
+			$post->custom_date_with_time = mysql2date( $date_time_format, $post->post_date );
+			$post->custom_modified_date_with_time = mysql2date( $date_time_format, $post->post_modified );
 		}
 
 		// Send response.
@@ -258,7 +277,9 @@ class JupiterX_Core_Control_Panel_Custom_Icons {
 		$ext   = pathinfo( $files['file']['name'], PATHINFO_EXTENSION );
 
 		if ( 'zip' !== $ext ) {
-			unlink( $files['file']['name'] );
+			if ( ! empty( $files['file']['tmp_name'] ) ) {
+				wp_delete_file( $files['file']['tmp_name'] );
+			}
 			wp_send_json_error( esc_html__( 'Only zip files are allowed', 'jupiterx-core' ) );
 		}
 
@@ -269,7 +290,9 @@ class JupiterX_Core_Control_Panel_Custom_Icons {
 		// Handler upload archive file.
 		$upload_result = wp_handle_upload( $files['file'], [ 'test_form' => false ] );
 		if ( isset( $upload_result['error'] ) ) {
-			unlink( $files['file']['name'] );
+			if ( ! empty( $files['file']['tmp_name'] ) ) {
+				wp_delete_file( $files['file']['tmp_name'] );
+			}
 
 			wp_send_json_error( $upload_result['error'] );
 		}

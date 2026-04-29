@@ -1,9 +1,10 @@
 <?php
+
 /**
  * Plugin Name: Jupiter X Core
  * Plugin URI: https://jupiterx.com
  * Description: Adds core functionality to the Jupiter X theme.
- * Version: 4.14.2
+ * Version: 4.15.0
  * Author: Artbees
  * Author URI: https://artbees.net
  * Text Domain: jupiterx-core
@@ -14,7 +15,7 @@
 
 use Elementor\Plugin;
 
-defined( 'ABSPATH' ) || die();
+defined('ABSPATH') || die();
 
 /**
  * Jupiter Core class.
@@ -22,14 +23,15 @@ defined( 'ABSPATH' ) || die();
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.TooManyMethods)
  */
-if ( ! class_exists( 'JupiterX_Core' ) ) {
+if (! class_exists('JupiterX_Core')) {
 
 	/**
 	 * Jupiter Core class.
 	 *
 	 * @since 1.0.0
 	 */
-	class JupiterX_Core {
+	class JupiterX_Core
+	{
 
 		/**
 		 * Jupiter Core instance.
@@ -108,8 +110,9 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @return JupiterX_Core
 		 */
-		public static function get_instance() {
-			if ( is_null( self::$instance ) ) {
+		public static function get_instance()
+		{
+			if (is_null(self::$instance)) {
 				self::$instance = new self();
 			}
 			return self::$instance;
@@ -120,7 +123,8 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @since 1.0.0
 		 */
-		public function __construct() {
+		public function __construct()
+		{
 			$this->define_constants();
 			$this->load();
 			$this->activation_hook();
@@ -131,15 +135,16 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @since 1.0.0
 		 */
-		protected function define_constants() {
-			$plugin_data = get_file_data( __FILE__, array( 'Plugin Name', 'Version' ), 'jupiterx-core' );
+		protected function define_constants()
+		{
+			$plugin_data = get_file_data(__FILE__, array('Plugin Name', 'Version'), 'jupiterx-core');
 
-			self::$plugin_basename   = plugin_basename( __FILE__ );
-			self::$plugin_name       = array_shift( $plugin_data );
-			self::$version           = array_shift( $plugin_data );
-			self::$plugin_dir        = trailingslashit( plugin_dir_path( __FILE__ ) );
-			self::$plugin_url        = trailingslashit( plugin_dir_url( __FILE__ ) );
-			self::$plugin_assets_url = trailingslashit( self::$plugin_url . 'assets' );
+			self::$plugin_basename   = plugin_basename(__FILE__);
+			self::$plugin_name       = array_shift($plugin_data);
+			self::$version           = array_shift($plugin_data);
+			self::$plugin_dir        = trailingslashit(plugin_dir_path(__FILE__));
+			self::$plugin_url        = trailingslashit(plugin_dir_url(__FILE__));
+			self::$plugin_assets_url = trailingslashit(self::$plugin_url . 'assets');
 		}
 
 		/**
@@ -148,8 +153,9 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 * @since 1.0.0
 		 * @access protected
 		 */
-		protected function load() {
-			$this->load_files( [
+		protected function load()
+		{
+			$this->load_files([
 				'utilities/general',
 				'utilities/options',
 				'admin/class-auto-updates',
@@ -158,9 +164,9 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 				'svg-sanitizer/functions',
 				'admin/license/class-api-license',
 				'admin/license/class-event-license',
-			] );
+			]);
 
-			add_action( 'jupiterx_init', [ $this, 'init' ], 4 );
+			add_action('jupiterx_init', [$this, 'init'], 4);
 		}
 
 		/**
@@ -168,12 +174,13 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @since 4.10.1
 		 */
-		protected function activation_hook() {
-			register_activation_hook( __FILE__, [ $this, 'licensing_schedules' ] );
+		protected function activation_hook()
+		{
+			register_activation_hook(__FILE__, [$this, 'licensing_schedules']);
 
-			add_action( 'admin_init', [ $this, 'check_event_transient' ] );
+			add_action('admin_init', [$this, 'check_event_transient']);
 
-			register_deactivation_hook( __FILE__, [ $this, 'clear_licensing_schedules' ] );
+			register_deactivation_hook(__FILE__, [$this, 'clear_licensing_schedules']);
 		}
 
 		/**
@@ -181,8 +188,9 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @since 4.10.1
 		 */
-		public function check_event_transient() {
-			if ( ! get_transient( 'jupiterx_event_transient' ) ) {
+		public function check_event_transient()
+		{
+			if (! get_transient('jupiterx_event_transient')) {
 				$this->licensing_schedules();
 			}
 		}
@@ -193,42 +201,41 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 * @since 1.0.0
 		 * @SuppressWarnings(PHPMD.NPathComplexity)
 		 */
-		public function init() {
-			add_action( 'admin_bar_menu', [ $this, 'extend_admin_bar_menu' ], 100 );
-			add_action( 'init', [ $this, 'redirect_page' ] );
-			add_action( 'admin_head', [ $this, 'inline_css' ] );
-			add_action( 'admin_print_footer_scripts', [ $this, 'inline_js' ] );
+		public function init()
+		{
+			add_action('admin_bar_menu', [$this, 'extend_admin_bar_menu'], 100);
+			add_action('init', [$this, 'redirect_page']);
+			add_action('admin_head', [$this, 'inline_css']);
+			add_action('admin_print_footer_scripts', [$this, 'inline_js']);
 
 			// Hubspot affiliate code for jupiterx.
-			add_filter( 'leadin_impact_code', [ $this, 'jupiterx_get_hubspot_affiliate_code' ] );
+			add_filter('leadin_impact_code', [$this, 'jupiterx_get_hubspot_affiliate_code']);
 
-			load_plugin_textdomain( 'jupiterx-core', false, dirname( plugin_basename( __FILE__ ) ) . '/languages/' );
-
-			if ( version_compare( JUPITERX_VERSION, '1.2.0', '>' ) ) {
-				$this->load_files( [
+			if (version_compare(JUPITERX_VERSION, '1.2.0', '>')) {
+				$this->load_files([
 					'compiler/functions',
 					'compiler/class-compiler',
-				] );
+				]);
 			}
 
-			if ( version_compare( JUPITERX_VERSION, '1.4.1', '>' ) ) {
-				$this->load_files( [
+			if (version_compare(JUPITERX_VERSION, '1.4.1', '>')) {
+				$this->load_files([
 					'google-tag/functions',
-				] );
+				]);
 			}
 
-			if ( version_compare( JUPITERX_VERSION, '1.6.0', '>=' ) ) {
-				$this->load_files( [
+			if (version_compare(JUPITERX_VERSION, '1.6.0', '>=')) {
+				$this->load_files([
 					'widgets/class',
 					'widgets/functions',
 					'admin/options',
-				] );
+				]);
 			}
 
 			$this->check_theme_version();
 
 			// Load files.
-			$this->load_files( [
+			$this->load_files([
 				'parse-css/functions',
 				'post-type/class',
 				'post-type/custom-snippets',
@@ -245,48 +252,49 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 				'woocommerce/product-gallery-video',
 				'utilities/load',
 				'condition/class-condition-manager',
-			] );
+			]);
 
-			if ( ! $this->check_default_settings() ) {
-				$this->load_files( [
+			if (! $this->check_default_settings()) {
+				$this->load_files([
 					'customizer/functions',
-				] );
+				]);
 			}
 
-			if ( class_exists( 'Elementor\Plugin' ) ) {
-				$this->load_files( [
+			if (class_exists('Elementor\Plugin')) {
+				$this->load_files([
 					'popups/class',
 					'popups/class-conditions-manager',
 					'popups/class-triggers-manager',
-				] );
+					'control-panel-2/includes/class-elementor-library-preview-canvas',
+				]);
 			}
 
-			if ( is_admin() ) {
-				if ( ! defined( 'JUPITERX_OLD_CONTROL_PANEL' ) ) {
-					$this->load_files( [
+			if (is_admin()) {
+				if (! defined('JUPITERX_OLD_CONTROL_PANEL')) {
+					$this->load_files([
 						'admin/site-health/site-health',
 						'admin/tgmpa/tgmpa-plugin-list',
 						'control-panel-2/class',
-					] );
+					]);
 				}
 
-				if ( ! class_exists( 'JupiterX_Update_Plugins' ) ) {
-					$this->load_files( [
+				if (! class_exists('JupiterX_Update_Plugins')) {
+					$this->load_files([
 						'admin/update-plugins/class-update-plugins',
-					] );
+					]);
 				}
 
-				$this->load_files( [
+				$this->load_files([
 					'admin/attachment-media/class',
-				] );
+				]);
 			}
 
 			$this->disable_admin_bar();
 
 			// Enable Grid Container and Editor Top Bar by default.
-			if ( class_exists( 'Elementor\Plugin' ) && get_option( 'jupiterx_fresh_install', false ) ) {
-				update_option( 'elementor_experiment-container_grid', 'active' );
-				update_option( 'elementor_experiment-editor_v2', 'active' );
+			if (class_exists('Elementor\Plugin') && get_option('jupiterx_fresh_install', false)) {
+				update_option('elementor_experiment-container_grid', 'active');
+				update_option('elementor_experiment-editor_v2', 'active');
 			}
 
 			/**
@@ -296,7 +304,7 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 			 *
 			 * @param JupiterX_Core
 			 */
-			do_action( 'jupiterx_core_init', $this );
+			do_action('jupiterx_core_init', $this);
 		}
 
 		/**
@@ -308,8 +316,9 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @return void
 		 */
-		public function extend_admin_bar_menu( $admin_bar ) {
-			$this->maintenance_mode_admin_bar_alert( $admin_bar );
+		public function extend_admin_bar_menu($admin_bar)
+		{
+			$this->maintenance_mode_admin_bar_alert($admin_bar);
 		}
 
 		/**
@@ -321,32 +330,33 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @return void
 		 */
-		private function maintenance_mode_admin_bar_alert( $admin_bar ) {
-			$maintenance_mode = get_theme_mod( 'jupiterx_maintenance', false );
+		private function maintenance_mode_admin_bar_alert($admin_bar)
+		{
+			$maintenance_mode = get_theme_mod('jupiterx_maintenance', false);
 
-			if ( ! $maintenance_mode ) {
+			if (! $maintenance_mode) {
 				return;
 			}
 
-			$maintenance_template = get_theme_mod( 'jupiterx_maintenance_template' );
+			$maintenance_template = get_theme_mod('jupiterx_maintenance_template');
 
-			$admin_bar->add_node( [
+			$admin_bar->add_node([
 				'id'     => 'jupiterx-maintenance-mode-on',
-				'title'  => __( 'Maintenance Mode On', 'jupiterx-core' ),
+				'title'  => __('Maintenance Mode On', 'jupiterx-core'),
 			]);
 
-			if ( ! class_exists( 'Elementor\Plugin' ) ) {
+			if (! class_exists('Elementor\Plugin')) {
 				return;
 			}
 
-			$document = Plugin::$instance->documents->get( $maintenance_template );
+			$document = Plugin::$instance->documents->get($maintenance_template);
 
-			$admin_bar->add_node( [
+			$admin_bar->add_node([
 				'id' => 'jupiterx-maintanance-mode-edit',
 				'parent' => 'jupiterx-maintenance-mode-on',
-				'title' => __( 'Edit Template', 'jupiterx-core' ),
+				'title' => __('Edit Template', 'jupiterx-core'),
 				'href' => $document ? $document->get_edit_url() : '',
-			] );
+			]);
 		}
 
 		/**
@@ -358,9 +368,10 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @todo Move to common admin CSS file.
 		 */
-		public function inline_css() {
+		public function inline_css()
+		{
 			ob_start();
-			?>
+?>
 			<style type="text/css">
 				ul#adminmenu a[href*='admin.php?page=jupiterx_upgrade'],
 				ul#adminmenu a.jupiterx_upgrade_submenu_link {
@@ -395,7 +406,7 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 					visibility: hidden !important;
 				}
 			</style>
-			<?php
+		<?php
 			echo ob_get_clean(); // phpcs:ignore
 		}
 
@@ -405,7 +416,8 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 * @since 3.2.0
 		 * @return string
 		 */
-		public function jupiterx_get_hubspot_affiliate_code() {
+		public function jupiterx_get_hubspot_affiliate_code()
+		{
 			return '9WvmE0';
 		}
 
@@ -418,19 +430,20 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @todo Move to common admin JS file.
 		 */
-		public function inline_js() {
+		public function inline_js()
+		{
 			ob_start();
-			?>
+		?>
 			<script type="text/javascript">
-				jQuery(document).ready( function($) {
-					$( "ul#adminmenu a[href*='admin.php?page=jupiterx_help']" ).attr( 'target', '_blank' );
-					$( "ul#adminmenu a[href*='admin.php?page=jupiterx_upgrade']" )
+				jQuery(document).ready(function($) {
+					$("ul#adminmenu a[href*='admin.php?page=jupiterx_help']").attr('target', '_blank');
+					$("ul#adminmenu a[href*='admin.php?page=jupiterx_upgrade']")
 						.addClass('jupiterx_upgrade_submenu_link')
-						.attr( 'target', '_blank' )
-						.attr( 'href', 'https://themeforest.net/item/jupiter-multipurpose-responsive-theme/5177775?ref=artbees&utm_source=AdminSideBarUpgradeLink&utm_medium=AdminUpgradePopup&utm_campaign=FreeJupiterXAdminUpgradeCampaign' );
+						.attr('target', '_blank')
+						.attr('href', 'https://themeforest.net/item/jupiter-multipurpose-responsive-theme/5177775?ref=artbees&utm_source=AdminSideBarUpgradeLink&utm_medium=AdminUpgradePopup&utm_campaign=FreeJupiterXAdminUpgradeCampaign');
 				});
 			</script>
-			<?php
+<?php
 			echo ob_get_clean(); // phpcs:ignore
 		}
 
@@ -441,7 +454,8 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @return string
 		 */
-		public function version() {
+		public function version()
+		{
 			return self::$version;
 		}
 
@@ -452,7 +466,8 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @return string
 		 */
-		public function plugin_basename() {
+		public function plugin_basename()
+		{
 			return self::$plugin_basename;
 		}
 
@@ -463,7 +478,8 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @return string
 		 */
-		public function plugin_name() {
+		public function plugin_name()
+		{
 			return self::$plugin_name;
 		}
 
@@ -474,7 +490,8 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @return string
 		 */
-		public function plugin_dir() {
+		public function plugin_dir()
+		{
 			return self::$plugin_dir;
 		}
 
@@ -485,7 +502,8 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @return string
 		 */
-		public function plugin_url() {
+		public function plugin_url()
+		{
 			return self::$plugin_url;
 		}
 
@@ -496,7 +514,8 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @return string
 		 */
-		public function plugin_assets_url() {
+		public function plugin_assets_url()
+		{
 			return self::$plugin_assets_url;
 		}
 
@@ -507,11 +526,12 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @param string $directory_name The directory name to load the files.
 		 */
-		public function load_directory( $directory_name ) {
-			$path       = trailingslashit( $this->plugin_dir() . 'includes/' . $directory_name );
-			$file_names = glob( $path . '*.php' );
-			foreach ( $file_names as $filename ) {
-				if ( file_exists( $filename ) ) {
+		public function load_directory($directory_name)
+		{
+			$path       = trailingslashit($this->plugin_dir() . 'includes/' . $directory_name);
+			$file_names = glob($path . '*.php');
+			foreach ($file_names as $filename) {
+				if (file_exists($filename)) {
 					require_once $filename;
 				}
 			}
@@ -524,11 +544,12 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @param array $file_names The names of the files to be loaded in the includes directory.
 		 */
-		public function load_files( $file_names = array() ) {
-			foreach ( $file_names as $file_name ) {
+		public function load_files($file_names = array())
+		{
+			foreach ($file_names as $file_name) {
 				$path = $this->plugin_dir() . 'includes/' . $file_name . '.php';
 
-				if ( file_exists( $path ) ) {
+				if (file_exists($path)) {
 					require_once $path;
 				}
 			}
@@ -539,24 +560,25 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @since 1.0.0
 		 */
-		public function redirect_page() {
+		public function redirect_page()
+		{
 			// phpcs:disable
-			if ( ! isset( $_GET['page'] ) ) {
+			if (! isset($_GET['page'])) {
 				return;
 			}
 
-			if ( 'customize_theme' === $_GET['page'] ) {
-				wp_redirect( admin_url( 'customize.php' ) );
+			if ('customize_theme' === $_GET['page']) {
+				wp_redirect(admin_url('customize.php'));
 				exit;
 			}
 
-			if ( 'jupiterx_upgrade' === $_GET['page'] ) {
-				wp_redirect( admin_url() );
+			if ('jupiterx_upgrade' === $_GET['page']) {
+				wp_redirect(admin_url());
 				exit;
 			}
 
-			if ( 'jupiterx_help' === $_GET['page'] ) {
-				wp_redirect( 'https://themes.artbees.net/support/jupiterx/' );
+			if ('jupiterx_help' === $_GET['page']) {
+				wp_redirect('https://help.jupiterx.com/');
 				exit;
 			}
 			// phpcs:enable
@@ -569,10 +591,11 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @return void
 		 */
-		public function licensing_schedules() {
-			wp_schedule_event( time(), 'weekly', 'jupiterx_license_checks' );
+		public function licensing_schedules()
+		{
+			wp_schedule_event(time(), 'weekly', 'jupiterx_license_checks');
 
-			set_transient( 'jupiterx_event_transient', true, 30 * DAY_IN_SECONDS );
+			set_transient('jupiterx_event_transient', true, 30 * DAY_IN_SECONDS);
 		}
 
 		/**
@@ -582,22 +605,23 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @return void
 		 */
-		public function clear_licensing_schedules() {
-			if ( is_multisite() ) {
+		public function clear_licensing_schedules()
+		{
+			if (is_multisite()) {
 				$sites = get_sites();
 
-				foreach ( $sites as $site ) {
-					switch_to_blog( $site->blog_id );
+				foreach ($sites as $site) {
+					switch_to_blog($site->blog_id);
 
-					wp_clear_scheduled_hook( 'jupiterx_license_checks' );
-					delete_transient( 'jupiterx_event_transient' );
+					wp_clear_scheduled_hook('jupiterx_license_checks');
+					delete_transient('jupiterx_event_transient');
 
 					restore_current_blog();
 				}
 			}
 
-			wp_clear_scheduled_hook( 'jupiterx_license_checks' );
-			delete_transient( 'jupiterx_event_transient' );
+			wp_clear_scheduled_hook('jupiterx_license_checks');
+			delete_transient('jupiterx_event_transient');
 		}
 
 		/**
@@ -606,26 +630,27 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 * @since 4.0.0
 		 * @return boolean.
 		 */
-		public function jupiterx_check_setup_wizard() {
-			if ( get_option( 'jupiterx_setup_wizard_skipped', false ) ) {
+		public function jupiterx_check_setup_wizard()
+		{
+			if (get_option('jupiterx_setup_wizard_skipped', false)) {
 				return false;
 			}
 
-			if ( get_option( 'jupiterx_setup_wizard_done', false ) ) {
+			if (get_option('jupiterx_setup_wizard_done', false)) {
 				return false;
 			}
 
 			if (
-				! empty( get_option( 'jupiterx_setup_wizard_hide', false ) ) &&
-				get_option( 'jupiterx_setup_wizard_hide', false ) > time()
+				! empty(get_option('jupiterx_setup_wizard_hide', false)) &&
+				get_option('jupiterx_setup_wizard_hide', false) > time()
 			) {
 				return true;
 			}
 
-			$fresh_install = get_option( 'jupiterx_fresh_install', false );
+			$fresh_install = get_option('jupiterx_fresh_install', false);
 
-			if ( $fresh_install ) {
-				update_option( 'jupiterx_setup_wizard_hide', strtotime( '+14 days', time() ) );
+			if ($fresh_install) {
+				update_option('jupiterx_setup_wizard_hide', strtotime('+14 days', time()));
 
 				return true;
 			}
@@ -641,9 +666,10 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @since 1.0.0
 		 */
-		private function disable_admin_bar() {
-			if ( ! empty( $_GET['elementor-preview'] ) ) { // phpcs:ignore
-				add_filter( 'show_admin_bar', '__return_false' );
+		private function disable_admin_bar()
+		{
+			if (! empty($_GET['elementor-preview'])) { // phpcs:ignore
+				add_filter('show_admin_bar', '__return_false');
 			}
 		}
 
@@ -652,23 +678,24 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @since 4.0.0
 		 */
-		private function check_theme_version() {
-			if ( 'dismiss' === get_option( 'jupiterx_theme_update_modal', '' ) ) {
+		private function check_theme_version()
+		{
+			if ('dismiss' === get_option('jupiterx_theme_update_modal', '')) {
 				return;
 			}
 
-			$version = wp_get_theme()->get( 'Version' );
+			$version = wp_get_theme()->get('Version');
 
-			if ( is_a( wp_get_theme()->parent(), '\WP_Theme' ) ) {
-				$version = wp_get_theme()->parent()->get( 'Version' );
+			if (is_a(wp_get_theme()->parent(), '\WP_Theme')) {
+				$version = wp_get_theme()->parent()->get('Version');
 			}
 
-			if ( version_compare( $this->version(), $version, '<=' ) ) {
-				update_option( 'jupiterx_theme_update_modal', 'dismiss' );
+			if (version_compare($this->version(), $version, '<=')) {
+				update_option('jupiterx_theme_update_modal', 'dismiss');
 				return;
 			}
 
-			update_option( 'jupiterx_theme_update_modal', 'show' );
+			update_option('jupiterx_theme_update_modal', 'show');
 		}
 
 		/**
@@ -676,38 +703,39 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @since 3.8.0
 		 */
-		public function check_default_settings() {
-			$version = wp_get_theme()->get( 'Version' );
+		public function check_default_settings()
+		{
+			$version = wp_get_theme()->get('Version');
 
-			if ( is_a( wp_get_theme()->parent(), '\WP_Theme' ) ) {
-				$version = wp_get_theme()->parent()->get( 'Version' );
+			if (is_a(wp_get_theme()->parent(), '\WP_Theme')) {
+				$version = wp_get_theme()->parent()->get('Version');
 			}
 
-			if ( version_compare( $version, '3.8.0', '<' ) ) {
+			if (version_compare($version, '3.8.0', '<')) {
 				return false;
 			}
 
-			$jx_settings = get_option( 'jupiterx', [] );
+			$jx_settings = get_option('jupiterx', []);
 
-			$fresh_install = get_option( 'jupiterx_first_installation', false );
+			$fresh_install = get_option('jupiterx_first_installation', false);
 
-			if ( ! empty( $fresh_install ) ) {
-				if ( ! isset( $jx_settings['disable_theme_default_settings'] ) ) {
+			if (! empty($fresh_install)) {
+				if (! isset($jx_settings['disable_theme_default_settings'])) {
 					$jx_settings['disable_theme_default_settings'] = true;
 
-					update_option( 'jupiterx', $jx_settings );
+					update_option('jupiterx', $jx_settings);
 				}
 
-				delete_option( 'jupiterx_first_installation' );
+				delete_option('jupiterx_first_installation');
 			}
 
-			if ( ! isset( $jx_settings['disable_theme_default_settings'] ) ) {
+			if (! isset($jx_settings['disable_theme_default_settings'])) {
 				return false;
 			}
 
-			$default_settings = ! empty( $jx_settings['disable_theme_default_settings'] ) ? $jx_settings['disable_theme_default_settings'] : '';
+			$default_settings = ! empty($jx_settings['disable_theme_default_settings']) ? $jx_settings['disable_theme_default_settings'] : '';
 
-			if ( empty( $default_settings ) ) {
+			if (empty($default_settings)) {
 				return false;
 			}
 
@@ -719,17 +747,18 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 		 *
 		 * @since 4.4.0
 		 */
-		public function disable_page_title_bar() {
+		public function disable_page_title_bar()
+		{
 			$transient_key = 'elementor_library_page_title_bar';
 
-			if ( ! $this->check_default_settings() ) {
-				delete_transient( $transient_key );
+			if (! $this->check_default_settings()) {
+				delete_transient($transient_key);
 
-				jupiterx_update_option( 'has_page_title_bar', true );
+				jupiterx_update_option('has_page_title_bar', true);
 				return false;
 			}
 
-			if ( ! jupiterx_get_option( 'has_page_title_bar', true ) ) {
+			if (! jupiterx_get_option('has_page_title_bar', true)) {
 				return true;
 			}
 
@@ -738,10 +767,10 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 			$post_type   = 'elementor_library';
 			$meta_key    = '_elementor_template_type';
 			$meta_value  = 'page-title-bar';
-			$cached_post = get_transient( $transient_key );
+			$cached_post = get_transient($transient_key);
 
-			if ( ! empty( $cached_post ) ) {
-				jupiterx_update_option( 'has_page_title_bar', true );
+			if (! empty($cached_post)) {
+				jupiterx_update_option('has_page_title_bar', true);
 				return false;
 			}
 
@@ -753,21 +782,23 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
 				AND pm.meta_key = %s
 				AND pm.meta_value = %s
 				LIMIT 1",
-				$post_type, $meta_key, $meta_value
+				$post_type,
+				$meta_key,
+				$meta_value
 			);
 
-			$page_title_bar = $wpdb->get_results( $query ); // phpcs:ignore
+			$page_title_bar = $wpdb->get_results($query); // phpcs:ignore
 
-			if ( ! empty( $page_title_bar ) ) {
-				set_transient( $transient_key, $page_title_bar );
+			if (! empty($page_title_bar)) {
+				set_transient($transient_key, $page_title_bar);
 
-				jupiterx_update_option( 'has_page_title_bar', true );
+				jupiterx_update_option('has_page_title_bar', true);
 				return false;
 			}
 
-			delete_transient( $transient_key );
+			delete_transient($transient_key);
 
-			jupiterx_update_option( 'has_page_title_bar', false );
+			jupiterx_update_option('has_page_title_bar', false);
 			return true;
 		}
 	}
@@ -780,7 +811,8 @@ if ( ! class_exists( 'JupiterX_Core' ) ) {
  *
  * @return JupiterX_Core
  */
-function jupiterx_core() {
+function jupiterx_core()
+{
 	return JupiterX_Core::get_instance();
 }
 

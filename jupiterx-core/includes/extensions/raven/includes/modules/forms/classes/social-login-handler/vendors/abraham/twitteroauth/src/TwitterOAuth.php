@@ -10,6 +10,8 @@ declare(strict_types=1);
 
 namespace Abraham\TwitterOAuth;
 
+defined( 'ABSPATH' ) || die();
+
 use Abraham\TwitterOAuth\Util\JsonDecoder;
 use Composer\CaBundle\CaBundle;
 
@@ -174,7 +176,7 @@ class TwitterOAuth extends Config
         $result = $this->oAuthRequest($url, 'POST', $parameters);
 
         if ($this->getLastHttpCode() != 200) {
-            throw new TwitterOAuthException($result);
+            throw new TwitterOAuthException( esc_html( $result ) );
         }
 
         parse_str($result, $response);
@@ -701,7 +703,7 @@ class TwitterOAuth extends Config
             $error = curl_error($curlHandle);
             $errorNo = curl_errno($curlHandle);
             curl_close($curlHandle);
-            throw new TwitterOAuthException($error, $errorNo);
+            throw new TwitterOAuthException( esc_html( $error ), absint( $errorNo ) );
         }
 
         $this->response->setHttpCode(

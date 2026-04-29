@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS;
 
+defined( 'ABSPATH' ) || die();
+
 use Sabberworm\CSS\Parser;
 use Sabberworm\CSS\OutputFormat;
 

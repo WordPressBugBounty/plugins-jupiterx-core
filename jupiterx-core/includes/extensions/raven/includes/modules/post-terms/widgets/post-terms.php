@@ -520,10 +520,16 @@ class Post_Terms extends Base_Widget {
 		$this->add_render_attribute( 'wrapper', 'class', $classes );
 
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?> >
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'wrapper' );
+		?> >
 			<?php foreach ( $terms as $term ) : ?>
 				<a href="<?php echo esc_url( get_term_link( $term->term_id ) ); ?>">
-					<div <?php echo $this->get_render_attribute_string( 'item' ); ?> >
+					<div <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+					echo $this->get_render_attribute_string( 'item' );
+					?> >
 						<?php echo esc_html( $term->name ); ?>
 					</div>
 				</a>

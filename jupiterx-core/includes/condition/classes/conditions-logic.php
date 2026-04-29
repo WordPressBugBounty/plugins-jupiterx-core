@@ -394,13 +394,18 @@ class Conditions_Logic {
 			$post_type = $case[0];
 			$taxonomy  = $case[1];
 
+			if ( strpos( $taxonomy, 'CUSTOMPOSTTYPETERM_' ) !== false ) {
+				$taxonomy = ucfirst( str_replace( 'CUSTOMPOSTTYPETERM_', '', $taxonomy ) );
+			}
+
 			if ( 'all' === $this->condition['conditionD'][0] ) {
-				$string = esc_html__( 'All ', 'jupiterx-core' ) . " {$this->archive[ $post_type ][ $taxonomy ] } " . esc_html__( 'posts', 'jupiterx-core' );
+				$taxonomy_string = isset( $this->archives[ $post_type ] ) ? $this->archives[ $post_type ][ $taxonomy ] : $taxonomy;
+				$string          = esc_html__( 'All ', 'jupiterx-core' ) . $taxonomy_string . esc_html__( ' Posts', 'jupiterx-core' );
 				$this->attach_comma_separator( $string );
 				return;
 			}
-
-			$string = esc_html__( 'All ', 'jupiterx-core' ) . " {$this->archive[ $post_type ][ $taxonomy ] } " . esc_html__( 'by taxonomy id', 'jupiterx-core' ) . ' #' . $this->condition['conditionD'][0];
+			$taxonomy_string = isset( $this->archives[ $post_type ] ) ? $this->archives[ $post_type ][ $taxonomy ] : $taxonomy;
+			$string          = esc_html__( 'All ', 'jupiterx-core' ) . $taxonomy_string . esc_html__( ' by taxonomy id', 'jupiterx-core' ) . ' #' . $this->condition['conditionD'][0];
 			$this->attach_comma_separator( $string );
 		}
 	}
@@ -425,7 +430,7 @@ class Conditions_Logic {
 			return;
 		}
 
-		$string = esc_html__( 'All ', 'jupiterx-core' ) . " {$this->post_types[ $post_type ]} " . esc_html__( 'by author' ) . ':' . get_the_author_meta( 'display_name', $this->condition['conditionD'][0] );
+		$string = esc_html__( 'All ', 'jupiterx-core' ) . " {$this->post_types[ $post_type ]} " . esc_html__( 'by author', 'jupiterx-core' ) . ':' . get_the_author_meta( 'display_name', $this->condition['conditionD'][0] );
 		$this->attach_comma_separator( $string );
 	}
 

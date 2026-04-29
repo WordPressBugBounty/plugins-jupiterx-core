@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die();
+
 /**
  * JavaScript compressor, minifies JavaScript.
  * Based on JSMin (https://github.com/mrclay/minify, Ryan Grove <ryan@wonko.com>, Stephen Clay <steve@mrclay.org>, BSD License)
@@ -141,7 +143,14 @@ class JSMin {
                         if ($this->isEOF($this->a)) {
                             $byte = $this->inputIndex - 1;
                             throw new JSMin_UnterminatedStringException(
-                                "JSMin: Unterminated String at byte {$byte}: {$str}");
+                                esc_html(
+                                    sprintf(
+                                        'JSMin: Unterminated String at byte %1$d: %2$s',
+                                        $byte,
+                                        $str
+                                    )
+                                )
+                            );
                         }
                         $str .= $this->a;
                         if ($this->a === '\\') {
@@ -178,8 +187,14 @@ class JSMin {
                                 }
                                 if ($this->isEOF($this->a)) {
                                     throw new JSMin_UnterminatedRegExpException(
-                                        "JSMin: Unterminated set in RegExp at byte "
-                                            . $this->inputIndex .": {$pattern}");
+                                        esc_html(
+                                            sprintf(
+                                                'JSMin: Unterminated set in RegExp at byte %1$d: %2$s',
+                                                $this->inputIndex,
+                                                $pattern
+                                            )
+                                        )
+                                    );
                                 }
                             }
                         }
@@ -193,7 +208,14 @@ class JSMin {
                         } elseif ($this->isEOF($this->a)) {
                             $byte = $this->inputIndex - 1;
                             throw new JSMin_UnterminatedRegExpException(
-                                "JSMin: Unterminated RegExp at byte {$byte}: {$pattern}");
+                                esc_html(
+                                    sprintf(
+                                        'JSMin: Unterminated RegExp at byte %1$d: %2$s',
+                                        $byte,
+                                        $pattern
+                                    )
+                                )
+                            );
                         }
                         $this->output .= $this->a;
                         $this->lastByteOut = $this->a;
@@ -353,7 +375,14 @@ class JSMin {
                 }
             } elseif ($get === null) {
                 throw new JSMin_UnterminatedCommentException(
-                    "JSMin: Unterminated comment at byte {$this->inputIndex}: /*{$comment}");
+                    esc_html(
+                        sprintf(
+                            'JSMin: Unterminated comment at byte %1$d: /*%2$s',
+                            $this->inputIndex,
+                            $comment
+                        )
+                    )
+                );
             }
             $comment .= $get;
         }

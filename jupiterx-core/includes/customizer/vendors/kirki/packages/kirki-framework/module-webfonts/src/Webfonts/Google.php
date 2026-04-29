@@ -11,6 +11,7 @@
  */
 
 namespace Kirki\Module\Webfonts;
+defined( 'ABSPATH' ) || die();
 
 use Kirki\Module\Webfonts\Fonts;
 use Kirki\GoogleFonts;

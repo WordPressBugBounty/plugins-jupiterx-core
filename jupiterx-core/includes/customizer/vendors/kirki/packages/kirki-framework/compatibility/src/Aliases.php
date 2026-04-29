@@ -11,6 +11,7 @@
  */
 
 namespace Kirki\Compatibility;
+defined( 'ABSPATH' ) || die();
 
 /**
  * Adds class aliases for backwards compatibility.

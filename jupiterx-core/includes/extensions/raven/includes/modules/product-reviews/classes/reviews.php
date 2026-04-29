@@ -225,7 +225,10 @@ class Jupiterx_Product_Review_Content {
 					</div>
 					<div class="jupiterx-product-review-single-date">
 						<span>
-							<?php echo esc_html( date( 'M d, Y, H:i A', $comment_date ) ); ?>
+							<?php
+							$review_ts = false === $this->test_mode ? $comment_date : strtotime( $comment->comment_date );
+							echo esc_html( wp_date( 'M d, Y, H:i A', $review_ts ) );
+							?>
 						</span>
 					</div>
 					<div class="jupiterx-product-review-single-content jx-product-review-secondary-text">

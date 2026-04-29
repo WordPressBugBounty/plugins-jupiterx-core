@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * The file class that handles events of license.
  *

@@ -12,7 +12,6 @@
     margin-left: 5px;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_LAPTOP_MAX) {
   .raven-button span.raven-button-laptop-align-icon-right {
     -webkit-box-ordinal-group: 100;
@@ -27,7 +26,6 @@
     margin-left: 5px;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_EXTRA_MAX) {
   .raven-button span.raven-button-tablet_extra-align-icon-right {
     -webkit-box-ordinal-group: 100;
@@ -42,7 +40,6 @@
     margin-left: 5px;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_MAX) {
   .raven-button span.raven-button-tablet-align-icon-right {
     -webkit-box-ordinal-group: 100;
@@ -57,7 +54,6 @@
     margin-left: 5px;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_EXTRA_MAX) {
   .raven-button span.raven-button-mobile_extra-align-icon-right {
     -webkit-box-ordinal-group: 100;
@@ -72,7 +68,6 @@
     margin-left: 5px;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_MAX) {
   .raven-button span.raven-button-mobile-align-icon-right {
     -webkit-box-ordinal-group: 100;
@@ -87,37 +82,31 @@
     margin-left: 5px;
   }
 }
-
 @media (min-width: ELEMENTOR_SCREEN_WIDESCREEN_MIN) {
   .elementor-widescreen-align-justify .raven-button {
     width: 100%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_LAPTOP_MAX) {
   .elementor-laptop-align-justify .raven-button {
     width: 100%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_EXTRA_MAX) {
   .elementor-tablet_extra-align-justify .raven-button {
     width: 100%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_MAX) {
   .elementor-tablet-align-justify .raven-button {
     width: 100%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_EXTRA_MAX) {
   .elementor-mobile_extra-align-justify .raven-button {
     width: 100%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_MAX) {
   .elementor-mobile-align-justify .raven-button {
     width: 100%;
@@ -156,7 +145,6 @@
     background-color: transparent;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_SM_MAX) {
   .raven-nav-menu-mobile-horizontal .raven-nav-menu {
     display: -webkit-box;
@@ -189,7 +177,6 @@
     background-color: transparent;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MD_MAX) {
   .raven-breakpoint-tablet .raven-nav-menu-main {
     display: none;
@@ -198,7 +185,6 @@
     position: absolute;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_SM_MAX) {
   .raven-breakpoint-mobile .raven-nav-menu-main {
     display: none;
@@ -210,7 +196,6 @@
     display: block;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_SM_MAX) {
   .raven-breakpoint-mobile .raven-nav-menu-toggle {
     display: block;
@@ -222,7 +207,6 @@
     display: block;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_SM_MAX) {
   .raven-breakpoint-mobile .raven-nav-menu-active.raven-nav-menu-dropdown {
     display: block;
@@ -242,13 +226,11 @@
     display: none;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_SM_MAX) {
   .raven-nav-icons-hidden-mobile i._mi {
     display: none;
   }
 }
-
 @media (min-width: ELEMENTOR_SCREEN_WIDESCREEN_MIN) {
   div.elementor-widget-raven-post-meta.elementor-widescreen-align-center .raven-icon-list-items {
     -webkit-box-pack: center;
@@ -296,7 +278,6 @@
     right: auto;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_LAPTOP_MAX) {
   div.elementor-widget-raven-post-meta.elementor-laptop-align-center .raven-icon-list-items {
     -webkit-box-pack: center;
@@ -344,7 +325,6 @@
     right: auto;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_EXTRA_MAX) {
   div.elementor-widget-raven-post-meta.elementor-tablet_extra-align-center .raven-icon-list-items {
     -webkit-box-pack: center;
@@ -392,7 +372,6 @@
     right: auto;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_MAX) {
   div.elementor-widget-raven-post-meta.elementor-tablet-align-center .raven-icon-list-items {
     -webkit-box-pack: center;
@@ -440,7 +419,6 @@
     right: auto;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_EXTRA_MAX) {
   div.elementor-widget-raven-post-meta.elementor-mobile_extra-align-center .raven-icon-list-items {
     -webkit-box-pack: center;
@@ -488,7 +466,6 @@
     right: auto;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_MAX) {
   div.elementor-widget-raven-post-meta.elementor-mobile-align-center .raven-icon-list-items {
     -webkit-box-pack: center;
@@ -546,60 +523,46 @@
   margin-left: -15px;
   margin-right: -15px;
 }
-
 .raven-grid-item {
   padding-left: 15px;
   padding-right: 15px;
 }
-
 .raven-grid-1 .raven-grid-item {
   width: 100%;
 }
-
 .raven-grid-2 .raven-grid-item {
   width: 50%;
 }
-
 .raven-grid-3 .raven-grid-item {
-  width: 33.33333%;
+  width: 33.3333333333%;
 }
-
 .raven-grid-4 .raven-grid-item {
   width: 25%;
 }
-
 .raven-grid-5 .raven-grid-item {
   width: 20%;
 }
-
 .raven-grid-6 .raven-grid-item {
-  width: 16.66667%;
+  width: 16.6666666667%;
 }
-
 .raven-grid-7 .raven-grid-item {
-  width: 14.28571%;
+  width: 14.2857142857%;
 }
-
 .raven-grid-8 .raven-grid-item {
   width: 12.5%;
 }
-
 .raven-grid-9 .raven-grid-item {
-  width: 11.11111%;
+  width: 11.1111111111%;
 }
-
 .raven-grid-10 .raven-grid-item {
   width: 10%;
 }
-
 .raven-grid-11 .raven-grid-item {
-  width: 9.09091%;
+  width: 9.0909090909%;
 }
-
 .raven-grid-12 .raven-grid-item {
-  width: 8.33333%;
+  width: 8.3333333333%;
 }
-
 @media (min-width: ELEMENTOR_SCREEN_WIDESCREEN_MIN) {
   .raven-grid-widescreen-1 .raven-grid-item {
     width: 100%;
@@ -608,7 +571,7 @@
     width: 50%;
   }
   .raven-grid-widescreen-3 .raven-grid-item {
-    width: 33.33333%;
+    width: 33.3333333333%;
   }
   .raven-grid-widescreen-4 .raven-grid-item {
     width: 25%;
@@ -617,28 +580,27 @@
     width: 20%;
   }
   .raven-grid-widescreen-6 .raven-grid-item {
-    width: 16.66667%;
+    width: 16.6666666667%;
   }
   .raven-grid-widescreen-7 .raven-grid-item {
-    width: 14.28571%;
+    width: 14.2857142857%;
   }
   .raven-grid-widescreen-8 .raven-grid-item {
     width: 12.5%;
   }
   .raven-grid-widescreen-9 .raven-grid-item {
-    width: 11.11111%;
+    width: 11.1111111111%;
   }
   .raven-grid-widescreen-10 .raven-grid-item {
     width: 10%;
   }
   .raven-grid-widescreen-11 .raven-grid-item {
-    width: 9.09091%;
+    width: 9.0909090909%;
   }
   .raven-grid-widescreen-12 .raven-grid-item {
-    width: 8.33333%;
+    width: 8.3333333333%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_LAPTOP_MAX) {
   .raven-grid-laptop-1 .raven-grid-item {
     width: 100%;
@@ -647,7 +609,7 @@
     width: 50%;
   }
   .raven-grid-laptop-3 .raven-grid-item {
-    width: 33.33333%;
+    width: 33.3333333333%;
   }
   .raven-grid-laptop-4 .raven-grid-item {
     width: 25%;
@@ -656,28 +618,27 @@
     width: 20%;
   }
   .raven-grid-laptop-6 .raven-grid-item {
-    width: 16.66667%;
+    width: 16.6666666667%;
   }
   .raven-grid-laptop-7 .raven-grid-item {
-    width: 14.28571%;
+    width: 14.2857142857%;
   }
   .raven-grid-laptop-8 .raven-grid-item {
     width: 12.5%;
   }
   .raven-grid-laptop-9 .raven-grid-item {
-    width: 11.11111%;
+    width: 11.1111111111%;
   }
   .raven-grid-laptop-10 .raven-grid-item {
     width: 10%;
   }
   .raven-grid-laptop-11 .raven-grid-item {
-    width: 9.09091%;
+    width: 9.0909090909%;
   }
   .raven-grid-laptop-12 .raven-grid-item {
-    width: 8.33333%;
+    width: 8.3333333333%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_EXTRA_MAX) {
   .raven-grid-tablet_extra-1 .raven-grid-item {
     width: 100%;
@@ -686,7 +647,7 @@
     width: 50%;
   }
   .raven-grid-tablet_extra-3 .raven-grid-item {
-    width: 33.33333%;
+    width: 33.3333333333%;
   }
   .raven-grid-tablet_extra-4 .raven-grid-item {
     width: 25%;
@@ -695,28 +656,27 @@
     width: 20%;
   }
   .raven-grid-tablet_extra-6 .raven-grid-item {
-    width: 16.66667%;
+    width: 16.6666666667%;
   }
   .raven-grid-tablet_extra-7 .raven-grid-item {
-    width: 14.28571%;
+    width: 14.2857142857%;
   }
   .raven-grid-tablet_extra-8 .raven-grid-item {
     width: 12.5%;
   }
   .raven-grid-tablet_extra-9 .raven-grid-item {
-    width: 11.11111%;
+    width: 11.1111111111%;
   }
   .raven-grid-tablet_extra-10 .raven-grid-item {
     width: 10%;
   }
   .raven-grid-tablet_extra-11 .raven-grid-item {
-    width: 9.09091%;
+    width: 9.0909090909%;
   }
   .raven-grid-tablet_extra-12 .raven-grid-item {
-    width: 8.33333%;
+    width: 8.3333333333%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_MAX) {
   .raven-grid-tablet-1 .raven-grid-item {
     width: 100%;
@@ -725,7 +685,7 @@
     width: 50%;
   }
   .raven-grid-tablet-3 .raven-grid-item {
-    width: 33.33333%;
+    width: 33.3333333333%;
   }
   .raven-grid-tablet-4 .raven-grid-item {
     width: 25%;
@@ -734,28 +694,27 @@
     width: 20%;
   }
   .raven-grid-tablet-6 .raven-grid-item {
-    width: 16.66667%;
+    width: 16.6666666667%;
   }
   .raven-grid-tablet-7 .raven-grid-item {
-    width: 14.28571%;
+    width: 14.2857142857%;
   }
   .raven-grid-tablet-8 .raven-grid-item {
     width: 12.5%;
   }
   .raven-grid-tablet-9 .raven-grid-item {
-    width: 11.11111%;
+    width: 11.1111111111%;
   }
   .raven-grid-tablet-10 .raven-grid-item {
     width: 10%;
   }
   .raven-grid-tablet-11 .raven-grid-item {
-    width: 9.09091%;
+    width: 9.0909090909%;
   }
   .raven-grid-tablet-12 .raven-grid-item {
-    width: 8.33333%;
+    width: 8.3333333333%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_EXTRA_MAX) {
   .raven-grid-mobile_extra-1 .raven-grid-item {
     width: 100%;
@@ -764,7 +723,7 @@
     width: 50%;
   }
   .raven-grid-mobile_extra-3 .raven-grid-item {
-    width: 33.33333%;
+    width: 33.3333333333%;
   }
   .raven-grid-mobile_extra-4 .raven-grid-item {
     width: 25%;
@@ -773,28 +732,27 @@
     width: 20%;
   }
   .raven-grid-mobile_extra-6 .raven-grid-item {
-    width: 16.66667%;
+    width: 16.6666666667%;
   }
   .raven-grid-mobile_extra-7 .raven-grid-item {
-    width: 14.28571%;
+    width: 14.2857142857%;
   }
   .raven-grid-mobile_extra-8 .raven-grid-item {
     width: 12.5%;
   }
   .raven-grid-mobile_extra-9 .raven-grid-item {
-    width: 11.11111%;
+    width: 11.1111111111%;
   }
   .raven-grid-mobile_extra-10 .raven-grid-item {
     width: 10%;
   }
   .raven-grid-mobile_extra-11 .raven-grid-item {
-    width: 9.09091%;
+    width: 9.0909090909%;
   }
   .raven-grid-mobile_extra-12 .raven-grid-item {
-    width: 8.33333%;
+    width: 8.3333333333%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_MAX) {
   .raven-grid-mobile-1 .raven-grid-item {
     width: 100%;
@@ -803,7 +761,7 @@
     width: 50%;
   }
   .raven-grid-mobile-3 .raven-grid-item {
-    width: 33.33333%;
+    width: 33.3333333333%;
   }
   .raven-grid-mobile-4 .raven-grid-item {
     width: 25%;
@@ -812,25 +770,25 @@
     width: 20%;
   }
   .raven-grid-mobile-6 .raven-grid-item {
-    width: 16.66667%;
+    width: 16.6666666667%;
   }
   .raven-grid-mobile-7 .raven-grid-item {
-    width: 14.28571%;
+    width: 14.2857142857%;
   }
   .raven-grid-mobile-8 .raven-grid-item {
     width: 12.5%;
   }
   .raven-grid-mobile-9 .raven-grid-item {
-    width: 11.11111%;
+    width: 11.1111111111%;
   }
   .raven-grid-mobile-10 .raven-grid-item {
     width: 10%;
   }
   .raven-grid-mobile-11 .raven-grid-item {
-    width: 9.09091%;
+    width: 9.0909090909%;
   }
   .raven-grid-mobile-12 .raven-grid-item {
-    width: 8.33333%;
+    width: 8.3333333333%;
   }
 }
 
@@ -846,379 +804,275 @@
   margin-left: -15px;
   margin-right: -15px;
 }
-
 .raven-masonry[data-columns]:before {
   display: none;
 }
-
 .raven-masonry-item {
   padding-left: 15px;
   padding-right: 15px;
 }
-
-.raven-masonry-1 > .raven-masonry-column,
-.raven-masonry-1 > .raven-masonry-item {
+.raven-masonry-1 > .raven-masonry-column, .raven-masonry-1 > .raven-masonry-item {
   width: 100%;
 }
-
-.raven-masonry-2 > .raven-masonry-column,
-.raven-masonry-2 > .raven-masonry-item {
+.raven-masonry-2 > .raven-masonry-column, .raven-masonry-2 > .raven-masonry-item {
   width: 50%;
 }
-
-.raven-masonry-3 > .raven-masonry-column,
-.raven-masonry-3 > .raven-masonry-item {
-  width: 33.33333%;
+.raven-masonry-3 > .raven-masonry-column, .raven-masonry-3 > .raven-masonry-item {
+  width: 33.3333333333%;
 }
-
-.raven-masonry-4 > .raven-masonry-column,
-.raven-masonry-4 > .raven-masonry-item {
+.raven-masonry-4 > .raven-masonry-column, .raven-masonry-4 > .raven-masonry-item {
   width: 25%;
 }
-
-.raven-masonry-5 > .raven-masonry-column,
-.raven-masonry-5 > .raven-masonry-item {
+.raven-masonry-5 > .raven-masonry-column, .raven-masonry-5 > .raven-masonry-item {
   width: 20%;
 }
-
-.raven-masonry-6 > .raven-masonry-column,
-.raven-masonry-6 > .raven-masonry-item {
-  width: 16.66667%;
+.raven-masonry-6 > .raven-masonry-column, .raven-masonry-6 > .raven-masonry-item {
+  width: 16.6666666667%;
 }
-
-.raven-masonry-7 > .raven-masonry-column,
-.raven-masonry-7 > .raven-masonry-item {
-  width: 14.28571%;
+.raven-masonry-7 > .raven-masonry-column, .raven-masonry-7 > .raven-masonry-item {
+  width: 14.2857142857%;
 }
-
-.raven-masonry-8 > .raven-masonry-column,
-.raven-masonry-8 > .raven-masonry-item {
+.raven-masonry-8 > .raven-masonry-column, .raven-masonry-8 > .raven-masonry-item {
   width: 12.5%;
 }
-
-.raven-masonry-9 > .raven-masonry-column,
-.raven-masonry-9 > .raven-masonry-item {
-  width: 11.11111%;
+.raven-masonry-9 > .raven-masonry-column, .raven-masonry-9 > .raven-masonry-item {
+  width: 11.1111111111%;
 }
-
-.raven-masonry-10 > .raven-masonry-column,
-.raven-masonry-10 > .raven-masonry-item {
+.raven-masonry-10 > .raven-masonry-column, .raven-masonry-10 > .raven-masonry-item {
   width: 10%;
 }
-
-.raven-masonry-11 > .raven-masonry-column,
-.raven-masonry-11 > .raven-masonry-item {
-  width: 9.09091%;
+.raven-masonry-11 > .raven-masonry-column, .raven-masonry-11 > .raven-masonry-item {
+  width: 9.0909090909%;
 }
-
-.raven-masonry-12 > .raven-masonry-column,
-.raven-masonry-12 > .raven-masonry-item {
-  width: 8.33333%;
+.raven-masonry-12 > .raven-masonry-column, .raven-masonry-12 > .raven-masonry-item {
+  width: 8.3333333333%;
 }
-
 @media (min-width: ELEMENTOR_SCREEN_WIDESCREEN_MIN) {
-  .raven-masonry-widescreen-1 > .raven-masonry-column,
-  .raven-masonry-widescreen-1 > .raven-masonry-item {
+  .raven-masonry-widescreen-1 > .raven-masonry-column, .raven-masonry-widescreen-1 > .raven-masonry-item {
     width: 100%;
   }
-  .raven-masonry-widescreen-2 > .raven-masonry-column,
-  .raven-masonry-widescreen-2 > .raven-masonry-item {
+  .raven-masonry-widescreen-2 > .raven-masonry-column, .raven-masonry-widescreen-2 > .raven-masonry-item {
     width: 50%;
   }
-  .raven-masonry-widescreen-3 > .raven-masonry-column,
-  .raven-masonry-widescreen-3 > .raven-masonry-item {
-    width: 33.33333%;
+  .raven-masonry-widescreen-3 > .raven-masonry-column, .raven-masonry-widescreen-3 > .raven-masonry-item {
+    width: 33.3333333333%;
   }
-  .raven-masonry-widescreen-4 > .raven-masonry-column,
-  .raven-masonry-widescreen-4 > .raven-masonry-item {
+  .raven-masonry-widescreen-4 > .raven-masonry-column, .raven-masonry-widescreen-4 > .raven-masonry-item {
     width: 25%;
   }
-  .raven-masonry-widescreen-5 > .raven-masonry-column,
-  .raven-masonry-widescreen-5 > .raven-masonry-item {
+  .raven-masonry-widescreen-5 > .raven-masonry-column, .raven-masonry-widescreen-5 > .raven-masonry-item {
     width: 20%;
   }
-  .raven-masonry-widescreen-6 > .raven-masonry-column,
-  .raven-masonry-widescreen-6 > .raven-masonry-item {
-    width: 16.66667%;
+  .raven-masonry-widescreen-6 > .raven-masonry-column, .raven-masonry-widescreen-6 > .raven-masonry-item {
+    width: 16.6666666667%;
   }
-  .raven-masonry-widescreen-7 > .raven-masonry-column,
-  .raven-masonry-widescreen-7 > .raven-masonry-item {
-    width: 14.28571%;
+  .raven-masonry-widescreen-7 > .raven-masonry-column, .raven-masonry-widescreen-7 > .raven-masonry-item {
+    width: 14.2857142857%;
   }
-  .raven-masonry-widescreen-8 > .raven-masonry-column,
-  .raven-masonry-widescreen-8 > .raven-masonry-item {
+  .raven-masonry-widescreen-8 > .raven-masonry-column, .raven-masonry-widescreen-8 > .raven-masonry-item {
     width: 12.5%;
   }
-  .raven-masonry-widescreen-9 > .raven-masonry-column,
-  .raven-masonry-widescreen-9 > .raven-masonry-item {
-    width: 11.11111%;
+  .raven-masonry-widescreen-9 > .raven-masonry-column, .raven-masonry-widescreen-9 > .raven-masonry-item {
+    width: 11.1111111111%;
   }
-  .raven-masonry-widescreen-10 > .raven-masonry-column,
-  .raven-masonry-widescreen-10 > .raven-masonry-item {
+  .raven-masonry-widescreen-10 > .raven-masonry-column, .raven-masonry-widescreen-10 > .raven-masonry-item {
     width: 10%;
   }
-  .raven-masonry-widescreen-11 > .raven-masonry-column,
-  .raven-masonry-widescreen-11 > .raven-masonry-item {
-    width: 9.09091%;
+  .raven-masonry-widescreen-11 > .raven-masonry-column, .raven-masonry-widescreen-11 > .raven-masonry-item {
+    width: 9.0909090909%;
   }
-  .raven-masonry-widescreen-12 > .raven-masonry-column,
-  .raven-masonry-widescreen-12 > .raven-masonry-item {
-    width: 8.33333%;
+  .raven-masonry-widescreen-12 > .raven-masonry-column, .raven-masonry-widescreen-12 > .raven-masonry-item {
+    width: 8.3333333333%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_LAPTOP_MAX) {
-  .raven-masonry-laptop-1 > .raven-masonry-column,
-  .raven-masonry-laptop-1 > .raven-masonry-item {
+  .raven-masonry-laptop-1 > .raven-masonry-column, .raven-masonry-laptop-1 > .raven-masonry-item {
     width: 100%;
   }
-  .raven-masonry-laptop-2 > .raven-masonry-column,
-  .raven-masonry-laptop-2 > .raven-masonry-item {
+  .raven-masonry-laptop-2 > .raven-masonry-column, .raven-masonry-laptop-2 > .raven-masonry-item {
     width: 50%;
   }
-  .raven-masonry-laptop-3 > .raven-masonry-column,
-  .raven-masonry-laptop-3 > .raven-masonry-item {
-    width: 33.33333%;
+  .raven-masonry-laptop-3 > .raven-masonry-column, .raven-masonry-laptop-3 > .raven-masonry-item {
+    width: 33.3333333333%;
   }
-  .raven-masonry-laptop-4 > .raven-masonry-column,
-  .raven-masonry-laptop-4 > .raven-masonry-item {
+  .raven-masonry-laptop-4 > .raven-masonry-column, .raven-masonry-laptop-4 > .raven-masonry-item {
     width: 25%;
   }
-  .raven-masonry-laptop-5 > .raven-masonry-column,
-  .raven-masonry-laptop-5 > .raven-masonry-item {
+  .raven-masonry-laptop-5 > .raven-masonry-column, .raven-masonry-laptop-5 > .raven-masonry-item {
     width: 20%;
   }
-  .raven-masonry-laptop-6 > .raven-masonry-column,
-  .raven-masonry-laptop-6 > .raven-masonry-item {
-    width: 16.66667%;
+  .raven-masonry-laptop-6 > .raven-masonry-column, .raven-masonry-laptop-6 > .raven-masonry-item {
+    width: 16.6666666667%;
   }
-  .raven-masonry-laptop-7 > .raven-masonry-column,
-  .raven-masonry-laptop-7 > .raven-masonry-item {
-    width: 14.28571%;
+  .raven-masonry-laptop-7 > .raven-masonry-column, .raven-masonry-laptop-7 > .raven-masonry-item {
+    width: 14.2857142857%;
   }
-  .raven-masonry-laptop-8 > .raven-masonry-column,
-  .raven-masonry-laptop-8 > .raven-masonry-item {
+  .raven-masonry-laptop-8 > .raven-masonry-column, .raven-masonry-laptop-8 > .raven-masonry-item {
     width: 12.5%;
   }
-  .raven-masonry-laptop-9 > .raven-masonry-column,
-  .raven-masonry-laptop-9 > .raven-masonry-item {
-    width: 11.11111%;
+  .raven-masonry-laptop-9 > .raven-masonry-column, .raven-masonry-laptop-9 > .raven-masonry-item {
+    width: 11.1111111111%;
   }
-  .raven-masonry-laptop-10 > .raven-masonry-column,
-  .raven-masonry-laptop-10 > .raven-masonry-item {
+  .raven-masonry-laptop-10 > .raven-masonry-column, .raven-masonry-laptop-10 > .raven-masonry-item {
     width: 10%;
   }
-  .raven-masonry-laptop-11 > .raven-masonry-column,
-  .raven-masonry-laptop-11 > .raven-masonry-item {
-    width: 9.09091%;
+  .raven-masonry-laptop-11 > .raven-masonry-column, .raven-masonry-laptop-11 > .raven-masonry-item {
+    width: 9.0909090909%;
   }
-  .raven-masonry-laptop-12 > .raven-masonry-column,
-  .raven-masonry-laptop-12 > .raven-masonry-item {
-    width: 8.33333%;
+  .raven-masonry-laptop-12 > .raven-masonry-column, .raven-masonry-laptop-12 > .raven-masonry-item {
+    width: 8.3333333333%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_EXTRA_MAX) {
-  .raven-masonry-tablet_extra-1 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-1 > .raven-masonry-item {
+  .raven-masonry-tablet_extra-1 > .raven-masonry-column, .raven-masonry-tablet_extra-1 > .raven-masonry-item {
     width: 100%;
   }
-  .raven-masonry-tablet_extra-2 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-2 > .raven-masonry-item {
+  .raven-masonry-tablet_extra-2 > .raven-masonry-column, .raven-masonry-tablet_extra-2 > .raven-masonry-item {
     width: 50%;
   }
-  .raven-masonry-tablet_extra-3 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-3 > .raven-masonry-item {
-    width: 33.33333%;
+  .raven-masonry-tablet_extra-3 > .raven-masonry-column, .raven-masonry-tablet_extra-3 > .raven-masonry-item {
+    width: 33.3333333333%;
   }
-  .raven-masonry-tablet_extra-4 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-4 > .raven-masonry-item {
+  .raven-masonry-tablet_extra-4 > .raven-masonry-column, .raven-masonry-tablet_extra-4 > .raven-masonry-item {
     width: 25%;
   }
-  .raven-masonry-tablet_extra-5 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-5 > .raven-masonry-item {
+  .raven-masonry-tablet_extra-5 > .raven-masonry-column, .raven-masonry-tablet_extra-5 > .raven-masonry-item {
     width: 20%;
   }
-  .raven-masonry-tablet_extra-6 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-6 > .raven-masonry-item {
-    width: 16.66667%;
+  .raven-masonry-tablet_extra-6 > .raven-masonry-column, .raven-masonry-tablet_extra-6 > .raven-masonry-item {
+    width: 16.6666666667%;
   }
-  .raven-masonry-tablet_extra-7 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-7 > .raven-masonry-item {
-    width: 14.28571%;
+  .raven-masonry-tablet_extra-7 > .raven-masonry-column, .raven-masonry-tablet_extra-7 > .raven-masonry-item {
+    width: 14.2857142857%;
   }
-  .raven-masonry-tablet_extra-8 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-8 > .raven-masonry-item {
+  .raven-masonry-tablet_extra-8 > .raven-masonry-column, .raven-masonry-tablet_extra-8 > .raven-masonry-item {
     width: 12.5%;
   }
-  .raven-masonry-tablet_extra-9 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-9 > .raven-masonry-item {
-    width: 11.11111%;
+  .raven-masonry-tablet_extra-9 > .raven-masonry-column, .raven-masonry-tablet_extra-9 > .raven-masonry-item {
+    width: 11.1111111111%;
   }
-  .raven-masonry-tablet_extra-10 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-10 > .raven-masonry-item {
+  .raven-masonry-tablet_extra-10 > .raven-masonry-column, .raven-masonry-tablet_extra-10 > .raven-masonry-item {
     width: 10%;
   }
-  .raven-masonry-tablet_extra-11 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-11 > .raven-masonry-item {
-    width: 9.09091%;
+  .raven-masonry-tablet_extra-11 > .raven-masonry-column, .raven-masonry-tablet_extra-11 > .raven-masonry-item {
+    width: 9.0909090909%;
   }
-  .raven-masonry-tablet_extra-12 > .raven-masonry-column,
-  .raven-masonry-tablet_extra-12 > .raven-masonry-item {
-    width: 8.33333%;
+  .raven-masonry-tablet_extra-12 > .raven-masonry-column, .raven-masonry-tablet_extra-12 > .raven-masonry-item {
+    width: 8.3333333333%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_MAX) {
-  .raven-masonry-tablet-1 > .raven-masonry-column,
-  .raven-masonry-tablet-1 > .raven-masonry-item {
+  .raven-masonry-tablet-1 > .raven-masonry-column, .raven-masonry-tablet-1 > .raven-masonry-item {
     width: 100%;
   }
-  .raven-masonry-tablet-2 > .raven-masonry-column,
-  .raven-masonry-tablet-2 > .raven-masonry-item {
+  .raven-masonry-tablet-2 > .raven-masonry-column, .raven-masonry-tablet-2 > .raven-masonry-item {
     width: 50%;
   }
-  .raven-masonry-tablet-3 > .raven-masonry-column,
-  .raven-masonry-tablet-3 > .raven-masonry-item {
-    width: 33.33333%;
+  .raven-masonry-tablet-3 > .raven-masonry-column, .raven-masonry-tablet-3 > .raven-masonry-item {
+    width: 33.3333333333%;
   }
-  .raven-masonry-tablet-4 > .raven-masonry-column,
-  .raven-masonry-tablet-4 > .raven-masonry-item {
+  .raven-masonry-tablet-4 > .raven-masonry-column, .raven-masonry-tablet-4 > .raven-masonry-item {
     width: 25%;
   }
-  .raven-masonry-tablet-5 > .raven-masonry-column,
-  .raven-masonry-tablet-5 > .raven-masonry-item {
+  .raven-masonry-tablet-5 > .raven-masonry-column, .raven-masonry-tablet-5 > .raven-masonry-item {
     width: 20%;
   }
-  .raven-masonry-tablet-6 > .raven-masonry-column,
-  .raven-masonry-tablet-6 > .raven-masonry-item {
-    width: 16.66667%;
+  .raven-masonry-tablet-6 > .raven-masonry-column, .raven-masonry-tablet-6 > .raven-masonry-item {
+    width: 16.6666666667%;
   }
-  .raven-masonry-tablet-7 > .raven-masonry-column,
-  .raven-masonry-tablet-7 > .raven-masonry-item {
-    width: 14.28571%;
+  .raven-masonry-tablet-7 > .raven-masonry-column, .raven-masonry-tablet-7 > .raven-masonry-item {
+    width: 14.2857142857%;
   }
-  .raven-masonry-tablet-8 > .raven-masonry-column,
-  .raven-masonry-tablet-8 > .raven-masonry-item {
+  .raven-masonry-tablet-8 > .raven-masonry-column, .raven-masonry-tablet-8 > .raven-masonry-item {
     width: 12.5%;
   }
-  .raven-masonry-tablet-9 > .raven-masonry-column,
-  .raven-masonry-tablet-9 > .raven-masonry-item {
-    width: 11.11111%;
+  .raven-masonry-tablet-9 > .raven-masonry-column, .raven-masonry-tablet-9 > .raven-masonry-item {
+    width: 11.1111111111%;
   }
-  .raven-masonry-tablet-10 > .raven-masonry-column,
-  .raven-masonry-tablet-10 > .raven-masonry-item {
+  .raven-masonry-tablet-10 > .raven-masonry-column, .raven-masonry-tablet-10 > .raven-masonry-item {
     width: 10%;
   }
-  .raven-masonry-tablet-11 > .raven-masonry-column,
-  .raven-masonry-tablet-11 > .raven-masonry-item {
-    width: 9.09091%;
+  .raven-masonry-tablet-11 > .raven-masonry-column, .raven-masonry-tablet-11 > .raven-masonry-item {
+    width: 9.0909090909%;
   }
-  .raven-masonry-tablet-12 > .raven-masonry-column,
-  .raven-masonry-tablet-12 > .raven-masonry-item {
-    width: 8.33333%;
+  .raven-masonry-tablet-12 > .raven-masonry-column, .raven-masonry-tablet-12 > .raven-masonry-item {
+    width: 8.3333333333%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_EXTRA_MAX) {
-  .raven-masonry-mobile_extra-1 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-1 > .raven-masonry-item {
+  .raven-masonry-mobile_extra-1 > .raven-masonry-column, .raven-masonry-mobile_extra-1 > .raven-masonry-item {
     width: 100%;
   }
-  .raven-masonry-mobile_extra-2 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-2 > .raven-masonry-item {
+  .raven-masonry-mobile_extra-2 > .raven-masonry-column, .raven-masonry-mobile_extra-2 > .raven-masonry-item {
     width: 50%;
   }
-  .raven-masonry-mobile_extra-3 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-3 > .raven-masonry-item {
-    width: 33.33333%;
+  .raven-masonry-mobile_extra-3 > .raven-masonry-column, .raven-masonry-mobile_extra-3 > .raven-masonry-item {
+    width: 33.3333333333%;
   }
-  .raven-masonry-mobile_extra-4 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-4 > .raven-masonry-item {
+  .raven-masonry-mobile_extra-4 > .raven-masonry-column, .raven-masonry-mobile_extra-4 > .raven-masonry-item {
     width: 25%;
   }
-  .raven-masonry-mobile_extra-5 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-5 > .raven-masonry-item {
+  .raven-masonry-mobile_extra-5 > .raven-masonry-column, .raven-masonry-mobile_extra-5 > .raven-masonry-item {
     width: 20%;
   }
-  .raven-masonry-mobile_extra-6 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-6 > .raven-masonry-item {
-    width: 16.66667%;
+  .raven-masonry-mobile_extra-6 > .raven-masonry-column, .raven-masonry-mobile_extra-6 > .raven-masonry-item {
+    width: 16.6666666667%;
   }
-  .raven-masonry-mobile_extra-7 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-7 > .raven-masonry-item {
-    width: 14.28571%;
+  .raven-masonry-mobile_extra-7 > .raven-masonry-column, .raven-masonry-mobile_extra-7 > .raven-masonry-item {
+    width: 14.2857142857%;
   }
-  .raven-masonry-mobile_extra-8 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-8 > .raven-masonry-item {
+  .raven-masonry-mobile_extra-8 > .raven-masonry-column, .raven-masonry-mobile_extra-8 > .raven-masonry-item {
     width: 12.5%;
   }
-  .raven-masonry-mobile_extra-9 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-9 > .raven-masonry-item {
-    width: 11.11111%;
+  .raven-masonry-mobile_extra-9 > .raven-masonry-column, .raven-masonry-mobile_extra-9 > .raven-masonry-item {
+    width: 11.1111111111%;
   }
-  .raven-masonry-mobile_extra-10 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-10 > .raven-masonry-item {
+  .raven-masonry-mobile_extra-10 > .raven-masonry-column, .raven-masonry-mobile_extra-10 > .raven-masonry-item {
     width: 10%;
   }
-  .raven-masonry-mobile_extra-11 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-11 > .raven-masonry-item {
-    width: 9.09091%;
+  .raven-masonry-mobile_extra-11 > .raven-masonry-column, .raven-masonry-mobile_extra-11 > .raven-masonry-item {
+    width: 9.0909090909%;
   }
-  .raven-masonry-mobile_extra-12 > .raven-masonry-column,
-  .raven-masonry-mobile_extra-12 > .raven-masonry-item {
-    width: 8.33333%;
+  .raven-masonry-mobile_extra-12 > .raven-masonry-column, .raven-masonry-mobile_extra-12 > .raven-masonry-item {
+    width: 8.3333333333%;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_MAX) {
-  .raven-masonry-mobile-1 > .raven-masonry-column,
-  .raven-masonry-mobile-1 > .raven-masonry-item {
+  .raven-masonry-mobile-1 > .raven-masonry-column, .raven-masonry-mobile-1 > .raven-masonry-item {
     width: 100%;
   }
-  .raven-masonry-mobile-2 > .raven-masonry-column,
-  .raven-masonry-mobile-2 > .raven-masonry-item {
+  .raven-masonry-mobile-2 > .raven-masonry-column, .raven-masonry-mobile-2 > .raven-masonry-item {
     width: 50%;
   }
-  .raven-masonry-mobile-3 > .raven-masonry-column,
-  .raven-masonry-mobile-3 > .raven-masonry-item {
-    width: 33.33333%;
+  .raven-masonry-mobile-3 > .raven-masonry-column, .raven-masonry-mobile-3 > .raven-masonry-item {
+    width: 33.3333333333%;
   }
-  .raven-masonry-mobile-4 > .raven-masonry-column,
-  .raven-masonry-mobile-4 > .raven-masonry-item {
+  .raven-masonry-mobile-4 > .raven-masonry-column, .raven-masonry-mobile-4 > .raven-masonry-item {
     width: 25%;
   }
-  .raven-masonry-mobile-5 > .raven-masonry-column,
-  .raven-masonry-mobile-5 > .raven-masonry-item {
+  .raven-masonry-mobile-5 > .raven-masonry-column, .raven-masonry-mobile-5 > .raven-masonry-item {
     width: 20%;
   }
-  .raven-masonry-mobile-6 > .raven-masonry-column,
-  .raven-masonry-mobile-6 > .raven-masonry-item {
-    width: 16.66667%;
+  .raven-masonry-mobile-6 > .raven-masonry-column, .raven-masonry-mobile-6 > .raven-masonry-item {
+    width: 16.6666666667%;
   }
-  .raven-masonry-mobile-7 > .raven-masonry-column,
-  .raven-masonry-mobile-7 > .raven-masonry-item {
-    width: 14.28571%;
+  .raven-masonry-mobile-7 > .raven-masonry-column, .raven-masonry-mobile-7 > .raven-masonry-item {
+    width: 14.2857142857%;
   }
-  .raven-masonry-mobile-8 > .raven-masonry-column,
-  .raven-masonry-mobile-8 > .raven-masonry-item {
+  .raven-masonry-mobile-8 > .raven-masonry-column, .raven-masonry-mobile-8 > .raven-masonry-item {
     width: 12.5%;
   }
-  .raven-masonry-mobile-9 > .raven-masonry-column,
-  .raven-masonry-mobile-9 > .raven-masonry-item {
-    width: 11.11111%;
+  .raven-masonry-mobile-9 > .raven-masonry-column, .raven-masonry-mobile-9 > .raven-masonry-item {
+    width: 11.1111111111%;
   }
-  .raven-masonry-mobile-10 > .raven-masonry-column,
-  .raven-masonry-mobile-10 > .raven-masonry-item {
+  .raven-masonry-mobile-10 > .raven-masonry-column, .raven-masonry-mobile-10 > .raven-masonry-item {
     width: 10%;
   }
-  .raven-masonry-mobile-11 > .raven-masonry-column,
-  .raven-masonry-mobile-11 > .raven-masonry-item {
-    width: 9.09091%;
+  .raven-masonry-mobile-11 > .raven-masonry-column, .raven-masonry-mobile-11 > .raven-masonry-item {
+    width: 9.0909090909%;
   }
-  .raven-masonry-mobile-12 > .raven-masonry-column,
-  .raven-masonry-mobile-12 > .raven-masonry-item {
-    width: 8.33333%;
+  .raven-masonry-mobile-12 > .raven-masonry-column, .raven-masonry-mobile-12 > .raven-masonry-item {
+    width: 8.3333333333%;
   }
 }
 
@@ -1267,7 +1121,6 @@
     text-align: right;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_SM_MAX) {
   .elementor-widget-raven-post-navigation.raven-post-navigation-type-standard .raven-post-navigation-next-previous-content {
     display: none !important;
@@ -1276,55 +1129,42 @@
     grid-template-columns: 1fr;
   }
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-1 li.product {
   width: 100% !important;
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-2 li.product {
   width: 50% !important;
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-3 li.product {
-  width: 33.33333% !important;
+  width: 33.3333333333% !important;
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-4 li.product {
   width: 25% !important;
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-5 li.product {
   width: 20% !important;
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-6 li.product {
-  width: 16.66667% !important;
+  width: 16.6666666667% !important;
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-7 li.product {
-  width: 14.28571% !important;
+  width: 14.2857142857% !important;
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-8 li.product {
   width: 12.5% !important;
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-9 li.product {
-  width: 11.11111% !important;
+  width: 11.1111111111% !important;
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-10 li.product {
   width: 10% !important;
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-11 li.product {
-  width: 9.09091% !important;
+  width: 9.0909090909% !important;
 }
-
 .raven-products-gerenal-layout-masonry.raven-products-columns--count-12 li.product {
-  width: 8.33333% !important;
+  width: 8.3333333333% !important;
 }
-
 @media (min-width: ELEMENTOR_SCREEN_WIDESCREEN_MIN) {
   .raven-products-gerenal-layout-masonry.raven-products-columns--widescreen-count-1 li.product {
     width: 100% !important;
@@ -1333,7 +1173,7 @@
     width: 50% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--widescreen-count-3 li.product {
-    width: 33.33333% !important;
+    width: 33.3333333333% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--widescreen-count-4 li.product {
     width: 25% !important;
@@ -1342,28 +1182,27 @@
     width: 20% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--widescreen-count-6 li.product {
-    width: 16.66667% !important;
+    width: 16.6666666667% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--widescreen-count-7 li.product {
-    width: 14.28571% !important;
+    width: 14.2857142857% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--widescreen-count-8 li.product {
     width: 12.5% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--widescreen-count-9 li.product {
-    width: 11.11111% !important;
+    width: 11.1111111111% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--widescreen-count-10 li.product {
     width: 10% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--widescreen-count-11 li.product {
-    width: 9.09091% !important;
+    width: 9.0909090909% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--widescreen-count-12 li.product {
-    width: 8.33333% !important;
+    width: 8.3333333333% !important;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_LAPTOP_MAX) {
   .raven-products-gerenal-layout-masonry.raven-products-columns--laptop-count-1 li.product {
     width: 100% !important;
@@ -1372,7 +1211,7 @@
     width: 50% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--laptop-count-3 li.product {
-    width: 33.33333% !important;
+    width: 33.3333333333% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--laptop-count-4 li.product {
     width: 25% !important;
@@ -1381,28 +1220,27 @@
     width: 20% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--laptop-count-6 li.product {
-    width: 16.66667% !important;
+    width: 16.6666666667% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--laptop-count-7 li.product {
-    width: 14.28571% !important;
+    width: 14.2857142857% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--laptop-count-8 li.product {
     width: 12.5% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--laptop-count-9 li.product {
-    width: 11.11111% !important;
+    width: 11.1111111111% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--laptop-count-10 li.product {
     width: 10% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--laptop-count-11 li.product {
-    width: 9.09091% !important;
+    width: 9.0909090909% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--laptop-count-12 li.product {
-    width: 8.33333% !important;
+    width: 8.3333333333% !important;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_EXTRA_MAX) {
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet_extra-count-1 li.product {
     width: 100% !important;
@@ -1411,7 +1249,7 @@
     width: 50% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet_extra-count-3 li.product {
-    width: 33.33333% !important;
+    width: 33.3333333333% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet_extra-count-4 li.product {
     width: 25% !important;
@@ -1420,28 +1258,27 @@
     width: 20% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet_extra-count-6 li.product {
-    width: 16.66667% !important;
+    width: 16.6666666667% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet_extra-count-7 li.product {
-    width: 14.28571% !important;
+    width: 14.2857142857% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet_extra-count-8 li.product {
     width: 12.5% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet_extra-count-9 li.product {
-    width: 11.11111% !important;
+    width: 11.1111111111% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet_extra-count-10 li.product {
     width: 10% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet_extra-count-11 li.product {
-    width: 9.09091% !important;
+    width: 9.0909090909% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet_extra-count-12 li.product {
-    width: 8.33333% !important;
+    width: 8.3333333333% !important;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_MAX) {
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet-count-1 li.product {
     width: 100% !important;
@@ -1450,7 +1287,7 @@
     width: 50% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet-count-3 li.product {
-    width: 33.33333% !important;
+    width: 33.3333333333% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet-count-4 li.product {
     width: 25% !important;
@@ -1459,28 +1296,27 @@
     width: 20% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet-count-6 li.product {
-    width: 16.66667% !important;
+    width: 16.6666666667% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet-count-7 li.product {
-    width: 14.28571% !important;
+    width: 14.2857142857% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet-count-8 li.product {
     width: 12.5% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet-count-9 li.product {
-    width: 11.11111% !important;
+    width: 11.1111111111% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet-count-10 li.product {
     width: 10% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet-count-11 li.product {
-    width: 9.09091% !important;
+    width: 9.0909090909% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--tablet-count-12 li.product {
-    width: 8.33333% !important;
+    width: 8.3333333333% !important;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_EXTRA_MAX) {
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile_extra-count-1 li.product {
     width: 100% !important;
@@ -1489,7 +1325,7 @@
     width: 50% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile_extra-count-3 li.product {
-    width: 33.33333% !important;
+    width: 33.3333333333% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile_extra-count-4 li.product {
     width: 25% !important;
@@ -1498,28 +1334,27 @@
     width: 20% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile_extra-count-6 li.product {
-    width: 16.66667% !important;
+    width: 16.6666666667% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile_extra-count-7 li.product {
-    width: 14.28571% !important;
+    width: 14.2857142857% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile_extra-count-8 li.product {
     width: 12.5% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile_extra-count-9 li.product {
-    width: 11.11111% !important;
+    width: 11.1111111111% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile_extra-count-10 li.product {
     width: 10% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile_extra-count-11 li.product {
-    width: 9.09091% !important;
+    width: 9.0909090909% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile_extra-count-12 li.product {
-    width: 8.33333% !important;
+    width: 8.3333333333% !important;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_MAX) {
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile-count-1 li.product {
     width: 100% !important;
@@ -1528,7 +1363,7 @@
     width: 50% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile-count-3 li.product {
-    width: 33.33333% !important;
+    width: 33.3333333333% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile-count-4 li.product {
     width: 25% !important;
@@ -1537,25 +1372,25 @@
     width: 20% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile-count-6 li.product {
-    width: 16.66667% !important;
+    width: 16.6666666667% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile-count-7 li.product {
-    width: 14.28571% !important;
+    width: 14.2857142857% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile-count-8 li.product {
     width: 12.5% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile-count-9 li.product {
-    width: 11.11111% !important;
+    width: 11.1111111111% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile-count-10 li.product {
     width: 10% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile-count-11 li.product {
-    width: 9.09091% !important;
+    width: 9.0909090909% !important;
   }
   .raven-products-gerenal-layout-masonry.raven-products-columns--mobile-count-12 li.product {
-    width: 8.33333% !important;
+    width: 8.3333333333% !important;
   }
 }
 
@@ -1564,31 +1399,26 @@
     width: 100%;
   }
 }
-
 .elementor-widget-raven-call-to-action .raven-elementor-size-xs {
   padding: 10px 20px;
   border-radius: 2px;
   font-size: 13px;
 }
-
 .elementor-widget-raven-call-to-action .raven-elementor-size-md {
   padding: 15px 30px;
   border-radius: 4px;
   font-size: 16px;
 }
-
 .elementor-widget-raven-call-to-action .raven-elementor-size-lg {
   padding: 20px 40px;
   border-radius: 5px;
   font-size: 18px;
 }
-
 .elementor-widget-raven-call-to-action .raven-elementor-size-xl {
   padding: 25px 50px;
   border-radius: 6px;
   font-size: 20px;
 }
-
 @media (min-width: ELEMENTOR_SCREEN_WIDESCREEN_MIN) {
   .elementor-widget-raven-call-to-action .raven-elementor-size-widescreen-xs {
     padding: 10px 20px;
@@ -1611,7 +1441,6 @@
     font-size: 20px;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_LAPTOP_MAX) {
   .elementor-widget-raven-call-to-action .raven-elementor-size-widescreen-xs {
     padding: 10px 20px;
@@ -1634,7 +1463,6 @@
     font-size: 20px;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_EXTRA_MAX) {
   .elementor-widget-raven-call-to-action .raven-elementor-size-tablet_extra-xs {
     padding: 10px 20px;
@@ -1657,7 +1485,6 @@
     font-size: 20px;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_MAX) {
   .elementor-widget-raven-call-to-action .raven-elementor-size-tablet-xs {
     padding: 10px 20px;
@@ -1680,7 +1507,6 @@
     font-size: 20px;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_EXTRA_MAX) {
   .elementor-widget-raven-call-to-action .raven-elementor-size-mobile_extra-xs {
     padding: 10px 20px;
@@ -1703,7 +1529,6 @@
     font-size: 20px;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_MAX) {
   .elementor-widget-raven-call-to-action .raven-elementor-size-mobile-xs {
     padding: 10px 20px;
@@ -1731,7 +1556,6 @@
 .elementor-widget-raven-advanced-nav-menu img.raven-adnav-menu-side-logo {
   display: block;
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_MAX) {
   .elementor-widget-raven-advanced-nav-menu.mobile-breakpoint-mobile div.raven-adnav-menu-toggle, .elementor-widget-raven-advanced-nav-menu.mobile-breakpoint-mobile_extra div.raven-adnav-menu-toggle, .elementor-widget-raven-advanced-nav-menu.mobile-breakpoint-tablet div.raven-adnav-menu-toggle, .elementor-widget-raven-advanced-nav-menu.mobile-breakpoint-tablet_extra div.raven-adnav-menu-toggle {
     display: block;
@@ -1744,7 +1568,6 @@
     display: block;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_EXTRA_MAX) {
   .elementor-widget-raven-advanced-nav-menu.mobile-breakpoint-mobile_extra div.raven-adnav-menu-toggle, .elementor-widget-raven-advanced-nav-menu.mobile-breakpoint-tablet div.raven-adnav-menu-toggle, .elementor-widget-raven-advanced-nav-menu.mobile-breakpoint-tablet_extra div.raven-adnav-menu-toggle {
     display: block;
@@ -1757,7 +1580,6 @@
     display: block;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_MAX) {
   .elementor-widget-raven-advanced-nav-menu.mobile-breakpoint-tablet div.raven-adnav-menu-toggle, .elementor-widget-raven-advanced-nav-menu.mobile-breakpoint-tablet_extra div.raven-adnav-menu-toggle {
     display: block;
@@ -1770,7 +1592,6 @@
     display: block;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_EXTRA_MAX) {
   .elementor-widget-raven-advanced-nav-menu.mobile-breakpoint-tablet_extra div.raven-adnav-menu-toggle {
     display: block;
@@ -1783,14 +1604,12 @@
     display: block;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_LAPTOP_MAX) {
   .elementor-widget-raven-advanced-nav-menu img.raven-adnav-menu-center-logo_laptop,
   .elementor-widget-raven-advanced-nav-menu img.raven-adnav-menu-side-logo_laptop {
     display: block;
   }
 }
-
 @media (min-width: ELEMENTOR_SCREEN_WIDESCREEN_MIN) {
   .elementor-widget-raven-advanced-nav-menu img.raven-adnav-menu-center-logo_widescreen,
   .elementor-widget-raven-advanced-nav-menu img.raven-adnav-menu-side-logo_widescreen {
@@ -1810,7 +1629,6 @@
     margin: auto;
   }
 }
-
 @media (min-width: ELEMENTOR_SCREEN_WIDESCREEN_MIN) {
   .elementor-widget-raven-product-add-to-cart.raven-product-add-to-cart-variation-widescreen-align-left .variations-inline td.value {
     margin: initial;
@@ -1823,7 +1641,6 @@
     margin: auto;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_LAPTOP_MAX) {
   .elementor-widget-raven-product-add-to-cart.raven-product-add-to-cart-variation-laptop-align-left .variations-inline td.value {
     margin: initial;
@@ -1836,7 +1653,6 @@
     margin: auto;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_EXTRA_MAX) {
   .elementor-widget-raven-product-add-to-cart.raven-product-add-to-cart-variation-tablet_extra-align-left .variations-inline td.value {
     margin: initial;
@@ -1849,7 +1665,6 @@
     margin: auto;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_TABLET_MAX) {
   .elementor-widget-raven-product-add-to-cart.raven-product-add-to-cart-variation-tablet-align-left .variations-inline td.value {
     margin: initial;
@@ -1862,7 +1677,6 @@
     margin: auto;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_EXTRA_MAX) {
   .elementor-widget-raven-product-add-to-cart.raven-product-add-to-cart-variation-mobile_extra-align-left .variations-inline td.value {
     margin: initial;
@@ -1875,7 +1689,6 @@
     margin: auto;
   }
 }
-
 @media (max-width: ELEMENTOR_SCREEN_MOBILE_MAX) {
   .elementor-widget-raven-product-add-to-cart.raven-product-add-to-cart-variation-mobile-align-left .variations-inline td.value {
     margin: initial;

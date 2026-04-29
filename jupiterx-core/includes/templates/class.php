@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * Templates main class file.
  *
@@ -298,7 +302,7 @@ if ( ! class_exists( 'JupiterX_Templates' ) ) :
 
 			if ( empty( $api_key ) ) {
 				wp_send_json_success( [
-					'message' => esc_html__( 'Your API key could not be verified.', 'jupiterx' ),
+					'message' => esc_html__( 'Your API key could not be verified.', 'jupiterx-core' ),
 					'status'  => self::ERROR,
 				] );
 			}

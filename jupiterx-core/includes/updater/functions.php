@@ -93,45 +93,171 @@ function jupiterx_upgrader_process_complete( $upgrader_object, $options ) {
 		return;
 	}
 
-	// Theme.
 	if ( 'theme' === $options['type'] ) {
-		jupiterx_core_flush_cache();
+		jupiterx_core_flush_cache_all_sites();
+		return;
 	}
-
-	// Plugins.
-	$plugins = [
-		'elementor/elementor.php',
-		'raven/raven.php',
-	];
 
 	if ( 'plugin' !== $options['type'] ) {
 		return;
 	}
 
-	if ( empty( $options['plugins'] ) ) {
+	$plugins_list = [];
+
+	if ( ! empty( $options['plugins'] ) ) {
+		$plugins_list = $options['plugins'];
+	}
+
+	if ( ! empty( $options['plugin'] ) ) {
+		$plugins_list[] = $options['plugin'];
+	}
+
+	if ( empty( $plugins_list ) ) {
 		return;
 	}
 
-	if ( empty( array_intersect( $plugins, $options['plugins'] ) ) ) {
+	$watched_plugins = jupiterx_get_watched_plugins();
+
+	if ( empty( array_intersect( $watched_plugins, $plugins_list ) ) ) {
 		return;
 	}
 
-	jupiterx_core_flush_cache();
+	jupiterx_core_flush_cache_all_sites();
+}
+
+/**
+ * Get the list of plugins whose updates should trigger a cache flush.
+ *
+ * @since 4.8.0
+ *
+ * @return array
+ */
+function jupiterx_get_watched_plugins() {
+	$plugins = [
+		'jupiterx-core/jupiterx-core.php',
+		'elementor/elementor.php',
+		'elementor-pro/elementor-pro.php',
+		'raven/raven.php',
+		'jet-engine/jet-engine.php',
+		'jet-elements/jet-elements.php',
+		'jet-menu/jet-menu.php',
+		'jet-tabs/jet-tabs.php',
+		'jet-tricks/jet-tricks.php',
+		'jet-blocks/jet-blocks.php',
+		'jet-blog/jet-blog.php',
+		'jet-woo-builder/jet-woo-builder.php',
+		'jet-popup/jet-popup.php',
+		'jet-smart-filters/jet-smart-filters.php',
+		'jet-theme-core/jet-theme-core.php',
+	];
+
+	/**
+	 * Filter the list of plugins that trigger a full cache flush on update.
+	 *
+	 * @since 4.8.0
+	 *
+	 * @param array $plugins Plugin basenames.
+	 */
+	return apply_filters( 'jupiterx_watched_plugins_for_flush', $plugins );
+}
+
+/**
+ * Flush cache across all sites in a multisite network, or the current site.
+ *
+ * @since 4.8.0
+ */
+function jupiterx_core_flush_cache_all_sites() {
+	if ( ! is_multisite() ) {
+		jupiterx_core_flush_cache();
+		return;
+	}
+
+	$sites = get_sites( [
+		'fields' => 'ids',
+		'number' => 0,
+	] );
+
+	foreach ( $sites as $blog_id ) {
+		switch_to_blog( $blog_id );
+		jupiterx_core_flush_cache();
+		restore_current_blog();
+	}
 }
 
 /**
  * Wrapper function for flush cache functions.
  *
+ * Clears JupiterX compiler dirs, Elementor generated CSS, Crocoblock/Jet
+ * cached assets, and page cache plugins for the current site.
+ *
  * @since 1.2.0
  */
 function jupiterx_core_flush_cache() {
 	if ( function_exists( 'jupiterx_remove_dir' ) && function_exists( 'jupiterx_get_compiler_dir' ) ) {
-		jupiterx_remove_dir( jupiterx_get_compiler_dir() ); // compiler.
-		jupiterx_remove_dir( jupiterx_get_compiler_dir( true ) ); // admin-compiler.
-		jupiterx_remove_dir( jupiterx_get_images_dir() ); // images.
+		jupiterx_remove_dir( jupiterx_get_compiler_dir() );
+		jupiterx_remove_dir( jupiterx_get_compiler_dir( true ) );
+		jupiterx_remove_dir( jupiterx_get_images_dir() );
 	}
 
 	if ( function_exists( 'jupiterx_elementor_flush_cache' ) ) {
 		jupiterx_elementor_flush_cache();
 	}
+
+	jupiterx_flush_crocoblock_cache();
+
+	if ( function_exists( 'jupiterx_flush_cache_plugins' ) ) {
+		jupiterx_flush_cache_plugins();
+	}
+}
+
+/**
+ * Clear Crocoblock / Jet plugin cached CSS and style data.
+ *
+ * Jet plugins (JetEngine, JetMenu, JetElements, etc.) store compiled CSS in
+ * upload subdirectories and transients. Jet Style Manager aggregates styles
+ * into its own upload folder. This function removes all of those.
+ *
+ * @since 4.8.0
+ */
+function jupiterx_flush_crocoblock_cache() {
+	if ( ! function_exists( 'jupiterx_remove_dir' ) ) {
+		return;
+	}
+
+	$wp_upload_dir = wp_upload_dir();
+	$base          = trailingslashit( $wp_upload_dir['basedir'] );
+
+	$jet_dirs = [
+		'jet-engine',
+		'jet-elements',
+		'jet-menu',
+		'jet-blog',
+		'jet-blocks',
+		'jet-tabs',
+		'jet-tricks',
+		'jet-woo-builder',
+		'jet-popup',
+		'jet-smart-filters',
+		'jet-theme-core',
+		'jet-style-manager',
+	];
+
+	foreach ( $jet_dirs as $slug ) {
+		$dir = $base . $slug . '/';
+		if ( is_dir( $dir ) ) {
+			jupiterx_remove_dir( $dir );
+		}
+	}
+
+	$jet_transients = [
+		'jet_engine_listing_css',
+		'jet_menu_cache_css',
+		'jet_popup_css',
+	];
+
+	foreach ( $jet_transients as $transient ) {
+		delete_transient( $transient );
+	}
+
+	do_action( 'jet-styles-manager/clear-cache' );
 }

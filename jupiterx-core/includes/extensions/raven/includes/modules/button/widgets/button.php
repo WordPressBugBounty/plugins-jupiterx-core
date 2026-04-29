@@ -5,6 +5,7 @@ use JupiterX_Core\Raven\Base\Base_Widget;
 use Elementor\Plugin as Elementor;
 use JupiterX_Core\Raven\Utils;
 use JupiterX_Core\Raven\Modules\Button\Module;
+use JupiterX_Core\Raven\Modules\Blur_Background\Module as Blur_Background_Module;
 use Elementor\Utils as ElementorUtils;
 
 defined( 'ABSPATH' ) || die();
@@ -381,6 +382,7 @@ class Button extends Base_Widget {
 			'raven-background',
 			[
 				'name' => 'background',
+				'types' => [ 'classic', 'gradient', 'blur' ],
 				'exclude' => [ 'image' ],
 				'fields_options' => Module::get_default_value(),
 				'selector' => '{{WRAPPER}} a.raven-button, {{WRAPPER}} .raven-button, {{WRAPPER}} .raven-button-widget-normal-effect-blink:after',
@@ -530,6 +532,7 @@ class Button extends Base_Widget {
 			'raven-background',
 			[
 				'name' => 'hover_background',
+				'types' => [ 'classic', 'gradient' ],
 				'exclude' => [ 'image' ],
 				'selector' => '{{WRAPPER}} a.raven-button:hover',
 			]
@@ -881,14 +884,17 @@ class Button extends Base_Widget {
 		<div class="raven-widget-wrapper">
 			<?php
 			$is_popup_action_activated = 'yes' === $settings['turn_to_popup_action_button'];
-			$tag                       = $is_popup_action_activated ? 'div' : 'a';
-
-			printf( '<%s %s>',
-				ElementorUtils::validate_html_tag( $tag ),
-				$this->get_render_attribute_string( 'button' )
-			);
+			$tag                         = $is_popup_action_activated ? 'div' : 'a';
+			$tag_name                    = ElementorUtils::validate_html_tag( $tag );
+			echo '<' . esc_html( $tag_name ) . ' ';
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( 'button' );
+			echo '>';
 			?>
-				<div class="raven-button-overlay" <?php echo $this->get_render_attribute_string( 'button-overlay' ); ?>></div>
+				<div class="raven-button-overlay" <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->get_render_attribute_string( 'button-overlay' );
+				?>></div>
 				<span class="raven-button-content">
 					<?php
 					if ( 'far-left' === $settings['icon_align'] ) {
@@ -904,13 +910,19 @@ class Button extends Base_Widget {
 						?>
 						<div class="raven-button-texts-wrapper">
 							<div class="button-text">
-								<span <?php echo $this->get_render_attribute_string( 'text' ); ?>>
+								<span <?php
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+								echo $this->get_render_attribute_string( 'text' );
+								?>>
 									<?php echo wp_kses_post( $settings['text'] ); ?>
 								</span>
 							</div>
 							<?php if ( ! empty( $settings['subtext'] ) ) : ?>
 								<div class="button-subtext">
-									<span <?php echo $this->get_render_attribute_string( 'subtext' ); ?>>
+									<span <?php
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+									echo $this->get_render_attribute_string( 'subtext' );
+									?>>
 									<?php echo wp_kses_post( $settings['subtext'] ); ?>
 								</span>
 								</div>
@@ -933,6 +945,7 @@ class Button extends Base_Widget {
 					<?php endif; ?>
 				</span>
 			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor validates HTML tag name.
 			printf( '</%s>', ElementorUtils::validate_html_tag( $tag ) );
 			?>
 		</div>
@@ -943,7 +956,10 @@ class Button extends Base_Widget {
 		if ( ! empty( $settings['icon'] ) || ! empty( $settings['icon_new']['value'] ) ) :
 			$migrated = isset( $settings['__fa4_migrated']['icon_new'] );
 			?>
-			<span <?php echo $this->get_render_attribute_string( 'icon-align' ); ?>>
+			<span <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( 'icon-align' );
+			?>>
 				<?php
 				if ( $is_new || $migrated ) :
 					Elementor::$instance->icons_manager->render_icon( $settings['icon_new'], [ 'aria-hidden' => 'true' ] );
@@ -971,6 +987,7 @@ class Button extends Base_Widget {
 		}
 
 		$this->add_render_attribute( 'button', 'class', 'raven-button' );
+		Blur_Background_Module::add_render_attributes( $this, 'button', $settings );
 		$this->add_render_attribute( 'text', 'class', 'raven-button-text' );
 		$this->add_render_attribute( 'icon-align', 'class', 'raven-button-icon' );
 

@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Elements Styles > Styles > Paragraph pop-up to the WordPress Customizer.
  *

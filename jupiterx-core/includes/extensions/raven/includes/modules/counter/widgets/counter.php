@@ -426,7 +426,10 @@ class Counter extends Base_Widget {
 			$this->add_render_attribute( 'wrapper', 'class', 'raven-counter-multi-rows' );
 		}
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'wrapper' );
+		?>>
 			<?php
 			$migration_allowed = Elementor::$instance->icons_manager->is_migration_allowed();
 			foreach ( $list as $index => $item ) :
@@ -460,7 +463,10 @@ class Counter extends Base_Widget {
 					</div>
 					<div class="raven-counter-number-wrapper">
 						<span class="raven-counter-number-prefix"><?php $this->print_unescaped_setting( 'prefix', 'list', $index ); ?></span>
-						<span <?php echo $this->get_render_attribute_string( $counter ); ?>><?php $this->print_unescaped_setting( 'starting_number', 'list', $index ); ?></span>
+						<span <?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+						echo $this->get_render_attribute_string( $counter );
+						?>><?php $this->print_unescaped_setting( 'starting_number', 'list', $index ); ?></span>
 						<span class="raven-counter-number-suffix"><?php $this->print_unescaped_setting( 'suffix', 'list', $index ); ?></span>
 					</div>
 					<?php if ( $item['title'] ) : ?>

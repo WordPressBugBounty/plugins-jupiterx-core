@@ -135,6 +135,10 @@ class Background extends Group_Control_Base {
 				'title' => _x( 'Background Video', 'Background Control', 'jupiterx-core' ),
 				'icon' => 'fa fa-video-camera',
 			],
+			'blur' => [
+				'title' => _x( 'Blur', 'Background Control', 'jupiterx-core' ),
+				'icon' => 'fa fa-adjust',
+			],
 		];
 	}
 
@@ -156,7 +160,13 @@ class Background extends Group_Control_Base {
 			'label' => _x( 'Background Type', 'Background Control', 'jupiterx-core' ),
 			'type' => 'choose',
 			'label_block' => false,
-			'render_type' => 'ui',
+			// Use `template` so widgets re-render when the background type changes.
+			// This is required for the blur type to take effect live in the editor
+			// on widgets without a content_template (e.g. the Button), where the
+			// `.jupiterx-blur-background` render-attribute class is added inside
+			// the PHP render() method. Without a re-render the class would only
+			// show up after a full editor reload.
+			'render_type' => 'template',
 		];
 
 		$fields['color'] = [
@@ -395,6 +405,117 @@ class Background extends Group_Control_Base {
 				'{{SELECTOR}}' => 'background: url("{{URL}}") 50% 50%; background-size: cover;',
 			],
 			'of_type' => 'video',
+		];
+
+		// NOTE on selectors: the `{{SELECTOR}}` passed to this group control by
+		// some widgets (e.g. the Button widget) can be a comma-separated list
+		// that already contains pseudo-element parts such as `:after`. Appending
+		// `::before` / `::after` here would produce invalid selectors like
+		// `.x:after::before`, which causes the whole rule to be dropped per the
+		// CSS spec. To keep this group control safe for every caller, we only
+		// emit the base rule on `{{SELECTOR}}` and rely on the static CSS
+		// rules defined in `_blur-background.scss` (targeting the
+		// `.jupiterx-blur-background` class) to render the pseudo-elements.
+		$fields['blur_enabled'] = [
+			'type' => 'hidden',
+			'default' => 'yes',
+			'condition' => [
+				'background' => [ 'blur' ],
+			],
+			'selectors' => [
+				'{{SELECTOR}}' => 'background: transparent !important; background-color: transparent !important; background-image: none !important; position: relative; isolation: isolate; --jupiterx-blur-amount: 14; --jupiterx-blur-tint-color: #FFFFFF; --jupiterx-blur-tint-opacity: 18; --jupiterx-blur-fallback-color: rgba(255,255,255,0.90);',
+			],
+			'of_type' => 'blur',
+		];
+
+		$fields['blur_amount'] = [
+			'label' => _x( 'Blur Amount', 'Background Control', 'jupiterx-core' ),
+			'type' => 'slider',
+			'size_units' => [ 'px' ],
+			'default' => [
+				'unit' => 'px',
+				'size' => 14,
+			],
+			'range' => [
+				'px' => [
+					'min' => 0,
+					'max' => 30,
+				],
+			],
+			'selectors' => [
+				'{{SELECTOR}}' => '--jupiterx-blur-amount: {{SIZE}};',
+			],
+			'condition' => [
+				'background' => [ 'blur' ],
+			],
+			'of_type' => 'blur',
+		];
+
+		$fields['blur_tint_color'] = [
+			'label' => _x( 'Tint Color', 'Background Control', 'jupiterx-core' ),
+			'type' => 'color',
+			'default' => '#FFFFFF',
+			'selectors' => [
+				'{{SELECTOR}}' => '--jupiterx-blur-tint-color: {{VALUE}};',
+			],
+			'condition' => [
+				'background' => [ 'blur' ],
+			],
+			'of_type' => 'blur',
+		];
+
+		$fields['blur_tint_opacity'] = [
+			'label' => _x( 'Tint Opacity', 'Background Control', 'jupiterx-core' ),
+			'type' => 'slider',
+			'size_units' => [ '%' ],
+			'default' => [
+				'unit' => '%',
+				'size' => 18,
+			],
+			'range' => [
+				'%' => [
+					'min' => 0,
+					'max' => 60,
+				],
+			],
+			'selectors' => [
+				'{{SELECTOR}}' => '--jupiterx-blur-tint-opacity: {{SIZE}};',
+			],
+			'condition' => [
+				'background' => [ 'blur' ],
+			],
+			'of_type' => 'blur',
+		];
+
+		$fields['blur_fallback_color'] = [
+			'label' => _x( 'Fallback Color', 'Background Control', 'jupiterx-core' ),
+			'type' => 'color',
+			'default' => 'rgba(255,255,255,0.90)',
+			'selectors' => [
+				'{{SELECTOR}}' => '--jupiterx-blur-fallback-color: {{VALUE}};',
+			],
+			'condition' => [
+				'background' => [ 'blur' ],
+			],
+			'of_type' => 'blur',
+		];
+
+		// Mobile disable is handled by the static `.jupiterx-blur-background--mobile-disabled`
+		// rule in `_blur-background.scss` (the class is added by
+		// `Blur_Background_Module::add_render_attributes()`). We intentionally
+		// avoid emitting `(mobile){{SELECTOR}}::before` here for the same
+		// selector-stacking reason documented above on `blur_enabled`.
+		$fields['blur_disable_on_mobile'] = [
+			'label' => _x( 'Disable On Mobile', 'Background Control', 'jupiterx-core' ),
+			'type' => 'switcher',
+			'label_on' => __( 'Yes', 'jupiterx-core' ),
+			'label_off' => __( 'No', 'jupiterx-core' ),
+			'return_value' => 'yes',
+			'default' => '',
+			'condition' => [
+				'background' => [ 'blur' ],
+			],
+			'of_type' => 'blur',
 		];
 
 		return $fields;

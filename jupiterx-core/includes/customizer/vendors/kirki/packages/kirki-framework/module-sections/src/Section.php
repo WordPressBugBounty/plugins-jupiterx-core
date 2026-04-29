@@ -9,6 +9,7 @@
  */
 
 namespace Kirki;
+defined( 'ABSPATH' ) || die();
 
 /**
  * Section.

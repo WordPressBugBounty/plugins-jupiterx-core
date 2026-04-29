@@ -38,7 +38,12 @@ class Nav_Menu extends Base_Widget {
 	public function get_menus() {
 		$options = [];
 
-		$menus = get_terms( 'nav_menu', [ 'hide_empty' => false ] );
+		$menus = get_terms(
+			[
+				'taxonomy'   => 'nav_menu',
+				'hide_empty' => false,
+			]
+		);
 
 		foreach ( $menus as $menu ) {
 			$options[ $menu->slug ] = $menu->name;
@@ -246,7 +251,7 @@ class Nav_Menu extends Base_Widget {
 		$this->add_responsive_control(
 			'logo_skin',
 			[
-				'label' => __( 'Choose Logo' ),
+				'label' => __( 'Choose Logo', 'jupiterx-core' ),
 				'type' => 'select',
 				'options' => [
 					'primary'   => __( 'Primary', 'jupiterx-core' ),
@@ -418,7 +423,7 @@ class Nav_Menu extends Base_Widget {
 		$this->add_responsive_control(
 			'side_logo_skin',
 			[
-				'label' => __( 'Choose Logo' ),
+				'label' => __( 'Choose Logo', 'jupiterx-core' ),
 				'type' => 'select',
 				'options' => [
 					'primary'   => __( 'Primary', 'jupiterx-core' ),
@@ -2396,7 +2401,10 @@ class Nav_Menu extends Base_Widget {
 			$this->add_render_attribute( 'mobile_menu', 'class', [ 'raven-nav-menu-item-full-width' ] );
 		}
 		?>
-		<nav <?php echo $this->get_render_attribute_string( 'menu' ); ?>>
+		<nav <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'menu' );
+		?>>
 			<?php \Elementor\Utils::print_unescaped_internal_string( $menu_html ); ?>
 		</nav>
 
@@ -2440,7 +2448,10 @@ class Nav_Menu extends Base_Widget {
 			</div>
 
 		</div>
-		<nav <?php echo $this->get_render_attribute_string( 'mobile_menu' ); ?>>
+		<nav <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'mobile_menu' );
+		?>>
 			<?php
 			if ( 'side' === $settings['mobile_layout'] ) {
 				\Elementor\Utils::print_unescaped_internal_string( $this->render_side_logo() );
@@ -2579,10 +2590,16 @@ class Nav_Menu extends Base_Widget {
 		?>
 		<li class="raven-nav-menu-logo">
 			<?php if ( ! empty( $link['url'] ) ) : ?>
-				<a <?php echo $this->get_render_attribute_string( 'logo_link' ); ?>>
+				<a <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+				echo $this->get_render_attribute_string( 'logo_link' );
+				?>>
 			<?php endif; ?>
 			<?php foreach ( $logo_skins as $device_logo ) : ?>
-				<img <?php echo $this->get_render_attribute_string( $device_logo ); ?> />
+				<img <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+				echo $this->get_render_attribute_string( $device_logo );
+				?> />
 			<?php endforeach; ?>
 			<?php if ( ! empty( $link['url'] ) ) : ?>
 				</a>
@@ -2669,10 +2686,16 @@ class Nav_Menu extends Base_Widget {
 		?>
 		<div class="raven-side-menu-logo">
 			<?php if ( ! empty( $link['url'] ) ) : ?>
-				<a <?php echo $this->get_render_attribute_string( 'side_logo_link' ); ?>>
+				<a <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+				echo $this->get_render_attribute_string( 'side_logo_link' );
+				?>>
 			<?php endif; ?>
 			<?php foreach ( $side_logo_skins as $side_device_logo ) : ?>
-				<img <?php echo $this->get_render_attribute_string( $side_device_logo ); ?> />
+				<img <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+				echo $this->get_render_attribute_string( $side_device_logo );
+				?> />
 			<?php endforeach; ?>
 			<?php if ( ! empty( $link['url'] ) ) : ?>
 				</a>

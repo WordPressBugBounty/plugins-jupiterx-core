@@ -534,13 +534,19 @@ class Image extends Base_Widget {
 			$this->render_link_properties( $this, $link, 'link' );
 
 		} ?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'wrapper' );
+		?>>
 		<?php if ( $has_caption ) : ?>
 			<figure class="wp-caption">
 		<?php endif; ?>
 
 		<?php if ( $link ) : ?>
-				<a <?php echo $this->get_render_attribute_string( 'link' ); ?>>
+				<a <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->get_render_attribute_string( 'link' );
+				?>>
 		<?php endif; ?>
 
 		<?php

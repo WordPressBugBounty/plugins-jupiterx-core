@@ -43,9 +43,9 @@ class Post_Time extends Tag {
 				'type' => 'select',
 				'options' => [
 					'default' => esc_html__( 'Default', 'jupiterx-core' ),
-					'g:i a' => date( 'g:i a' ),
-					'g:i A' => date( 'g:i A' ),
-					'H:i' => date( 'H:i' ),
+					'g:i a' => gmdate( 'g:i a' ),
+					'g:i A' => gmdate( 'g:i A' ),
+					'H:i' => gmdate( 'H:i' ),
 					'custom' => esc_html__( 'Custom', 'jupiterx-core' ),
 				],
 				'default' => 'default',

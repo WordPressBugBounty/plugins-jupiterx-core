@@ -1,5 +1,6 @@
 #!/usr/bin/env php
 <?php
+defined( 'ABSPATH' ) || die();
 
 require_once(dirname(__FILE__).'/bootstrap.php');
 

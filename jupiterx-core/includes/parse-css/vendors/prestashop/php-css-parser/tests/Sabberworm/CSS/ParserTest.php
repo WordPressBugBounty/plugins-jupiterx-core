@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS;
 
+defined( 'ABSPATH' ) || die();
+
 use Sabberworm\CSS\CSSList\KeyFrame;
 use Sabberworm\CSS\Value\Size;
 use Sabberworm\CSS\Property\Selector;

@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter Post Options > Title Bar meta options.
  *

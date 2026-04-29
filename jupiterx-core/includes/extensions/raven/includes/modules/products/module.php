@@ -19,6 +19,7 @@ class Module extends Module_Base {
 	protected static $context_counter           = 0;
 	protected static $increment                 = 0;
 	protected static $product_item              = [];
+	protected static $sellkit_context_id        = null;
 	protected static $current_index             = 0;
 	protected static $post_id                   = 0;
 	protected static $model_id                  = 0;
@@ -37,7 +38,7 @@ class Module extends Module_Base {
 			self::$model_id = filter_input( INPUT_POST, 'modelId' );
 
 			add_action( 'sellkit_product_filter_before_render_product', [ $this, 'add_custom_layout_hooks' ], 10 );
-			remove_action( 'sellkit_product_filter_after_render_product', [ $this, 'add_custom_layout_hooks' ] );
+			add_action( 'sellkit_product_filter_after_render_product', [ $this, 'remove_custom_layout_hooks' ], 10, 1 );
 		}
 
 		add_filter( 'jx_products_apply_image_size', [ $this, 'apply_image_size' ], 10 );
@@ -257,14 +258,39 @@ class Module extends Module_Base {
 			}
 		}
 
+		// In Sellkit filter rendering this callback can be invoked without settings/context.
+		// Returning early avoids destructive global hook cleanup with unknown widget state.
+		if ( empty( $settings ) ) {
+			return;
+		}
+
+		// Create and activate a rendering context so settings are available during product rendering
+		// This is critical for Sellkit AJAX requests where no context is automatically created
+		self::$sellkit_context_id = self::create_rendering_context( 'sellkit_filter_context', $settings );
+		self::activate_rendering_context( self::$sellkit_context_id );
+
 		// Clean up any existing hooks first to prevent conflicts
 		self::cleanup_all_hooks();
+
+		$is_custom_layout = isset( $settings['layout'] ) && 'custom' === $settings['layout'];
+
+		// Theme Default / non-custom layouts should keep JupiterX loop hooks.
+		if ( ! $is_custom_layout ) {
+			add_filter( 'woocommerce_before_shop_loop_item', 'jupiterx_wc_loop_item_before', 0 );
+			add_filter( 'woocommerce_after_shop_loop_item', 'jupiterx_wc_loop_item_after', 999 );
+			add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
+			return;
+		}
 
 		remove_filter( 'woocommerce_before_shop_loop_item', 'jupiterx_wc_loop_item_before', 0 );
 		add_filter( 'woocommerce_before_shop_loop_item', [ __CLASS__, 'raven_before_shop_loop_item' ], 0 );
 
 		remove_filter( 'woocommerce_after_shop_loop_item', 'jupiterx_wc_loop_item_after', 999 );
 		add_filter( 'woocommerce_after_shop_loop_item', [ __CLASS__, 'raven_after_shop_loop_item' ], 999 );
+
+		// cleanup_all_hooks() removes the default add-to-cart hook; add it back for custom layouts
+		// and let location rules below move/remove it as needed.
+		add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
 
 		if ( isset( $settings['layout'] ) && 'default' !== $settings['layout'] ) {
 			add_action( 'woocommerce_before_shop_loop_item', [ __CLASS__, 'raven_before_shop_loop_item_thumbnail' ], 20 );
@@ -302,7 +328,8 @@ class Module extends Module_Base {
 		$request_action = filter_input( INPUT_POST, 'action', FILTER_SANITIZE_FULL_SPECIAL_CHARS );
 
 		if ( 'sellkit_get_products' === $request_action ) {
-			if ( 'inside' === $location && 'overlay' === $layout ) {
+			// Apply inside location hooks for ANY layout (not just overlay)
+			if ( 'inside' === $location ) {
 				add_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 21 );
 				add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_product_link_close', 999 );
 				remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
@@ -310,12 +337,29 @@ class Module extends Module_Base {
 			}
 
 			if ( 'outside' === $location && 'overlay' === $layout ) {
+				remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
 				add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 999 );
 			}
 		}
 	}
 
-	public static function remove_custom_layout_hooks( $settings ) {
+	public static function remove_custom_layout_hooks( $settings = [] ) {
+		$current_settings = self::get_current_settings();
+		$active_settings  = ! empty( $current_settings ) ? $current_settings : $settings;
+
+		// In Sellkit rendering this callback can run without settings/context.
+		// Avoid global cleanup when there is no deterministic state to restore from.
+		if ( empty( $active_settings ) ) {
+			return;
+		}
+
+		// Clean up the Sellkit rendering context if it exists
+		if ( self::$sellkit_context_id ) {
+			self::deactivate_rendering_context( self::$sellkit_context_id );
+			self::cleanup_rendering_context( self::$sellkit_context_id );
+			self::$sellkit_context_id = null;
+		}
+
 		// Clean up hooks
 		self::cleanup_all_hooks();
 
@@ -326,35 +370,31 @@ class Module extends Module_Base {
 		add_filter( 'woocommerce_after_shop_loop_item', 'jupiterx_wc_loop_item_after', 999 );
 		remove_filter( 'woocommerce_after_shop_loop_item', [ __CLASS__, 'raven_after_shop_loop_item' ], 999 );
 
-		if ( isset( $settings['layout'] ) && 'default' !== $settings['layout'] ) {
+		if ( isset( $active_settings['layout'] ) && 'default' !== $active_settings['layout'] ) {
 			remove_action( 'woocommerce_before_shop_loop_item', [ __CLASS__, 'raven_before_shop_loop_item_thumbnail' ], 20 );
 			add_action( 'woocommerce_before_shop_loop_item', 'jupiterx_wc_loop_product_thumbnail', 20 );
 		}
 
-		if ( ! empty( $settings['general_layout'] ) ) {
+		if ( ! empty( $active_settings['general_layout'] ) ) {
 			add_action( 'woocommerce_before_shop_loop_item', 'woocommerce_template_loop_product_link_open', 10 );
 			remove_action( 'woocommerce_before_shop_loop_item', [ __CLASS__, 'product_contet_wrapper_start' ], 21 );
 			remove_action( 'woocommerce_after_shop_loop_item', [ __CLASS__, 'product_contet_wrapper_end' ] );
 		}
 
-		if ( isset( $settings['layout'] ) && 'custom' !== $settings['layout'] ) {
+		if ( isset( $active_settings['layout'] ) && 'custom' !== $active_settings['layout'] ) {
 			return;
 		}
 
-		$current_settings = self::get_current_settings();
-		// Use current context settings if available, otherwise fall back to passed settings
-		$active_settings = ! empty( $current_settings ) ? $current_settings : $settings;
-
-		$layout = $settings['content_layout'] ?? '';
+		$layout = $active_settings['content_layout'] ?? '';
 
 		if ( ! empty( $active_settings['general_layout'] ) && in_array( $active_settings['general_layout'], [ 'matrix', 'metro' ], true ) ) {
-			$layout = $settings['metro_matrix_content_layout'] ?? '';
+			$layout = $active_settings['metro_matrix_content_layout'] ?? '';
 		}
 
-		$location = $settings['pc_atc_button_location'] ?? '';
+		$location = $active_settings['pc_atc_button_location'] ?? '';
 
 		if ( 'overlay' === $layout ) {
-			$location = $settings['pc_atc_button_location_overlay'] ?? '';
+			$location = $active_settings['pc_atc_button_location_overlay'] ?? '';
 		}
 
 		if ( 'inside' === $location ) {
@@ -392,7 +432,6 @@ class Module extends Module_Base {
 	public static function query( $widget, $settings ) {
 		$filter          = self::get_filter( $settings['query_filter'] );
 		$fallback_filter = self::get_filter( $settings['query_fallback_filter'] );
-		$search_query    = filter_input( INPUT_GET, 's' );
 
 		// Create and activate a rendering context for this widget
 		$widget_id  = isset( $widget ) && method_exists( $widget, 'get_id' ) ? $widget->get_id() : uniqid( 'query_widget_', true );
@@ -420,14 +459,6 @@ class Module extends Module_Base {
 
 		if ( ! $settings['query_order'] ) {
 			$settings['query_order'] = 'DESC';
-		}
-
-		if ( 'search_result' === $settings['query_filter'] && ! self::is_editor_or_preview() && empty( $search_query ) ) {
-			return 'no_search_query';
-		}
-
-		if ( 'search_result' === $settings['query_filter'] ) {
-			remove_action( 'pre_get_posts', 'jupiterx_modify_search_page_query', 10 );
 		}
 
 		$query = $filter::query( $widget, $settings );
@@ -472,17 +503,12 @@ class Module extends Module_Base {
 		$widget_settings = $widget_instance->get_settings_for_display();
 
 		$widget_settings['page']          = $paged;
-		$widget_settings['archive_query'] = $archive_query ? json_decode( $archive_query ) : '';
+		$widget_settings['archive_query'] = ( is_string( $archive_query ) && $archive_query !== '' ) ? json_decode( $archive_query ) : '';
 
 		self::get_pagination( $widget_settings );
 
 		// Query.
-		$query = static::query( $widget_instance, $widget_settings );
-
-		if ( 'search_result' === $widget_settings['query_filter'] && 'no_search_query' === $query ) {
-			wp_send_json_error( new \WP_Error( 'no_search_query', __( 'No Search query defined.', 'jupiterx-core' ) ) );
-		}
-
+		$query      = static::query( $widget_instance, $widget_settings );
 		$products   = $query->get_content();
 		$query_args = $query->get_query_args();
 
@@ -822,29 +848,31 @@ class Module extends Module_Base {
 		echo wp_kses_post( $output );
 	}
 
-	public static function apply_button_location() {
-		// Always use current context settings, ignore passed settings completely
+	public static function apply_button_location( $settings = [] ) {
+		// Prefer active rendering context, but fall back to passed settings (Sellkit filter flow).
 		$current_settings = self::get_current_settings();
+		$passed_settings  = is_array( $settings ) ? $settings : [];
+		$active_settings  = ! empty( $current_settings ) ? $current_settings : $passed_settings;
 
 		// If no active context, return early
-		if ( empty( $current_settings ) ) {
+		if ( empty( $active_settings ) ) {
 			return;
 		}
 
-		if ( isset( $current_settings['layout'] ) && 'custom' !== $current_settings['layout'] ) {
+		if ( isset( $active_settings['layout'] ) && 'custom' !== $active_settings['layout'] ) {
 			return;
 		}
 
-		$layout = $current_settings['content_layout'] ?? '';
+		$layout = $active_settings['content_layout'] ?? '';
 
-		if ( ! empty( $current_settings['general_layout'] ) && in_array( $current_settings['general_layout'], [ 'matrix', 'metro' ], true ) ) {
-			$layout = $current_settings['metro_matrix_content_layout'] ?? '';
+		if ( ! empty( $active_settings['general_layout'] ) && in_array( $active_settings['general_layout'], [ 'matrix', 'metro' ], true ) ) {
+			$layout = $active_settings['metro_matrix_content_layout'] ?? '';
 		}
 
-		$location = $current_settings['pc_atc_button_location'] ?? '';
+		$location = $active_settings['pc_atc_button_location'] ?? '';
 
 		if ( 'overlay' === $layout ) {
-			$location = $current_settings['pc_atc_button_location_overlay'] ?? '';
+			$location = $active_settings['pc_atc_button_location_overlay'] ?? '';
 		}
 
 		if ( 'outside' === $location ) {
@@ -852,7 +880,7 @@ class Module extends Module_Base {
 		}
 
 		// If add to cart button is disabled, remove it from appearing anywhere
-		if ( empty( $current_settings['atc_button'] ) || 'show' !== $current_settings['atc_button'] ) {
+		if ( empty( $active_settings['atc_button'] ) || 'show' !== $active_settings['atc_button'] ) {
 			remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
 			remove_action( 'jupiterx_wc_loop_product_image_append_markup', 'woocommerce_template_loop_add_to_cart' );
 			return;

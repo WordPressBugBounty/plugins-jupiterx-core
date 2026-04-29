@@ -1345,7 +1345,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			);
 		}
 		?>
-		<div <?php echo $this->parent->get_render_attribute_string( 'wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->parent->get_render_attribute_string( 'wrapper' );
+		?>>
 			<?php
 			$this->terms = $this->render_order_item();
 

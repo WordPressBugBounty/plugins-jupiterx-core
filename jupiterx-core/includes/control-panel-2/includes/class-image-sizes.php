@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * This class provides the methods to Store and retrieve Image sizes from database.
  *

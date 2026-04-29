@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * This file is responsible for Woocommerce Paginagion/Load More
  *
@@ -126,7 +130,7 @@ function jupiterx_wc_loadmore_ajax_handler() {
 	$last     = min( $total, $per_page * $current );
 
 	/* translators: 1: first result 2: last result 3: total results */
-	$data['result_count'] = sprintf( _nx( 'Showing %1$d&ndash;%2$d of %3$d result', 'Showing %1$d&ndash;%2$d of %3$d results', $total, 'with first and last result', 'woocommerce' ), 1, $last, $total );
+	$data['result_count'] = sprintf( _nx( 'Showing %1$d&ndash;%2$d of %3$d result', 'Showing %1$d&ndash;%2$d of %3$d results', $total, 'with first and last result', 'jupiterx-core' ), 1, $last, $total );
 
 	while ( have_posts() ) :
 		the_post();

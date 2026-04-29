@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * JupiterX_Core General Utilities
  *
@@ -74,5 +75,18 @@ if ( ! function_exists( 'jupiterx_is_debug_log' ) ) {
 		}
 
 		return true;
+	}
+}
+
+if ( ! function_exists( 'jupiterx_core_get_integrations_settings_url' ) ) {
+	/**
+	 * Admin URL for JupiterX Control Panel → Settings → Integrations.
+	 *
+	 * @since 4.15.0
+	 *
+	 * @return string Unescaped URL; use esc_url() when printing.
+	 */
+	function jupiterx_core_get_integrations_settings_url() {
+		return admin_url( 'admin.php?page=jupiterx' ) . '#/settings#integrations';
 	}
 }

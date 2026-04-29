@@ -352,9 +352,15 @@ class Site_Logo extends Base_Widget {
 		$source_control = $settings['logo_source'];
 		?>
 		<div class="raven-widget-wrapper">
-			<div <?php echo $this->get_render_attribute_string( 'logo-wrapper' ); ?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( 'logo-wrapper' );
+			?>>
 				<?php if ( ! empty( $link['url'] ) ) : ?>
-					<a <?php echo $this->get_render_attribute_string( 'link' ); ?>>
+					<a <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+					echo $this->get_render_attribute_string( 'link' );
+					?>>
 				<?php endif; ?>
 				<?php
 
@@ -811,6 +817,7 @@ class Site_Logo extends Base_Widget {
 		}
 
 		foreach ( $logos as $device_logo ) :
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
 			echo '<img ' . $this->get_render_attribute_string( $device_logo ) . ' />';
 		endforeach;
 

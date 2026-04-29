@@ -730,7 +730,10 @@ abstract class Marquee extends Base_Widget {
 		}
 		ob_start();
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'item_' . esc_attr( $key ) ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'item_' . esc_attr( $key ) );
+		?>>
 			<?php
 				ElementorUtils::print_unescaped_internal_string( $link_start );
 				$this->render_item_content( $item, $key );

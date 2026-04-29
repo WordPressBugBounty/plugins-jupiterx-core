@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die();
+
 /**
  * The file class that handles condition manager component.
  *
@@ -519,6 +521,11 @@ class JupiterX_Core_Condition_Manager {
 		// Attach post type's taxonomies to array.
 		// Add a @ sign between post type and its taxonomy to split and use them later.
 		foreach ( $taxonomies as $taxonomy ) {
+			//if taxonomy have not `_`, manually add `_` to taxonomy for use it on frontend.
+			if ( 'singular' === $type && strpos( $taxonomy->name, '_' ) === false ) {
+				$taxonomy->name = 'CUSTOMPOSTTYPETERM_' . $taxonomy->name;
+			}
+
 			$list[ $label ][ $name . '@' . $taxonomy->name ] = $taxonomy->label;
 
 			if ( true === $taxonomy->hierarchical && 'archive' === $type ) {
@@ -788,6 +795,10 @@ class JupiterX_Core_Condition_Manager {
 			$post_type = $sub[0];
 			$rest      = $sub[1];
 
+			if ( strpos( $rest, 'CUSTOMPOSTTYPETERM_' ) !== false ) {
+				$rest = str_replace( 'CUSTOMPOSTTYPETERM_', '', $rest );
+			}
+
 			if ( strpos( $rest, 'author' ) !== false ) {
 				// User looking for authors.
 				$this->get_authors( $value );
@@ -917,8 +928,8 @@ class JupiterX_Core_Condition_Manager {
 
 		if ( empty( $terms ) ) {
 			$terms = get_terms(
-				$tax,
 				[
+					'taxonomy'   => $tax,
 					'hide_empty' => false,
 					'name__like' => $value,
 				]

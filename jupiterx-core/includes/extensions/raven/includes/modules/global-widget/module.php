@@ -40,6 +40,7 @@ class Module extends Module_Base {
 		add_filter( 'elementor/document/save/data', function ( $data, $document ) {
 			return $this->get_document_data( $data, $document );
 		}, 10, 2 );
+		add_filter( 'elementor/template-library/is_allowed_to_read_template', [ $this, 'allow_reading_published_global_widgets' ], 10, 2 );
 
 		$this->elementor()->data_manager->register_controller_instance( new Data\Controller() );
 	}
@@ -144,6 +145,42 @@ class Module extends Module_Base {
 
 	public function is_template_supports_export( $default_value, $template_id ) {
 		return $default_value && ! $this->is_widget_template( $template_id );
+	}
+
+	/**
+	 * Allow reading published global widget templates.
+	 *
+	 * Elementor's default permission check incorrectly blocks logged-out users
+	 * from reading published templates. This filter ensures that published
+	 * global widget templates are accessible to all users on the frontend.
+	 *
+	 * @since NEXT
+	 *
+	 * @param bool  $can_read Whether the user can read the template.
+	 * @param array $args     Template arguments including template_id.
+	 *
+	 * @return bool
+	 */
+	public function allow_reading_published_global_widgets( $can_read, $args ) {
+		if ( $can_read || empty( $args['template_id'] ) ) {
+			return $can_read;
+		}
+
+		$template_id = intval( $args['template_id'] );
+
+		// Check if this is a global widget template.
+		if ( ! $this->is_widget_template( $template_id ) ) {
+			return $can_read;
+		}
+
+		// Allow reading if the template is published.
+		$post_status = get_post_status( $template_id );
+
+		if ( 'publish' === $post_status ) {
+			return true;
+		}
+
+		return $can_read;
 	}
 
 	/**

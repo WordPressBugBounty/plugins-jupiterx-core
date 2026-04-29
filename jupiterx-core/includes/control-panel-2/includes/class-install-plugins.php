@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * This class is responsible to managing all JupiterX plugins.
  *

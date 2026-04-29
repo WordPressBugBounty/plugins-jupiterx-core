@@ -1,63 +1,50 @@
 (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 "use strict";
 
-var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
-var _toConsumableArray2 = _interopRequireDefault(require("@babel/runtime/helpers/toConsumableArray"));
-
 var _i18n = require("@wordpress/i18n");
-
 (function ($) {
-  var Variations = {
-    init: function init() {
+  const Variations = {
+    init() {
       this.bindEvents();
     },
-    bindEvents: function bindEvents() {
-      var manageToAddImagesId = function manageToAddImagesId(newId, idInput) {
-        var imagesId = idInput.val();
+    bindEvents() {
+      const manageToAddImagesId = (newId, idInput) => {
+        let imagesId = idInput.val();
         imagesId = imagesId + ',' + newId;
         imagesId = imagesId.split(',');
-        imagesId = (0, _toConsumableArray2["default"])(new Set(imagesId));
+        imagesId = [...new Set(imagesId)];
         imagesId = imagesId.join(',');
         idInput.val(imagesId.trim()).trigger('change');
       };
-
-      var manageToRemoveImageId = function manageToRemoveImageId(id, inputId) {
-        var imagesId = inputId.val();
+      const manageToRemoveImageId = (id, inputId) => {
+        let imagesId = inputId.val();
         imagesId = imagesId.split(',');
-        var toRemove = imagesId.indexOf(id);
-
+        const toRemove = imagesId.indexOf(id);
         if (toRemove > -1) {
           imagesId.splice(toRemove, 1);
         }
-
         if (imagesId.length <= 1) {
           inputId.parent().find('.jupiterx-variation-gallery-button').val((0, _i18n.__)('Upload Gallery Images', 'jupiterx-core'));
         }
-
         imagesId = imagesId.join(',');
         inputId.val(imagesId.trim()).trigger('change');
       };
-
-      var removeButton = function removeButton() {
+      const removeButton = () => {
         $('.jx-remove-gallery-item').off().on('click', function () {
-          var id = $(this).parent().attr('data-id'),
-              inputId = $(this).parent().parent().parent().find('.variation-gallery-images-id');
+          const id = $(this).parent().attr('data-id'),
+            inputId = $(this).parent().parent().parent().find('.variation-gallery-images-id');
           manageToRemoveImageId(id, inputId);
           $(this).parent().remove();
         });
       };
-
-      var manageAddNewImages = function manageAddNewImages(info, idInput, galleryWrapper) {
+      const manageAddNewImages = (info, idInput, galleryWrapper) => {
         manageToAddImagesId(info.id, idInput);
-
         if ('' === info.url) {
           return;
         }
-
-        var wrapper = document.createElement('span'),
-            remover = document.createElement('a'),
-            image = document.createElement('img');
+        const wrapper = document.createElement('span'),
+          remover = document.createElement('a'),
+          image = document.createElement('img');
         wrapper.setAttribute('class', 'jupiterx-product-variation-gallery-single-image-wrapper');
         wrapper.setAttribute('data-id', info.id);
         remover.setAttribute('class', 'jx-remove-gallery-item tips');
@@ -68,13 +55,12 @@ var _i18n = require("@wordpress/i18n");
         galleryWrapper.append(wrapper);
         removeButton();
       };
-
-      var enableSorting = function enableSorting() {
+      const enableSorting = () => {
         $('.jupiterx-gallery-images-preview').sortable({
           placeholder: 'ui-sortable-placeholder wc-metabox-sortable-placeholder',
           delay: 0,
-          update: function update(ui) {
-            var ids = '';
+          update: ui => {
+            let ids = '';
             $(ui.target).find('.jupiterx-product-variation-gallery-single-image-wrapper').each(function () {
               ids += $(this).attr('data-id') + ',';
             });
@@ -82,46 +68,39 @@ var _i18n = require("@wordpress/i18n");
           }
         });
       };
-
       jQuery(document).ready(function () {
-        var wpMediaUploader;
+        let wpMediaUploader;
         $(document).ajaxComplete(function () {
           $('.jupiterx-variation-gallery-wrap').each(function () {
-            var galleryHtml = $(this).html(),
-                selfWrapper = $(this).parent(),
-                isAppend = selfWrapper.find('.upload_image').children().hasClass('jupiterx-variation-gallery-wrap-replaced');
-
+            const galleryHtml = $(this).html(),
+              selfWrapper = $(this).parent(),
+              isAppend = selfWrapper.find('.upload_image').children().hasClass('jupiterx-variation-gallery-wrap-replaced');
             if (!isAppend) {
               selfWrapper.find('.upload_image').append('<p class="form-field jupiterx-variation-gallery-wrap-replaced">' + galleryHtml + '</p>');
             }
-
             $(this).remove();
           });
           $('.jupiterx-variation-gallery-button').off().click(function (e) {
             e.preventDefault();
-            var galleryWrapper = $(this).parent().find('.jupiterx-gallery-images-preview'),
-                parent = $(this).parent().parent(),
-                imagesId = $(this).parent().find('.variation-gallery-images-id'),
-                defaultAttachmentIds = imagesId.val().split(','),
-                imageQuery = wp.media.query({
-              post__in: defaultAttachmentIds,
-              orderby: 'post__in'
-            });
-
+            const galleryWrapper = $(this).parent().find('.jupiterx-gallery-images-preview'),
+              parent = $(this).parent().parent(),
+              imagesId = $(this).parent().find('.variation-gallery-images-id'),
+              defaultAttachmentIds = imagesId.val().split(','),
+              imageQuery = wp.media.query({
+                post__in: defaultAttachmentIds,
+                orderby: 'post__in'
+              });
             if (wpMediaUploader) {
               wpMediaUploader.off().on('select', function () {
-                var attachments = wpMediaUploader.state().get('selection').toJSON();
-
-                for (var i = 0; i < attachments.length; i++) {
+                const attachments = wpMediaUploader.state().get('selection').toJSON();
+                for (let i = 0; i < attachments.length; i++) {
                   manageAddNewImages(attachments[i], imagesId, galleryWrapper);
                 }
-
                 parent.find('.jupiterx-variation-gallery-button').val((0, _i18n.__)('Change Image', 'jupiterx-core'));
               });
               wpMediaUploader.open();
               return;
             }
-
             wpMediaUploader = wp.media.frames.file_frame = wp.media({
               title: (0, _i18n.__)('Choose or Upload an Image', 'jupiterx-core'),
               button: {
@@ -134,15 +113,14 @@ var _i18n = require("@wordpress/i18n");
               }
             });
             wpMediaUploader.on('select', function () {
-              var attachments = wpMediaUploader.state().get('selection').toJSON();
-
-              for (var i = 0; i < attachments.length; i++) {
+              const attachments = wpMediaUploader.state().get('selection').toJSON();
+              for (let i = 0; i < attachments.length; i++) {
                 manageAddNewImages(attachments[i], imagesId, galleryWrapper);
               }
-
               parent.find('.jupiterx-variation-gallery-button').val((0, _i18n.__)('Change Image', 'jupiterx-core'));
-            }); // Open the media frame.
+            });
 
+            // Open the media frame.
             wpMediaUploader.open();
           });
           removeButton();
@@ -154,91 +132,14 @@ var _i18n = require("@wordpress/i18n");
   Variations.init();
 })(jQuery);
 
-},{"@babel/runtime/helpers/interopRequireDefault":5,"@babel/runtime/helpers/toConsumableArray":8,"@wordpress/i18n":16}],2:[function(require,module,exports){
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-
-  return arr2;
-}
-
-module.exports = _arrayLikeToArray;
-},{}],3:[function(require,module,exports){
-var arrayLikeToArray = require("./arrayLikeToArray");
-
-function _arrayWithoutHoles(arr) {
-  if (Array.isArray(arr)) return arrayLikeToArray(arr);
-}
-
-module.exports = _arrayWithoutHoles;
-},{"./arrayLikeToArray":2}],4:[function(require,module,exports){
-function _defineProperty(obj, key, value) {
-  if (key in obj) {
-    Object.defineProperty(obj, key, {
-      value: value,
-      enumerable: true,
-      configurable: true,
-      writable: true
-    });
-  } else {
-    obj[key] = value;
-  }
-
-  return obj;
-}
-
-module.exports = _defineProperty;
-},{}],5:[function(require,module,exports){
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : {
-    "default": obj
+},{"@wordpress/i18n":20}],2:[function(require,module,exports){
+function _interopRequireDefault(e) {
+  return e && e.__esModule ? e : {
+    "default": e
   };
 }
-
-module.exports = _interopRequireDefault;
-},{}],6:[function(require,module,exports){
-function _iterableToArray(iter) {
-  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
-}
-
-module.exports = _iterableToArray;
-},{}],7:[function(require,module,exports){
-function _nonIterableSpread() {
-  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-}
-
-module.exports = _nonIterableSpread;
-},{}],8:[function(require,module,exports){
-var arrayWithoutHoles = require("./arrayWithoutHoles");
-
-var iterableToArray = require("./iterableToArray");
-
-var unsupportedIterableToArray = require("./unsupportedIterableToArray");
-
-var nonIterableSpread = require("./nonIterableSpread");
-
-function _toConsumableArray(arr) {
-  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
-}
-
-module.exports = _toConsumableArray;
-},{"./arrayWithoutHoles":3,"./iterableToArray":6,"./nonIterableSpread":7,"./unsupportedIterableToArray":9}],9:[function(require,module,exports){
-var arrayLikeToArray = require("./arrayLikeToArray");
-
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
-}
-
-module.exports = _unsupportedIterableToArray;
-},{"./arrayLikeToArray":2}],10:[function(require,module,exports){
+module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
+},{}],3:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -275,7 +176,7 @@ function compile( expression ) {
 
 module.exports = compile;
 
-},{"@tannin/evaluate":11,"@tannin/postfix":13}],11:[function(require,module,exports){
+},{"@tannin/evaluate":4,"@tannin/postfix":6}],4:[function(require,module,exports){
 'use strict';
 
 /**
@@ -391,7 +292,7 @@ function evaluate( postfix, variables ) {
 
 module.exports = evaluate;
 
-},{}],12:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -417,7 +318,7 @@ function pluralForms( expression ) {
 
 module.exports = pluralForms;
 
-},{"@tannin/compile":10}],13:[function(require,module,exports){
+},{"@tannin/compile":3}],6:[function(require,module,exports){
 'use strict';
 
 var PRECEDENCE, OPENERS, TERMINATORS, PATTERN;
@@ -547,23 +448,649 @@ function postfix( expression ) {
 
 module.exports = postfix;
 
-},{}],14:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _validateNamespace = _interopRequireDefault(require("./validateNamespace.js"));
+var _validateHookName = _interopRequireDefault(require("./validateHookName.js"));
+/**
+ * Internal dependencies
+ */
+
+/**
+ * @callback AddHook
+ *
+ * Adds the hook to the appropriate hooks container.
+ *
+ * @param {string}               hookName      Name of hook to add
+ * @param {string}               namespace     The unique namespace identifying the callback in the form `vendor/plugin/function`.
+ * @param {import('.').Callback} callback      Function to call when the hook is run
+ * @param {number}               [priority=10] Priority of this hook
+ */
+
+/**
+ * Returns a function which, when invoked, will add a hook.
+ *
+ * @param {import('.').Hooks}    hooks    Hooks instance.
+ * @param {import('.').StoreKey} storeKey
+ *
+ * @return {AddHook} Function that adds a new hook.
+ */
+function createAddHook(hooks, storeKey) {
+  return function addHook(hookName, namespace, callback, priority = 10) {
+    const hooksStore = hooks[storeKey];
+    if (!(0, _validateHookName.default)(hookName)) {
+      return;
+    }
+    if (!(0, _validateNamespace.default)(namespace)) {
+      return;
+    }
+    if ('function' !== typeof callback) {
+      // eslint-disable-next-line no-console
+      console.error('The hook callback must be a function.');
+      return;
+    }
+
+    // Validate numeric priority
+    if ('number' !== typeof priority) {
+      // eslint-disable-next-line no-console
+      console.error('If specified, the hook priority must be a number.');
+      return;
+    }
+    const handler = {
+      callback,
+      priority,
+      namespace
+    };
+    if (hooksStore[hookName]) {
+      // Find the correct insert index of the new hook.
+      const handlers = hooksStore[hookName].handlers;
+
+      /** @type {number} */
+      let i;
+      for (i = handlers.length; i > 0; i--) {
+        if (priority >= handlers[i - 1].priority) {
+          break;
+        }
+      }
+      if (i === handlers.length) {
+        // If append, operate via direct assignment.
+        handlers[i] = handler;
+      } else {
+        // Otherwise, insert before index via splice.
+        handlers.splice(i, 0, handler);
+      }
+
+      // We may also be currently executing this hook.  If the callback
+      // we're adding would come after the current callback, there's no
+      // problem; otherwise we need to increase the execution index of
+      // any other runs by 1 to account for the added element.
+      hooksStore.__current.forEach(hookInfo => {
+        if (hookInfo.name === hookName && hookInfo.currentIndex >= i) {
+          hookInfo.currentIndex++;
+        }
+      });
+    } else {
+      // This is the first hook of its type.
+      hooksStore[hookName] = {
+        handlers: [handler],
+        runs: 0
+      };
+    }
+    if (hookName !== 'hookAdded') {
+      hooks.doAction('hookAdded', hookName, namespace, callback, priority);
+    }
+  };
+}
+var _default = exports.default = createAddHook;
+
+},{"./validateHookName.js":16,"./validateNamespace.js":17,"@babel/runtime/helpers/interopRequireDefault":2}],8:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = void 0;
+/**
+ * Returns a function which, when invoked, will return the name of the
+ * currently running hook, or `null` if no hook of the given type is currently
+ * running.
+ *
+ * @param {import('.').Hooks}    hooks    Hooks instance.
+ * @param {import('.').StoreKey} storeKey
+ *
+ * @return {() => string | null} Function that returns the current hook name or null.
+ */
+function createCurrentHook(hooks, storeKey) {
+  return function currentHook() {
+    var _hooksStore$__current;
+    const hooksStore = hooks[storeKey];
+    return (_hooksStore$__current = hooksStore.__current[hooksStore.__current.length - 1]?.name) !== null && _hooksStore$__current !== void 0 ? _hooksStore$__current : null;
+  };
+}
+var _default = exports.default = createCurrentHook;
+
+},{}],9:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _validateHookName = _interopRequireDefault(require("./validateHookName.js"));
+/**
+ * Internal dependencies
+ */
+
+/**
+ * @callback DidHook
+ *
+ * Returns the number of times an action has been fired.
+ *
+ * @param {string} hookName The hook name to check.
+ *
+ * @return {number | undefined} The number of times the hook has run.
+ */
+
+/**
+ * Returns a function which, when invoked, will return the number of times a
+ * hook has been called.
+ *
+ * @param {import('.').Hooks}    hooks    Hooks instance.
+ * @param {import('.').StoreKey} storeKey
+ *
+ * @return {DidHook} Function that returns a hook's call count.
+ */
+function createDidHook(hooks, storeKey) {
+  return function didHook(hookName) {
+    const hooksStore = hooks[storeKey];
+    if (!(0, _validateHookName.default)(hookName)) {
+      return;
+    }
+    return hooksStore[hookName] && hooksStore[hookName].runs ? hooksStore[hookName].runs : 0;
+  };
+}
+var _default = exports.default = createDidHook;
+
+},{"./validateHookName.js":16,"@babel/runtime/helpers/interopRequireDefault":2}],10:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+/**
+ * @callback DoingHook
+ * Returns whether a hook is currently being executed.
+ *
+ * @param {string} [hookName] The name of the hook to check for.  If
+ *                            omitted, will check for any hook being executed.
+ *
+ * @return {boolean} Whether the hook is being executed.
+ */
+
+/**
+ * Returns a function which, when invoked, will return whether a hook is
+ * currently being executed.
+ *
+ * @param {import('.').Hooks}    hooks    Hooks instance.
+ * @param {import('.').StoreKey} storeKey
+ *
+ * @return {DoingHook} Function that returns whether a hook is currently
+ *                     being executed.
+ */
+function createDoingHook(hooks, storeKey) {
+  return function doingHook(hookName) {
+    const hooksStore = hooks[storeKey];
+
+    // If the hookName was not passed, check for any current hook.
+    if ('undefined' === typeof hookName) {
+      return 'undefined' !== typeof hooksStore.__current[0];
+    }
+
+    // Return the __current hook.
+    return hooksStore.__current[0] ? hookName === hooksStore.__current[0].name : false;
+  };
+}
+var _default = exports.default = createDoingHook;
+
+},{}],11:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+/**
+ * @callback HasHook
+ *
+ * Returns whether any handlers are attached for the given hookName and optional namespace.
+ *
+ * @param {string} hookName    The name of the hook to check for.
+ * @param {string} [namespace] Optional. The unique namespace identifying the callback
+ *                             in the form `vendor/plugin/function`.
+ *
+ * @return {boolean} Whether there are handlers that are attached to the given hook.
+ */
+/**
+ * Returns a function which, when invoked, will return whether any handlers are
+ * attached to a particular hook.
+ *
+ * @param {import('.').Hooks}    hooks    Hooks instance.
+ * @param {import('.').StoreKey} storeKey
+ *
+ * @return {HasHook} Function that returns whether any handlers are
+ *                   attached to a particular hook and optional namespace.
+ */
+function createHasHook(hooks, storeKey) {
+  return function hasHook(hookName, namespace) {
+    const hooksStore = hooks[storeKey];
+
+    // Use the namespace if provided.
+    if ('undefined' !== typeof namespace) {
+      return hookName in hooksStore && hooksStore[hookName].handlers.some(hook => hook.namespace === namespace);
+    }
+    return hookName in hooksStore;
+  };
+}
+var _default = exports.default = createHasHook;
+
+},{}],12:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports._Hooks = void 0;
+var _createAddHook = _interopRequireDefault(require("./createAddHook"));
+var _createRemoveHook = _interopRequireDefault(require("./createRemoveHook"));
+var _createHasHook = _interopRequireDefault(require("./createHasHook"));
+var _createRunHook = _interopRequireDefault(require("./createRunHook"));
+var _createCurrentHook = _interopRequireDefault(require("./createCurrentHook"));
+var _createDoingHook = _interopRequireDefault(require("./createDoingHook"));
+var _createDidHook = _interopRequireDefault(require("./createDidHook"));
+/**
+ * Internal dependencies
+ */
+
+/**
+ * Internal class for constructing hooks. Use `createHooks()` function
+ *
+ * Note, it is necessary to expose this class to make its type public.
+ *
+ * @private
+ */
+class _Hooks {
+  constructor() {
+    /** @type {import('.').Store} actions */
+    this.actions = Object.create(null);
+    this.actions.__current = [];
+
+    /** @type {import('.').Store} filters */
+    this.filters = Object.create(null);
+    this.filters.__current = [];
+    this.addAction = (0, _createAddHook.default)(this, 'actions');
+    this.addFilter = (0, _createAddHook.default)(this, 'filters');
+    this.removeAction = (0, _createRemoveHook.default)(this, 'actions');
+    this.removeFilter = (0, _createRemoveHook.default)(this, 'filters');
+    this.hasAction = (0, _createHasHook.default)(this, 'actions');
+    this.hasFilter = (0, _createHasHook.default)(this, 'filters');
+    this.removeAllActions = (0, _createRemoveHook.default)(this, 'actions', true);
+    this.removeAllFilters = (0, _createRemoveHook.default)(this, 'filters', true);
+    this.doAction = (0, _createRunHook.default)(this, 'actions');
+    this.applyFilters = (0, _createRunHook.default)(this, 'filters', true);
+    this.currentAction = (0, _createCurrentHook.default)(this, 'actions');
+    this.currentFilter = (0, _createCurrentHook.default)(this, 'filters');
+    this.doingAction = (0, _createDoingHook.default)(this, 'actions');
+    this.doingFilter = (0, _createDoingHook.default)(this, 'filters');
+    this.didAction = (0, _createDidHook.default)(this, 'actions');
+    this.didFilter = (0, _createDidHook.default)(this, 'filters');
+  }
+}
+
+/** @typedef {_Hooks} Hooks */
+
+/**
+ * Returns an instance of the hooks object.
+ *
+ * @return {Hooks} A Hooks instance.
+ */
+exports._Hooks = _Hooks;
+function createHooks() {
+  return new _Hooks();
+}
+var _default = exports.default = createHooks;
+
+},{"./createAddHook":7,"./createCurrentHook":8,"./createDidHook":9,"./createDoingHook":10,"./createHasHook":11,"./createRemoveHook":13,"./createRunHook":14,"@babel/runtime/helpers/interopRequireDefault":2}],13:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _validateNamespace = _interopRequireDefault(require("./validateNamespace.js"));
+var _validateHookName = _interopRequireDefault(require("./validateHookName.js"));
+/**
+ * Internal dependencies
+ */
+
+/**
+ * @callback RemoveHook
+ * Removes the specified callback (or all callbacks) from the hook with a given hookName
+ * and namespace.
+ *
+ * @param {string} hookName  The name of the hook to modify.
+ * @param {string} namespace The unique namespace identifying the callback in the
+ *                           form `vendor/plugin/function`.
+ *
+ * @return {number | undefined} The number of callbacks removed.
+ */
+
+/**
+ * Returns a function which, when invoked, will remove a specified hook or all
+ * hooks by the given name.
+ *
+ * @param {import('.').Hooks}    hooks             Hooks instance.
+ * @param {import('.').StoreKey} storeKey
+ * @param {boolean}              [removeAll=false] Whether to remove all callbacks for a hookName,
+ *                                                 without regard to namespace. Used to create
+ *                                                 `removeAll*` functions.
+ *
+ * @return {RemoveHook} Function that removes hooks.
+ */
+function createRemoveHook(hooks, storeKey, removeAll = false) {
+  return function removeHook(hookName, namespace) {
+    const hooksStore = hooks[storeKey];
+    if (!(0, _validateHookName.default)(hookName)) {
+      return;
+    }
+    if (!removeAll && !(0, _validateNamespace.default)(namespace)) {
+      return;
+    }
+
+    // Bail if no hooks exist by this name.
+    if (!hooksStore[hookName]) {
+      return 0;
+    }
+    let handlersRemoved = 0;
+    if (removeAll) {
+      handlersRemoved = hooksStore[hookName].handlers.length;
+      hooksStore[hookName] = {
+        runs: hooksStore[hookName].runs,
+        handlers: []
+      };
+    } else {
+      // Try to find the specified callback to remove.
+      const handlers = hooksStore[hookName].handlers;
+      for (let i = handlers.length - 1; i >= 0; i--) {
+        if (handlers[i].namespace === namespace) {
+          handlers.splice(i, 1);
+          handlersRemoved++;
+          // This callback may also be part of a hook that is
+          // currently executing.  If the callback we're removing
+          // comes after the current callback, there's no problem;
+          // otherwise we need to decrease the execution index of any
+          // other runs by 1 to account for the removed element.
+          hooksStore.__current.forEach(hookInfo => {
+            if (hookInfo.name === hookName && hookInfo.currentIndex >= i) {
+              hookInfo.currentIndex--;
+            }
+          });
+        }
+      }
+    }
+    if (hookName !== 'hookRemoved') {
+      hooks.doAction('hookRemoved', hookName, namespace);
+    }
+    return handlersRemoved;
+  };
+}
+var _default = exports.default = createRemoveHook;
+
+},{"./validateHookName.js":16,"./validateNamespace.js":17,"@babel/runtime/helpers/interopRequireDefault":2}],14:[function(require,module,exports){
+(function (process){(function (){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+/**
+ * Returns a function which, when invoked, will execute all callbacks
+ * registered to a hook of the specified type, optionally returning the final
+ * value of the call chain.
+ *
+ * @param {import('.').Hooks}    hooks                  Hooks instance.
+ * @param {import('.').StoreKey} storeKey
+ * @param {boolean}              [returnFirstArg=false] Whether each hook callback is expected to
+ *                                                      return its first argument.
+ *
+ * @return {(hookName:string, ...args: unknown[]) => undefined|unknown} Function that runs hook callbacks.
+ */
+function createRunHook(hooks, storeKey, returnFirstArg = false) {
+  return function runHooks(hookName, ...args) {
+    const hooksStore = hooks[storeKey];
+    if (!hooksStore[hookName]) {
+      hooksStore[hookName] = {
+        handlers: [],
+        runs: 0
+      };
+    }
+    hooksStore[hookName].runs++;
+    const handlers = hooksStore[hookName].handlers;
+
+    // The following code is stripped from production builds.
+    if ('production' !== process.env.NODE_ENV) {
+      // Handle any 'all' hooks registered.
+      if ('hookAdded' !== hookName && hooksStore.all) {
+        handlers.push(...hooksStore.all.handlers);
+      }
+    }
+    if (!handlers || !handlers.length) {
+      return returnFirstArg ? args[0] : undefined;
+    }
+    const hookInfo = {
+      name: hookName,
+      currentIndex: 0
+    };
+    hooksStore.__current.push(hookInfo);
+    while (hookInfo.currentIndex < handlers.length) {
+      const handler = handlers[hookInfo.currentIndex];
+      const result = handler.callback.apply(null, args);
+      if (returnFirstArg) {
+        args[0] = result;
+      }
+      hookInfo.currentIndex++;
+    }
+    hooksStore.__current.pop();
+    if (returnFirstArg) {
+      return args[0];
+    }
+    return undefined;
+  };
+}
+var _default = exports.default = createRunHook;
+
+}).call(this)}).call(this,require('_process'))
+},{"_process":23}],15:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.applyFilters = exports.addFilter = exports.addAction = exports.actions = void 0;
+Object.defineProperty(exports, "createHooks", {
+  enumerable: true,
+  get: function () {
+    return _createHooks.default;
+  }
+});
+exports.removeFilter = exports.removeAllFilters = exports.removeAllActions = exports.removeAction = exports.hasFilter = exports.hasAction = exports.filters = exports.doingFilter = exports.doingAction = exports.doAction = exports.didFilter = exports.didAction = exports.defaultHooks = exports.currentFilter = exports.currentAction = void 0;
+var _createHooks = _interopRequireDefault(require("./createHooks"));
+/**
+ * Internal dependencies
+ */
+
+/** @typedef {(...args: any[])=>any} Callback */
+
+/**
+ * @typedef Handler
+ * @property {Callback} callback  The callback
+ * @property {string}   namespace The namespace
+ * @property {number}   priority  The namespace
+ */
+
+/**
+ * @typedef Hook
+ * @property {Handler[]} handlers Array of handlers
+ * @property {number}    runs     Run counter
+ */
+
+/**
+ * @typedef Current
+ * @property {string} name         Hook name
+ * @property {number} currentIndex The index
+ */
+
+/**
+ * @typedef {Record<string, Hook> & {__current: Current[]}} Store
+ */
+
+/**
+ * @typedef {'actions' | 'filters'} StoreKey
+ */
+
+/**
+ * @typedef {import('./createHooks').Hooks} Hooks
+ */
+
+const defaultHooks = exports.defaultHooks = (0, _createHooks.default)();
+const {
+  addAction,
+  addFilter,
+  removeAction,
+  removeFilter,
+  hasAction,
+  hasFilter,
+  removeAllActions,
+  removeAllFilters,
+  doAction,
+  applyFilters,
+  currentAction,
+  currentFilter,
+  doingAction,
+  doingFilter,
+  didAction,
+  didFilter,
+  actions,
+  filters
+} = defaultHooks;
+exports.filters = filters;
+exports.actions = actions;
+exports.didFilter = didFilter;
+exports.didAction = didAction;
+exports.doingFilter = doingFilter;
+exports.doingAction = doingAction;
+exports.currentFilter = currentFilter;
+exports.currentAction = currentAction;
+exports.applyFilters = applyFilters;
+exports.doAction = doAction;
+exports.removeAllFilters = removeAllFilters;
+exports.removeAllActions = removeAllActions;
+exports.hasFilter = hasFilter;
+exports.hasAction = hasAction;
+exports.removeFilter = removeFilter;
+exports.removeAction = removeAction;
+exports.addFilter = addFilter;
+exports.addAction = addAction;
+
+},{"./createHooks":12,"@babel/runtime/helpers/interopRequireDefault":2}],16:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+/**
+ * Validate a hookName string.
+ *
+ * @param {string} hookName The hook name to validate. Should be a non empty string containing
+ *                          only numbers, letters, dashes, periods and underscores. Also,
+ *                          the hook name cannot begin with `__`.
+ *
+ * @return {boolean} Whether the hook name is valid.
+ */
+function validateHookName(hookName) {
+  if ('string' !== typeof hookName || '' === hookName) {
+    // eslint-disable-next-line no-console
+    console.error('The hook name must be a non-empty string.');
+    return false;
+  }
+  if (/^__/.test(hookName)) {
+    // eslint-disable-next-line no-console
+    console.error('The hook name cannot begin with `__`.');
+    return false;
+  }
+  if (!/^[a-zA-Z][a-zA-Z0-9_.-]*$/.test(hookName)) {
+    // eslint-disable-next-line no-console
+    console.error('The hook name can only contain numbers, letters, dashes, periods and underscores.');
+    return false;
+  }
+  return true;
+}
+var _default = exports.default = validateHookName;
+
+},{}],17:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+/**
+ * Validate a namespace string.
+ *
+ * @param {string} namespace The namespace to validate - should take the form
+ *                           `vendor/plugin/function`.
+ *
+ * @return {boolean} Whether the namespace is valid.
+ */
+function validateNamespace(namespace) {
+  if ('string' !== typeof namespace || '' === namespace) {
+    // eslint-disable-next-line no-console
+    console.error('The namespace must be a non-empty string.');
+    return false;
+  }
+  if (!/^[a-zA-Z][a-zA-Z0-9_.\-\/]*$/.test(namespace)) {
+    // eslint-disable-next-line no-console
+    console.error('The namespace can only contain numbers, letters, dashes, periods, underscores and slashes.');
+    return false;
+  }
+  return true;
+}
+var _default = exports.default = validateNamespace;
+
+},{}],18:[function(require,module,exports){
+"use strict";
+
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.createI18n = void 0;
-
-var _defineProperty2 = _interopRequireDefault(require("@babel/runtime/helpers/defineProperty"));
-
 var _tannin = _interopRequireDefault(require("tannin"));
-
-function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
-
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { (0, _defineProperty2.default)(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+/**
+ * External dependencies
+ */
 
 /**
  * @typedef {Record<string,any>} LocaleData
@@ -575,61 +1102,228 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
  *
  * @type {LocaleData}
  */
-var DEFAULT_LOCALE_DATA = {
+const DEFAULT_LOCALE_DATA = {
   '': {
     /** @param {number} n */
-    plural_forms: function plural_forms(n) {
+    plural_forms(n) {
       return n === 1 ? 0 : 1;
     }
   }
 };
+
+/*
+ * Regular expression that matches i18n hooks like `i18n.gettext`, `i18n.ngettext`,
+ * `i18n.gettext_domain` or `i18n.ngettext_with_context` or `i18n.has_translation`.
+ */
+const I18N_HOOK_REGEXP = /^i18n\.(n?gettext|has_translation)(_|$)/;
+
+/**
+ * @typedef {(domain?: string) => LocaleData} GetLocaleData
+ *
+ * Returns locale data by domain in a
+ * Jed-formatted JSON object shape.
+ *
+ * @see http://messageformat.github.io/Jed/
+ */
+/**
+ * @typedef {(data?: LocaleData, domain?: string) => void} SetLocaleData
+ *
+ * Merges locale data into the Tannin instance by domain. Note that this
+ * function will overwrite the domain configuration. Accepts data in a
+ * Jed-formatted JSON object shape.
+ *
+ * @see http://messageformat.github.io/Jed/
+ */
+/**
+ * @typedef {(data?: LocaleData, domain?: string) => void} AddLocaleData
+ *
+ * Merges locale data into the Tannin instance by domain. Note that this
+ * function will also merge the domain configuration. Accepts data in a
+ * Jed-formatted JSON object shape.
+ *
+ * @see http://messageformat.github.io/Jed/
+ */
+/**
+ * @typedef {(data?: LocaleData, domain?: string) => void} ResetLocaleData
+ *
+ * Resets all current Tannin instance locale data and sets the specified
+ * locale data for the domain. Accepts data in a Jed-formatted JSON object shape.
+ *
+ * @see http://messageformat.github.io/Jed/
+ */
+/** @typedef {() => void} SubscribeCallback */
+/** @typedef {() => void} UnsubscribeCallback */
+/**
+ * @typedef {(callback: SubscribeCallback) => UnsubscribeCallback} Subscribe
+ *
+ * Subscribes to changes of locale data
+ */
+/**
+ * @typedef {(domain?: string) => string} GetFilterDomain
+ * Retrieve the domain to use when calling domain-specific filters.
+ */
+/**
+ * @typedef {(text: string, domain?: string) => string} __
+ *
+ * Retrieve the translation of text.
+ *
+ * @see https://developer.wordpress.org/reference/functions/__/
+ */
+/**
+ * @typedef {(text: string, context: string, domain?: string) => string} _x
+ *
+ * Retrieve translated string with gettext context.
+ *
+ * @see https://developer.wordpress.org/reference/functions/_x/
+ */
+/**
+ * @typedef {(single: string, plural: string, number: number, domain?: string) => string} _n
+ *
+ * Translates and retrieves the singular or plural form based on the supplied
+ * number.
+ *
+ * @see https://developer.wordpress.org/reference/functions/_n/
+ */
+/**
+ * @typedef {(single: string, plural: string, number: number, context: string, domain?: string) => string} _nx
+ *
+ * Translates and retrieves the singular or plural form based on the supplied
+ * number, with gettext context.
+ *
+ * @see https://developer.wordpress.org/reference/functions/_nx/
+ */
+/**
+ * @typedef {() => boolean} IsRtl
+ *
+ * Check if current locale is RTL.
+ *
+ * **RTL (Right To Left)** is a locale property indicating that text is written from right to left.
+ * For example, the `he` locale (for Hebrew) specifies right-to-left. Arabic (ar) is another common
+ * language written RTL. The opposite of RTL, LTR (Left To Right) is used in other languages,
+ * including English (`en`, `en-US`, `en-GB`, etc.), Spanish (`es`), and French (`fr`).
+ */
+/**
+ * @typedef {(single: string, context?: string, domain?: string) => boolean} HasTranslation
+ *
+ * Check if there is a translation for a given string in singular form.
+ */
+/** @typedef {import('@wordpress/hooks').Hooks} Hooks */
+
 /**
  * An i18n instance
  *
- * @typedef {Object} I18n
- * @property {Function} setLocaleData Merges locale data into the Tannin instance by domain. Accepts data in a
- *                                    Jed-formatted JSON object shape.
- * @property {Function} __            Retrieve the translation of text.
- * @property {Function} _x            Retrieve translated string with gettext context.
- * @property {Function} _n            Translates and retrieves the singular or plural form based on the supplied
- *                                    number.
- * @property {Function} _nx           Translates and retrieves the singular or plural form based on the supplied
- *                                    number, with gettext context.
- * @property {Function} isRTL         Check if current locale is RTL.
+ * @typedef I18n
+ * @property {GetLocaleData}   getLocaleData   Returns locale data by domain in a Jed-formatted JSON object shape.
+ * @property {SetLocaleData}   setLocaleData   Merges locale data into the Tannin instance by domain. Note that this
+ *                                             function will overwrite the domain configuration. Accepts data in a
+ *                                             Jed-formatted JSON object shape.
+ * @property {AddLocaleData}   addLocaleData   Merges locale data into the Tannin instance by domain. Note that this
+ *                                             function will also merge the domain configuration. Accepts data in a
+ *                                             Jed-formatted JSON object shape.
+ * @property {ResetLocaleData} resetLocaleData Resets all current Tannin instance locale data and sets the specified
+ *                                             locale data for the domain. Accepts data in a Jed-formatted JSON object shape.
+ * @property {Subscribe}       subscribe       Subscribes to changes of Tannin locale data.
+ * @property {__}              __              Retrieve the translation of text.
+ * @property {_x}              _x              Retrieve translated string with gettext context.
+ * @property {_n}              _n              Translates and retrieves the singular or plural form based on the supplied
+ *                                             number.
+ * @property {_nx}             _nx             Translates and retrieves the singular or plural form based on the supplied
+ *                                             number, with gettext context.
+ * @property {IsRtl}           isRTL           Check if current locale is RTL.
+ * @property {HasTranslation}  hasTranslation  Check if there is a translation for a given string.
  */
 
 /**
  * Create an i18n instance
  *
- * @param {LocaleData} [initialData]    Locale data configuration.
- * @param {string}     [initialDomain]  Domain for which configuration applies.
- * @return {I18n}                       I18n instance
+ * @param {LocaleData} [initialData]   Locale data configuration.
+ * @param {string}     [initialDomain] Domain for which configuration applies.
+ * @param {Hooks}      [hooks]         Hooks implementation.
+ *
+ * @return {I18n} I18n instance.
  */
-
-var createI18n = function createI18n(initialData, initialDomain) {
+const createI18n = (initialData, initialDomain, hooks) => {
   /**
    * The underlying instance of Tannin to which exported functions interface.
    *
    * @type {Tannin}
    */
-  var tannin = new _tannin.default({});
-  /**
-   * Merges locale data into the Tannin instance by domain. Accepts data in a
-   * Jed-formatted JSON object shape.
-   *
-   * @see http://messageformat.github.io/Jed/
-   *
-   * @param {LocaleData} [data]   Locale data configuration.
-   * @param {string}     [domain] Domain for which configuration applies.
-   */
-
-  var setLocaleData = function setLocaleData(data) {
-    var domain = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 'default';
-    tannin.data[domain] = _objectSpread({}, DEFAULT_LOCALE_DATA, {}, tannin.data[domain], {}, data); // Populate default domain configuration (supported locale date which omits
-    // a plural forms expression).
-
-    tannin.data[domain][''] = _objectSpread({}, DEFAULT_LOCALE_DATA[''], {}, tannin.data[domain]['']);
+  const tannin = new _tannin.default({});
+  const listeners = new Set();
+  const notifyListeners = () => {
+    listeners.forEach(listener => listener());
   };
+
+  /**
+   * Subscribe to changes of locale data.
+   *
+   * @param {SubscribeCallback} callback Subscription callback.
+   * @return {UnsubscribeCallback} Unsubscribe callback.
+   */
+  const subscribe = callback => {
+    listeners.add(callback);
+    return () => listeners.delete(callback);
+  };
+
+  /** @type {GetLocaleData} */
+  const getLocaleData = (domain = 'default') => tannin.data[domain];
+
+  /**
+   * @param {LocaleData} [data]
+   * @param {string}     [domain]
+   */
+  const doSetLocaleData = (data, domain = 'default') => {
+    tannin.data[domain] = {
+      ...tannin.data[domain],
+      ...data
+    };
+
+    // Populate default domain configuration (supported locale date which omits
+    // a plural forms expression).
+    tannin.data[domain][''] = {
+      ...DEFAULT_LOCALE_DATA[''],
+      ...tannin.data[domain]?.['']
+    };
+
+    // Clean up cached plural forms functions cache as it might be updated.
+    delete tannin.pluralForms[domain];
+  };
+
+  /** @type {SetLocaleData} */
+  const setLocaleData = (data, domain) => {
+    doSetLocaleData(data, domain);
+    notifyListeners();
+  };
+
+  /** @type {AddLocaleData} */
+  const addLocaleData = (data, domain = 'default') => {
+    tannin.data[domain] = {
+      ...tannin.data[domain],
+      ...data,
+      // Populate default domain configuration (supported locale date which omits
+      // a plural forms expression).
+      '': {
+        ...DEFAULT_LOCALE_DATA[''],
+        ...tannin.data[domain]?.[''],
+        ...data?.['']
+      }
+    };
+
+    // Clean up cached plural forms functions cache as it might be updated.
+    delete tannin.pluralForms[domain];
+    notifyListeners();
+  };
+
+  /** @type {ResetLocaleData} */
+  const resetLocaleData = (data, domain) => {
+    // Reset all current Tannin locale data.
+    tannin.data = {};
+
+    // Reset cached plural forms functions cache.
+    tannin.pluralForms = {};
+    setLocaleData(data, domain);
+  };
+
   /**
    * Wrapper for Tannin's `dcnpgettext`. Populates default locale data if not
    * otherwise previously assigned.
@@ -645,145 +1339,196 @@ var createI18n = function createI18n(initialData, initialDomain) {
    *
    * @return {string} The translated string.
    */
-
-
-  var dcnpgettext = function dcnpgettext() {
-    var domain = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : 'default';
-    var context = arguments.length > 1 ? arguments[1] : undefined;
-    var single = arguments.length > 2 ? arguments[2] : undefined;
-    var plural = arguments.length > 3 ? arguments[3] : undefined;
-    var number = arguments.length > 4 ? arguments[4] : undefined;
-
+  const dcnpgettext = (domain = 'default', context, single, plural, number) => {
     if (!tannin.data[domain]) {
-      setLocaleData(undefined, domain);
+      // Use `doSetLocaleData` to set silently, without notifying listeners.
+      doSetLocaleData(undefined, domain);
     }
-
     return tannin.dcnpgettext(domain, context, single, plural, number);
   };
-  /**
-   * Retrieve the translation of text.
-   *
-   * @see https://developer.wordpress.org/reference/functions/__/
-   *
-   * @param {string} text     Text to translate.
-   * @param {string} [domain] Domain to retrieve the translated text.
-   *
-   * @return {string} Translated text.
-   */
 
+  /** @type {GetFilterDomain} */
+  const getFilterDomain = (domain = 'default') => domain;
 
-  var __ = function __(text, domain) {
-    return dcnpgettext(domain, undefined, text);
+  /** @type {__} */
+  const __ = (text, domain) => {
+    let translation = dcnpgettext(domain, undefined, text);
+    if (!hooks) {
+      return translation;
+    }
+
+    /**
+     * Filters text with its translation.
+     *
+     * @param {string} translation Translated text.
+     * @param {string} text        Text to translate.
+     * @param {string} domain      Text domain. Unique identifier for retrieving translated strings.
+     */
+    translation = /** @type {string} */
+    /** @type {*} */hooks.applyFilters('i18n.gettext', translation, text, domain);
+    return /** @type {string} */ /** @type {*} */hooks.applyFilters('i18n.gettext_' + getFilterDomain(domain), translation, text, domain);
   };
-  /**
-   * Retrieve translated string with gettext context.
-   *
-   * @see https://developer.wordpress.org/reference/functions/_x/
-   *
-   * @param {string} text     Text to translate.
-   * @param {string} context  Context information for the translators.
-   * @param {string} [domain] Domain to retrieve the translated text.
-   *
-   * @return {string} Translated context string without pipe.
-   */
 
+  /** @type {_x} */
+  const _x = (text, context, domain) => {
+    let translation = dcnpgettext(domain, context, text);
+    if (!hooks) {
+      return translation;
+    }
 
-  var _x = function _x(text, context, domain) {
-    return dcnpgettext(domain, context, text);
+    /**
+     * Filters text with its translation based on context information.
+     *
+     * @param {string} translation Translated text.
+     * @param {string} text        Text to translate.
+     * @param {string} context     Context information for the translators.
+     * @param {string} domain      Text domain. Unique identifier for retrieving translated strings.
+     */
+    translation = /** @type {string} */
+    /** @type {*} */hooks.applyFilters('i18n.gettext_with_context', translation, text, context, domain);
+    return /** @type {string} */ /** @type {*} */hooks.applyFilters('i18n.gettext_with_context_' + getFilterDomain(domain), translation, text, context, domain);
   };
-  /**
-   * Translates and retrieves the singular or plural form based on the supplied
-   * number.
-   *
-   * @see https://developer.wordpress.org/reference/functions/_n/
-   *
-   * @param {string} single   The text to be used if the number is singular.
-   * @param {string} plural   The text to be used if the number is plural.
-   * @param {number} number   The number to compare against to use either the
-   *                          singular or plural form.
-   * @param {string} [domain] Domain to retrieve the translated text.
-   *
-   * @return {string} The translated singular or plural form.
-   */
 
+  /** @type {_n} */
+  const _n = (single, plural, number, domain) => {
+    let translation = dcnpgettext(domain, undefined, single, plural, number);
+    if (!hooks) {
+      return translation;
+    }
 
-  var _n = function _n(single, plural, number, domain) {
-    return dcnpgettext(domain, undefined, single, plural, number);
+    /**
+     * Filters the singular or plural form of a string.
+     *
+     * @param {string} translation Translated text.
+     * @param {string} single      The text to be used if the number is singular.
+     * @param {string} plural      The text to be used if the number is plural.
+     * @param {string} number      The number to compare against to use either the singular or plural form.
+     * @param {string} domain      Text domain. Unique identifier for retrieving translated strings.
+     */
+    translation = /** @type {string} */
+    /** @type {*} */hooks.applyFilters('i18n.ngettext', translation, single, plural, number, domain);
+    return /** @type {string} */ /** @type {*} */hooks.applyFilters('i18n.ngettext_' + getFilterDomain(domain), translation, single, plural, number, domain);
   };
-  /**
-   * Translates and retrieves the singular or plural form based on the supplied
-   * number, with gettext context.
-   *
-   * @see https://developer.wordpress.org/reference/functions/_nx/
-   *
-   * @param {string} single   The text to be used if the number is singular.
-   * @param {string} plural   The text to be used if the number is plural.
-   * @param {number} number   The number to compare against to use either the
-   *                          singular or plural form.
-   * @param {string} context  Context information for the translators.
-   * @param {string} [domain] Domain to retrieve the translated text.
-   *
-   * @return {string} The translated singular or plural form.
-   */
 
+  /** @type {_nx} */
+  const _nx = (single, plural, number, context, domain) => {
+    let translation = dcnpgettext(domain, context, single, plural, number);
+    if (!hooks) {
+      return translation;
+    }
 
-  var _nx = function _nx(single, plural, number, context, domain) {
-    return dcnpgettext(domain, context, single, plural, number);
+    /**
+     * Filters the singular or plural form of a string with gettext context.
+     *
+     * @param {string} translation Translated text.
+     * @param {string} single      The text to be used if the number is singular.
+     * @param {string} plural      The text to be used if the number is plural.
+     * @param {string} number      The number to compare against to use either the singular or plural form.
+     * @param {string} context     Context information for the translators.
+     * @param {string} domain      Text domain. Unique identifier for retrieving translated strings.
+     */
+    translation = /** @type {string} */
+    /** @type {*} */hooks.applyFilters('i18n.ngettext_with_context', translation, single, plural, number, context, domain);
+    return /** @type {string} */ /** @type {*} */hooks.applyFilters('i18n.ngettext_with_context_' + getFilterDomain(domain), translation, single, plural, number, context, domain);
   };
-  /**
-   * Check if current locale is RTL.
-   *
-   * **RTL (Right To Left)** is a locale property indicating that text is written from right to left.
-   * For example, the `he` locale (for Hebrew) specifies right-to-left. Arabic (ar) is another common
-   * language written RTL. The opposite of RTL, LTR (Left To Right) is used in other languages,
-   * including English (`en`, `en-US`, `en-GB`, etc.), Spanish (`es`), and French (`fr`).
-   *
-   * @return {boolean} Whether locale is RTL.
-   */
 
-
-  var isRTL = function isRTL() {
+  /** @type {IsRtl} */
+  const isRTL = () => {
     return 'rtl' === _x('ltr', 'text direction');
   };
 
+  /** @type {HasTranslation} */
+  const hasTranslation = (single, context, domain) => {
+    const key = context ? context + '\u0004' + single : single;
+    let result = !!tannin.data?.[domain !== null && domain !== void 0 ? domain : 'default']?.[key];
+    if (hooks) {
+      /**
+       * Filters the presence of a translation in the locale data.
+       *
+       * @param {boolean} hasTranslation Whether the translation is present or not..
+       * @param {string}  single         The singular form of the translated text (used as key in locale data)
+       * @param {string}  context        Context information for the translators.
+       * @param {string}  domain         Text domain. Unique identifier for retrieving translated strings.
+       */
+      result = /** @type { boolean } */
+      /** @type {*} */hooks.applyFilters('i18n.has_translation', result, single, context, domain);
+      result = /** @type { boolean } */
+      /** @type {*} */hooks.applyFilters('i18n.has_translation_' + getFilterDomain(domain), result, single, context, domain);
+    }
+    return result;
+  };
   if (initialData) {
     setLocaleData(initialData, initialDomain);
   }
-
+  if (hooks) {
+    /**
+     * @param {string} hookName
+     */
+    const onHookAddedOrRemoved = hookName => {
+      if (I18N_HOOK_REGEXP.test(hookName)) {
+        notifyListeners();
+      }
+    };
+    hooks.addAction('hookAdded', 'core/i18n', onHookAddedOrRemoved);
+    hooks.addAction('hookRemoved', 'core/i18n', onHookAddedOrRemoved);
+  }
   return {
-    setLocaleData: setLocaleData,
-    __: __,
-    _x: _x,
-    _n: _n,
-    _nx: _nx,
-    isRTL: isRTL
+    getLocaleData,
+    setLocaleData,
+    addLocaleData,
+    resetLocaleData,
+    subscribe,
+    __,
+    _x,
+    _n,
+    _nx,
+    isRTL,
+    hasTranslation
   };
 };
-
 exports.createI18n = createI18n;
 
-},{"@babel/runtime/helpers/defineProperty":4,"@babel/runtime/helpers/interopRequireDefault":5,"tannin":21}],15:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":2,"tannin":25}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.isRTL = exports._nx = exports._n = exports._x = exports.__ = exports.setLocaleData = void 0;
-
+exports.subscribe = exports.setLocaleData = exports.resetLocaleData = exports.isRTL = exports.hasTranslation = exports.getLocaleData = exports.default = exports._x = exports._nx = exports._n = exports.__ = void 0;
 var _createI18n = require("./create-i18n");
-
+var _hooks = require("@wordpress/hooks");
 /**
  * Internal dependencies
  */
-var i18n = (0, _createI18n.createI18n)();
+
+/**
+ * WordPress dependencies
+ */
+
+const i18n = (0, _createI18n.createI18n)(undefined, undefined, _hooks.defaultHooks);
+
+/**
+ * Default, singleton instance of `I18n`.
+ */
+var _default = exports.default = i18n;
 /*
  * Comments in this file are duplicated from ./i18n due to
  * https://github.com/WordPress/gutenberg/pull/20318#issuecomment-590837722
  */
-
 /**
  * @typedef {import('./create-i18n').LocaleData} LocaleData
+ * @typedef {import('./create-i18n').SubscribeCallback} SubscribeCallback
+ * @typedef {import('./create-i18n').UnsubscribeCallback} UnsubscribeCallback
  */
+/**
+ * Returns locale data by domain in a Jed-formatted JSON object shape.
+ *
+ * @see http://messageformat.github.io/Jed/
+ *
+ * @param {string} [domain] Domain for which to get the data.
+ * @return {LocaleData} Locale data.
+ */
+const getLocaleData = exports.getLocaleData = i18n.getLocaleData.bind(i18n);
 
 /**
  * Merges locale data into the Tannin instance by domain. Accepts data in a
@@ -794,8 +1539,27 @@ var i18n = (0, _createI18n.createI18n)();
  * @param {LocaleData} [data]   Locale data configuration.
  * @param {string}     [domain] Domain for which configuration applies.
  */
+const setLocaleData = exports.setLocaleData = i18n.setLocaleData.bind(i18n);
 
-var setLocaleData = i18n.setLocaleData.bind(i18n);
+/**
+ * Resets all current Tannin instance locale data and sets the specified
+ * locale data for the domain. Accepts data in a Jed-formatted JSON object shape.
+ *
+ * @see http://messageformat.github.io/Jed/
+ *
+ * @param {LocaleData} [data]   Locale data configuration.
+ * @param {string}     [domain] Domain for which configuration applies.
+ */
+const resetLocaleData = exports.resetLocaleData = i18n.resetLocaleData.bind(i18n);
+
+/**
+ * Subscribes to changes of locale data
+ *
+ * @param {SubscribeCallback} callback Subscription callback
+ * @return {UnsubscribeCallback} Unsubscribe callback
+ */
+const subscribe = exports.subscribe = i18n.subscribe.bind(i18n);
+
 /**
  * Retrieve the translation of text.
  *
@@ -806,10 +1570,8 @@ var setLocaleData = i18n.setLocaleData.bind(i18n);
  *
  * @return {string} Translated text.
  */
+const __ = exports.__ = i18n.__.bind(i18n);
 
-exports.setLocaleData = setLocaleData;
-
-var __ = i18n.__.bind(i18n);
 /**
  * Retrieve translated string with gettext context.
  *
@@ -821,11 +1583,8 @@ var __ = i18n.__.bind(i18n);
  *
  * @return {string} Translated context string without pipe.
  */
+const _x = exports._x = i18n._x.bind(i18n);
 
-
-exports.__ = __;
-
-var _x = i18n._x.bind(i18n);
 /**
  * Translates and retrieves the singular or plural form based on the supplied
  * number.
@@ -840,11 +1599,8 @@ var _x = i18n._x.bind(i18n);
  *
  * @return {string} The translated singular or plural form.
  */
+const _n = exports._n = i18n._n.bind(i18n);
 
-
-exports._x = _x;
-
-var _n = i18n._n.bind(i18n);
 /**
  * Translates and retrieves the singular or plural form based on the supplied
  * number, with gettext context.
@@ -860,11 +1616,8 @@ var _n = i18n._n.bind(i18n);
  *
  * @return {string} The translated singular or plural form.
  */
+const _nx = exports._nx = i18n._nx.bind(i18n);
 
-
-exports._n = _n;
-
-var _nx = i18n._nx.bind(i18n);
 /**
  * Check if current locale is RTL.
  *
@@ -875,13 +1628,19 @@ var _nx = i18n._nx.bind(i18n);
  *
  * @return {boolean} Whether locale is RTL.
  */
+const isRTL = exports.isRTL = i18n.isRTL.bind(i18n);
 
+/**
+ * Check if there is a translation for a given string (in singular form).
+ *
+ * @param {string} single    Singular form of the string to look up.
+ * @param {string} [context] Context information for the translators.
+ * @param {string} [domain]  Domain to retrieve the translated text.
+ * @return {boolean} Whether the translation exists or not.
+ */
+const hasTranslation = exports.hasTranslation = i18n.hasTranslation.bind(i18n);
 
-exports._nx = _nx;
-var isRTL = i18n.isRTL.bind(i18n);
-exports.isRTL = isRTL;
-
-},{"./create-i18n":14}],16:[function(require,module,exports){
+},{"./create-i18n":18,"@wordpress/hooks":15}],20:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -889,87 +1648,140 @@ Object.defineProperty(exports, "__esModule", {
 });
 var _exportNames = {
   sprintf: true,
+  defaultI18n: true,
   setLocaleData: true,
+  resetLocaleData: true,
+  getLocaleData: true,
+  subscribe: true,
   __: true,
   _x: true,
   _n: true,
   _nx: true,
-  isRTL: true
+  isRTL: true,
+  hasTranslation: true
 };
-Object.defineProperty(exports, "sprintf", {
-  enumerable: true,
-  get: function get() {
-    return _sprintf.sprintf;
-  }
-});
-Object.defineProperty(exports, "setLocaleData", {
-  enumerable: true,
-  get: function get() {
-    return _defaultI18n.setLocaleData;
-  }
-});
 Object.defineProperty(exports, "__", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _defaultI18n.__;
-  }
-});
-Object.defineProperty(exports, "_x", {
-  enumerable: true,
-  get: function get() {
-    return _defaultI18n._x;
   }
 });
 Object.defineProperty(exports, "_n", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _defaultI18n._n;
   }
 });
 Object.defineProperty(exports, "_nx", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _defaultI18n._nx;
+  }
+});
+Object.defineProperty(exports, "_x", {
+  enumerable: true,
+  get: function () {
+    return _defaultI18n._x;
+  }
+});
+Object.defineProperty(exports, "defaultI18n", {
+  enumerable: true,
+  get: function () {
+    return _defaultI18n.default;
+  }
+});
+Object.defineProperty(exports, "getLocaleData", {
+  enumerable: true,
+  get: function () {
+    return _defaultI18n.getLocaleData;
+  }
+});
+Object.defineProperty(exports, "hasTranslation", {
+  enumerable: true,
+  get: function () {
+    return _defaultI18n.hasTranslation;
   }
 });
 Object.defineProperty(exports, "isRTL", {
   enumerable: true,
-  get: function get() {
+  get: function () {
     return _defaultI18n.isRTL;
   }
 });
-
+Object.defineProperty(exports, "resetLocaleData", {
+  enumerable: true,
+  get: function () {
+    return _defaultI18n.resetLocaleData;
+  }
+});
+Object.defineProperty(exports, "setLocaleData", {
+  enumerable: true,
+  get: function () {
+    return _defaultI18n.setLocaleData;
+  }
+});
+Object.defineProperty(exports, "sprintf", {
+  enumerable: true,
+  get: function () {
+    return _sprintf.sprintf;
+  }
+});
+Object.defineProperty(exports, "subscribe", {
+  enumerable: true,
+  get: function () {
+    return _defaultI18n.subscribe;
+  }
+});
 var _sprintf = require("./sprintf");
-
 var _createI18n = require("./create-i18n");
-
 Object.keys(_createI18n).forEach(function (key) {
   if (key === "default" || key === "__esModule") return;
   if (Object.prototype.hasOwnProperty.call(_exportNames, key)) return;
+  if (key in exports && exports[key] === _createI18n[key]) return;
   Object.defineProperty(exports, key, {
     enumerable: true,
-    get: function get() {
+    get: function () {
       return _createI18n[key];
     }
   });
 });
+var _defaultI18n = _interopRequireWildcard(require("./default-i18n"));
+function _getRequireWildcardCache(e) {
+  if ("function" != typeof WeakMap) return null;
+  var r = new WeakMap(),
+    t = new WeakMap();
+  return (_getRequireWildcardCache = function (e) {
+    return e ? t : r;
+  })(e);
+}
+function _interopRequireWildcard(e, r) {
+  if (!r && e && e.__esModule) return e;
+  if (null === e || "object" != typeof e && "function" != typeof e) return {
+    default: e
+  };
+  var t = _getRequireWildcardCache(r);
+  if (t && t.has(e)) return t.get(e);
+  var n = {
+      __proto__: null
+    },
+    a = Object.defineProperty && Object.getOwnPropertyDescriptor;
+  for (var u in e) if ("default" !== u && {}.hasOwnProperty.call(e, u)) {
+    var i = a ? Object.getOwnPropertyDescriptor(e, u) : null;
+    i && (i.get || i.set) ? Object.defineProperty(n, u, i) : n[u] = e[u];
+  }
+  return n.default = e, t && t.set(e, n), n;
+}
 
-var _defaultI18n = require("./default-i18n");
-
-},{"./create-i18n":14,"./default-i18n":15,"./sprintf":17}],17:[function(require,module,exports){
+},{"./create-i18n":18,"./default-i18n":19,"./sprintf":21}],21:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
-
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.sprintf = sprintf;
-
 var _memize = _interopRequireDefault(require("memize"));
-
 var _sprintfJs = _interopRequireDefault(require("sprintf-js"));
-
 /**
  * External dependencies
  */
@@ -981,34 +1793,378 @@ var _sprintfJs = _interopRequireDefault(require("sprintf-js"));
  *
  * @param {...*} args Arguments to pass to `console.error`
  */
-var logErrorOnce = (0, _memize.default)(console.error); // eslint-disable-line no-console
+const logErrorOnce = (0, _memize.default)(console.error); // eslint-disable-line no-console
 
 /**
  * Returns a formatted string. If an error occurs in applying the format, the
  * original format string is returned.
  *
- * @param {string}    format The format of the string to generate.
- * @param {...*} args Arguments to apply to the format.
+ * @param {string} format The format of the string to generate.
+ * @param {...*}   args   Arguments to apply to the format.
  *
- * @see http://www.diveintojavascript.com/projects/javascript-sprintf
+ * @see https://www.npmjs.com/package/sprintf-js
  *
  * @return {string} The formatted string.
  */
-
-function sprintf(format) {
+function sprintf(format, ...args) {
   try {
-    for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
-      args[_key - 1] = arguments[_key];
-    }
-
-    return _sprintfJs.default.sprintf.apply(_sprintfJs.default, [format].concat(args));
+    return _sprintfJs.default.sprintf(format, ...args);
   } catch (error) {
-    logErrorOnce('sprintf error: \n\n' + error.toString());
+    if (error instanceof Error) {
+      logErrorOnce('sprintf error: \n\n' + error.toString());
+    }
     return format;
   }
 }
 
-},{"@babel/runtime/helpers/interopRequireDefault":5,"memize":19,"sprintf-js":18}],18:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":2,"memize":22,"sprintf-js":24}],22:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = memize;
+/**
+ * Memize options object.
+ *
+ * @typedef MemizeOptions
+ *
+ * @property {number} [maxSize] Maximum size of the cache.
+ */
+
+/**
+ * Internal cache entry.
+ *
+ * @typedef MemizeCacheNode
+ *
+ * @property {?MemizeCacheNode|undefined} [prev] Previous node.
+ * @property {?MemizeCacheNode|undefined} [next] Next node.
+ * @property {Array<*>}                   args   Function arguments for cache
+ *                                               entry.
+ * @property {*}                          val    Function result.
+ */
+
+/**
+ * Properties of the enhanced function for controlling cache.
+ *
+ * @typedef MemizeMemoizedFunction
+ *
+ * @property {()=>void} clear Clear the cache.
+ */
+
+/**
+ * Accepts a function to be memoized, and returns a new memoized function, with
+ * optional options.
+ *
+ * @template {(...args: any[]) => any} F
+ *
+ * @param {F}             fn        Function to memoize.
+ * @param {MemizeOptions} [options] Options object.
+ *
+ * @return {((...args: Parameters<F>) => ReturnType<F>) & MemizeMemoizedFunction} Memoized function.
+ */
+function memize(fn, options) {
+  var size = 0;
+
+  /** @type {?MemizeCacheNode|undefined} */
+  var head;
+
+  /** @type {?MemizeCacheNode|undefined} */
+  var tail;
+  options = options || {};
+  function memoized(/* ...args */
+  ) {
+    var node = head,
+      len = arguments.length,
+      args,
+      i;
+    searchCache: while (node) {
+      // Perform a shallow equality test to confirm that whether the node
+      // under test is a candidate for the arguments passed. Two arrays
+      // are shallowly equal if their length matches and each entry is
+      // strictly equal between the two sets. Avoid abstracting to a
+      // function which could incur an arguments leaking deoptimization.
+
+      // Check whether node arguments match arguments length
+      if (node.args.length !== arguments.length) {
+        node = node.next;
+        continue;
+      }
+
+      // Check whether node arguments match arguments values
+      for (i = 0; i < len; i++) {
+        if (node.args[i] !== arguments[i]) {
+          node = node.next;
+          continue searchCache;
+        }
+      }
+
+      // At this point we can assume we've found a match
+
+      // Surface matched node to head if not already
+      if (node !== head) {
+        // As tail, shift to previous. Must only shift if not also
+        // head, since if both head and tail, there is no previous.
+        if (node === tail) {
+          tail = node.prev;
+        }
+
+        // Adjust siblings to point to each other. If node was tail,
+        // this also handles new tail's empty `next` assignment.
+        /** @type {MemizeCacheNode} */
+        node.prev.next = node.next;
+        if (node.next) {
+          node.next.prev = node.prev;
+        }
+        node.next = head;
+        node.prev = null;
+        /** @type {MemizeCacheNode} */
+        head.prev = node;
+        head = node;
+      }
+
+      // Return immediately
+      return node.val;
+    }
+
+    // No cached value found. Continue to insertion phase:
+
+    // Create a copy of arguments (avoid leaking deoptimization)
+    args = new Array(len);
+    for (i = 0; i < len; i++) {
+      args[i] = arguments[i];
+    }
+    node = {
+      args: args,
+      // Generate the result from original function
+      val: fn.apply(null, args)
+    };
+
+    // Don't need to check whether node is already head, since it would
+    // have been returned above already if it was
+
+    // Shift existing head down list
+    if (head) {
+      head.prev = node;
+      node.next = head;
+    } else {
+      // If no head, follows that there's no tail (at initial or reset)
+      tail = node;
+    }
+
+    // Trim tail if we're reached max size and are pending cache insertion
+    if (size === /** @type {MemizeOptions} */options.maxSize) {
+      tail = /** @type {MemizeCacheNode} */tail.prev;
+      /** @type {MemizeCacheNode} */
+      tail.next = null;
+    } else {
+      size++;
+    }
+    head = node;
+    return node.val;
+  }
+  memoized.clear = function () {
+    head = null;
+    tail = null;
+    size = 0;
+  };
+
+  // Ignore reason: There's not a clear solution to create an intersection of
+  // the function with additional properties, where the goal is to retain the
+  // function signature of the incoming argument and add control properties
+  // on the return value.
+
+  // @ts-ignore
+  return memoized;
+}
+
+},{}],23:[function(require,module,exports){
+// shim for using process in browser
+var process = module.exports = {};
+
+// cached from whatever global is present so that test runners that stub it
+// don't break things.  But we need to wrap it in a try catch in case it is
+// wrapped in strict mode code which doesn't define any globals.  It's inside a
+// function because try/catches deoptimize in certain engines.
+
+var cachedSetTimeout;
+var cachedClearTimeout;
+
+function defaultSetTimout() {
+    throw new Error('setTimeout has not been defined');
+}
+function defaultClearTimeout () {
+    throw new Error('clearTimeout has not been defined');
+}
+(function () {
+    try {
+        if (typeof setTimeout === 'function') {
+            cachedSetTimeout = setTimeout;
+        } else {
+            cachedSetTimeout = defaultSetTimout;
+        }
+    } catch (e) {
+        cachedSetTimeout = defaultSetTimout;
+    }
+    try {
+        if (typeof clearTimeout === 'function') {
+            cachedClearTimeout = clearTimeout;
+        } else {
+            cachedClearTimeout = defaultClearTimeout;
+        }
+    } catch (e) {
+        cachedClearTimeout = defaultClearTimeout;
+    }
+} ())
+function runTimeout(fun) {
+    if (cachedSetTimeout === setTimeout) {
+        //normal enviroments in sane situations
+        return setTimeout(fun, 0);
+    }
+    // if setTimeout wasn't available but was latter defined
+    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
+        cachedSetTimeout = setTimeout;
+        return setTimeout(fun, 0);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedSetTimeout(fun, 0);
+    } catch(e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
+            return cachedSetTimeout.call(null, fun, 0);
+        } catch(e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
+            return cachedSetTimeout.call(this, fun, 0);
+        }
+    }
+
+
+}
+function runClearTimeout(marker) {
+    if (cachedClearTimeout === clearTimeout) {
+        //normal enviroments in sane situations
+        return clearTimeout(marker);
+    }
+    // if clearTimeout wasn't available but was latter defined
+    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
+        cachedClearTimeout = clearTimeout;
+        return clearTimeout(marker);
+    }
+    try {
+        // when when somebody has screwed with setTimeout but no I.E. maddness
+        return cachedClearTimeout(marker);
+    } catch (e){
+        try {
+            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
+            return cachedClearTimeout.call(null, marker);
+        } catch (e){
+            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
+            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
+            return cachedClearTimeout.call(this, marker);
+        }
+    }
+
+
+
+}
+var queue = [];
+var draining = false;
+var currentQueue;
+var queueIndex = -1;
+
+function cleanUpNextTick() {
+    if (!draining || !currentQueue) {
+        return;
+    }
+    draining = false;
+    if (currentQueue.length) {
+        queue = currentQueue.concat(queue);
+    } else {
+        queueIndex = -1;
+    }
+    if (queue.length) {
+        drainQueue();
+    }
+}
+
+function drainQueue() {
+    if (draining) {
+        return;
+    }
+    var timeout = runTimeout(cleanUpNextTick);
+    draining = true;
+
+    var len = queue.length;
+    while(len) {
+        currentQueue = queue;
+        queue = [];
+        while (++queueIndex < len) {
+            if (currentQueue) {
+                currentQueue[queueIndex].run();
+            }
+        }
+        queueIndex = -1;
+        len = queue.length;
+    }
+    currentQueue = null;
+    draining = false;
+    runClearTimeout(timeout);
+}
+
+process.nextTick = function (fun) {
+    var args = new Array(arguments.length - 1);
+    if (arguments.length > 1) {
+        for (var i = 1; i < arguments.length; i++) {
+            args[i - 1] = arguments[i];
+        }
+    }
+    queue.push(new Item(fun, args));
+    if (queue.length === 1 && !draining) {
+        runTimeout(drainQueue);
+    }
+};
+
+// v8 likes predictible objects
+function Item(fun, array) {
+    this.fun = fun;
+    this.array = array;
+}
+Item.prototype.run = function () {
+    this.fun.apply(null, this.array);
+};
+process.title = 'browser';
+process.browser = true;
+process.env = {};
+process.argv = [];
+process.version = ''; // empty string to avoid regexp issues
+process.versions = {};
+
+function noop() {}
+
+process.on = noop;
+process.addListener = noop;
+process.once = noop;
+process.off = noop;
+process.removeListener = noop;
+process.removeAllListeners = noop;
+process.emit = noop;
+process.prependListener = noop;
+process.prependOnceListener = noop;
+
+process.listeners = function (name) { return [] }
+
+process.binding = function (name) {
+    throw new Error('process.binding is not supported');
+};
+
+process.cwd = function () { return '/' };
+process.chdir = function (dir) {
+    throw new Error('process.chdir is not supported');
+};
+process.umask = function() { return 0; };
+
+},{}],24:[function(require,module,exports){
 /* global window, exports, define */
 
 !function() {
@@ -1241,364 +2397,7 @@ function sprintf(format) {
     /* eslint-enable quote-props */
 }(); // eslint-disable-line
 
-},{}],19:[function(require,module,exports){
-(function (process){
-/**
- * Memize options object.
- *
- * @typedef MemizeOptions
- *
- * @property {number} [maxSize] Maximum size of the cache.
- */
-
-/**
- * Internal cache entry.
- *
- * @typedef MemizeCacheNode
- *
- * @property {?MemizeCacheNode|undefined} [prev] Previous node.
- * @property {?MemizeCacheNode|undefined} [next] Next node.
- * @property {Array<*>}                   args   Function arguments for cache
- *                                               entry.
- * @property {*}                          val    Function result.
- */
-
-/**
- * Properties of the enhanced function for controlling cache.
- *
- * @typedef MemizeMemoizedFunction
- *
- * @property {()=>void} clear Clear the cache.
- */
-
-/**
- * Accepts a function to be memoized, and returns a new memoized function, with
- * optional options.
- *
- * @template {Function} F
- *
- * @param {F}             fn        Function to memoize.
- * @param {MemizeOptions} [options] Options object.
- *
- * @return {F & MemizeMemoizedFunction} Memoized function.
- */
-function memize( fn, options ) {
-	var size = 0;
-
-	/** @type {?MemizeCacheNode|undefined} */
-	var head;
-
-	/** @type {?MemizeCacheNode|undefined} */
-	var tail;
-
-	options = options || {};
-
-	function memoized( /* ...args */ ) {
-		var node = head,
-			len = arguments.length,
-			args, i;
-
-		searchCache: while ( node ) {
-			// Perform a shallow equality test to confirm that whether the node
-			// under test is a candidate for the arguments passed. Two arrays
-			// are shallowly equal if their length matches and each entry is
-			// strictly equal between the two sets. Avoid abstracting to a
-			// function which could incur an arguments leaking deoptimization.
-
-			// Check whether node arguments match arguments length
-			if ( node.args.length !== arguments.length ) {
-				node = node.next;
-				continue;
-			}
-
-			// Check whether node arguments match arguments values
-			for ( i = 0; i < len; i++ ) {
-				if ( node.args[ i ] !== arguments[ i ] ) {
-					node = node.next;
-					continue searchCache;
-				}
-			}
-
-			// At this point we can assume we've found a match
-
-			// Surface matched node to head if not already
-			if ( node !== head ) {
-				// As tail, shift to previous. Must only shift if not also
-				// head, since if both head and tail, there is no previous.
-				if ( node === tail ) {
-					tail = node.prev;
-				}
-
-				// Adjust siblings to point to each other. If node was tail,
-				// this also handles new tail's empty `next` assignment.
-				/** @type {MemizeCacheNode} */ ( node.prev ).next = node.next;
-				if ( node.next ) {
-					node.next.prev = node.prev;
-				}
-
-				node.next = head;
-				node.prev = null;
-				/** @type {MemizeCacheNode} */ ( head ).prev = node;
-				head = node;
-			}
-
-			// Return immediately
-			return node.val;
-		}
-
-		// No cached value found. Continue to insertion phase:
-
-		// Create a copy of arguments (avoid leaking deoptimization)
-		args = new Array( len );
-		for ( i = 0; i < len; i++ ) {
-			args[ i ] = arguments[ i ];
-		}
-
-		node = {
-			args: args,
-
-			// Generate the result from original function
-			val: fn.apply( null, args ),
-		};
-
-		// Don't need to check whether node is already head, since it would
-		// have been returned above already if it was
-
-		// Shift existing head down list
-		if ( head ) {
-			head.prev = node;
-			node.next = head;
-		} else {
-			// If no head, follows that there's no tail (at initial or reset)
-			tail = node;
-		}
-
-		// Trim tail if we're reached max size and are pending cache insertion
-		if ( size === /** @type {MemizeOptions} */ ( options ).maxSize ) {
-			tail = /** @type {MemizeCacheNode} */ ( tail ).prev;
-			/** @type {MemizeCacheNode} */ ( tail ).next = null;
-		} else {
-			size++;
-		}
-
-		head = node;
-
-		return node.val;
-	}
-
-	memoized.clear = function() {
-		head = null;
-		tail = null;
-		size = 0;
-	};
-
-	if ( process.env.NODE_ENV === 'test' ) {
-		// Cache is not exposed in the public API, but used in tests to ensure
-		// expected list progression
-		memoized.getCache = function() {
-			return [ head, tail, size ];
-		};
-	}
-
-	// Ignore reason: There's not a clear solution to create an intersection of
-	// the function with additional properties, where the goal is to retain the
-	// function signature of the incoming argument and add control properties
-	// on the return value.
-
-	// @ts-ignore
-	return memoized;
-}
-
-module.exports = memize;
-
-}).call(this,require('_process'))
-},{"_process":20}],20:[function(require,module,exports){
-// shim for using process in browser
-var process = module.exports = {};
-
-// cached from whatever global is present so that test runners that stub it
-// don't break things.  But we need to wrap it in a try catch in case it is
-// wrapped in strict mode code which doesn't define any globals.  It's inside a
-// function because try/catches deoptimize in certain engines.
-
-var cachedSetTimeout;
-var cachedClearTimeout;
-
-function defaultSetTimout() {
-    throw new Error('setTimeout has not been defined');
-}
-function defaultClearTimeout () {
-    throw new Error('clearTimeout has not been defined');
-}
-(function () {
-    try {
-        if (typeof setTimeout === 'function') {
-            cachedSetTimeout = setTimeout;
-        } else {
-            cachedSetTimeout = defaultSetTimout;
-        }
-    } catch (e) {
-        cachedSetTimeout = defaultSetTimout;
-    }
-    try {
-        if (typeof clearTimeout === 'function') {
-            cachedClearTimeout = clearTimeout;
-        } else {
-            cachedClearTimeout = defaultClearTimeout;
-        }
-    } catch (e) {
-        cachedClearTimeout = defaultClearTimeout;
-    }
-} ())
-function runTimeout(fun) {
-    if (cachedSetTimeout === setTimeout) {
-        //normal enviroments in sane situations
-        return setTimeout(fun, 0);
-    }
-    // if setTimeout wasn't available but was latter defined
-    if ((cachedSetTimeout === defaultSetTimout || !cachedSetTimeout) && setTimeout) {
-        cachedSetTimeout = setTimeout;
-        return setTimeout(fun, 0);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedSetTimeout(fun, 0);
-    } catch(e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't trust the global object when called normally
-            return cachedSetTimeout.call(null, fun, 0);
-        } catch(e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error
-            return cachedSetTimeout.call(this, fun, 0);
-        }
-    }
-
-
-}
-function runClearTimeout(marker) {
-    if (cachedClearTimeout === clearTimeout) {
-        //normal enviroments in sane situations
-        return clearTimeout(marker);
-    }
-    // if clearTimeout wasn't available but was latter defined
-    if ((cachedClearTimeout === defaultClearTimeout || !cachedClearTimeout) && clearTimeout) {
-        cachedClearTimeout = clearTimeout;
-        return clearTimeout(marker);
-    }
-    try {
-        // when when somebody has screwed with setTimeout but no I.E. maddness
-        return cachedClearTimeout(marker);
-    } catch (e){
-        try {
-            // When we are in I.E. but the script has been evaled so I.E. doesn't  trust the global object when called normally
-            return cachedClearTimeout.call(null, marker);
-        } catch (e){
-            // same as above but when it's a version of I.E. that must have the global object for 'this', hopfully our context correct otherwise it will throw a global error.
-            // Some versions of I.E. have different rules for clearTimeout vs setTimeout
-            return cachedClearTimeout.call(this, marker);
-        }
-    }
-
-
-
-}
-var queue = [];
-var draining = false;
-var currentQueue;
-var queueIndex = -1;
-
-function cleanUpNextTick() {
-    if (!draining || !currentQueue) {
-        return;
-    }
-    draining = false;
-    if (currentQueue.length) {
-        queue = currentQueue.concat(queue);
-    } else {
-        queueIndex = -1;
-    }
-    if (queue.length) {
-        drainQueue();
-    }
-}
-
-function drainQueue() {
-    if (draining) {
-        return;
-    }
-    var timeout = runTimeout(cleanUpNextTick);
-    draining = true;
-
-    var len = queue.length;
-    while(len) {
-        currentQueue = queue;
-        queue = [];
-        while (++queueIndex < len) {
-            if (currentQueue) {
-                currentQueue[queueIndex].run();
-            }
-        }
-        queueIndex = -1;
-        len = queue.length;
-    }
-    currentQueue = null;
-    draining = false;
-    runClearTimeout(timeout);
-}
-
-process.nextTick = function (fun) {
-    var args = new Array(arguments.length - 1);
-    if (arguments.length > 1) {
-        for (var i = 1; i < arguments.length; i++) {
-            args[i - 1] = arguments[i];
-        }
-    }
-    queue.push(new Item(fun, args));
-    if (queue.length === 1 && !draining) {
-        runTimeout(drainQueue);
-    }
-};
-
-// v8 likes predictible objects
-function Item(fun, array) {
-    this.fun = fun;
-    this.array = array;
-}
-Item.prototype.run = function () {
-    this.fun.apply(null, this.array);
-};
-process.title = 'browser';
-process.browser = true;
-process.env = {};
-process.argv = [];
-process.version = ''; // empty string to avoid regexp issues
-process.versions = {};
-
-function noop() {}
-
-process.on = noop;
-process.addListener = noop;
-process.once = noop;
-process.off = noop;
-process.removeListener = noop;
-process.removeAllListeners = noop;
-process.emit = noop;
-process.prependListener = noop;
-process.prependOnceListener = noop;
-
-process.listeners = function (name) { return [] }
-
-process.binding = function (name) {
-    throw new Error('process.binding is not supported');
-};
-
-process.cwd = function () { return '/' };
-process.chdir = function (dir) {
-    throw new Error('process.chdir is not supported');
-};
-process.umask = function() { return 0; };
-
-},{}],21:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -1819,4 +2618,4 @@ Tannin.prototype.dcnpgettext = function( domain, context, singular, plural, n ) 
 
 module.exports = Tannin;
 
-},{"@tannin/plural-forms":12}]},{},[1]);
+},{"@tannin/plural-forms":5}]},{},[1]);

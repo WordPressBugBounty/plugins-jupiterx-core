@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Title Bar > Styles > Breadcrumb popup to the WordPress Customizer.
  *

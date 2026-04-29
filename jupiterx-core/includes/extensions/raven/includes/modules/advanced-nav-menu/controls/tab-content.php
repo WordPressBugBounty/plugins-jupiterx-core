@@ -163,7 +163,7 @@ class Tab_Content {
 		}
 
 		$widget->add_responsive_control( 'center_logo_skin', [
-			'label'          => esc_html__( 'Choose Logo' ),
+			'label'          => esc_html__( 'Choose Logo', 'jupiterx-core' ),
 			'type'           => 'select',
 			'default'        => 'primary',
 			'options'        => [
@@ -585,7 +585,7 @@ class Tab_Content {
 		}
 
 		$widget->add_responsive_control( 'side_logo_skin', [
-			'label'   => esc_html__( 'Choose Logo' ),
+			'label'   => esc_html__( 'Choose Logo', 'jupiterx-core' ),
 			'type'    => 'select',
 			'options' => [
 				'primary'   => esc_html__( 'Primary', 'jupiterx-core' ),

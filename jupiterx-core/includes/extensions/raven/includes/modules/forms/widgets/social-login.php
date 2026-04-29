@@ -9,7 +9,6 @@ use Elementor\Icons_Manager;
 use JupiterX_Core\Raven\Modules\Forms\Widgets\Form;
 use JupiterX_Core\Raven\Utils;
 use JupiterX_Core\Raven\Modules\Forms\Classes\Social_Login_Handler\{ Google, Facebook, Twitter };
-use Elementor\Settings;
 
 /**
  * Social login widget.
@@ -80,9 +79,9 @@ class Social_Login extends Form {
 			[
 				'type' => 'raw_html',
 				'raw' => sprintf(
-					/* translators: %s Settings page URL */
-					__( 'Before using social login widget, Please set your api key in <a target="_blank" href="%s">JupiterX Settings <i class="fa fa-external-link-square"></i></a>', 'jupiterx-core' ),
-					esc_url( Settings::get_settings_tab_url( 'raven' ) )
+					/* translators: %s: JupiterX Control Panel integrations settings URL */
+					__( 'Before using social login widget, Please set your api key in <a target="_blank" href="%s">JupiterX Integrations <i class="fa fa-external-link-square"></i></a>', 'jupiterx-core' ),
+					esc_url( jupiterx_core_get_integrations_settings_url() )
 				),
 				'content_classes' => 'elementor-panel-alert elementor-panel-alert-danger',
 			]

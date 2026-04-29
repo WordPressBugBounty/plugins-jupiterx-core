@@ -538,7 +538,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		}
 		?>
 
-		<div <?php echo $this->parent->get_render_attribute_string( $thumbnails ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->parent->get_render_attribute_string( $thumbnails );
+		?>>
 			<?php
 			foreach ( $images as $image ) {
 				$settings['image'] = [
@@ -596,8 +599,14 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		}
 		?>
 		<div class="raven-<?php echo esc_attr( $layout ); ?>-item">
-			<article <?php echo $this->parent->get_render_attribute_string( 'item-' . $this->item['_id'] ); ?>>
-				<a <?php echo $this->parent->get_render_attribute_string( $link ); ?>>
+			<article <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->parent->get_render_attribute_string( 'item-' . $this->item['_id'] );
+			?>>
+				<a <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->parent->get_render_attribute_string( $link );
+				?>>
 					<figure>
 						<?php $this->render_image(); ?>
 						<figcaption class="raven-photo-album-content">
@@ -660,7 +669,10 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 		}
 
 		?>
-		<div <?php echo $this->parent->get_render_attribute_string( 'wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->parent->get_render_attribute_string( 'wrapper' );
+		?>>
 		<?php
 		foreach ( $list as $item ) {
 			$this->item = $item;

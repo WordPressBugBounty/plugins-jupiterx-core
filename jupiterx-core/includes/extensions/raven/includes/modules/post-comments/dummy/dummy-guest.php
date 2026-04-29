@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 	$site         = site_url();
 	$avatar_args  = [
 		'size' => 256,

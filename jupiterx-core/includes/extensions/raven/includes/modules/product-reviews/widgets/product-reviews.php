@@ -263,7 +263,7 @@ class Product_Reviews extends Base_Widget {
 		$this->start_controls_tab(
 			'style_normal_tab',
 			[
-				'label' => esc_html__( 'Normal', 'plugin-name' ),
+				'label' => esc_html__( 'Normal', 'jupiterx-core' ),
 			]
 		);
 
@@ -294,7 +294,7 @@ class Product_Reviews extends Base_Widget {
 		$this->start_controls_tab(
 			'style_hover_tab',
 			[
-				'label' => esc_html__( 'Hover', 'plugin-name' ),
+				'label' => esc_html__( 'Hover', 'jupiterx-core' ),
 			]
 		);
 

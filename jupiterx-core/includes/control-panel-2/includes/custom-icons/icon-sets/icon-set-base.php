@@ -118,12 +118,12 @@ abstract class Icon_Set_Base {
 	protected function get_file_url( $file_name ) {
 		$wp_upload_dir = wp_upload_dir();
 
-		return $wp_upload_dir['baseurl'] . '/elementor/custom-icons/' . $file_name;
+		return $wp_upload_dir['baseurl'] . '/jupiterx/custom-icons/' . $file_name;
 	}
 
 	protected function get_icon_sets_dir() {
 		$wp_upload_dir = wp_upload_dir();
-		$path          = $wp_upload_dir['basedir'] . '/elementor/custom-icons';
+		$path          = $wp_upload_dir['basedir'] . '/jupiterx/custom-icons';
 
 		$this->get_ensure_upload_dir( $path );
 		return $path;
@@ -203,6 +203,9 @@ abstract class Icon_Set_Base {
 					$wp_filesystem->move( $full_path . DIRECTORY_SEPARATOR . $filename, $new_path );
 				}
 			} else {
+				if ( ! $wp_filesystem->is_dir( $to ) ) {
+					$wp_filesystem->mkdir( $to );
+				}
 				$new_path = $to . $file['name'];
 				$wp_filesystem->move( $full_path, $new_path );
 			}

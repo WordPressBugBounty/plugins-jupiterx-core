@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Header > Styles tab > Container to the WordPress Customizer.
  *

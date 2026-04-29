@@ -5,8 +5,6 @@ namespace JupiterX_Core\Raven\Modules\Forms\Classes\Social_Login_Handler;
 defined( 'ABSPATH' ) || die();
 
 use JupiterX_Core\Raven\Utils;
-use Elementor\Settings;
-
 /**
  * Facebook
  * Handle Social Login Process with Facebook.
@@ -17,15 +15,6 @@ use Elementor\Settings;
 class Facebook {
 	const APP_ID     = 'elementor_raven_facebook_app_id';
 	const APP_SECRET = 'elementor_raven_facebook_client_secret';
-
-	/**
-	 * Required actions.
-	 *
-	 * @since 2.0.0
-	*/
-	public function __construct() {
-		add_action( 'elementor/admin/after_create_settings/' . Settings::PAGE_ID, [ $this, 'register_admin_fields' ], 20 );
-	}
 
 	/**
 	 * Create Setting fields to save user facebook app id

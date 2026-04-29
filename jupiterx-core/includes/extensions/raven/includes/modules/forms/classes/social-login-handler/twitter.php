@@ -5,7 +5,6 @@ namespace JupiterX_Core\Raven\Modules\Forms\Classes\Social_Login_Handler;
 defined( 'ABSPATH' ) || die();
 
 use JupiterX_Core\Raven\Utils;
-use Elementor\Settings;
 use Abraham\TwitterOAuth\TwitterOAuth;
 
 /**
@@ -21,7 +20,6 @@ class Twitter {
 	const ACCESS_SECRET = 'elementor_raven_twitter_access_token_secret';
 
 	public function __construct() {
-		add_action( 'elementor/admin/after_create_settings/' . Settings::PAGE_ID, [ $this, 'register_admin_fields' ], 20 );
 		add_action( 'init', [ $this, 'check_user_details_on_twitter_callback' ] );
 	}
 

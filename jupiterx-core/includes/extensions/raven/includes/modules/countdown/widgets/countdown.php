@@ -45,7 +45,7 @@ class Countdown extends Base_Widget {
 			[
 				'label' => __( 'Due Date', 'jupiterx-core' ),
 				'type'  => 'date_time',
-				'default'  => date( 'Y-m-d H:i', strtotime( '+3 months' ) ),
+				'default'  => gmdate( 'Y-m-d H:i', strtotime( '+3 months' ) ),
 				'label_block' => true,
 			]
 		);
@@ -455,7 +455,10 @@ class Countdown extends Base_Widget {
 		}
 
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>></div>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'wrapper' );
+		?>></div>
 		<?php
 	}
 

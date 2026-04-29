@@ -31,7 +31,10 @@ class Password extends Field_Base {
 		?>
 		<input
 			type="password"
-			<?php echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) ); ?>>
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) );
+			?>>
 		<?php
 	}
 

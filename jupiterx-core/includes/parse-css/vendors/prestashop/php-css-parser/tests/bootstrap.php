@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 
 spl_autoload_register(function($class)
 {

@@ -10,6 +10,8 @@
 
 namespace Kirki\Settings;
 
+defined( 'ABSPATH' ) || die();
+
 /**
  * Repeater Settings.
  */

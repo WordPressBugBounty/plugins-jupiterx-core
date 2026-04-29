@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die();
+
 /**
  * This file is responsible for Woocommerce functions.
  *

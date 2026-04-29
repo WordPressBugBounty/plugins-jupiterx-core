@@ -1,4 +1,8 @@
 <?php
+if (! defined('ABSPATH')) {
+	exit;
+}
+
 /**
  * Class for providing data the WordPress' Site Health debug information.
  *
@@ -14,7 +18,8 @@
  *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
-class JupiterX_Core_Site_Health {
+class JupiterX_Core_Site_Health
+{
 
 	/**
 	 * Site health class instance.
@@ -32,8 +37,9 @@ class JupiterX_Core_Site_Health {
 	 *
 	 * @return JupiterX_Core_Site_Health|null
 	 */
-	public static function get_instance() {
-		if ( null === self::$instance ) {
+	public static function get_instance()
+	{
+		if (null === self::$instance) {
 			self::$instance = new JupiterX_Core_Site_Health();
 		}
 
@@ -45,10 +51,11 @@ class JupiterX_Core_Site_Health {
 	 *
 	 * @since 1.18.0
 	 */
-	public function __construct() {
-		add_action( 'wp_ajax_jupiterx_system_status', [ $this, 'system_status' ] );
-		add_filter( 'debug_information', [ $this, 'debug_information' ] );
-		add_filter( 'site_status_tests', [ $this, 'site_status_tests' ] );
+	public function __construct()
+	{
+		add_action('wp_ajax_jupiterx_system_status', [$this, 'system_status']);
+		add_filter('debug_information', [$this, 'debug_information']);
+		add_filter('site_status_tests', [$this, 'site_status_tests']);
 	}
 
 	/**
@@ -60,9 +67,10 @@ class JupiterX_Core_Site_Health {
 	 *
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 */
-	public function system_status() {
-		if ( ! current_user_can( 'manage_options' ) ) {
-			wp_send_json_error( 'You do not have access to this section.', 'jupiterx-core' );
+	public function system_status()
+	{
+		if (! current_user_can('manage_options')) {
+			wp_send_json_error('You do not have access to this section.', 'jupiterx-core');
 		}
 
 		$health_check_js_variables = [
@@ -77,22 +85,22 @@ class JupiterX_Core_Site_Health {
 			],
 		];
 
-		$issue_counts = get_transient( 'health-check-site-status-result' );
+		$issue_counts = get_transient('health-check-site-status-result');
 
 		jupiterx_log(
 			'[Control Panel > Dashboard > Site Health] To get site health issues, the following data is expected to be an object.',
 			$issue_counts
 		);
 
-		if ( false !== $issue_counts ) {
-			$issue_counts = json_decode( $issue_counts );
+		if (false !== $issue_counts) {
+			$issue_counts = json_decode($issue_counts);
 
 			$health_check_js_variables['site_status']['issues'] = $issue_counts;
 		}
 
-		$core_current_version = get_bloginfo( 'version' );
+		$core_current_version = get_bloginfo('version');
 
-		if ( version_compare( $core_current_version, '5.2', '<' ) ) {
+		if (version_compare($core_current_version, '5.2', '<')) {
 			jupiterx_log(
 				'[Control Panel > Dashboard > Site Health] To show site health issues, WordPress needs to be updated.',
 				$core_current_version
@@ -101,7 +109,7 @@ class JupiterX_Core_Site_Health {
 			$health_check_js_variables['site_status']['direct'][] = [
 				'label'       => sprintf(
 					// translators: %s Site's current WordPress version
-					__( 'WordPress version (%s) is outdated', 'jupiterx-core' ),
+					__('WordPress version (%s) is outdated', 'jupiterx-core'),
 					$core_current_version
 				),
 				'status'      => 'critical',
@@ -111,17 +119,17 @@ class JupiterX_Core_Site_Health {
 				],
 				'actions'     => sprintf(
 					'<a href="%s">%s</a>',
-					esc_url( admin_url( 'update-core.php' ) ),
-					__( 'Update core', 'jupiterx-core' )
+					esc_url(admin_url('update-core.php')),
+					__('Update core', 'jupiterx-core')
 				),
 				'description' => '',
 				'test'        => 'wordpress_version',
 			];
 
-			wp_send_json_success( $health_check_js_variables );
+			wp_send_json_success($health_check_js_variables);
 		}
 
-		if ( ! class_exists( 'WP_Site_Health' ) ) {
+		if (! class_exists('WP_Site_Health')) {
 			require_once ABSPATH . 'wp-admin/includes/class-wp-site-health.php';
 		}
 
@@ -136,30 +144,30 @@ class JupiterX_Core_Site_Health {
 		);
 
 		// Don't run https test on localhost.
-		if ( 'localhost' === preg_replace( '|https?://|', '', get_site_url() ) ) {
-			unset( $tests['direct']['https_status'] );
+		if ('localhost' === preg_replace('|https?://|', '', get_site_url())) {
+			unset($tests['direct']['https_status']);
 		}
 
-		foreach ( $tests['direct'] as $test ) {
-			if ( is_string( $test['test'] ) ) {
+		foreach ($tests['direct'] as $test) {
+			if (is_string($test['test'])) {
 				$test_function = sprintf(
 					'get_test_%s',
 					$test['test']
 				);
 
-				if ( method_exists( $site_health, $test_function ) && is_callable( [ $site_health, $test_function ] ) ) {
-					$health_check_js_variables['site_status']['direct'][] = $this->perform_test( [ $site_health, $test_function ] );
+				if (method_exists($site_health, $test_function) && is_callable([$site_health, $test_function])) {
+					$health_check_js_variables['site_status']['direct'][] = $this->perform_test([$site_health, $test_function]);
 					continue;
 				}
 			}
 
-			if ( is_callable( $test['test'] ) ) {
-				$health_check_js_variables['site_status']['direct'][] = $this->perform_test( $test['test'] );
+			if (is_callable($test['test'])) {
+				$health_check_js_variables['site_status']['direct'][] = $this->perform_test($test['test']);
 			}
 		}
 
-		foreach ( $tests['async'] as $test ) {
-			if ( is_string( $test['test'] ) ) {
+		foreach ($tests['async'] as $test) {
+			if (is_string($test['test'])) {
 				$health_check_js_variables['site_status']['async'][] = [
 					'test'      => $test['test'],
 					'completed' => false,
@@ -167,7 +175,7 @@ class JupiterX_Core_Site_Health {
 			}
 		}
 
-		wp_send_json_success( $health_check_js_variables );
+		wp_send_json_success($health_check_js_variables);
 	}
 
 	/**
@@ -179,9 +187,10 @@ class JupiterX_Core_Site_Health {
 	 *
 	 * @return mixed|void
 	 */
-	private function perform_test( $callback ) {
+	private function perform_test($callback)
+	{
 		// Borrowed filter from WP_Site_Health::perform_test().
-		return apply_filters( 'site_status_test_result', call_user_func( $callback ) );
+		return apply_filters('site_status_test_result', call_user_func($callback));
 	}
 
 	/**
@@ -195,131 +204,132 @@ class JupiterX_Core_Site_Health {
 	 *
 	 * @SuppressWarnings(PHPMD)
 	 */
-	public function debug_information( $info ) {
+	public function debug_information($info)
+	{
 		// Compose common internationalized values.
 		$value = [
-			'yes'      => __( 'Yes', 'jupiterx-core' ),
-			'no'       => __( 'No', 'jupiterx-core' ),
-			'enabled'  => __( 'Enabled', 'jupiterx-core' ),
-			'disabled' => __( 'Disabled', 'jupiterx-core' ),
+			'yes'      => __('Yes', 'jupiterx-core'),
+			'no'       => __('No', 'jupiterx-core'),
+			'enabled'  => __('Enabled', 'jupiterx-core'),
+			'disabled' => __('Disabled', 'jupiterx-core'),
 		];
 
 		// WordPress section.
 		$info['wp-core']['fields']['content_url'] = [
-			'label' => __( 'Content URL', 'jupiterx-core' ),
+			'label' => __('Content URL', 'jupiterx-core'),
 			'value' => WP_CONTENT_URL,
 		];
 
 		$upload_dir = wp_get_upload_dir();
 
 		$info['wp-core']['fields']['upload_url'] = [
-			'label' => __( 'Upload URL', 'jupiterx-core' ),
+			'label' => __('Upload URL', 'jupiterx-core'),
 			'value' => $upload_dir['baseurl'],
 		];
 		$info['wp-core']['fields']['front_page'] = [
-			'label' => __( 'Front page display', 'jupiterx-core' ),
-			'value' => get_option( 'show_on_front' ),
+			'label' => __('Front page display', 'jupiterx-core'),
+			'value' => get_option('show_on_front'),
 		];
 
 		// Server section.
 		// phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
-		$is_localhost = ( '127.0.0.1' === $_SERVER['REMOTE_ADDR'] || 'localhost' === $_SERVER['REMOTE_ADDR'] || '::1' === $_SERVER['REMOTE_ADDR'] );
+		$is_localhost = ('127.0.0.1' === $_SERVER['REMOTE_ADDR'] || 'localhost' === $_SERVER['REMOTE_ADDR'] || '::1' === $_SERVER['REMOTE_ADDR']);
 
 		$info['wp-server']['fields']['localhost'] = [
-			'label' => __( 'Is local environment?', 'jupiterx-core' ),
+			'label' => __('Is local environment?', 'jupiterx-core'),
 			'value' => $is_localhost ? $value['yes'] : $value['no'],
 		];
 
 		$info['wp-server']['fields']['php_errors'] = [
-			'label' => __( 'PHP display errors', 'jupiterx-core' ),
-			'value' => ini_get( 'display_errors' ) ? $value['yes'] : $value['no'],
+			'label' => __('PHP display errors', 'jupiterx-core'),
+			'value' => ini_get('display_errors') ? $value['yes'] : $value['no'],
 		];
 
 		$info['wp-server']['fields']['fsockopen'] = [
-			'label' => __( 'Is fsockopen available?', 'jupiterx-core' ),
-			'value' => function_exists( 'fsockopen' ) ? $value['yes'] : $value['no'],
+			'label' => __('Is fsockopen available?', 'jupiterx-core'),
+			'value' => function_exists('fsockopen') ? $value['yes'] : $value['no'],
 		];
 
 		$info['wp-server']['fields']['php_gzopen'] = [
-			'label' => __( 'Is gzipopen available?', 'jupiterx-core' ),
-			'value' => is_callable( 'gzopen' ) ? $value['yes'] : $value['no'],
+			'label' => __('Is gzipopen available?', 'jupiterx-core'),
+			'value' => is_callable('gzopen') ? $value['yes'] : $value['no'],
 		];
 
 		$info['wp-server']['fields']['php_xml'] = [
-			'label' => __( 'PHP XML ', 'jupiterx-core' ),
-			'value' => function_exists( 'xml_parse' ) ? $value['enabled'] : $value['disabled'],
+			'label' => __('PHP XML ', 'jupiterx-core'),
+			'value' => function_exists('xml_parse') ? $value['enabled'] : $value['disabled'],
 		];
 
-		$simplexml_loaded = class_exists( 'SimpleXMLElement' ) && function_exists( 'simplexml_load_string' );
+		$simplexml_loaded = class_exists('SimpleXMLElement') && function_exists('simplexml_load_string');
 
 		$info['wp-server']['fields']['php_simplexml'] = [
-			'label' => __( 'SimpleXML', 'jupiterx-core' ),
+			'label' => __('SimpleXML', 'jupiterx-core'),
 			'value' => $simplexml_loaded ? $value['enabled'] : $value['disabled'],
 		];
 
-		$mbstring_loaded = extension_loaded( 'mbstring' ) && function_exists( 'mb_eregi' ) && function_exists( 'mb_ereg_match' );
+		$mbstring_loaded = extension_loaded('mbstring') && function_exists('mb_eregi') && function_exists('mb_ereg_match');
 
 		$info['wp-server']['fields']['php_mbstring'] = [
-			'label' => __( 'MBString', 'jupiterx-core' ),
+			'label' => __('MBString', 'jupiterx-core'),
 			'value' => $mbstring_loaded ? $value['enabled'] : $value['disabled'],
 		];
 
 		$info['wp-server']['fields']['php_soapclient'] = [
-			'label' => __( 'SoapClient', 'jupiterx-core' ),
-			'value' => class_exists( 'SoapClient' ) ? $value['enabled'] : $value['disabled'],
+			'label' => __('SoapClient', 'jupiterx-core'),
+			'value' => class_exists('SoapClient') ? $value['enabled'] : $value['disabled'],
 		];
 
 		$info['wp-server']['fields']['php_domdocument'] = [
-			'label' => __( 'DOMDocument', 'jupiterx-core' ),
-			'value' => class_exists( 'DOMDocument' ) ? $value['enabled'] : $value['disabled'],
+			'label' => __('DOMDocument', 'jupiterx-core'),
+			'value' => class_exists('DOMDocument') ? $value['enabled'] : $value['disabled'],
 		];
 
 		$info['wp-server']['fields']['php_ziparchive'] = [
-			'label' => __( 'ZipArchive', 'jupiterx-core' ),
-			'value' => class_exists( 'ZipArchive' ) ? $value['enabled'] : $value['disabled'],
+			'label' => __('ZipArchive', 'jupiterx-core'),
+			'value' => class_exists('ZipArchive') ? $value['enabled'] : $value['disabled'],
 		];
 
 		$info['wp-server']['fields']['php_iconv'] = [
-			'label' => __( 'Iconv', 'jupiterx-core' ),
-			'value' => class_exists( 'Iconv' ) ? $value['enabled'] : $value['disabled'],
+			'label' => __('Iconv', 'jupiterx-core'),
+			'value' => class_exists('Iconv') ? $value['enabled'] : $value['disabled'],
 		];
 
-		if ( defined( 'WP_HTTP_BLOCK_EXTERNAL' ) ) {
-			$block_external = __( 'HTTP requests have been blocked by the WP_HTTP_BLOCK_EXTERNAL constant, with no allowed hosts.', 'jupiterx-core' );
+		if (defined('WP_HTTP_BLOCK_EXTERNAL')) {
+			$block_external = __('HTTP requests have been blocked by the WP_HTTP_BLOCK_EXTERNAL constant, with no allowed hosts.', 'jupiterx-core');
 
-			if ( defined( 'WP_ACCESSIBLE_HOSTS' ) ) {
-				$allowed_hosts = explode( ',', WP_ACCESSIBLE_HOSTS );
+			if (defined('WP_ACCESSIBLE_HOSTS')) {
+				$allowed_hosts = explode(',', WP_ACCESSIBLE_HOSTS);
 			}
 
-			if ( isset( $allowed_hosts ) && count( $allowed_hosts ) > 0 ) {
+			if (isset($allowed_hosts) && count($allowed_hosts) > 0) {
 				$block_external = sprintf(
 					/* translators: 1: Allowed hosts */
-					esc_html__( 'HTTP requests have been blocked by the WP_HTTP_BLOCK_EXTERNAL constant, with some hosts whitelisted: %s.', 'jupiterx-core' ),
-					implode( ',', $allowed_hosts )
+					esc_html__('HTTP requests have been blocked by the WP_HTTP_BLOCK_EXTERNAL constant, with some hosts whitelisted: %s.', 'jupiterx-core'),
+					implode(',', $allowed_hosts)
 				);
 			}
 		}
 
 		$info['wp-server']['fields']['http_requests'] = [
-			'label' => __( 'HTTP Requests', 'jupiterx-core' ),
-			'value' => isset( $block_external ) ? $block_external : __( 'Accessible', 'jupiterx-core' ),
+			'label' => __('HTTP Requests', 'jupiterx-core'),
+			'value' => isset($block_external) ? $block_external : __('Accessible', 'jupiterx-core'),
 		];
 
-		$artbees_dotnet = wp_remote_get( 'https://artbees.net', [ 'timeout' => 10 ] );
+		$artbees_dotnet = wp_remote_get('https://artbees.net', ['timeout' => 10]);
 
-		if ( ! is_wp_error( $artbees_dotnet ) ) {
+		if (! is_wp_error($artbees_dotnet)) {
 			$info['wp-server']['fields']['artbees_communication'] = [
-				'label' => __( 'Communication with Artbees' ),
-				'value' => __( 'artbees.net is reachable' ),
+				'label' => __('Communication with Artbees', 'jupiterx-core'),
+				'value' => __('artbees.net is reachable', 'jupiterx-core'),
 				'debug' => 'true',
 			];
 		} else {
 			$info['wp-server']['fields']['artbees_communication'] = [
-				'label' => __( 'Communication with artbees.net' ),
+				'label' => __('Communication with artbees.net', 'jupiterx-core'),
 				'value' => sprintf(
 					/* translators: 1: The IP address artbees.net resolves to. 2: The error returned by the lookup. */
-					__( 'Unable to reach Artbees at %1$s: %2$s' ),
-					gethostbyname( 'artbees.net' ),
+					__('Unable to reach Artbees at %1$s: %2$s', 'jupiterx-core'),
+					gethostbyname('artbees.net'),
 					$artbees_dotnet->get_error_message()
 				),
 				'debug' => $artbees_dotnet->get_error_message(),
@@ -329,39 +339,39 @@ class JupiterX_Core_Site_Health {
 		// Database section.
 		$tables = $this->get_tables_sizes();
 
-		foreach ( $tables as $table ) {
-			$info['wp-database']['fields'][ $table['name'] ] = [
-				'label' => esc_html( $table['name'] ),
+		foreach ($tables as $table) {
+			$info['wp-database']['fields'][$table['name']] = [
+				'label' => esc_html($table['name']),
 				'value' => $table['size'] . ' MB',
 			];
 		}
 
 		// Browser section.
-		if ( ! class_exists( 'Browser' ) ) {
-			jupiterx_core()->load_files( [
+		if (! class_exists('Browser')) {
+			jupiterx_core()->load_files([
 				'control-panel-2/includes/class-browser',
-			] );
+			]);
 		}
 
 		$browser = new \Browser();
 
 		$info['browser'] = [
-			'label'  => __( 'Browser', 'jupiterx-core' ),
+			'label'  => __('Browser', 'jupiterx-core'),
 			'fields' => [
 				'browser'    => [
-					'label' => __( 'Browser', 'jupiterx-core' ),
+					'label' => __('Browser', 'jupiterx-core'),
 					'value' => $browser->getBrowser(),
 				],
 				'user_agent' => [
-					'label' => __( 'User agent', 'jupiterx-core' ),
+					'label' => __('User agent', 'jupiterx-core'),
 					'value' => $browser->getUserAgent(),
 				],
 				'version'    => [
-					'label' => __( 'Version', 'jupiterx-core' ),
+					'label' => __('Version', 'jupiterx-core'),
 					'value' => $browser->getVersion(),
 				],
 				'platform'   => [
-					'label' => __( 'Platform', 'jupiterx-core' ),
+					'label' => __('Platform', 'jupiterx-core'),
 					'value' => $browser->getPlatform(),
 				],
 			],
@@ -377,7 +387,8 @@ class JupiterX_Core_Site_Health {
 	 *
 	 * @return array Tables list with name and size.
 	 */
-	public function get_tables_sizes() {
+	public function get_tables_sizes()
+	{
 		global $wpdb;
 
 		$tables = [
@@ -394,10 +405,10 @@ class JupiterX_Core_Site_Health {
 			'usermeta',
 			'users',
 		];
-		if ( is_multisite() ) {
-			if ( ! is_super_admin() ) {
+		if (is_multisite()) {
+			if (! is_super_admin()) {
 				// Omit usermeta and users tables.
-				$tables = array_splice( $tables, -2 );
+				$tables = array_splice($tables, -2);
 			}
 			$tables[] = 'blogs';
 			$tables[] = 'blogs_versions ';
@@ -407,21 +418,21 @@ class JupiterX_Core_Site_Health {
 			$tables[] = 'sitemeta';
 		}
 
-		foreach ( $tables as $key => $table ) {
-			$tables[ $key ] = $wpdb->prefix . $table;
+		foreach ($tables as $key => $table) {
+			$tables[$key] = $wpdb->prefix . $table;
 		}
 
-		$names = "'" . implode( "','", $tables ) . "'";
+		$names = "'" . implode("','", $tables) . "'";
 		// phpcs:disable WordPress.DB.PreparedSQL.InterpolatedNotPrepared,WordPress.DB.PreparedSQL.NotPrepared
-		$query = $wpdb->prepare( "
+		$query = $wpdb->prepare("
 			SELECT TABLE_NAME AS `name`, ROUND(((DATA_LENGTH + INDEX_LENGTH) / 1024 / 1024),2) AS `size`
 			FROM information_schema.TABLES
 			WHERE TABLE_SCHEMA = %s AND TABLE_NAME IN ($names)
-		", $wpdb->dbname );
+		", $wpdb->dbname);
 		// phpcs:enable
 
 		// phpcs:ignore
-		return $wpdb->get_results( $query, ARRAY_A );
+		return $wpdb->get_results($query, ARRAY_A);
 	}
 
 	/**
@@ -431,17 +442,18 @@ class JupiterX_Core_Site_Health {
 	 *
 	 * @return array Site status tests.
 	 */
-	public function site_status_tests( $tests ) {
-		$tests['direct'] = array_merge( $tests['direct'], [
+	public function site_status_tests($tests)
+	{
+		$tests['direct'] = array_merge($tests['direct'], [
 			'jupiterx_core_php_memory_limit' => [
-				'label' => __( 'PHP Memory Limit is sufficient', 'jupiterx-core' ),
-				'test'  => [ $this, 'get_test_php_memory_limit' ],
+				'label' => __('PHP Memory Limit is sufficient', 'jupiterx-core'),
+				'test'  => [$this, 'get_test_php_memory_limit'],
 			],
 			'jupiterx_core_php_modules' => [
-				'label' => __( 'Required and recommended PHP modules are installed', 'jupiterx-core' ),
-				'test'  => [ $this, 'get_test_php_modules' ],
+				'label' => __('Required and recommended PHP modules are installed', 'jupiterx-core'),
+				'test'  => [$this, 'get_test_php_modules'],
 			],
-		] );
+		]);
 
 		return $tests;
 	}
@@ -453,9 +465,10 @@ class JupiterX_Core_Site_Health {
 	 *
 	 * @return array PHP memory limit result.
 	 */
-	public function get_test_php_memory_limit() {
+	public function get_test_php_memory_limit()
+	{
 		$result = [
-			'label'       => __( 'PHP memory limit is sufficient', 'jupiterx-core' ),
+			'label'       => __('PHP memory limit is sufficient', 'jupiterx-core'),
 			'status'      => 'good',
 			'badge'       => [
 				'label' => 'Jupiter X',
@@ -463,38 +476,38 @@ class JupiterX_Core_Site_Health {
 			],
 			'description' => sprintf(
 				'<p>%s</p>',
-				__( 'PHP memory limit is the maximum amount of memory in bytes that a script is allowed to allocate. At least 128M is required for the theme and 256M is recommended if you have enabled bunch of plugins to your site.', 'jupiterx-core' )
+				__('PHP memory limit is the maximum amount of memory in bytes that a script is allowed to allocate. At least 128M is required for the theme and 256M is recommended if you have enabled bunch of plugins to your site.', 'jupiterx-core')
 			),
 			'actions'     => sprintf(
 				'<a href="%s" target="_blank" rel="noopener noreferrer">%s <span aria-hidden="true" class="dashicons dashicons-external"></span></a>',
-				'https://themes.artbees.net/docs/jupiter-x-server-requirements/',
-				__( 'Learn more about Jupiter X server requirements', 'jupiterx-core' )
+				'https://help.jupiterx.com/article/19-jupiterx-server-requirement',
+				__('Learn more about Jupiter X server requirements', 'jupiterx-core')
 			),
 			'test'        => 'jupiterx_core_php_memory_limit',
 		];
 
-		$memory_limit = ini_get( 'memory_limit' );
-		if ( defined( 'WP_MEMORY_LIMIT' ) ) {
+		$memory_limit = ini_get('memory_limit');
+		if (defined('WP_MEMORY_LIMIT')) {
 			$memory_limit = WP_MEMORY_LIMIT;
 		}
 
-		if ( preg_match( '/^(\d+)(.)$/', $memory_limit, $matches ) ) {
-			if ( 'M' === $matches[2] ) {
+		if (preg_match('/^(\d+)(.)$/', $memory_limit, $matches)) {
+			if ('M' === $matches[2]) {
 				$memory_limit = $matches[1] * MB_IN_BYTES;
-			} elseif ( 'K' === $matches[2] ) {
+			} elseif ('K' === $matches[2]) {
 				$memory_limit = $matches[1] * KB_IN_BYTES;
 			}
 		}
 
-		if ( $memory_limit < ( 128 * MB_IN_BYTES ) ) {
+		if ($memory_limit < (128 * MB_IN_BYTES)) {
 			$result['status'] = 'critical';
-			$result['label']  = __( 'Your site has insufficient PHP memory limit', 'jupiterx-core' );
+			$result['label']  = __('Your site has insufficient PHP memory limit', 'jupiterx-core');
 
-			if ( defined( 'WP_MEMORY_LIMIT' ) ) {
+			if (defined('WP_MEMORY_LIMIT')) {
 				$result['description'] .= '<p>';
 				$result['description'] .= sprintf(
 					// translators: %s Value of site's WP_MEMORY_LIMIT
-					__( 'The <code>WP_MEMORY_LIMIT</code> with defined value of %s has been added to this website\'s configuration file or defined as default by WordPress.', 'jupiterx-core' ),
+					__('The <code>WP_MEMORY_LIMIT</code> with defined value of %s has been added to this website\'s configuration file or defined as default by WordPress.', 'jupiterx-core'),
 					WP_MEMORY_LIMIT
 				);
 				$result['description'] .= '</p>';
@@ -513,9 +526,10 @@ class JupiterX_Core_Site_Health {
 	 *
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 */
-	public function get_test_php_modules() {
+	public function get_test_php_modules()
+	{
 		$result = [
-			'label'       => __( 'Required and recommended PHP modules are installed', 'jupiterx-core' ),
+			'label'       => __('Required and recommended PHP modules are installed', 'jupiterx-core'),
 			'status'      => 'good',
 			'badge'       => [
 				'label' => 'Jupiter X',
@@ -523,12 +537,12 @@ class JupiterX_Core_Site_Health {
 			],
 			'description' => sprintf(
 				'<p>%s</p>',
-				__( 'PHP modules perform most of the tasks on the server that make your site run. Any changes to these must be made by your server administrator.', 'jupiterx-core' )
+				__('PHP modules perform most of the tasks on the server that make your site run. Any changes to these must be made by your server administrator.', 'jupiterx-core')
 			),
 			'actions'     => sprintf(
 				'<a href="%s" target="_blank" rel="noopener noreferrer">%s <span aria-hidden="true" class="dashicons dashicons-external"></span></a>',
-				'https://themes.artbees.net/docs/jupiter-x-server-requirements/',
-				__( 'Learn more about Jupiter X server requirements', 'jupiterx-core' )
+				'https://help.jupiterx.com/article/19-jupiterx-server-requirement',
+				__('Learn more about Jupiter X server requirements', 'jupiterx-core')
 			),
 			'test'        => 'jupiterx_core_php_modules',
 		];
@@ -606,58 +620,58 @@ class JupiterX_Core_Site_Health {
 
 		$failures = [];
 
-		foreach ( $modules as $library => $module ) {
-			$extension  = ( isset( $module['extension'] ) ? $module['extension'] : null );
-			$function   = ( isset( $module['function'] ) ? $module['function'] : null );
-			$constant   = ( isset( $module['constant'] ) ? $module['constant'] : null );
-			$class_name = ( isset( $module['class'] ) ? $module['class'] : null );
+		foreach ($modules as $library => $module) {
+			$extension  = (isset($module['extension']) ? $module['extension'] : null);
+			$function   = (isset($module['function']) ? $module['function'] : null);
+			$constant   = (isset($module['constant']) ? $module['constant'] : null);
+			$class_name = (isset($module['class']) ? $module['class'] : null);
 
 			// If this module is a fallback for another function, check if that other function passed.
-			if ( isset( $module['fallback_for'] ) ) {
+			if (isset($module['fallback_for'])) {
 				/*
 				 * If that other function has a failure, mark this module as required for normal operations.
 				 * If that other function hasn't failed, skip this test as it's only a fallback.
 				 */
-				if ( isset( $failures[ $module['fallback_for'] ] ) ) {
+				if (isset($failures[$module['fallback_for']])) {
 					$module['required'] = true;
 				} else {
 					continue;
 				}
 			}
 
-			if ( ! $this->test_php_extension_availability( $extension, $function, $constant, $class_name ) && ( ! isset( $module['php_bundled_version'] ) || version_compare( PHP_VERSION, $module['php_bundled_version'], '<' ) ) ) {
-				if ( $module['required'] ) {
+			if (! $this->test_php_extension_availability($extension, $function, $constant, $class_name) && (! isset($module['php_bundled_version']) || version_compare(PHP_VERSION, $module['php_bundled_version'], '<'))) {
+				if ($module['required']) {
 					$result['status'] = 'critical';
 
 					$class         = 'error';
-					$screen_reader = __( 'Error', 'jupiterx-core' );
+					$screen_reader = __('Error', 'jupiterx-core');
 					$message       = sprintf(
 						/* translators: %s: The module name. */
-						__( 'The required module, %s, is not installed, or has been disabled.', 'jupiterx-core' ),
+						__('The required module, %s, is not installed, or has been disabled.', 'jupiterx-core'),
 						$library
 					);
 				} else {
 					$class         = 'warning';
-					$screen_reader = __( 'Warning', 'jupiterx-core' );
+					$screen_reader = __('Warning', 'jupiterx-core');
 					$message       = sprintf(
 						/* translators: %s: The module name. */
-						__( 'The optional module, %s, is not installed, or has been disabled.', 'jupiterx-core' ),
+						__('The optional module, %s, is not installed, or has been disabled.', 'jupiterx-core'),
 						$library
 					);
 				}
 
-				if ( ! $module['required'] && 'good' === $result['status'] ) {
+				if (! $module['required'] && 'good' === $result['status']) {
 					$result['status'] = 'recommended';
 				}
 
-				$failures[ $library ] = "<span class='dashicons $class'><span class='screen-reader-text'>$screen_reader</span></span> $message";
+				$failures[$library] = "<span class='dashicons $class'><span class='screen-reader-text'>$screen_reader</span></span> $message";
 			}
 		}
 
-		if ( ! empty( $failures ) ) {
+		if (! empty($failures)) {
 			$output = '<ul>';
 
-			foreach ( $failures as $failure ) {
+			foreach ($failures as $failure) {
 				$output .= sprintf(
 					'<li>%s</li>',
 					$failure
@@ -667,11 +681,11 @@ class JupiterX_Core_Site_Health {
 			$output .= '</ul>';
 		}
 
-		if ( 'good' !== $result['status'] ) {
-			if ( 'critical' === $result['status'] ) {
-				$result['label'] = __( 'Required PHP modules are missing', 'jupiterx-core' );
+		if ('good' !== $result['status']) {
+			if ('critical' === $result['status']) {
+				$result['label'] = __('Required PHP modules are missing', 'jupiterx-core');
 			} else {
-				$result['label'] = __( 'Recommended PHP modules are missing', 'jupiterx-core' );
+				$result['label'] = __('Recommended PHP modules are missing', 'jupiterx-core');
 			}
 
 			$result['description'] .= sprintf(
@@ -699,22 +713,23 @@ class JupiterX_Core_Site_Health {
 	 *
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 */
-	private function test_php_extension_availability( $extension = null, $function = null, $constant = null, $class = null ) {
+	private function test_php_extension_availability($extension = null, $function = null, $constant = null, $class = null)
+	{
 		// If no extension or function is passed, claim to fail testing, as we have nothing to test against.
-		if ( ! $extension && ! $function && ! $constant && ! $class ) {
+		if (! $extension && ! $function && ! $constant && ! $class) {
 			return false;
 		}
 
-		if ( $extension && ! extension_loaded( $extension ) ) {
+		if ($extension && ! extension_loaded($extension)) {
 			return false;
 		}
-		if ( $function && ! function_exists( $function ) ) {
+		if ($function && ! function_exists($function)) {
 			return false;
 		}
-		if ( $constant && ! defined( $constant ) ) {
+		if ($constant && ! defined($constant)) {
 			return false;
 		}
-		if ( $class && ! class_exists( $class ) ) {
+		if ($class && ! class_exists($class)) {
 			return false;
 		}
 

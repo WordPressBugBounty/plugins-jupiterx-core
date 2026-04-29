@@ -47,8 +47,15 @@ class Navigation {
 					$this->widget->add_render_attribute( 'nav-item-' . $endpoint, 'href', $full_url );
 
 					?>
-					<li class="<?php echo wc_get_account_menu_item_classes( $endpoint ); ?>">
-						<a <?php echo $this->widget->get_render_attribute_string( 'nav-item-' . esc_attr( $endpoint ) ); ?>>
+					<?php
+					$menu_item_classes = wc_get_account_menu_item_classes( $endpoint );
+					$menu_item_classes = is_array( $menu_item_classes ) ? implode( ' ', $menu_item_classes ) : $menu_item_classes;
+					?>
+					<li class="<?php echo esc_attr( $menu_item_classes ); ?>">
+						<a <?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+						echo $this->widget->get_render_attribute_string( 'nav-item-' . esc_attr( $endpoint ) );
+						?>>
 						<?php
 						if ( in_array( $settings['icon_alignment'], [ 'right', 'below' ], true ) ) {
 							echo esc_html( $data['label'] );

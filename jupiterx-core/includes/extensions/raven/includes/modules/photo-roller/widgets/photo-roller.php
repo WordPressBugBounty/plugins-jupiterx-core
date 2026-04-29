@@ -184,7 +184,10 @@ class Photo_Roller extends Base_Widget {
 		$this->render_styles( $css_selector, $settings );
 
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'wrapper' );
+		?>>
 			<div class="raven-photo-roller-frame">
 				<picture>
 					<?php

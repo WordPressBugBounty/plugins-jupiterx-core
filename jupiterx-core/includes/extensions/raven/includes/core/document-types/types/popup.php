@@ -13,6 +13,7 @@ use Elementor\Plugin;
 use Elementor\Controls_Manager;
 use Elementor\Controls_Stack;
 use Elementor\Core\DynamicTags\Dynamic_CSS;
+use JupiterX_Core\Raven\Modules\Blur_Background\Module as Blur_Background_Module;
 
 defined( 'ABSPATH' ) || die();
 
@@ -389,6 +390,12 @@ class Jupiterx_Popup_Document extends Document_Base {
 				'name'  => 'background',
 				'selector' => $popup_id . ' .jupiterx-popup__container-inner',
 			]
+		);
+
+		Blur_Background_Module::extend_existing_background_group(
+			$this,
+			'background',
+			$popup_id . ' .jupiterx-popup__container-inner'
 		);
 
 		$this->add_group_control(

@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS\RuleSet;
 
+defined( 'ABSPATH' ) || die();
+
 use Sabberworm\CSS\Property\Selector;
 use Sabberworm\CSS\Rule\Rule;
 use Sabberworm\CSS\Value\RuleValueList;
@@ -597,7 +599,8 @@ class DeclarationBlock extends RuleSet {
 	public function render(\Sabberworm\CSS\OutputFormat $oOutputFormat) {
 		if(count($this->aSelectors) === 0) {
 			// If all the selectors have been removed, this declaration block becomes invalid
-			throw new OutputException("Attempt to print declaration block with missing selector", $this->iLineNo);
+			// phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Line number is an integer; message is escaped in SourceException.
+			throw new OutputException( 'Attempt to print declaration block with missing selector', (int) $this->iLineNo );
 		}
 		$sResult = $oOutputFormat->implode($oOutputFormat->spaceBeforeSelectorSeparator() . ',' . $oOutputFormat->spaceAfterSelectorSeparator(), $this->aSelectors) . $oOutputFormat->spaceBeforeOpeningBrace() . '{';
 		$sResult .= parent::render($oOutputFormat);

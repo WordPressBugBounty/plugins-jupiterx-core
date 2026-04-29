@@ -12,6 +12,7 @@
  */
 
 namespace Kirki;
+defined( 'ABSPATH' ) || die();
 
 /**
  * Handles translations

@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Export and Import API: JupiterX_Core_Control_Panel_Export_Import base class
  *
@@ -94,14 +95,60 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Export_Import' ) ) {
 			}
 
 			add_action( 'wp_ajax_jupiterx_core_cp_export_import', array( $this, 'ajax_handler' ) );
+
+			// Add filter to handle invalid post meta values during export.
+			add_filter( 'wxr_export_skip_postmeta', array( $this, 'skip_null_postmeta' ), 10, 3 );
+	}
+
+	/**
+	 * Skip invalid post meta values during export to prevent errors.
+	 *
+	 * This filter prevents problematic meta values from being exported:
+	 * - NULL values that cause TypeError in wp_is_valid_utf8() on PHP 8+
+	 * - Empty strings that may cause issues
+	 * - Invalid UTF-8 sequences
+	 * - Extremely large serialized data that may exceed packet size
+	 *
+	 * @since NEXT
+	 * @param bool   $skip      Whether to skip the current post meta. Default false.
+	 * @param string $meta_key  Current meta key.
+	 * @param object $meta      Current meta object with meta_key, meta_id, meta_value properties.
+	 * @return bool True to skip the meta, false to include it.
+	 */
+	public function skip_null_postmeta( $skip, $meta_key, $meta ) {
+		if ( $skip ) {
+			return true;
 		}
 
-		/**
-		 * Map the requests to proper methods.
-		 *
-		 * @since 1.0
-		 */
-		public function ajax_handler() {
+		// Skip if meta_value is NULL to prevent TypeError in wp_is_valid_utf8().
+		if ( is_null( $meta->meta_value ) ) {
+			return true;
+		}
+
+		// Skip if meta_value is not a valid type that can be exported safely.
+		if ( is_resource( $meta->meta_value ) ) {
+			return true;
+		}
+
+		// Skip extremely large serialized data (> 10MB) to prevent packet size issues.
+		if ( is_string( $meta->meta_value ) && strlen( $meta->meta_value ) > 10485760 ) {
+			return true;
+		}
+
+		// Skip if the value contains invalid UTF-8.
+		if ( is_string( $meta->meta_value ) && false === wp_check_invalid_utf8( $meta->meta_value ) ) {
+			return true;
+		}
+
+		return $skip;
+	}
+
+	/**
+	 * Map the requests to proper methods.
+	 *
+	 * @since 1.0
+	 */
+	public function ajax_handler() {
 			if ( ! current_user_can( 'manage_options' ) ) {
 				wp_send_json_error( 'You do not have access to this section.', 'jupiterx-core' );
 			}
@@ -225,16 +272,66 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Export_Import' ) ) {
 		 *
 		 * @throws Exception If can not export Content.
 		 *
-		 * @since 1.0
+		 * @since NEXT
 		 */
 		private function export_content() {
+			global $wpdb;
+
 			try {
 				require_once ABSPATH . 'wp-admin/includes/export.php';
 
+				// Store original error reporting settings.
+				$original_show_errors = $wpdb->show_errors;
+				$original_suppress_errors = $wpdb->suppress_errors;
+
+				// Suppress database errors during export to handle missing tables gracefully.
+				// This prevents fatal errors when subsites have missing plugin tables (e.g., JetEngine).
+				$wpdb->suppress_errors( true );
+				$wpdb->show_errors( false );
+
 				ob_start();
-				export_wp();
+
+				try {
+					export_wp();
+				} catch ( TypeError $type_error ) {
+					// Catch TypeError from wp_is_valid_utf8() receiving NULL values in PHP 8+.
+					ob_end_clean();
+
+					// Restore error reporting.
+					$wpdb->suppress_errors( $original_suppress_errors );
+					if ( $original_show_errors ) {
+						$wpdb->show_errors();
+					}
+
+					throw new Exception(
+						__( 'Export failed due to invalid data in the database. This is usually caused by NULL values in post meta. Please check your database for corrupted data.', 'jupiterx-core' )
+					);
+				} catch ( Throwable $throwable ) {
+					// Catch any other errors during export.
+					ob_end_clean();
+
+					// Restore error reporting.
+					$wpdb->suppress_errors( $original_suppress_errors );
+					if ( $original_show_errors ) {
+						$wpdb->show_errors();
+					}
+
+					throw new Exception(
+						sprintf(
+							/* translators: %s: error message */
+							__( 'Export failed: %s', 'jupiterx-core' ),
+							$throwable->getMessage()
+						)
+					);
+				}
+
 				$content = ob_get_clean();
-				ob_end_clean();
+
+				// Restore database error reporting to original state.
+				$wpdb->suppress_errors( $original_suppress_errors );
+				if ( $original_show_errors ) {
+					$wpdb->show_errors();
+				}
 
 				$file_name = 'theme_content.xml';
 				$file_path = $this->folder['export_dir'] . '/' . $file_name;
@@ -494,9 +591,11 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Export_Import' ) ) {
 		/**
 		 * Export custom tables.
 		 *
-		 * @since 1.11.0
+		 * @since NEXT
 		 */
 		private function export_custom_tables() {
+			global $wpdb;
+
 			try {
 				$file = $this->folder['export_dir'] . '/tables.sql';
 
@@ -514,10 +613,18 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Export_Import' ) ) {
 
 				$tables = [];
 
-				// Prepare table names.
+				// Get list of all existing tables to verify they exist before export.
+				$existing_tables = $wpdb->get_col( 'SHOW TABLES' );
+
+				// Prepare table names, but only include tables that actually exist.
 				foreach ( $supported_tables as $plugin_tables ) {
 					foreach ( $plugin_tables as $table ) {
-						array_push( $tables, $db_manager->get_table_prefix() . $table );
+						$table_name = $db_manager->get_table_prefix() . $table;
+
+						// Only add table if it exists in the database.
+						if ( in_array( $table_name, $existing_tables, true ) ) {
+							array_push( $tables, $table_name );
+						}
 					}
 				}
 

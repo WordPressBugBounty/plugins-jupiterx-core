@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Pages > Search > Settings tab to the WordPress Customizer.
  *

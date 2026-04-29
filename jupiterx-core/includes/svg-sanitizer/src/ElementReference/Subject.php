@@ -1,6 +1,8 @@
 <?php
 namespace JupiterX_Core\enshrined\svgSanitize\ElementReference;
 
+defined( 'ABSPATH' ) || die();
+
 class Subject
 {
     /**
@@ -60,7 +62,9 @@ class Subject
     public function hasInfiniteLoop(array $subjects = [], $level = 1)
     {
         if ($level > $this->useNestingLimit) {
-            throw new \JupiterX_Core\enshrined\svgSanitize\Exceptions\NestingException('Nesting level too high, aborting', 1570713498, null, $this->getElement());
+            $element = $this->getElement();
+            // phpcs:ignore WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Fourth argument is a DOMElement reference, not message output.
+            throw new \JupiterX_Core\enshrined\svgSanitize\Exceptions\NestingException( 'Nesting level too high, aborting', 1570713498, null, $element );
         }
 
         if (in_array($this, $subjects, true)) {

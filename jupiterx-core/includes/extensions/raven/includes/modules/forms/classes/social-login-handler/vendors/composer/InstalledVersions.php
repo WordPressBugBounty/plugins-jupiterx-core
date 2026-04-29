@@ -12,6 +12,8 @@
 
 namespace Composer;
 
+defined( 'ABSPATH' ) || die();
+
 use Composer\Autoload\ClassLoader;
 use Composer\Semver\VersionParser;
 
@@ -161,7 +163,7 @@ $ranges = array_merge($ranges, $installed['versions'][$packageName]['provided'])
 return implode(' || ', $ranges);
 }
 
-throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
+throw new \OutOfBoundsException( esc_html( sprintf( 'Package "%s" is not installed', $packageName ) ) );
 }
 
 
@@ -182,7 +184,7 @@ return null;
 return $installed['versions'][$packageName]['version'];
 }
 
-throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
+throw new \OutOfBoundsException( esc_html( sprintf( 'Package "%s" is not installed', $packageName ) ) );
 }
 
 
@@ -203,7 +205,7 @@ return null;
 return $installed['versions'][$packageName]['pretty_version'];
 }
 
-throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
+throw new \OutOfBoundsException( esc_html( sprintf( 'Package "%s" is not installed', $packageName ) ) );
 }
 
 
@@ -224,7 +226,7 @@ return null;
 return $installed['versions'][$packageName]['reference'];
 }
 
-throw new \OutOfBoundsException('Package "' . $packageName . '" is not installed');
+throw new \OutOfBoundsException( esc_html( sprintf( 'Package "%s" is not installed', $packageName ) ) );
 }
 
 

@@ -698,7 +698,10 @@ class Circle_Progress extends Base_Widget {
 		);
 
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'content-container' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'content-container' );
+		?>>
 			<div class="raven-circle-progress-bar-wrapper" >
 				<?php ElementorUtils::print_unescaped_internal_string( $this->render_progress_bar( $settings ) ); ?>
 				<?php if ( 'inside' === $settings['number_position'] || 'inside' === $settings['title_subtitle_position'] ) : ?>
@@ -868,7 +871,10 @@ class Circle_Progress extends Base_Widget {
 		] );
 
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'progress-counter' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'progress-counter' );
+		?>>
 			<?php echo wp_kses_post( $prefix ); ?>
 			<div class="raven-circle-progress-counter-number">0</div>
 			<?php echo wp_kses_post( $suffix ); ?>

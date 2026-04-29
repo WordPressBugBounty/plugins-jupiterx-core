@@ -32,7 +32,10 @@ class Text extends Field_Base {
 		<input
 			oninput="onInvalidRavenFormField(event)"
 			oninvalid="onInvalidRavenFormField(event)"
-			<?php echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) ); ?>>
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) );
+			?>>
 		<?php
 	}
 

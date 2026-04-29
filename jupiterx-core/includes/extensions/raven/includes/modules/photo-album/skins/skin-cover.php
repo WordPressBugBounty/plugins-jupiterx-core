@@ -459,7 +459,10 @@ class Skin_Cover extends Skin_Base {
 		}
 
 		?>
-			<div <?php echo $this->parent->get_render_attribute_string( $img ); ?>></div>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->parent->get_render_attribute_string( $img );
+			?>></div>
 		<?php
 	}
 }

@@ -51,6 +51,6 @@ class Product_Short_Description extends Tag {
 			return;
 		}
 
-		echo $product->get_short_description();
+		echo wp_kses_post( $product->get_short_description() );
 	}
 }

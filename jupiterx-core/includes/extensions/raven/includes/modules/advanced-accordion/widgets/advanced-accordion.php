@@ -1085,10 +1085,16 @@ class Advanced_Accordion extends Base_Widget {
 			]
 		);
 		?>
-			<div <?php echo $this->get_render_attribute_string( 'single_wrapper_' . esc_attr( $item['_id'] ) ); ?> >
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( 'single_wrapper_' . esc_attr( $item['_id'] ) );
+			?> >
 				<div class="jx-single-accordion-header">
 					<div class="jx-single-accordion-header-left">
-						<div <?php echo $this->get_render_attribute_string( 'single_icon_wrapper_' . esc_attr( $item['_id'] ) ); ?> >
+						<div <?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+						echo $this->get_render_attribute_string( 'single_icon_wrapper_' . esc_attr( $item['_id'] ) );
+						?> >
 							<?php
 								$attributes = [
 									'aria-hidden' => 'true',
@@ -1125,7 +1131,10 @@ class Advanced_Accordion extends Base_Widget {
 						?>
 					</div>
 				</div>
-				<div <?php echo $this->get_render_attribute_string( 'single_body_' . esc_attr( $item['_id'] ) ); ?>>
+				<div <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->get_render_attribute_string( 'single_body_' . esc_attr( $item['_id'] ) );
+				?>>
 					<div class="jx-ac-content">
 						<div class="jx-ac-content-inner-wrapper">
 							<?php ElementorUtils::print_unescaped_internal_string( $this->print_accordion_content( $item ) ); ?>

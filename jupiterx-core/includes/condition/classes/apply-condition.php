@@ -2,6 +2,8 @@
 
 namespace JupiterX_Core\Condition;
 
+defined( 'ABSPATH' ) || die();
+
 use Elementor\Plugin as Elementor;
 use Elementor\Utils as ElementorUtils;
 
@@ -527,7 +529,8 @@ class Apply_Condition {
 		}
 
 		add_action( 'jupiterx_header', function() use ( $id, $inline_style ) {
-			$layout_builder_template_id = apply_filters( 'layout_builder_applied_template_id', 0 );
+			$layout_builder_template_id        = apply_filters( 'layout_builder_applied_template_id', 0 );
+			$layout_builder_sticky_template_id = apply_filters( 'jupiterx_header_template_sticky_id', 0 );
 
 			if (
 				$layout_builder_template_id > 0 &&
@@ -537,6 +540,10 @@ class Apply_Condition {
 			}
 
 			echo Elementor::instance()->frontend->get_builder_content_for_display( $id, $inline_style ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+
+			if ( intval( $layout_builder_sticky_template_id ) > 0 && intval( $layout_builder_sticky_template_id ) !== intval( $id ) ) {
+				echo Elementor::instance()->frontend->get_builder_content_for_display( $layout_builder_sticky_template_id, $inline_style ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+			}
 		} );
 
 		add_filter( 'jupiterx_layout_builder_header_id', function() use ( $id ) {

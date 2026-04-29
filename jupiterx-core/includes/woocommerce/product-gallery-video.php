@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die();
+
 /**
  * Class for video attachment media.
  *

@@ -210,7 +210,7 @@ class Form extends Base_Widget {
 		$repeater->add_control(
 			'field_html',
 			[
-				'label' => esc_html__( 'HTML', 'elementor-pro' ),
+				'label' => esc_html__( 'HTML', 'jupiterx-core' ),
 				'type' => Controls_Manager::TEXTAREA,
 				'dynamic' => [
 					'active' => true,
@@ -2949,7 +2949,10 @@ class Form extends Base_Widget {
 		$this->add_button_wrapper_attributes( $settings );
 		$this->add_popup_to_location( $settings );
 		?>
-		<form <?php echo $this->get_render_attribute_string( 'form' ); ?>>
+		<form <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'form' );
+		?>>
 			<input type="hidden" name="post_id" value="<?php echo esc_attr( Utils::get_current_post_id() ); ?>" />
 			<input type="hidden" name="form_id" value="<?php echo esc_attr( $this->get_id() ); ?>" />
 			<?php
@@ -2963,7 +2966,10 @@ class Form extends Base_Widget {
 				}
 
 				?>
-					<div <?php echo $this->get_render_attribute_string( 'button-wrapper' ); ?>>
+					<div <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+					echo $this->get_render_attribute_string( 'button-wrapper' );
+					?>>
 							<?php
 								$this->render_submit_button( $settings );
 							?>
@@ -2992,7 +2998,10 @@ class Form extends Base_Widget {
 				);
 
 				?>
-				<div <?php echo $this->get_render_attribute_string( 'fields-step-wrapper-' . esc_attr( $step_key ) ); ?>>
+				<div <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+				echo $this->get_render_attribute_string( 'fields-step-wrapper-' . esc_attr( $step_key ) );
+				?>>
 				<?php
 
 				$is_last_step = count( $steps ) - 1 === $step_key;
@@ -3007,7 +3016,10 @@ class Form extends Base_Widget {
 
 				$single_button_attr = 0 === $step_key ? 'single-button' : '';
 				?>
-						<div <?php echo $this->get_render_attribute_string( 'button-wrapper' ) . esc_attr( $single_button_attr ); ?>>
+						<div <?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+						echo $this->get_render_attribute_string( 'button-wrapper' ) . esc_attr( $single_button_attr );
+						?>>
 						<?php
 							$this->render_step_buttons( $steps, $step_key, $settings['hover_effect'] );
 
@@ -3075,7 +3087,10 @@ class Form extends Base_Widget {
 		);
 
 		?>
-		<button <?php echo $this->get_render_attribute_string( 'submit-button' ); ?>>
+		<button <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'submit-button' );
+		?>>
 			<?php $this->render_submit_icon(); ?>
 			<span><?php echo esc_html( $settings['submit_button_text'] ); ?></span>
 		</button>
@@ -3268,13 +3283,22 @@ class Form extends Base_Widget {
 
 		// Rendering.
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'step-indicators-wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'step-indicators-wrapper' );
+		?>>
 			<?php
 				// Rendering of progress type (distinguished from other types).
 				if ( 'progress' === $step_type ) {
 					?>
-						<div <?php echo $this->get_render_attribute_string( 'step-indicators-progress' ); ?>>
-							<div <?php echo $this->get_render_attribute_string( 'step-indicators-progress-meter' ); ?>>
+						<div <?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+						echo $this->get_render_attribute_string( 'step-indicators-progress' );
+						?>>
+							<div <?php
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+							echo $this->get_render_attribute_string( 'step-indicators-progress-meter' );
+							?>>
 								<?php echo esc_html( ( round( 100 / count( $steps ) ) ) ); ?>%
 							</div>
 						</div>
@@ -3290,8 +3314,14 @@ class Form extends Base_Widget {
 					switch ( $step_type ) {
 						case 'label':
 							?>
-							<div <?php echo $status_attr; ?>>
-								<label <?php echo $this->get_render_attribute_string( 'step-indicators-label' ); ?>>
+							<div <?php
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+							echo $status_attr;
+							?>>
+								<label <?php
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+								echo $this->get_render_attribute_string( 'step-indicators-label' );
+								?>>
 									<?php echo wp_kses_post( $step['label'] ); ?>
 								</label>
 							</div>
@@ -3300,8 +3330,14 @@ class Form extends Base_Widget {
 
 						case 'number':
 							?>
-							<div <?php echo $status_attr; ?>>
-								<div <?php echo $this->get_render_attribute_string( 'step-indicators-number' ); ?>>
+							<div <?php
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+							echo $status_attr;
+							?>>
+								<div <?php
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+								echo $this->get_render_attribute_string( 'step-indicators-number' );
+								?>>
 									<?php echo esc_html( $key + 1 ); ?>
 								</div>
 							</div>
@@ -3310,11 +3346,20 @@ class Form extends Base_Widget {
 
 						case 'label_number':
 							?>
-							<div <?php echo $status_attr; ?>>
-								<div <?php echo $this->get_render_attribute_string( 'step-indicators-number' ); ?>>
+							<div <?php
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+							echo $status_attr;
+							?>>
+								<div <?php
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+								echo $this->get_render_attribute_string( 'step-indicators-number' );
+								?>>
 									<?php echo esc_html( $key + 1 ); ?>
 								</div>
-								<label <?php echo $this->get_render_attribute_string( 'step-indicators-label' ); ?>>
+								<label <?php
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+								echo $this->get_render_attribute_string( 'step-indicators-label' );
+								?>>
 									<?php echo wp_kses_post( $step['label'] ); ?>
 								</label>
 							</div>
@@ -3323,9 +3368,18 @@ class Form extends Base_Widget {
 
 						case 'icon':
 							?>
-							<div <?php echo $status_attr; ?>>
-								<div <?php echo $this->get_render_attribute_string( 'step-indicators-icon' ); ?>>
-									<?php echo $this->get_step_icon_render_string( $step['step_icon'] ); ?>
+							<div <?php
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+							echo $status_attr;
+							?>>
+								<div <?php
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+								echo $this->get_render_attribute_string( 'step-indicators-icon' );
+								?>>
+									<?php
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor icon renderer output.
+									echo $this->get_step_icon_render_string( $step['step_icon'] );
+									?>
 								</div>
 							</div>
 							<?php
@@ -3333,11 +3387,23 @@ class Form extends Base_Widget {
 
 						case 'label_icon':
 							?>
-							<div <?php echo $status_attr; ?>>
-								<div <?php echo $this->get_render_attribute_string( 'step-indicators-icon' ); ?>>
-									<?php echo $this->get_step_icon_render_string( $step['step_icon'] ); ?>
+							<div <?php
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+							echo $status_attr;
+							?>>
+								<div <?php
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+								echo $this->get_render_attribute_string( 'step-indicators-icon' );
+								?>>
+									<?php
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor icon renderer output.
+									echo $this->get_step_icon_render_string( $step['step_icon'] );
+									?>
 								</div>
-								<label <?php echo $this->get_render_attribute_string( 'step-indicators-label' ); ?>>
+								<label <?php
+								// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+								echo $this->get_render_attribute_string( 'step-indicators-label' );
+								?>>
 									<?php echo wp_kses_post( $step['label'] ); ?>
 								</label>
 							</div>
@@ -3348,7 +3414,10 @@ class Form extends Base_Widget {
 					// Render separator after indicator for all but the last step.
 					if ( $key < count( $steps ) - 1 ) {
 						?>
-						<div <?php echo $this->get_render_attribute_string( 'step-indicators-separator' ); ?>></div>
+						<div <?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+						echo $this->get_render_attribute_string( 'step-indicators-separator' );
+						?>></div>
 						<?php
 					}
 				}
@@ -3390,7 +3459,10 @@ class Form extends Base_Widget {
 		// Rendering.
 		if ( 0 !== $step_key ) {
 			?>
-			<button <?php echo $this->get_render_attribute_string( 'step_buttons-previous-' . esc_attr( $step_key ) ); ?>>
+			<button <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( 'step_buttons-previous-' . esc_attr( $step_key ) );
+			?>>
 				<?php echo wp_kses_post( $previous_label ); ?>
 			</button>
 			<?php
@@ -3398,7 +3470,10 @@ class Form extends Base_Widget {
 
 		if ( $step_key < count( $steps ) - 1 ) {
 			?>
-			<button <?php echo $this->get_render_attribute_string( 'step_buttons-next-' . esc_attr( $step_key ) ); ?>>
+			<button <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( 'step_buttons-next-' . esc_attr( $step_key ) );
+			?>>
 				<?php echo wp_kses_post( $next_label ); ?>
 			</button>
 			<?php

@@ -302,7 +302,7 @@ final class JupiterX_Popups {
 			$zip_archive->close();
 
 			foreach ( $files as $file ) {
-				unlink( $file['path'] );
+				wp_delete_file( $file['path'] );
 			}
 
 			$this->send_file_headers( $zip_archive_filename, filesize( $zip_complete_path ) );
@@ -311,7 +311,7 @@ final class JupiterX_Popups {
 
 			@readfile( $zip_complete_path ); // phpcs:ignore
 
-			unlink( $zip_complete_path );
+			wp_delete_file( $zip_complete_path );
 
 			die;
 		}
@@ -474,21 +474,15 @@ final class JupiterX_Popups {
 	 * @since 3.7.0
 	 */
 	public function export_popup_action() {
+		if ( empty( $_GET['action'] ) || 'jupiterx_export_popup' !== sanitize_text_field( wp_unslash( $_GET['action'] ) ) ) { // phpcs:ignore
+			return;
+		}
+
 		if ( empty( $_GET['nonce'] ) || ! wp_verify_nonce( sanitize_text_field( wp_unslash( $_GET['nonce'] ) ), 'jupiterx_export_popup' ) ) { // phpcs:ignore
 			return;
 		}
 
 		if ( ! current_user_can( 'edit_posts' ) ) {
-			return;
-		}
-
-		if ( empty( $_GET['action'] ) ) { // phpcs:ignore
-			return;
-		}
-
-		$action = sanitize_text_field( wp_unslash( $_GET['action'] ) );
-
-		if ( 'jupiterx_export_popup' !== $action ) {
 			return;
 		}
 
@@ -501,7 +495,7 @@ final class JupiterX_Popups {
 		$data = $this->popup_export_data( $popup_id );
 
 		if ( is_wp_error( $data ) ) {
-			return $data;
+			wp_die( esc_html( $data->get_error_message() ) );
 		}
 
 		$this->send_file_headers( $data['name'], strlen( $data['content'] ) );
@@ -560,7 +554,7 @@ final class JupiterX_Popups {
 		];
 
 		$export_data = array_merge( $export_data, $popup_data );
-		$exprot_date = date( 'Y-m-d' );
+		$exprot_date = gmdate( 'Y-m-d' );
 
 		return [
 			'name'    => "jupiterx-popup-{$popup_id}-{$exprot_date}.json",

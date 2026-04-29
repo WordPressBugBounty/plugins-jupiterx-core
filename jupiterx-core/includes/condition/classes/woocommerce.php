@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 
 /**
  * Check woocommerce conditions if match current WordPress page.

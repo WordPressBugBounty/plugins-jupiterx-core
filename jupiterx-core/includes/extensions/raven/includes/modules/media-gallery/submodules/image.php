@@ -31,6 +31,7 @@ class Image extends Base {
 		<a
 			class="gallery-item"
 			<?php if ( 'custom' === $data['link_to'] ) {
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
 				echo $widget->get_render_attribute_string( 'image_link' . esc_attr( $data['_id'] ) );
 			} else {
 				echo 'href="' . esc_url( $link_to ) . '"';

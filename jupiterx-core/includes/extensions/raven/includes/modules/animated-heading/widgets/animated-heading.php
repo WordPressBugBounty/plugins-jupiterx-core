@@ -578,11 +578,15 @@ class Animated_Heading extends Base_Widget {
 		if ( ! empty( $settings['link']['url'] ) ) {
 			$this->add_link_attributes( 'url', $settings['link'] );
 
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
 			echo '<a ' . $this->get_render_attribute_string( 'url' ) . '>';
 		}
 
 		?>
-		<<?php Utils::print_validated_html_tag( $tag ); ?> <?php echo $this->get_render_attribute_string( 'heading' ); ?>>
+		<<?php Utils::print_validated_html_tag( $tag ); ?> <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'heading' );
+		?>>
 		<?php if ( ! empty( $settings['before_text'] ) ) : ?>
 			<span class="raven-heading-plain-text raven-heading-text-wrapper"><?php $this->print_unescaped_setting( 'before_text' ); ?></span>
 		<?php endif; ?>

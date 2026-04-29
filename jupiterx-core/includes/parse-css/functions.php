@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die();
+
 /**
  * The Jupiter Core Parse CSS component is a wrapper for CSS parser.
  *

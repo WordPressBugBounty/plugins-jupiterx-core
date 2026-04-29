@@ -5589,9 +5589,15 @@ class Advanced_Posts extends Base_Widget {
 			]
 		);
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'posts-wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'posts-wrapper' );
+		?>>
 			<?php echo ( new Frontend( $this ) )->render_sortable(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-			<div <?php echo $this->get_render_attribute_string( 'posts-content' ); ?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( 'posts-content' );
+			?>>
 				<?php ( new Frontend( $this ) )->render_content(); ?>
 			</div>
 			<?php echo ( new Frontend( $this ) )->render_pagination(); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

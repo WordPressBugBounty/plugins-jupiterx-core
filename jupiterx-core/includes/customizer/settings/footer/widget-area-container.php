@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Layout > Styles > Footer Container popup to the WordPress Customizer.
  *

@@ -562,7 +562,10 @@ class Social_Share extends Base_Widget {
 
 		?>
 
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?> >
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'wrapper' );
+		?> >
 		<?php foreach ( $settings['networks'] as $network ) : ?>
 			<?php
 				$label   = $network['label'];
@@ -585,8 +588,14 @@ class Social_Share extends Base_Widget {
 					]
 				);
 			?>
-			<div <?php echo $this->get_render_attribute_string( 'wrapper_' . $network ); ?> >
-				<div <?php echo $this->get_render_attribute_string( 'button_' . esc_attr( $network ) ); ?> >
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( 'wrapper_' . $network );
+			?> >
+				<div <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+				echo $this->get_render_attribute_string( 'button_' . esc_attr( $network ) );
+				?> >
 					<?php if ( 'text' !== $settings['view'] ) : ?>
 						<span class="jupiterx-social-share-button-icon">
 							<?php self::render_share_icon( $network ); ?>

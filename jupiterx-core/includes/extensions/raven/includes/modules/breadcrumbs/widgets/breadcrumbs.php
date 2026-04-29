@@ -264,6 +264,7 @@ class Breadcrumbs extends Base_Widget {
 			]
 		);
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
 		echo '<div ' . $this->get_render_attribute_string( 'wrapper' ) . '>';
 		if ( 'navxt' === $breadcrumbs_type ) {
 			$this->navtx_breadcrumbs( $html_tag );
@@ -407,12 +408,17 @@ class Breadcrumbs extends Base_Widget {
 
 			// Breadcrumb items.
 			if ( count( $breadcrumbs ) - 1 !== $count ) { ?>
+				<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Validated HTML tag name from Elementor. ?>
 				<<?php echo ElementorUtils::validate_html_tag( $inner_tag ); ?> class="breadcrumb-item"><a href="<?php echo esc_url( $breadcrumb_url ); ?>"><span><?php echo esc_html( $breadcrumb ); ?></span></a>
+				<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Validated HTML tag name from Elementor. ?>
 				</<?php echo ElementorUtils::validate_html_tag( $inner_tag ); ?>>
 				<?php
 			} else { // Active.
 				?>
-				<<?php echo ElementorUtils::validate_html_tag( $inner_tag ); ?> class="breadcrumb-item active" aria-current="page"><span><?php echo esc_html( $breadcrumb ); ?></span></<?php echo ElementorUtils::validate_html_tag( $inner_tag ); ?>>
+				<?php // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Validated HTML tag name from Elementor. ?>
+				<<?php echo ElementorUtils::validate_html_tag( $inner_tag ); ?> class="breadcrumb-item active" aria-current="page"><span><?php echo esc_html( $breadcrumb ); ?></span></<?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Validated HTML tag name from Elementor.
+				echo ElementorUtils::validate_html_tag( $inner_tag ); ?>>
 
 				<?php
 			}
@@ -420,6 +426,7 @@ class Breadcrumbs extends Base_Widget {
 			$count++;
 		}
 		// Close breadcrumb.
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Validated HTML tag name from Elementor.
 		echo '</' . ElementorUtils::validate_html_tag( $html_tag ) . '>';
 	}
 

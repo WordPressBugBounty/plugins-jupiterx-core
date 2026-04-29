@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 
 /**
  * Check singular conditions if match current WordPress page.
@@ -166,6 +167,10 @@ class Jupiterx_Singular_Condition {
 		$term      = $condition[2][0];
 		$taxonomy  = $tax[1];
 		$post_type = $tax[0];
+
+		if ( strpos( $taxonomy, 'CUSTOMPOSTTYPETERM_' ) !== false ) {
+			$taxonomy = str_replace( 'CUSTOMPOSTTYPETERM_', '', $taxonomy );
+		}
 
 		if ( is_singular( $post_type ) && 'all' === $term && has_term( '', $taxonomy, $query->ID ) ) {
 			return true;

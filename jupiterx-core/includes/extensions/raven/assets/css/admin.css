@@ -11,20 +11,17 @@
   margin-bottom: 15px;
   gap: 10px;
 }
-
 .jupiterx-gallery-images-preview .jupiterx-product-variation-gallery-single-image-wrapper {
   position: relative;
   width: 64px;
   cursor: move;
 }
-
 .jupiterx-gallery-images-preview .jupiterx-product-variation-gallery-single-image-wrapper .jx-remove-gallery-item {
   display: inline-block;
   position: absolute;
   width: 100%;
   text-indent: -9999px;
 }
-
 .jupiterx-gallery-images-preview .jupiterx-product-variation-gallery-single-image-wrapper .jx-remove-gallery-item:before {
   position: absolute;
   top: -10px;
@@ -45,7 +42,6 @@
   content: "\f153";
   cursor: pointer;
 }
-
 .jupiterx-gallery-images-preview .jupiterx-product-variation-gallery-single-image-wrapper img {
   display: block;
   width: 100%;
@@ -54,7 +50,6 @@
   margin: auto;
   border-radius: 4px;
 }
-
 .jupiterx-gallery-images-preview .ui-sortable-placeholder {
   display: block;
   min-width: 50px;

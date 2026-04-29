@@ -63,7 +63,10 @@ class File extends Field_Base {
 					oninput="onInvalidRavenFormField(event)"
 					oninvalid="onInvalidRavenFormField(event)"
 					type="file"
-					<?php echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) ); ?>
+					<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+					echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) );
+					?>
 				>
 			</span>
 		</div>

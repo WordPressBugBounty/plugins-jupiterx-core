@@ -16,6 +16,8 @@
 
 namespace Kirki\Module;
 
+defined( 'ABSPATH' ) || die();
+
 use Kirki\Compatibility\Kirki;
 
 /**

@@ -931,7 +931,10 @@ class Image_Accordion extends Base_Widget {
 
 		?>
 			<div class="jupiterx-image-advanced-accordion-wrap">
-				<div <?php echo $this->get_render_attribute_string( 'list_wrapper' ); ?>>
+				<div <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->get_render_attribute_string( 'list_wrapper' );
+				?>>
 					<?php foreach ( $list as $item ) : ?>
 						<?php
 							$active_class = '';
@@ -989,6 +992,7 @@ class Image_Accordion extends Base_Widget {
 	 */
 	private function manage_link( $item ) {
 		$this->add_link_attributes( 'link_' . $item['_id'], $item['list_link'] );
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
 		$this->link_open  = '<a class="elementor-button" ' . $this->get_render_attribute_string( 'link_' . $item['_id'] ) . ' >';
 		$this->link_close = '</a>';
 	}

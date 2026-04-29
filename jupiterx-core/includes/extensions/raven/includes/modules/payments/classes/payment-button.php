@@ -514,7 +514,7 @@ abstract class Payment_Button extends Widget_Button {
 	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 * @return void
 	 */
-	protected function render_button( Widget_Base $instance = null, $tag = 'a' ) {
+	protected function render_button( ?Widget_Base $instance = null, $tag = 'a' ) {
 		$this->add_render_attribute( 'button', 'class', 'elementor-payment-button' );
 
 		?>

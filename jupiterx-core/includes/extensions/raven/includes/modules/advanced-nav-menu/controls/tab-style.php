@@ -3,6 +3,8 @@ namespace JupiterX_Core\Raven\Modules\Advanced_Nav_Menu\Controls;
 
 defined( 'ABSPATH' ) || die();
 
+use Elementor\Controls_Manager;
+
 /**
  * @SuppressWarnings(PHPMD.ExcessiveClassLength)
  * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
@@ -18,6 +20,122 @@ class Tab_Style {
 		$this->add_section_close_button( $widget );
 		$this->add_section_logo( $widget );
 		$this->add_section_content_effects( $widget );
+	}
+
+	private function add_blur_background_type_control( $widget, $prefix, $condition = [] ) {
+		$widget->add_control(
+			"{$prefix}_type",
+			[
+				'label' => esc_html__( 'Background Type', 'jupiterx-core' ),
+				'type' => Controls_Manager::CHOOSE,
+				'toggle' => false,
+				'default' => 'classic',
+				'options' => [
+					'classic' => [
+						'title' => esc_html__( 'Classic', 'jupiterx-core' ),
+						'icon' => 'eicon-paint-brush',
+					],
+					'blur' => [
+						'title' => esc_html__( 'Blur', 'jupiterx-core' ),
+						'icon' => 'fa fa-adjust',
+					],
+				],
+				'condition' => $condition,
+			]
+		);
+	}
+
+	private function add_blur_background_controls( $widget, $prefix, $selector, $condition = [] ) {
+		$blur_condition = array_merge(
+			$condition,
+			[
+				"{$prefix}_type" => 'blur',
+			]
+		);
+
+		$widget->add_control(
+			"{$prefix}_blur_enabled",
+			[
+				'type' => Controls_Manager::HIDDEN,
+				'default' => 'yes',
+				'condition' => $blur_condition,
+				'selectors' => [
+					$selector => 'background: transparent !important; background-color: transparent !important; background-image: none !important; --jupiterx-blur-amount: 14; --jupiterx-blur-tint-color: #FFFFFF; --jupiterx-blur-tint-opacity: 18; --jupiterx-blur-fallback-color: rgba(255,255,255,0.90); --jupiterx-blur-before-opacity: 1; --jupiterx-blur-after-opacity: calc(var(--jupiterx-blur-tint-opacity, 18) / 100);',
+				],
+			]
+		);
+
+		$widget->add_control(
+			"{$prefix}_blur_amount",
+			[
+				'label' => esc_html__( 'Blur Amount', 'jupiterx-core' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ 'px' ],
+				'default' => [
+					'unit' => 'px',
+					'size' => 14,
+				],
+				'range' => [
+					'px' => [
+						'min' => 0,
+						'max' => 30,
+					],
+				],
+				'condition' => $blur_condition,
+				'selectors' => [
+					$selector => '--jupiterx-blur-amount: {{SIZE}};',
+				],
+			]
+		);
+
+		$widget->add_control(
+			"{$prefix}_blur_tint_color",
+			[
+				'label' => esc_html__( 'Tint Color', 'jupiterx-core' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => '#FFFFFF',
+				'condition' => $blur_condition,
+				'selectors' => [
+					$selector => '--jupiterx-blur-tint-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$widget->add_control(
+			"{$prefix}_blur_tint_opacity",
+			[
+				'label' => esc_html__( 'Tint Opacity', 'jupiterx-core' ),
+				'type' => Controls_Manager::SLIDER,
+				'size_units' => [ '%' ],
+				'default' => [
+					'unit' => '%',
+					'size' => 18,
+				],
+				'range' => [
+					'%' => [
+						'min' => 0,
+						'max' => 60,
+					],
+				],
+				'condition' => $blur_condition,
+				'selectors' => [
+					$selector => '--jupiterx-blur-tint-opacity: {{SIZE}};',
+				],
+			]
+		);
+
+		$widget->add_control(
+			"{$prefix}_blur_fallback_color",
+			[
+				'label' => esc_html__( 'Fallback Color', 'jupiterx-core' ),
+				'type' => Controls_Manager::COLOR,
+				'default' => 'rgba(255,255,255,0.90)',
+				'condition' => $blur_condition,
+				'selectors' => [
+					$selector => '--jupiterx-blur-fallback-color: {{VALUE}};',
+				],
+			]
+		);
 	}
 
 	private function add_section_menu_items( $widget ) {
@@ -186,6 +304,13 @@ class Tab_Style {
 			]
 		);
 
+		$this->add_blur_background_type_control( $widget, 'menu_item_background_color' );
+		$this->add_blur_background_controls(
+			$widget,
+			'menu_item_background_color',
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a:not(.active-link)'
+		);
+
 		$widget->add_control( 'menu_item_background_color',
 			[
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
@@ -193,6 +318,9 @@ class Tab_Style {
 				'selectors' => [
 					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a:not(.active-link)' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}}' => '--menu-items-bg-normal: {{VALUE}}',
+				],
+				'condition' => [
+					'menu_item_background_color_type!' => 'blur',
 				],
 			]
 		);
@@ -263,6 +391,13 @@ class Tab_Style {
 			]
 		);
 
+		$this->add_blur_background_type_control( $widget, 'hover_menu_item_background_color' );
+		$this->add_blur_background_controls(
+			$widget,
+			'hover_menu_item_background_color',
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:hover > a:not(.active-link)'
+		);
+
 		$widget->add_control( 'hover_menu_item_background_color',
 			[
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
@@ -272,6 +407,7 @@ class Tab_Style {
 				],
 				'condition' => [
 					'pointer_type!' => 'background',
+					'hover_menu_item_background_color_type!' => 'blur',
 				],
 			]
 		);
@@ -360,6 +496,13 @@ class Tab_Style {
 			]
 		);
 
+		$this->add_blur_background_type_control( $widget, 'active_menu_item_background_color' );
+		$this->add_blur_background_controls(
+			$widget,
+			'active_menu_item_background_color',
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.active-link'
+		);
+
 		$widget->add_control( 'active_menu_item_background_color',
 			[
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
@@ -369,6 +512,7 @@ class Tab_Style {
 				],
 				'condition' => [
 					'pointer_type!' => 'background',
+					'active_menu_item_background_color_type!' => 'blur',
 				],
 			]
 		);
@@ -554,7 +698,7 @@ class Tab_Style {
 						[
 							'name' => 'layout',
 							'operator' => 'in',
-							'value' => [ 'horizontal', 'vertical', 'offcanvas' ],
+							'value' => [ 'horizontal', 'vertical', 'offcanvas', 'dropdown' ],
 						],
 					],
 				],
@@ -565,7 +709,7 @@ class Tab_Style {
 			[
 				'name'     => 'submenu_item_typography',
 				'scheme'   => '3',
-				'selector' => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.raven-submenu-item span.link-label',
+				'selector' => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.raven-submenu-item span.link-label',
 				'condition'  => [ 'layout!' => 'offcanvas' ],
 			]
 		);
@@ -607,9 +751,12 @@ class Tab_Style {
 				'selectors'  => [
 					'{{WRAPPER}} nav.raven-adnav-menu-horizontal ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-vertical ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-offcanvas ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-dropdown ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
 				],
-				'condition'  => [ 'layout!' => 'offcanvas' ],
+				'condition'  => [
+					'layout!' => [ 'offcanvas' ],
+				],
 			]
 		);
 
@@ -658,7 +805,9 @@ class Tab_Style {
 				'render_type' => 'ui',
 				'selectors'   => [
 					'{{WRAPPER}}' => '--submenu-spacing: {{SIZE}}',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'margin-bottom: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'margin-bottom: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: calc({{SIZE}}{{UNIT}} / 2);',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu > li:not(:last-of-type)' => 'margin-bottom: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: calc({{SIZE}}{{UNIT}} / 2);',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'margin-bottom: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: calc({{SIZE}}{{UNIT}} / 2);',
 				],
 			]
 		);
@@ -677,7 +826,8 @@ class Tab_Style {
 					'isLinked' => true,
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.raven-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.raven-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li > a.raven-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'condition'  => [ 'layout!' => 'offcanvas' ],
 			]
@@ -740,6 +890,8 @@ class Tab_Style {
 					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
 					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:first-of-type)' => 'border-top-style: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
 				],
 			]
 		);
@@ -754,6 +906,8 @@ class Tab_Style {
 					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
 					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:first-of-type)' => 'border-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
 				],
 				'condition' => [
 					'submenu_item_divider_type!' => 'none',
@@ -778,6 +932,8 @@ class Tab_Style {
 					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:first-of-type)' => 'border-top-width: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
 				],
 				'condition'  => [
 					'submenu_item_divider_type!' => 'none',
@@ -802,7 +958,7 @@ class Tab_Style {
 						'label' => esc_html__( 'Border Width', 'jupiterx-core' ),
 					],
 				],
-				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li.menu-item a.raven-submenu-item',
+				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li.menu-item a.raven-submenu-item, {{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li.menu-item a.raven-submenu-item',
 			]
 		);
 
@@ -813,7 +969,8 @@ class Tab_Style {
 				'size_units' => [ 'px', '%' ],
 				'default'    => [ 'unit' => 'px' ],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li.menu-item a.raven-submenu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li.menu-item a.raven-submenu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li.menu-item a.raven-submenu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -822,7 +979,7 @@ class Tab_Style {
 			[
 				'name'      => 'submenu_box_shadow',
 				'separator' => 'before',
-				'selector'  => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li.menu-item a.raven-submenu-item',
+				'selector'  => '{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li.menu-item a.raven-submenu-item, {{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li.menu-item a.raven-submenu-item',
 			]
 		);
 
@@ -845,7 +1002,7 @@ class Tab_Style {
 					'value' => '3',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
 				],
 				'condition'  => [ 'layout!' => 'offcanvas' ],
@@ -868,17 +1025,44 @@ class Tab_Style {
 			]
 		);
 
+		$this->add_blur_background_type_control(
+			$widget,
+			'submenu_item_background_color',
+			[ 'layout!' => 'offcanvas' ]
+		);
+		$this->add_blur_background_controls(
+			$widget,
+			'submenu_item_background_color',
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.raven-submenu-item',
+			[ 'layout!' => 'offcanvas' ]
+		);
+
 		$widget->add_control( 'submenu_item_background_color',
 			[
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'default'   => '#111111',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
 				],
-				'condition'  => [ 'layout!' => 'offcanvas' ],
+				'condition'  => [
+					'layout!' => 'offcanvas',
+					'submenu_item_background_color_type!' => 'blur',
+				],
 			]
+		);
+
+		$this->add_blur_background_type_control(
+			$widget,
+			'submenu_item_offcanvas_background_color',
+			[ 'layout' => 'offcanvas' ]
+		);
+		$this->add_blur_background_controls(
+			$widget,
+			'submenu_item_offcanvas_background_color',
+			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.raven-submenu-item',
+			[ 'layout' => 'offcanvas' ]
 		);
 
 		$widget->add_control( 'submenu_item_offcanvas_background_color',
@@ -888,7 +1072,10 @@ class Tab_Style {
 				'selectors' => [
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
 				],
-				'condition'  => [ 'layout' => 'offcanvas' ],
+				'condition'  => [
+					'layout' => 'offcanvas',
+					'submenu_item_offcanvas_background_color_type!' => 'blur',
+				],
 			]
 		);
 
@@ -911,7 +1098,7 @@ class Tab_Style {
 					'value' => '4',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
 				],
 				'condition'  => [ 'layout!' => 'offcanvas' ],
@@ -934,13 +1121,23 @@ class Tab_Style {
 			]
 		);
 
+		$this->add_blur_background_type_control( $widget, 'hover_submenu_item_background_color' );
+		$this->add_blur_background_controls(
+			$widget,
+			'hover_submenu_item_background_color',
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a:hover:not(.active-link)'
+		);
+
 		$widget->add_control( 'hover_submenu_item_background_color',
 			[
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a:hover:not(.active-link)' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a:hover:not(.active-link)' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a:hover:not(.active-link)' => 'background-color: {{VALUE}};',
+				],
+				'condition' => [
+					'hover_submenu_item_background_color_type!' => 'blur',
 				],
 			]
 		);
@@ -964,7 +1161,7 @@ class Tab_Style {
 					'value' => '4',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
 				],
 				'condition'  => [ 'layout!' => 'offcanvas' ],
@@ -987,13 +1184,23 @@ class Tab_Style {
 			]
 		);
 
+		$this->add_blur_background_type_control( $widget, 'active_submenu_item_background_color' );
+		$this->add_blur_background_controls(
+			$widget,
+			'active_submenu_item_background_color',
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.active-link'
+		);
+
 		$widget->add_control( 'active_submenu_item_background_color',
 			[
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.active-link' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a.active-link' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.active-link' => 'background-color: {{VALUE}};',
+				],
+				'condition' => [
+					'active_submenu_item_background_color_type!' => 'blur',
 				],
 			]
 		);
@@ -1359,7 +1566,7 @@ class Tab_Style {
 
 		$widget->add_responsive_control( 'menu_container_padding',
 			[
-				'label'      => esc_html__( 'Padding', 'jupiterx-core' ),
+				'label'      => esc_html__( 'Container Padding', 'jupiterx-core' ),
 				'type'       => 'dimensions',
 				'size_units' => [ 'px', '%' ],
 				'selectors'  => [
@@ -1509,7 +1716,7 @@ class Tab_Style {
 
 		$widget->add_responsive_control( 'mobile_menu_item_padding',
 			[
-				'label'      => esc_html__( 'Padding', 'jupiterx-core' ),
+				'label'      => esc_html__( 'Item Padding', 'jupiterx-core' ),
 				'type'       => 'dimensions',
 				'size_units' => [ 'px', '%' ],
 				'default'    => [
@@ -1649,12 +1856,10 @@ class Tab_Style {
 					'groove' => esc_html__( 'Groove', 'jupiterx-core' ),
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li.menu-item:not(:last-child)' => 'border-bottom-style: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu' => 'border-top-style: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li.menu-item:not(:last-child)' => 'border-bottom-style: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu' => 'border-top-style: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li.menu-item:not(:last-child)' => 'border-bottom-style: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu' => 'border-top-style: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu > li.menu-item:not(:last-child)' => 'border-bottom-style: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul > li:not(:first-child)' => 'border-top-style: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul > li:not(:first-child)' => 'border-top-style: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical > ul > li:not(:first-child)' => 'border-top-style: {{VALUE}};',
 				],
 			]
 		);
@@ -1664,12 +1869,10 @@ class Tab_Style {
 				'label'     => esc_html__( 'Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li:not(:last-child)' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li:not(:last-child)' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li:not(:last-child)' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu > li:not(:last-child)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul > li:not(:first-child)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul > li:not(:first-child)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical > ul > li:not(:first-child)' => 'border-color: {{VALUE}};',
 				],
 				'condition' => [ 'mobile_menu_item_divider_type!' => '' ],
 			]
@@ -1688,12 +1891,10 @@ class Tab_Style {
 					],
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li:not(:last-child)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu' => 'border-top-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li:not(:last-child)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu' => 'border-top-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li:not(:last-child)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu' => 'border-top-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu > li:not(:last-child)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul > li:not(:first-child)' => 'border-top-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul > li:not(:first-child)' => 'border-top-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical > ul > li:not(:first-child)' => 'border-top-width: {{SIZE}}{{UNIT}};',
 				],
 				'condition'  => [ 'mobile_menu_item_divider_type!' => '' ],
 			]
@@ -1774,8 +1975,8 @@ class Tab_Style {
 				],
 				'selectors'   => [
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.raven-adnav-menu li.menu-item > a' => 'justify-content: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.raven-adnav-menu li.menu-item > a' => 'justify-content: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.raven-adnav-menu li.menu-item > a' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.raven-adnav-menu > li.menu-item > a' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.raven-adnav-menu > li.menu-item > a' => 'justify-content: {{VALUE}};',
 				],
 			]
 		);
@@ -1799,11 +2000,23 @@ class Tab_Style {
 				],
 				'default'   => '#111111',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'color: {{VALUE}};',
 				],
 			]
+		);
+
+		$this->add_blur_background_type_control(
+			$widget,
+			'mobile_menu_item_background_color',
+			[ 'layout' => 'offcanvas' ]
+		);
+		$this->add_blur_background_controls(
+			$widget,
+			'mobile_menu_item_background_color',
+			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link)',
+			[ 'layout' => 'offcanvas' ]
 		);
 
 		$widget->add_control( 'mobile_menu_item_background_color',
@@ -1811,10 +2024,25 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}}' => '--adnav-scrollbar-bg-color: {{VALUE}};',
+				],
+				'conditions' => [
+					'relation' => 'or',
+					'terms' => [
+						[
+							'name' => 'layout',
+							'operator' => '!==',
+							'value' => 'offcanvas',
+						],
+						[
+							'name' => 'mobile_menu_item_background_color_type',
+							'operator' => '!==',
+							'value' => 'blur',
+						],
+					],
 				],
 			]
 		);
@@ -1848,6 +2076,18 @@ class Tab_Style {
 			]
 		);
 
+		$this->add_blur_background_type_control(
+			$widget,
+			'hover_mobile_menu_item_background_color',
+			[ 'layout' => 'offcanvas' ]
+		);
+		$this->add_blur_background_controls(
+			$widget,
+			'hover_mobile_menu_item_background_color',
+			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover',
+			[ 'layout' => 'offcanvas' ]
+		);
+
 		$widget->add_control( 'hover_mobile_menu_item_background_color',
 			[
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
@@ -1859,6 +2099,21 @@ class Tab_Style {
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'background-color: {{VALUE}};',
+				],
+				'conditions' => [
+					'relation' => 'or',
+					'terms' => [
+						[
+							'name' => 'layout',
+							'operator' => '!==',
+							'value' => 'offcanvas',
+						],
+						[
+							'name' => 'hover_mobile_menu_item_background_color_type',
+							'operator' => '!==',
+							'value' => 'blur',
+						],
+					],
 				],
 			]
 		);
@@ -1882,11 +2137,23 @@ class Tab_Style {
 				],
 				'default'   => '#666666',
 				'selectors' => [
-					'{{WRAPPER}} .raven-adnav-menu-mobile .raven-adnav-menu li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.active-link.raven-menu-item' => 'color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.active-link' => 'color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.active-link' => 'color: {{VALUE}};',
 				],
 			]
+		);
+
+		$this->add_blur_background_type_control(
+			$widget,
+			'active_mobile_menu_item_background_color',
+			[ 'layout' => 'offcanvas' ]
+		);
+		$this->add_blur_background_controls(
+			$widget,
+			'active_mobile_menu_item_background_color',
+			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.active-link',
+			[ 'layout' => 'offcanvas' ]
 		);
 
 		$widget->add_control( 'active_mobile_menu_item_background_color',
@@ -1894,9 +2161,24 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} .raven-adnav-menu-mobile .raven-adnav-menu li > a.active-link' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.active-link.raven-menu-item' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.active-link' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.active-link' => 'background-color: {{VALUE}};',
+				],
+				'conditions' => [
+					'relation' => 'or',
+					'terms' => [
+						[
+							'name' => 'layout',
+							'operator' => '!==',
+							'value' => 'offcanvas',
+						],
+						[
+							'name' => 'active_mobile_menu_item_background_color_type',
+							'operator' => '!==',
+							'value' => 'blur',
+						],
+					],
 				],
 			]
 		);
@@ -2154,12 +2436,39 @@ class Tab_Style {
 			]
 		);
 
+		$this->add_blur_background_type_control(
+			$widget,
+			'toggle_button_background_color',
+			[ 'layout' => 'offcanvas' ]
+		);
+		$this->add_blur_background_controls(
+			$widget,
+			'toggle_button_background_color',
+			'{{WRAPPER}} .raven-adnav-menu-toggle-button:not(:hover)',
+			[ 'layout' => 'offcanvas' ]
+		);
+
 		$widget->add_control( 'toggle_button_background_color',
 			[
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
 					'{{WRAPPER}} .raven-adnav-menu-toggle-button:not(:hover)' => 'background-color: {{VALUE}};',
+				],
+				'conditions' => [
+					'relation' => 'or',
+					'terms' => [
+						[
+							'name' => 'layout',
+							'operator' => '!==',
+							'value' => 'offcanvas',
+						],
+						[
+							'name' => 'toggle_button_background_color_type',
+							'operator' => '!==',
+							'value' => 'blur',
+						],
+					],
 				],
 			]
 		);
@@ -2225,12 +2534,39 @@ class Tab_Style {
 			]
 		);
 
+		$this->add_blur_background_type_control(
+			$widget,
+			'hover_toggle_button_background_color',
+			[ 'layout' => 'offcanvas' ]
+		);
+		$this->add_blur_background_controls(
+			$widget,
+			'hover_toggle_button_background_color',
+			'{{WRAPPER}} .raven-adnav-menu-toggle-button:hover',
+			[ 'layout' => 'offcanvas' ]
+		);
+
 		$widget->add_control( 'hover_toggle_button_background_color',
 			[
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
 					'{{WRAPPER}} .raven-adnav-menu-toggle-button:hover' => 'background-color: {{VALUE}}',
+				],
+				'conditions' => [
+					'relation' => 'or',
+					'terms' => [
+						[
+							'name' => 'layout',
+							'operator' => '!==',
+							'value' => 'offcanvas',
+						],
+						[
+							'name' => 'hover_toggle_button_background_color_type',
+							'operator' => '!==',
+							'value' => 'blur',
+						],
+					],
 				],
 			]
 		);
@@ -2315,6 +2651,13 @@ class Tab_Style {
 			]
 		);
 
+		$this->add_blur_background_type_control( $widget, 'offcanvas_background_color' );
+		$this->add_blur_background_controls(
+			$widget,
+			'offcanvas_background_color',
+			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas'
+		);
+
 		$widget->add_control( 'offcanvas_background_color',
 			[
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
@@ -2322,6 +2665,9 @@ class Tab_Style {
 				'default'   => '#FFFFFF',
 				'selectors' => [
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas' => 'background-color: {{VALUE}};',
+				],
+				'condition' => [
+					'offcanvas_background_color_type!' => 'blur',
 				],
 			]
 		);

@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Site Backgrounds > Main popup to the WordPress Customizer.
  *

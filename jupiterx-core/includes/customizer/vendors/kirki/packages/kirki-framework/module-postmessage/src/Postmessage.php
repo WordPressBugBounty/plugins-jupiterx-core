@@ -10,6 +10,7 @@
  */
 
 namespace Kirki\Module;
+defined( 'ABSPATH' ) || die();
 
 use Kirki\URL;
 

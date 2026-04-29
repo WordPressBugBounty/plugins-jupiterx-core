@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Elementor > Comment > Styles > Name tab to the WordPress Customizer.
  *

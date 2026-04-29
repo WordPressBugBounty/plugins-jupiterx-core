@@ -3,6 +3,8 @@ namespace JupiterX_Core\enshrined\svgSanitize\Exceptions;
 
 use Exception;
 
+defined( 'ABSPATH' ) || die();
+
 class NestingException extends \Exception
 {
     /**
@@ -21,7 +23,7 @@ class NestingException extends \Exception
     public function __construct($message = "", $code = 0, ?Exception $previous = null, ?\DOMElement $element = null)
     {
         $this->element = $element;
-        parent::__construct($message, $code, $previous);
+        parent::__construct( esc_html( $message ), $code, $previous );
     }
 
     /**

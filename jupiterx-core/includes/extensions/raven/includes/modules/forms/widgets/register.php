@@ -860,7 +860,10 @@ class Register extends Form {
 		}
 
 		?>
-		<form <?php echo $this->get_render_attribute_string( 'form' ); ?>>
+		<form <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'form' );
+		?>>
 			<input type="hidden" name="post_id" value="<?php echo esc_attr( Utils::get_current_post_id() ); ?>" />
 			<input type="hidden" name="form_id" value="<?php echo esc_attr( $this->get_id() ); ?>" />
 			<?php
@@ -899,7 +902,10 @@ class Register extends Form {
 					}
 				}
 			?>
-			<div <?php echo $this->get_render_attribute_string( 'submit-button' ); ?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( 'submit-button' );
+			?>>
 				<button type="submit" class="raven-submit-button">
 					<?php Elementor::$instance->icons_manager->render_icon( $settings['submit_button_icon_new'], [ 'aria-hidden' => 'true' ] ); ?>
 					<span><?php echo wp_kses_post( $settings['submit_button_text'] ); ?></span>

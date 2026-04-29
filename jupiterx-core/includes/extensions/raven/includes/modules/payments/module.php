@@ -445,10 +445,6 @@ class Module extends Module_Base {
 		add_action( 'wp_ajax_nopriv_submit_stripe_form', [ $this, 'submit_stripe_form' ] );
 		add_action( 'elementor/ajax/register_actions', [ $this, 'register_ajax_actions' ] );
 
-		if ( current_user_can( 'administrator' ) ) {
-			add_action( 'elementor/admin/after_create_settings/' . Settings::PAGE_ID, [ $this, 'register_admin_fields' ], 20 );
-		}
-
 		add_action( 'wp_ajax_' . self::STRIPE_TEST_SECRET_KEY . '_validate', [ $this, 'ajax_validate_secret_key' ] );
 		add_action( 'wp_ajax_' . self::STRIPE_LIVE_SECRET_KEY . '_validate', [ $this, 'ajax_validate_secret_key' ] );
 	}

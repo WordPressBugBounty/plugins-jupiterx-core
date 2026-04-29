@@ -436,7 +436,10 @@ class Product_Data_Tabs extends Base_Widget {
 		remove_all_filters( 'woocommerce_product_description_heading' );
 		remove_all_filters( 'woocommerce_product_additional_information_heading' );
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'wrapper' );
+		?>>
 			<?php
 			echo $this->get_wc_product_tabs_template( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 			?>

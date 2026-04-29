@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Elementor > Comment > Styles > Date tab to the WordPress Customizer.
  *

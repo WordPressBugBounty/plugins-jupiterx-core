@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter Fonts & Typography popup and tabs to the WordPress Customizer.
  *

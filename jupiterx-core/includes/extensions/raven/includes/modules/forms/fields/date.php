@@ -79,7 +79,10 @@ class Date extends Field_Base {
 		<input
 			oninput="onInvalidRavenFormField(event)"
 			oninvalid="onInvalidRavenFormField(event)"
-			<?php echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) ); ?>
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) );
+			?>
 			<?php echo wp_kses_data( $this->get_min_date() ); ?>
 			<?php echo esc_attr( $local_attr ); ?>
 			<?php echo wp_kses_data( $this->get_max_date() ); ?>>

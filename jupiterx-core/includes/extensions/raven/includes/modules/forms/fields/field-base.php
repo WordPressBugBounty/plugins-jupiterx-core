@@ -11,7 +11,6 @@ namespace JupiterX_Core\Raven\Modules\Forms\Fields;
 defined( 'ABSPATH' ) || die();
 
 use JupiterX_Core\Raven\Modules\Forms\Module;
-use Elementor\Settings;
 
 /**
  * Field Base.
@@ -355,7 +354,10 @@ abstract class Field_Base {
 			);
 		}
 		?>
-		<div <?php echo $this->widget->get_render_attribute_string( 'field-group-' . esc_attr( $this->get_id() ) ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->widget->get_render_attribute_string( 'field-group-' . esc_attr( $this->get_id() ) );
+		?>>
 			<?php
 			$this->render_label();
 			$this->render_content();
@@ -386,7 +388,6 @@ abstract class Field_Base {
 			'class' => $this->get_class(),
 			'placeholder' => $this->get_placeholder(),
 			'data-type' => $this->field['type'],
-			'data-custom-id' => $this->get_custom_id(),
 		];
 
 		if ( 'true' === $this->get_required() ) {
@@ -580,10 +581,6 @@ abstract class Field_Base {
 		add_action( 'elementor/frontend/after_enqueue_styles', [ $this, 'enqueue_styles' ] );
 		add_action( 'elementor/frontend/after_enqueue_scripts', [ $this, 'enqueue_scripts' ] );
 		add_action( 'elementor/element/raven-form/section_form_fields/before_section_end', [ $this, 'update_controls' ] );
-
-		if ( is_admin() ) {
-			add_action( 'elementor/admin/after_create_settings/' . Settings::PAGE_ID, [ $this, 'register_admin_fields' ], 20 );
-		}
 	}
 
 }

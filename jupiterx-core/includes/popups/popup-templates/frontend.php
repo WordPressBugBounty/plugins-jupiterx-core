@@ -103,6 +103,16 @@ class Frontend extends Jupiterx_Popup_Template_Base {
 
 		$meta_settings       = get_post_meta( $data['id'], '_elementor_page_settings', true );
 		$popup_settings_main = wp_parse_args( $meta_settings, $this->popup_default_settings );
+		$popup_inner_class   = '';
+
+		if ( ! empty( $popup_settings_main['background_background'] ) && 'blur' === $popup_settings_main['background_background'] ) {
+			$popup_inner_class = 'jupiterx-blur-background';
+
+			if ( ! empty( $popup_settings_main['background_blur_disable_on_mobile'] ) ) {
+				$popup_inner_class .= ' jupiterx-blur-background--mobile-disabled';
+			}
+		}
+
 		$show_again_delay    = $this->get_milliseconds_by_tag( $popup_settings_main['show_again_delay'] );
 		$browser_language    = $this->get_browser_language();
 		$trigger_settings    = get_post_meta( $data['id'], '_jupiterx_popup_triggers', true );
@@ -189,7 +199,7 @@ class Frontend extends Jupiterx_Popup_Template_Base {
 				<div class="jupiterx-popup__overlay"></div>
 				<div class="jupiterx-popup__container <?php echo esc_attr( $animation_classes ); ?>">
 					<div class="jupiterx-popup__close-button">&times;</div>
-					<div class="jupiterx-popup__container-inner">
+					<div class="jupiterx-popup__container-inner <?php echo esc_attr( $popup_inner_class ); ?>">
 						<div class="jupiterx-popup__container-overlay"></div>
 						<div class="jupiterx-popup__container-content">
 							<?php

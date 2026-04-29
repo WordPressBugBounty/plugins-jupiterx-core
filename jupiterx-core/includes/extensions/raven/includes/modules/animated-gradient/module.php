@@ -3,6 +3,7 @@
 namespace JupiterX_Core\Raven\Modules\Animated_Gradient;
 
 use JupiterX_Core\Raven\Base\Module_Base;
+use JupiterX_Core\Raven\Modules\Blur_Background\Module as Blur_Background_Module;
 use Elementor\Controls_Manager;
 use Elementor\Repeater;
 use Elementor\Controls_Stack;
@@ -32,6 +33,15 @@ class Module extends Module_Base {
 	}
 
 	public function register_controls( Controls_Stack $controls_stack ) {
+		$enable_conditions = [];
+		$element_name      = $controls_stack->get_name();
+
+		if ( in_array( $element_name, [ 'section', 'container', 'raven-button' ], true ) ) {
+			$enable_conditions = [
+				'background_background!' => 'blur',
+			];
+		}
+
 		$controls_stack->start_controls_section(
 			'section_raven_animated_gradient',
 			[
@@ -51,6 +61,7 @@ class Module extends Module_Base {
 				'return_value' => 'yes',
 				'prefix_class' => 'raven-animated-gradient-',
 				'render_type'  => 'template',
+				'condition'    => $enable_conditions,
 			]
 		);
 
@@ -140,6 +151,10 @@ class Module extends Module_Base {
 	public function before_render( $element ) {
 		$settings = $element->get_settings();
 
+		if ( Blur_Background_Module::is_blur_enabled( $settings ) ) {
+			return;
+		}
+
 		if ( 'yes' === $settings['raven_animated_gradient_enable'] ) {
 			$direction           = $settings['raven_animated_gradient_direction'];
 			$speed               = $settings['raven_animated_gradient_speed']['size'];
@@ -177,7 +192,7 @@ class Module extends Module_Base {
 
 		$old_template = $template;
 		?>
-		<# if ( 'yes' === settings.raven_animated_gradient_enable ) {
+		<# if ( 'yes' === settings.raven_animated_gradient_enable && 'blur' !== settings.background_background ) {
 
 			color_list = settings.raven_animated_gradient_color_list;
 			direction = settings.raven_animated_gradient_direction;

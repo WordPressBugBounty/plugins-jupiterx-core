@@ -652,7 +652,7 @@ abstract class Base extends Base_Widget {
 		$this->end_controls_section();
 	}
 
-	protected function print_slider( array $settings = null ) {
+	protected function print_slider( ?array $settings = null ) {
 		if ( null === $settings ) {
 			$settings = $this->get_settings_for_display();
 		}
@@ -707,11 +707,17 @@ abstract class Base extends Base_Widget {
 							]
 						);
 						?>
-						<div <?php echo $this->get_render_attribute_string( 'navigation-arrow-prev' ); ?>>
+						<div <?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+						echo $this->get_render_attribute_string( 'navigation-arrow-prev' );
+						?>>
 							<?php $this->render_swiper_button( 'arrow_icon_left_new', 'arrow_icon_left' ); ?>
 							<span class="elementor-screen-only"><?php echo esc_html__( 'Previous', 'jupiterx-core' ); ?></span>
 						</div>
-						<div <?php echo $this->get_render_attribute_string( 'navigation-arrow-next' ); ?>>
+						<div <?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+						echo $this->get_render_attribute_string( 'navigation-arrow-next' );
+						?>>
 							<?php $this->render_swiper_button( 'arrow_icon_right_new', 'arrow_icon_right' ); ?>
 							<span class="elementor-screen-only"><?php echo esc_html__( 'Next', 'jupiterx-core' ); ?></span>
 						</div>

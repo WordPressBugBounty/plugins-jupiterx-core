@@ -9,6 +9,7 @@
  */
 
 namespace Kirki\Data;
+defined( 'ABSPATH' ) || die();
 
 /**
  * Hooks and tweaks to allow Kirki saving Options instead of theme-mods.

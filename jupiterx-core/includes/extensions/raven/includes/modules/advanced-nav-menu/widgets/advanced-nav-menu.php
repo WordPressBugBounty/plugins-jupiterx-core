@@ -83,7 +83,10 @@ class Advanced_Nav_Menu extends Base_Widget {
 
 		?>
 		<!-- Main Menu -->
-		<nav <?php echo $this->get_render_attribute_string( 'menu' ); ?>>
+		<nav <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'menu' );
+		?>>
 			<?php
 			if ( 'offcanvas' === $main_layout ) {
 				$this->render_close_button();
@@ -103,7 +106,10 @@ class Advanced_Nav_Menu extends Base_Widget {
 
 		?>
 		<!-- Mobile Menu -->
-		<nav <?php echo $this->get_render_attribute_string( 'mobile_menu' ); ?>>
+		<nav <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'mobile_menu' );
+		?>>
 			<?php
 			if ( 'full-screen' === $mobile_layout || 'side' === $mobile_layout ) {
 				$this->render_close_button();
@@ -147,7 +153,7 @@ class Advanced_Nav_Menu extends Base_Widget {
 		?>
 		<!-- Menu Toggle Button -->
 		<div class="raven-adnav-menu-toggle">
-			<div class="raven-adnav-menu-toggle-button">
+			<div class="raven-adnav-menu-toggle-button jupiterx-blur-background-surface">
 			<?php
 			if ( $is_hamburger ) {
 						?>
@@ -285,16 +291,25 @@ class Advanced_Nav_Menu extends Base_Widget {
 		?>
 		<div class="<?php echo esc_attr( $wrapper_class ); ?>">
 			<?php if ( ! empty( $link['url'] ) ) : ?>
-				<a <?php echo $this->get_render_attribute_string( "{$type}_logo_link" ); ?>>
+				<a <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->get_render_attribute_string( "{$type}_logo_link" );
+				?>>
 			<?php endif; ?>
 			<?php if ( 'custom-source' !== $logo_source ) : ?>
 				<?php foreach ( $logo_skins as $device_logo ) : ?>
-					<img <?php echo $this->get_render_attribute_string( $device_logo ); ?> />
+					<img <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+					echo $this->get_render_attribute_string( $device_logo );
+					?> />
 				<?php endforeach; ?>
 			<?php endif; ?>
 			<?php if ( 'custom-source' === $logo_source ) : ?>
 				<?php foreach ( $devices as $device ) : ?>
-					<img <?php echo $this->get_render_attribute_string( "{$type}_image{$device}" ); ?> />
+					<img <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+					echo $this->get_render_attribute_string( "{$type}_image{$device}" );
+					?> />
 				<?php endforeach; ?>
 			<?php endif; ?>
 			<?php if ( ! empty( $link['url'] ) ) : ?>
@@ -341,6 +356,7 @@ class Advanced_Nav_Menu extends Base_Widget {
 			'class'       => [
 				'raven-adnav-menu-main',
 				"raven-adnav-menu-{$settings['layout']}",
+				'offcanvas' === $settings['layout'] ? 'jupiterx-blur-background-surface' : '',
 				'yes' === $settings['center_logo'] ? 'raven-adnav-menu-has-logo' : '',
 				'offcanvas' === $settings['layout'] ? "raven-side-menu-{$settings['offcanvas_position']}" : '',
 			],

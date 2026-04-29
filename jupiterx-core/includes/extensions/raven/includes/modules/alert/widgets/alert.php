@@ -456,8 +456,14 @@ class Alert extends Base_Widget {
 		);
 		$this->add_render_attribute( 'alert', 'role', 'alert' );
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
-			<div <?php echo $this->get_render_attribute_string( 'alert' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'wrapper' );
+		?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( 'alert' );
+			?>>
 				<?php
 				$this->render_icon();
 				$this->render_text();
@@ -506,9 +512,15 @@ class Alert extends Base_Widget {
 		$this->add_inline_editing_attributes( 'description', 'advanced' );
 		?>
 		<div class="raven-alert-content">
-			<div <?php echo $this->get_render_attribute_string( 'title' ); ?>><?php echo wp_kses_post( $settings['title'] ); ?></div>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( 'title' );
+			?>><?php echo wp_kses_post( $settings['title'] ); ?></div>
 			<?php if ( ! empty( $settings['description'] ) ) { ?>
-				<div <?php echo $this->get_render_attribute_string( 'description' ); ?>><?php echo wp_kses_post( $settings['description'] ); ?></div>
+				<div <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->get_render_attribute_string( 'description' );
+				?>><?php echo wp_kses_post( $settings['description'] ); ?></div>
 			<?php } ?>
 		</div>
 		<?php

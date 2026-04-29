@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Post Type Single > Styles > Post Content tab to the WordPress Customizer.
  *

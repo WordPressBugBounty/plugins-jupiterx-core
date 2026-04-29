@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Portfolio Single > Settings tab to the WordPress Customizer.
  *

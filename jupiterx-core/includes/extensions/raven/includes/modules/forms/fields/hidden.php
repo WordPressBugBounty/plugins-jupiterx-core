@@ -52,12 +52,14 @@ class Hidden extends Field_Base {
 				'id' => 'field-' . $field_id,
 				'name' => 'fields[' . $field_id . ']',
 				'value' => $field['field_value'],
-				'data-custom-id' => $this->get_custom_id(),
 			]
 		);
 		?>
 		<input
-			<?php echo $this->widget->get_render_attribute_string( $field_id ); ?>>
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->widget->get_render_attribute_string( $field_id );
+			?>>
 		<?php
 	}
 }

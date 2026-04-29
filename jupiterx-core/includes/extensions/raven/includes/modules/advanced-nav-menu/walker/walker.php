@@ -225,6 +225,7 @@ class Walker {
 		$class  = 'raven-link-item';
 		$class .= $is_submenu ? ' raven-submenu-item' : ' raven-menu-item';
 		$class .= $is_link_active ? ' active-link' : '';
+		$class .= ' jupiterx-blur-background-surface';
 
 		// Unhash the URL, and get the hash value from "Hash" control if exists.
 		$url_parts = explode( '#', $item_data['link']['url'], 2 );
@@ -258,7 +259,10 @@ class Walker {
 		ob_start();
 
 		?>
-		<a <?php echo $this->widget->get_render_attribute_string( 'link_attrs' ); ?>>
+		<a <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->widget->get_render_attribute_string( 'link_attrs' );
+		?>>
 			<?php
 			if ( ! empty( $item_data['icon'] ) && ! empty( $item_data['icon']['value'] ) ) {
 				ElementorUtils::print_unescaped_internal_string( $this->widget->render_icon( $item_data['icon'] ) );

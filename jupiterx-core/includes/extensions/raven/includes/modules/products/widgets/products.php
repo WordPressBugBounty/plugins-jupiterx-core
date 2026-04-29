@@ -116,7 +116,6 @@ class Products extends Base_Widget {
 								'ids',
 								'categories_tags',
 								'current_archive_query',
-								'search_result',
 							],
 						],
 					],
@@ -5068,12 +5067,7 @@ class Products extends Base_Widget {
 			return;
 		}
 
-		$query = Module::query( $this, $settings );
-
-		if ( 'search_result' === $settings['query_filter'] && 'no_search_query' === $query ) {
-			return;
-		}
-
+		$query         = Module::query( $this, $settings );
 		$products      = $query->get_content();
 		$query_results = $products['query_results'];
 		$layout        = empty( $settings['layout'] ) ? 'default' : $settings['layout'];
@@ -5083,6 +5077,16 @@ class Products extends Base_Widget {
 			'total_pages' => 'yes' === $settings['show_pagination'] ? (int) $query_results->total_pages : 1,
 			'image_size' => ! empty( $settings['image_size'] ) ? $settings['image_size'] : 'woocommerce_thumbnail',
 			'atc_button' => ! empty( $settings['atc_button'] ) ? $settings['atc_button'] : '',
+			'block_hover' => ! empty( $settings['block_hover'] ) ? $settings['block_hover'] : '',
+			'load_effect' => ! empty( $settings['load_effect'] ) ? $settings['load_effect'] : '',
+			// Additional settings needed by Sellkit Product Filter for proper AJAX rendering
+			'swap_effect' => ! empty( $settings['swap_effect'] ) ? $settings['swap_effect'] : '',
+			'pc_atc_button_location' => ! empty( $settings['pc_atc_button_location'] ) ? $settings['pc_atc_button_location'] : '',
+			'pc_atc_button_icon' => ! empty( $settings['pc_atc_button_icon'] ) ? $settings['pc_atc_button_icon'] : '',
+			'wishlist' => ! empty( $settings['wishlist'] ) ? $settings['wishlist'] : '',
+			'general_layout' => ! empty( $settings['general_layout'] ) ? $settings['general_layout'] : '',
+			'content_layout' => ! empty( $settings['content_layout'] ) ? $settings['content_layout'] : '',
+			'pc_atc_button_location_overlay' => ! empty( $settings['pc_atc_button_location_overlay'] ) ? $settings['pc_atc_button_location_overlay'] : '',
 		];
 
 		$query_array = wp_json_encode( (array) $query );

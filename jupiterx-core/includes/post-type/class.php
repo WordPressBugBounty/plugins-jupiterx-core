@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Class to register Jupiter post types and custom taxonomies.
  *

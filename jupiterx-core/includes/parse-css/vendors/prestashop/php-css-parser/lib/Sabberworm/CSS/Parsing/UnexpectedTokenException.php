@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS\Parsing;
 
+defined( 'ABSPATH' ) || die();
+
 /**
 * Thrown if the CSS parsers encounters a token it did not expect
 */

@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * JupiterX_Core Utilities is a set of tools to ease building applications.
  *
@@ -178,7 +182,7 @@ if ( ! function_exists( 'jupiterx_core_get_plugin_conflicts' ) ) {
 					'slug'        => $plugin_slug,
 					'min_version' => $compatibility[ 'plugin/' . $plugin_slug ],
 					'message'     => sprintf(// translators: 1: Plugin name, 2: Plugin slug.
-						__( 'Update %1$s Plugin to %2$s', 'jupiterx' ),
+						__( 'Update %1$s Plugin to %2$s', 'jupiterx-core' ),
 						$plugin['Name'],
 						$compatibility[ 'plugin/' . $plugin_slug ]
 					),
@@ -194,7 +198,7 @@ if ( ! function_exists( 'jupiterx_core_get_plugin_conflicts' ) ) {
 				'min_version' => $compatibility[ 'theme/' . JUPITERX_SLUG ],
 				'slug'        => JUPITERX_SLUG,
 				'message'     => sprintf(// translators: 1: Theme name, 2: Theme slug.
-					__( 'Update %1$s Theme to %2$s', 'jupiterx' ),
+					__( 'Update %1$s Theme to %2$s', 'jupiterx-core' ),
 					JUPITERX_NAME,
 					$compatibility[ 'theme/' . JUPITERX_SLUG ]
 				),

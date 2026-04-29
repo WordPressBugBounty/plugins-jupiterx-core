@@ -1,6 +1,8 @@
 <?php
 namespace JupiterX_Core\enshrined\svgSanitize;
 
+defined( 'ABSPATH' ) || die();
+
 use JupiterX_Core\enshrined\svgSanitize\data\AllowedAttributes;
 use JupiterX_Core\enshrined\svgSanitize\data\AllowedTags;
 use JupiterX_Core\enshrined\svgSanitize\data\AttributeInterface;

@@ -11,7 +11,6 @@ namespace JupiterX_Core\Raven\Modules\Forms\Fields;
 defined( 'ABSPATH' ) || die();
 
 use Elementor\Plugin as Elementor;
-use Elementor\Settings;
 
 /**
  * The reCAPTCHA v3 Field.
@@ -71,10 +70,10 @@ class Recaptcha_V3 extends Field_Base {
 	private function render_fallback() {
 		return sprintf(
 			'<div class="elementor-alert elementor-alert-danger">%s <a target="_blank" href="%s" style="color: currentColor;">%s <i class="fa fa-external-link-square"></i></a>.</div>',
-			/* translators: %s: Settings page URL */
+			/* translators: %s: JupiterX Control Panel integrations settings URL */
 			__( 'Set reCAPTCHA v3 Site and Secret Keys in', 'jupiterx-core' ),
-			esc_url( Settings::get_settings_tab_url( 'raven' ) ),
-			__( 'JupiterX Settings', 'jupiterx-core' )
+			esc_url( jupiterx_core_get_integrations_settings_url() ),
+			__( 'JupiterX Integrations', 'jupiterx-core' )
 		);
 	}
 
@@ -90,7 +89,7 @@ class Recaptcha_V3 extends Field_Base {
 		$site_key   = get_option( 'elementor_raven_recaptcha_v3_site_key' );
 		$secret_key = get_option( 'elementor_raven_recaptcha_v3_secret_key' );
 
-		$html = '<div class="raven-field-subgroup" id="form-field-' . esc_attr( $this->get_id() ) . '"  data-custom-id=' . $this->get_custom_id() . '>';
+		$html = '<div class="raven-field-subgroup" id="form-field-' . esc_attr( $this->get_id() ) . '">';
 
 		if ( ! empty( $site_key ) && ! empty( $secret_key ) ) {
 			$this->widget->add_render_attribute( 'recaptcha-' . $this->get_id(), [

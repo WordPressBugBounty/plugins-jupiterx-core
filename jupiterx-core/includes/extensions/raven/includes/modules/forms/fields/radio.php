@@ -73,7 +73,6 @@ class Radio extends Field_Base {
 					'value' => $option_value,
 					'id' => $html_id,
 					'name' => "fields[{$id}]" . ( count( $options ) > 1 ? '[]' : '' ),
-					'data-custom-id' => $this->get_custom_id(),
 				]
 			);
 

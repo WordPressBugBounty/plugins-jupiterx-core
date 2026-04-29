@@ -674,9 +674,15 @@ class Content_Switch extends Base_Widget {
 					<?php echo esc_html( $settings['primary_section_label'] ); ?>
 				</h4>
 			</div>
-			<div <?php echo $this->get_render_attribute_string( 'raven_content_switch_button' ); ?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( 'raven_content_switch_button' );
+			?>>
 				<label class="raven-content-switch-label">
-					<input type="checkbox" <?php echo $this->get_render_attribute_string( 'raven_content_switch_input' ); ?>>
+					<input type="checkbox" <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+					echo $this->get_render_attribute_string( 'raven_content_switch_input' );
+					?>>
 					<span class="raven-content-switch-input-control elementor-clickable"></span>
 				</label>
 			</div>

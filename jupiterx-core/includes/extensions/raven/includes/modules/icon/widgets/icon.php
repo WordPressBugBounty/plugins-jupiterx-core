@@ -459,14 +459,23 @@ class Icon extends Base_Widget {
 		}
 
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
-			<<?php ElementorUtils::print_validated_html_tag( $icon_tag ); ?> <?php echo $this->get_render_attribute_string( 'icon-wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'wrapper' );
+		?>>
+			<<?php ElementorUtils::print_validated_html_tag( $icon_tag ); ?> <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( 'icon-wrapper' );
+			?>>
 				<?php
 				if ( $is_new || $migrated ) :
 					Elementor::$instance->icons_manager->render_icon( $settings['icon_new'], [ 'aria-hidden' => 'true' ] );
 				else :
 					?>
-					<i <?php echo $this->get_render_attribute_string( 'icon' ); ?>></i>
+					<i <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+					echo $this->get_render_attribute_string( 'icon' );
+					?>></i>
 				<?php endif; ?>
 			</<?php ElementorUtils::print_validated_html_tag( $icon_tag ); ?>>
 		</div>

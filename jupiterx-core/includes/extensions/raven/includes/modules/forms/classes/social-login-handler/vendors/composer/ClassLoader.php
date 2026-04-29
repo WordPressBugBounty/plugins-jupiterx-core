@@ -12,6 +12,8 @@
 
 namespace Composer\Autoload;
 
+defined( 'ABSPATH' ) || die();
+
 /**
  * ClassLoader implements a PSR-0, PSR-4 and classmap class loader.
  *

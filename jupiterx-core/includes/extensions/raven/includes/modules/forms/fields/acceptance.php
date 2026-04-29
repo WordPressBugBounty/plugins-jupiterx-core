@@ -48,7 +48,6 @@ class Acceptance extends Field_Base {
 			'type' => 'checkbox',
 			'name' => 'fields[' . $this->get_id() . ']',
 			'id' => 'form-field-' . $this->get_id() . '-' . $this->generate_random_string(),
-			'data-custom-id' => $this->get_custom_id(),
 		];
 
 		if ( 'true' === $this->get_required() ) {
@@ -81,7 +80,10 @@ class Acceptance extends Field_Base {
 				<input
 					oninput="onInvalidRavenFormField(event)"
 					oninvalid="onInvalidRavenFormField(event)"
-					<?php echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) ); ?>  class="raven-field">
+					<?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+					echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) );
+					?>  class="raven-field">
 				<label
 					for="<?php echo esc_attr( $html_id ); ?>"
 					class="raven-field-label">

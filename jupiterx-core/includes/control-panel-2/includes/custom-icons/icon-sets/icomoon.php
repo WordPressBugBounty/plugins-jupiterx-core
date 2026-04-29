@@ -35,7 +35,13 @@ class Icomoon extends Base {
 	}
 
 	private function get_json() {
-		return json_decode( $this->_unstable_file_get_contents( $this->directory . $this->data_file ) );
+		$content = json_decode( $this->_unstable_file_get_contents( $this->directory . $this->data_file ) );
+
+		if ( ! $content->metadata->name ) {
+			wp_send_json_error( esc_html__( 'The Icon Set`s Name is Missing; Please Check The selection.json File ( metadata ) in the Zip File.', 'jupiterx-core' ) );
+		}
+
+		return $content;
 	}
 
 	protected function extract_icon_list() {

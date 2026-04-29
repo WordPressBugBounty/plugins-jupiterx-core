@@ -68,7 +68,10 @@ class Time extends Field_Base {
 		<input
 			oninput="onInvalidRavenFormField(event)"
 			oninvalid="onInvalidRavenFormField(event)"
-			<?php echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) ); ?>
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) );
+			?>
 			data-enable-time="true"
 			data-no-calendar="true"
 			data-time_24hr="true"

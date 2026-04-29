@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Footer > Styles > Widgets Thumbnail popup to the WordPress Customizer.
  *

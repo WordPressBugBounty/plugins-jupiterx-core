@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die();
+
 /**
  * lessphp v0.4.0
  * http://leafo.net/lessphp
@@ -1784,7 +1786,7 @@ class JupiterX_Lessc {
 			$parser->count = 0;
 			$parser->buffer = (string)$strValue;
 			if (!$parser->propertyValue($value)) {
-				throw new Exception("failed to parse passed in variable $name: $strValue");
+				throw new Exception( esc_html( sprintf( 'failed to parse passed in variable %s: %s', $name, $strValue ) ) );
 			}
 
 			$this->set($name, $value);
@@ -1830,7 +1832,7 @@ class JupiterX_Lessc {
 
 	public function compileFile($fname, $outFname = null) {
 		if (!is_readable($fname)) {
-			throw new Exception('load error: failed to find '.$fname);
+			throw new Exception( esc_html( sprintf( 'load error: failed to find %s', $fname ) ) );
 		}
 
 		$pi = pathinfo($fname);
@@ -2019,7 +2021,7 @@ class JupiterX_Lessc {
 		if ($this->sourceLoc >= 0) {
 			$this->sourceParser->throwError($msg, $this->sourceLoc);
 		}
-		throw new exception($msg);
+		throw new Exception( esc_html( (string) $msg ) );
 	}
 
 	// compile file $in to file $out if $in is newer than $out
@@ -3487,9 +3489,9 @@ class jupiterx_lessc_parser {
 
 		// TODO this depends on $this->count
 		if ($this->peek("(.*?)(\n|$)", $m, $count)) {
-			throw new exception("$msg: failed at `$m[1]` $loc");
+			throw new Exception( esc_html( sprintf( '%s: failed at `%s` %s', $msg, $m[1], $loc ) ) );
 		} else {
-			throw new exception("$msg: $loc");
+			throw new Exception( esc_html( sprintf( '%s: %s', $msg, $loc ) ) );
 		}
 	}
 
@@ -3635,6 +3637,7 @@ class jupiterx_lessc_formatter_classic {
 	public function block($block) {
 		if ($this->isEmpty($block)) return;
 
+		// phpcs:disable WordPress.Security.EscapeOutput.OutputNotEscaped -- Emits compiled CSS strings, not HTML.
 		$inner = $pre = $this->indentStr();
 
 		$isSingle = !$this->disableSingle &&
@@ -3684,6 +3687,7 @@ class jupiterx_lessc_formatter_classic {
 
 			$this->indentLevel--;
 		}
+		// phpcs:enable WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 }
 

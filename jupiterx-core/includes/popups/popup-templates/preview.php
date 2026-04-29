@@ -42,8 +42,19 @@ class Preview extends Jupiterx_Popup_Template_Base {
 	 * @return void
 	 */
 	public function get_content() {
-		$data    = $this->data;
-		$classes = $this->get_classes();
+		$data              = $this->data;
+		$classes           = $this->get_classes();
+		$meta_settings     = get_post_meta( $data['id'], '_elementor_page_settings', true );
+		$meta_settings     = is_array( $meta_settings ) ? $meta_settings : [];
+		$popup_inner_class = '';
+
+		if ( ! empty( $meta_settings['background_background'] ) && 'blur' === $meta_settings['background_background'] ) {
+			$popup_inner_class = 'jupiterx-blur-background';
+
+			if ( ! empty( $meta_settings['background_blur_disable_on_mobile'] ) ) {
+				$popup_inner_class .= ' jupiterx-blur-background--mobile-disabled';
+			}
+		}
 
 		ob_start();
 		?>
@@ -61,7 +72,7 @@ class Preview extends Jupiterx_Popup_Template_Base {
 						<div class="jupiterx-popup__overlay"></div>
 						<div class="jupiterx-popup__container">
 							<div class="jupiterx-popup__close-button">&times;</div>
-							<div class="jupiterx-popup__container-inner">
+							<div class="jupiterx-popup__container-inner <?php echo esc_attr( $popup_inner_class ); ?>">
 								<?php
 								do_action( 'jupiterx-core/preview-popup/before-content', $data['id'] );
 

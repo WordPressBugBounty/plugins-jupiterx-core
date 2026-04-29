@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
 /**
  * This class is responsible to managing all plugins & theme updates.
  *
@@ -244,7 +248,7 @@ class JupiterX_Core_Control_Panel_Updates_Manager {
 		return [
 			[
 				'id' => 1,
-				'title' => __( 'Jupiter X' ),
+				'title' => __( 'Jupiter X', 'jupiterx-core' ),
 				'current_version' => JUPITERX_VERSION,
 				'new_version' => $new_version,
 				'type' => 'theme',

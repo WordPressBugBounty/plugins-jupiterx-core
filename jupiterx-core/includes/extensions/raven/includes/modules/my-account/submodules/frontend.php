@@ -202,6 +202,7 @@ class Frontend {
 
 		// Custom template.
 		if ( 'yes' === $default_settings['custom_template_enabled'] ) {
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor renders template HTML for display.
 			echo Elementor::instance()->frontend->get_builder_content_for_display( $default_settings['custom_template'], true );
 			$script = 'document.querySelector( ".woocommerce-MyAccount-navigation-link--' . esc_js( $default_active ) . '" ).classList.add("is-active");';
 			wp_add_inline_script( 'jupiterx-core-raven-frontend', $script );

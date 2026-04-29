@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Header > Styles tab > Sticky Logo to the WordPress Customizer.
  *

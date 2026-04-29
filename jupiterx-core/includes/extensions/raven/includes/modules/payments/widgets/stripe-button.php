@@ -247,7 +247,7 @@ class Stripe_Button extends Payment_Button {
 	 *
 	 * @return array
 	 */
-	protected function render_button( Widget_Base $instance = null, $tag = 'a' ) {
+	protected function render_button( ?Widget_Base $instance = null, $tag = 'a' ) {
 		$settings = $this->get_settings_for_display();
 		?>
 
@@ -294,9 +294,9 @@ class Stripe_Button extends Payment_Button {
 			[
 				'type' => Controls_Manager::RAW_HTML,
 				'raw' => sprintf(
-					/* translators: 1: Elementor's integrations settings link opening tab, 2: Link closing tag. */
+					/* translators: 1: Opening anchor tag for JupiterX Integrations. 2: Closing anchor tag. */
 					esc_html__( 'For this widget to work, you need to set your Stripe API keys in the %1$sIntegrations Settings%2$s.', 'jupiterx-core' ),
-					sprintf( '<a href="%s" target="_blank">', admin_url( 'admin.php?page=elementor-settings#tab-raven' ) ),
+					sprintf( '<a href="%s" target="_blank">', esc_url( jupiterx_core_get_integrations_settings_url() ) ),
 					'</a>'
 				),
 				'content_classes' => 'elementor-panel-alert elementor-panel-alert-info',
@@ -517,9 +517,9 @@ class Stripe_Button extends Payment_Button {
 			[
 				'type' => Controls_Manager::RAW_HTML,
 				'raw' => sprintf(
-					/* translators: 1: Elementor's integrations settings link opening tab, 2: Link closing tag. */
+					/* translators: 1: Opening anchor tag for JupiterX Integrations. 2: Closing anchor tag. */
 					esc_html__( 'Complete the entire checkout experience on your site with a mock payment method, using the Stripe Test key in the %1$sIntegrations Settings%2$s.', 'jupiterx-core' ),
-					sprintf( '<a href="%s" target="_blank">', admin_url( 'admin.php?page=elementor-settings#tab-raven' ) ),
+					sprintf( '<a href="%s" target="_blank">', esc_url( jupiterx_core_get_integrations_settings_url() ) ),
 					'</a>'
 				),
 				'content_classes' => 'elementor-descriptor',

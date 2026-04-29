@@ -364,7 +364,7 @@ class Progress_Tracker extends Base_Widget {
 				'type' => Controls_Manager::SELECT,
 				'default' => 'none',
 				'options' => [
-					'none' => esc_html_x( 'None', 'jupiterx-core' ),
+					'none' => esc_html_x( 'None', 'Border Control', 'jupiterx-core' ),
 					'solid' => esc_html_x( 'Solid', 'Border Control', 'jupiterx-core' ),
 					'double' => esc_html_x( 'Double', 'Border Control', 'jupiterx-core' ),
 					'dotted' => esc_html_x( 'Dotted', 'Border Control', 'jupiterx-core' ),
@@ -673,7 +673,10 @@ class Progress_Tracker extends Base_Widget {
 
 		$this->add_render_attribute( 'bar', 'class', $classes );
 		?>
-			<div <?php echo $this->get_render_attribute_string( 'bar' ); ?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( 'bar' );
+			?>>
 				<div class="progress-indicator" >
 					<span class="percentage-text"></span>
 				</div>

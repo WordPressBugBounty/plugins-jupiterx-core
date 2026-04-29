@@ -183,7 +183,10 @@ class Divider extends Base_Widget {
 		?>
 		<div class="raven-widget-wrapper">
 			<div class="raven-divider">
-				<span <?php echo $this->get_render_attribute_string( 'line' ); ?>></span>
+				<span <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->get_render_attribute_string( 'line' );
+				?>></span>
 			</div>
 		</div>
 		<?php

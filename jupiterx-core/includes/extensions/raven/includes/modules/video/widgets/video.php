@@ -1325,7 +1325,10 @@ class Video extends Base_Widget {
 
 		$this->add_render_attribute( 'video-wrapper', 'class', 'raven-widget-wrapper' . ( 'yes' !== $settings['sticky_on_scroll'] ? ' sticky-close' : '' ) . ' raven-video-mejs-player' );
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'video-wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'video-wrapper' );
+		?>>
 			<?php if ( 'yes' === $settings['muted_preview_overlay'] ) : ?>
 				<?php if ( $settings['image_muted_preview_overlay']['url'] ) :
 						// WPML compatibility.
@@ -1345,7 +1348,10 @@ class Video extends Base_Widget {
 							]
 						);
 				?>
-					<img <?php echo $this->get_render_attribute_string( 'muted-overlay' ); ?> src="<?php echo esc_url( $muted_autoplay_image ); ?>">
+					<img <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+					echo $this->get_render_attribute_string( 'muted-overlay' );
+					?> src="<?php echo esc_url( $muted_autoplay_image ); ?>">
 				<?php endif; ?>
 			<?php endif; ?>
 
@@ -1367,7 +1373,10 @@ class Video extends Base_Widget {
 					</div>
 			<?php endif; ?>
 
-					<div <?php echo $this->get_render_attribute_string( 'video' ); ?>>
+					<div <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+					echo $this->get_render_attribute_string( 'video' );
+					?>>
 						<?php
 						if ( ! $settings['use_lightbox'] && class_exists( '\Elementor\Utils' ) ) {
 							\Elementor\Utils::print_unescaped_internal_string( $video_html ); // XSS ok.
@@ -1389,7 +1398,10 @@ class Video extends Base_Widget {
 								$this->add_render_attribute( 'image-overlay', 'style', 'background-image: url(' . $bg_image . ');' );
 							}
 							?>
-							<div <?php echo $this->get_render_attribute_string( 'image-overlay' ); ?>>
+							<div <?php
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+							echo $this->get_render_attribute_string( 'image-overlay' );
+							?>>
 								<?php if ( $settings['use_lightbox'] ) : ?>
 									<img class="raven-video-thumbnail-image" src="<?php echo esc_url( $bg_image ); ?>">
 
@@ -1407,7 +1419,10 @@ class Video extends Base_Widget {
 										Elementor::$instance->icons_manager->render_icon( $settings['play_icon_new'], [ 'aria-hidden' => 'true' ] );
 									else :
 										?>
-										<i <?php echo $this->get_render_attribute_string( 'play_icon' ); ?>></i>
+										<i <?php
+										// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+										echo $this->get_render_attribute_string( 'play_icon' );
+										?>></i>
 									<?php endif; ?>
 									</div>
 								<?php endif; ?>

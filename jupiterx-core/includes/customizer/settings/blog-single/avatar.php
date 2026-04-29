@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Blog Single > Styles > Avatar tab to the WordPress Customizer.
  *

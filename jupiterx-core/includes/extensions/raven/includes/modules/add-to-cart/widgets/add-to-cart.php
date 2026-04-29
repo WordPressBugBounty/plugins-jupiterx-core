@@ -1805,7 +1805,10 @@ class Add_To_Cart extends Base_Widget {
 		}
 		?>
 
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'wrapper' );
+		?>>
 			<?php woocommerce_template_single_add_to_cart(); ?>
 		</div>
 

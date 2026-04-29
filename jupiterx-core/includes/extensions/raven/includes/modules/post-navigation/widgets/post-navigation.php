@@ -1277,7 +1277,10 @@ class Post_Navigation extends Base_Widget {
 			jupiterx_elementor_modify_post_navigation();
 		}
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'wrapper' );
+		?>>
 			<?php
 				if ( empty( $settings['next_only'] ) ) {
 					previous_post_link( '%link', $this->render_post( 'previous', $settings, $next_post, $prev_post ), $in_same_term, '', $taxonomy );

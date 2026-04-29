@@ -981,7 +981,10 @@ class Sticky_Media_Scroller extends Base_Widget {
 			'raven-sticky-media-scroller'
 		);
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'widget-wrapper' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'widget-wrapper' );
+		?>>
 			<div class="sticky-mode-wrapper">
 				<div class="media-column">
 					<?php echo $this->render_column( $settings, 'media' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -1077,7 +1080,10 @@ class Sticky_Media_Scroller extends Base_Widget {
 				'data-section-id' => esc_attr( $section['_id'] ),
 			] );
 			?>
-			<div <?php echo $this->get_render_attribute_string( $column . '-section-wrapper' . esc_attr( $section['_id'] ) ); ?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( $column . '-section-wrapper' . esc_attr( $section['_id'] ) );
+			?>>
 				<?php
 				if ( 'media' === $column ) {
 					echo $this->render_section_media( $section ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
@@ -1385,10 +1391,16 @@ class Sticky_Media_Scroller extends Base_Widget {
 				] );
 				?>
 				<div class="responsive-mode-item">
-					<div <?php echo $this->get_render_attribute_string( 'section-wrapper-responsive' . esc_attr( $section['_id'] ) ); ?>>
+					<div <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+					echo $this->get_render_attribute_string( 'section-wrapper-responsive' . esc_attr( $section['_id'] ) );
+					?>>
 						<?php echo $this->render_section_media( $section ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</div>
-					<div <?php echo $this->get_render_attribute_string( 'section-wrapper-responsive' . esc_attr( $section['_id'] ) ); ?>>
+					<div <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+					echo $this->get_render_attribute_string( 'section-wrapper-responsive' . esc_attr( $section['_id'] ) );
+					?>>
 						<?php echo $this->render_section_content( $section ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
 					</div>
 				</div>

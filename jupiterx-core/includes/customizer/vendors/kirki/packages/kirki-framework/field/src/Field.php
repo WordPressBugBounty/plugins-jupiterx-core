@@ -9,6 +9,7 @@
  */
 
 namespace Kirki;
+defined( 'ABSPATH' ) || die();
 
 /**
  * Make it easier to create customizer settings & controls with a single call,

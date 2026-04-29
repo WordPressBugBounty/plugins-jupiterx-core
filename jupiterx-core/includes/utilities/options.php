@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * JupiterX_Core Utilities is a set of tools to ease building applications.
  *

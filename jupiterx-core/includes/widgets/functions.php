@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * The Jupiter Widgets API extends the WordPress Widgets API. Where WordPress uses 'sidebar', Jupiter uses
  * 'widget_area' as it is more appropriate when using it to define an area which is not besides the main

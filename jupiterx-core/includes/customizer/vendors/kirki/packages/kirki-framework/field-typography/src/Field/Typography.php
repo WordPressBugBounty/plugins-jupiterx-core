@@ -9,6 +9,7 @@
  */
 
 namespace Kirki\Field;
+defined( 'ABSPATH' ) || die();
 
 use Kirki\Util\Helper;
 use Kirki\Field;

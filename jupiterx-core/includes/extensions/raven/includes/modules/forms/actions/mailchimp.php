@@ -11,7 +11,6 @@ namespace JupiterX_Core\Raven\Modules\Forms\Actions;
 defined( 'ABSPATH' ) || die();
 
 use JupiterX_Core\Raven\Modules\Forms\Classes\MailChimp_Handler;
-use Elementor\Settings;
 use Elementor\Repeater;
 use Elementor\Plugin as Elementor;
 
@@ -96,9 +95,9 @@ class Mailchimp extends Action_Base {
 				[
 					'type' => 'raw_html',
 					'raw' => sprintf(
-						/* translators: %s: Settings page URL */
-						__( 'Set your MailChimp API in <a target="_blank" href="%s">JupiterX Settings <i class="fa fa-external-link-square"></i></a>.', 'jupiterx-core' ),
-						esc_url( Settings::get_settings_tab_url( 'raven' ) )
+						/* translators: %s: JupiterX Control Panel integrations settings URL */
+						__( 'Set your MailChimp API in <a target="_blank" href="%s">JupiterX Integrations <i class="fa fa-external-link-square"></i></a>.', 'jupiterx-core' ),
+						esc_url( jupiterx_core_get_integrations_settings_url() )
 					),
 					'content_classes' => 'elementor-panel-alert elementor-panel-alert-danger',
 					'condition' => [

@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter Search Page popup and tabs to the WordPress Customizer.
  *

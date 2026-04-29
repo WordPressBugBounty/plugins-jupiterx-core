@@ -340,7 +340,7 @@ class Post_Meta extends Base_Widget {
 		$repeater->add_control(
 			'icon_new',
 			[
-				'label' => esc_html__( 'Icon', 'elementor' ),
+				'label' => esc_html__( 'Icon', 'jupiterx-core' ),
 				'type' => 'icons',
 				'fa4compatibility' => 'icon',
 				'label_block' => true,
@@ -1008,9 +1008,15 @@ class Post_Meta extends Base_Widget {
 		}
 
 		?>
-		<li <?php echo $this->get_render_attribute_string( $item_key ); ?>>
+		<li <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( $item_key );
+		?>>
 			<?php if ( $has_link ) : ?>
-			<a <?php echo $this->get_render_attribute_string( $link_key ); ?>>
+			<a <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( $link_key );
+			?>>
 				<?php endif; ?>
 				<?php $this->render_item_icon_or_image( $item_data, $repeater_item, $repeater_index ); ?>
 				<?php $this->render_item_text( $item_data, $repeater_index ); ?>
@@ -1048,7 +1054,10 @@ class Post_Meta extends Base_Widget {
 				$this->add_render_attribute( $image_data, 'src', $item_data['image'] );
 				$this->add_render_attribute( $image_data, 'alt', $item_data['text'] );
 				?>
-				<img class="raven-avatar" <?php echo $this->get_render_attribute_string( $image_data ); ?>>
+				<img class="raven-avatar" <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+				echo $this->get_render_attribute_string( $image_data );
+				?>>
 			<?php else : ?>
 				<?php
 				if ( $is_new || $migrated ) {
@@ -1080,7 +1089,10 @@ class Post_Meta extends Base_Widget {
 		}
 
 		?>
-		<span <?php echo $this->get_render_attribute_string( $repeater_setting_key ); ?>>
+		<span <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( $repeater_setting_key );
+		?>>
 			<?php if ( ! empty( $item_data['text_prefix'] ) ) : ?>
 				<span class="raven-post-meta-item-prefix"><?php echo esc_html( $item_data['text_prefix'] ); ?></span>
 			<?php endif; ?>
@@ -1151,7 +1163,10 @@ class Post_Meta extends Base_Widget {
 			[ 'raven-icon-list-items', 'raven-post-meta' ]
 		);
 		?>
-		<ul <?php echo $this->get_render_attribute_string( 'icon_list' ); ?>>
+		<ul <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+		echo $this->get_render_attribute_string( 'icon_list' );
+		?>>
 			<?php \Elementor\Utils::print_unescaped_internal_string( $items_markup ); // XSS ok. ?>
 		</ul>
 		<?php

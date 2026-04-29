@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Page Single > Styles > Featured Image tab to the WordPress Customizer.
  *

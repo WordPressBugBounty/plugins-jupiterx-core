@@ -1,4 +1,6 @@
 <?php
+defined( 'ABSPATH' ) || die();
+
 /**
  * Compile and cache CSS, LESS and JS files.
  *
@@ -258,7 +260,7 @@ function jupiterx_flush_compiler( $id, $file_format = false, $admin = false ) {
 
 		foreach ( $items as $item ) {
 			if ( false !== stripos( $item, '.' . $file_format ) ) {
-				@unlink( trailingslashit( $dir ) . $item ); // phpcs:ignore Generic.PHP.NoSilencedErrors.Discouraged -- Valid use case.
+				wp_delete_file( trailingslashit( $dir ) . $item );
 			}
 		}
 

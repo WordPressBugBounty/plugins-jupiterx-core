@@ -3,8 +3,7 @@
   src: url("../fonts/jupiterx.eot");
   src: url("../fonts/jupiterx.eot?#iefix") format("eot"), url("../fonts/jupiterx.woff2") format("woff2"), url("../fonts/jupiterx.woff") format("woff"), url("../fonts/jupiterx.ttf") format("truetype"), url("../fonts/jupiterx.svg#jupiterx") format("svg");
 }
-
-[class^="jupiterx-icon-"]:before,
+[class^=jupiterx-icon-]:before,
 [class*=" jupiterx-icon-"]:before {
   font-family: "jupiterx";
   font-style: normal;
@@ -19,82 +18,82 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+.jupiterx-icon-rocket-solid:before {
+  content: "\ea01";
+}
+
 .jupiterx-icon-creative-market:before {
-  content: "\EA01";
+  content: "\ea02";
 }
 
 .jupiterx-icon-long-arrow:before {
-  content: "\EA02";
+  content: "\ea03";
 }
 
 .jupiterx-icon-search-1:before {
-  content: "\EA03";
+  content: "\ea04";
 }
 
 .jupiterx-icon-search-2:before {
-  content: "\EA04";
+  content: "\ea05";
 }
 
 .jupiterx-icon-search-3:before {
-  content: "\EA05";
+  content: "\ea06";
 }
 
 .jupiterx-icon-search-4:before {
-  content: "\EA06";
+  content: "\ea07";
 }
 
 .jupiterx-icon-share-email:before {
-  content: "\EA07";
+  content: "\ea08";
 }
 
 .jupiterx-icon-shopping-cart-1:before {
-  content: "\EA08";
+  content: "\ea09";
 }
 
 .jupiterx-icon-shopping-cart-10:before {
-  content: "\EA09";
+  content: "\ea0a";
 }
 
 .jupiterx-icon-shopping-cart-2:before {
-  content: "\EA0A";
+  content: "\ea0b";
 }
 
 .jupiterx-icon-shopping-cart-3:before {
-  content: "\EA0B";
+  content: "\ea0c";
 }
 
 .jupiterx-icon-shopping-cart-4:before {
-  content: "\EA0C";
+  content: "\ea0d";
 }
 
 .jupiterx-icon-shopping-cart-5:before {
-  content: "\EA0D";
+  content: "\ea0e";
 }
 
 .jupiterx-icon-shopping-cart-6:before {
-  content: "\EA0E";
+  content: "\ea0f";
 }
 
 .jupiterx-icon-shopping-cart-7:before {
-  content: "\EA0F";
+  content: "\ea10";
 }
 
 .jupiterx-icon-shopping-cart-8:before {
-  content: "\EA10";
+  content: "\ea11";
 }
 
 .jupiterx-icon-shopping-cart-9:before {
-  content: "\EA11";
+  content: "\ea12";
 }
 
 .jupiterx-icon-zillow:before {
-  content: "\EA12";
+  content: "\ea13";
 }
 
 .jupiterx-icon-zomato:before {
-  content: "\EA13";
-}
-
-.jupiterx-icon-rocket-solid:before {
-  content: "\EA14";
+  content: "\ea14";
 }

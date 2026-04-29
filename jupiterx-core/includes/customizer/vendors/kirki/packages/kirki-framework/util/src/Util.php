@@ -11,6 +11,7 @@
  */
 
 namespace Kirki\Util;
+defined( 'ABSPATH' ) || die();
 
 /**
  * Utility class.

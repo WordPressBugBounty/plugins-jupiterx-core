@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 
 /**
  * Handles custom snippets functionality in control panel.
@@ -91,6 +92,15 @@ class JupiterX_Core_Control_Panel_Custom_Snippets {
 		$paged          = filter_input( INPUT_GET, 'paged', FILTER_SANITIZE_NUMBER_INT );
 		$condition_meta = JupiterX_Core_Condition_Manager::JUPITERX_CONDITIONS_COMPONENT_META_NAME;
 
+		$orderby_req = isset( $_GET['orderby'] ) ? sanitize_text_field( wp_unslash( $_GET['orderby'] ) ) : 'date'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		$order_req   = isset( $_GET['order'] ) ? strtoupper( sanitize_text_field( wp_unslash( $_GET['order'] ) ) ) : 'DESC'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		if ( ! in_array( $orderby_req, [ 'date', 'modified' ], true ) ) {
+			$orderby_req = 'date';
+		}
+		if ( ! in_array( $order_req, [ 'ASC', 'DESC' ], true ) ) {
+			$order_req = 'DESC';
+		}
+
 		/**
 		 * Filter List Table query arguments.
 		 *
@@ -99,9 +109,11 @@ class JupiterX_Core_Control_Panel_Custom_Snippets {
 		 * @param array $args The query arguments.
 		 */
 		$args = apply_filters( "jupiterx_custom_snippet_list_table_{$post_type}_args", [
-			'post_type' => $post_type,
-			'paged' => $paged,
+			'post_type'      => $post_type,
+			'paged'          => $paged,
 			'posts_per_page' => 20,
+			'orderby'        => $orderby_req,
+			'order'          => $order_req,
 		] );
 
 		$query = new \WP_Query( $args );
@@ -127,7 +139,8 @@ class JupiterX_Core_Control_Panel_Custom_Snippets {
 				__( 'Hooked on', 'jupiterx-core' ),
 				__( 'Priority', 'jupiterx-core' ),
 				__( 'Author', 'jupiterx-core' ),
-				__( 'Created on', 'jupiterx-core' ),
+				__( 'Published date', 'jupiterx-core' ),
+				__( 'Last modified', 'jupiterx-core' ),
 			],
 			'values' => [
 				'',
@@ -135,6 +148,8 @@ class JupiterX_Core_Control_Panel_Custom_Snippets {
 		], $posts );
 
 		$locations = $this->snippet_locations();
+
+		$date_time_format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
 
 		// columns value
 		foreach ( $posts as $key => $post ) {
@@ -144,13 +159,18 @@ class JupiterX_Core_Control_Panel_Custom_Snippets {
 				$locations[ get_post_meta( $post->ID, 'jupiterx_location', true ) ],
 				$priority,
 				get_the_author_meta( 'user_login', get_post_field( 'post_author', $post->ID ) ),
-				get_the_time( 'Y-m-d', $post->ID ),
+				'',
+				'',
 			];
 
 			$posts[ $key ]->location   = get_post_meta( $post->ID, 'jupiterx_location', true );
 			$posts[ $key ]->priority   = $priority;
 			$posts[ $key ]->conditions = get_post_meta( $post->ID, $condition_meta, true );
 			$posts[ $key ]->userUrl    = get_edit_user_link( get_the_author_meta( 'ID', get_post_field( 'post_author', $post->ID ) ) );
+			$posts[ $key ]->custom_date = get_the_date( 'M d, Y', $post->ID );
+			$posts[ $key ]->custom_modified_date = get_the_modified_date( 'M d, Y', $post->ID );
+			$posts[ $key ]->custom_date_with_time = mysql2date( $date_time_format, $post->post_date );
+			$posts[ $key ]->custom_modified_date_with_time = mysql2date( $date_time_format, $post->post_modified );
 		}
 
 		// Send response.

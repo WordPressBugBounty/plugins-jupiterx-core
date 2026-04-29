@@ -501,7 +501,7 @@ class Price_List extends Base_Widget {
 					$this->add_render_attribute( $title_repeater_setting_key, 'class', 'raven-price-list-title' );
 					$this->add_render_attribute( $description_repeater_setting_key, 'class', 'raven-price-list-description' );
 				?>
-					<?php echo $this->render_item_header( $item ); ?>
+					<?php echo $this->render_item_header( $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Markup from Elementor skin. ?>
 					<?php if ( ! empty( $item['item_image']['url'] ) ) : ?>
 						<div class="raven-price-list-image">
 							<?php echo $this->render_image( $item, $settings ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
@@ -512,7 +512,10 @@ class Price_List extends Base_Widget {
 						<?php if ( ! empty( $item['item_title'] ) || ! empty( $item['item_price'] ) ) : ?>
 							<div class="raven-price-list-header">
 								<?php if ( ! empty( $item['item_title'] ) ) : ?>
-									<span <?php echo $this->get_render_attribute_string( $title_repeater_setting_key ); ?>><?php echo wp_kses_post( $item['item_title'] ); ?></span>
+									<span <?php
+									// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+									echo $this->get_render_attribute_string( $title_repeater_setting_key );
+									?>><?php echo wp_kses_post( $item['item_title'] ); ?></span>
 								<?php endif; ?>
 								<?php if ( isset( $settings['separator_style'] ) && 'none' !== $settings['separator_style'] ) : ?>
 									<span class="raven-price-list-separator"></span>
@@ -523,7 +526,10 @@ class Price_List extends Base_Widget {
 							</div>
 						<?php endif; ?>
 						<?php if ( ! empty( $item['item_description'] ) ) : ?>
-							<p <?php echo $this->get_render_attribute_string( $description_repeater_setting_key ); ?>><?php echo wp_kses_post( $item['item_description'] ); ?></p>
+							<p <?php
+							// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+							echo $this->get_render_attribute_string( $description_repeater_setting_key );
+							?>><?php echo wp_kses_post( $item['item_description'] ); ?></p>
 						<?php endif; ?>
 					</div>
 					<?php echo $this->render_item_footer( $item ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

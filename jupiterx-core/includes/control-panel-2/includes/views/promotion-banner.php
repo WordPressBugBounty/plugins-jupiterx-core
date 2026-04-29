@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Template for the global admin promotion banner.
  *
@@ -29,33 +30,43 @@
 					</div>
 				<?php endif; ?>
 
-				<?php if ( ! empty( $description ) || $has_code ) : ?>
-					<div class="jx-promotion-banner__description-cell">
-					<?php if ( ! empty( $description ) ) : ?>
-						<div class="jx-promotion-banner__description">
-							<?php echo nl2br( esc_html( $description ) ); ?>
-						</div>
-					<?php endif; ?>
-
-						<?php if ( $has_code ) : ?>
-							<div class="jx-promotion-banner__code">
-								<?php echo esc_html( "CODE {$coupon_code}" ); ?>
-							</div>
-						<?php endif; ?>
+				<?php if ( ! empty( $description ) ) : ?>
+					<div class="jx-promotion-banner__description">
+						<?php echo nl2br( esc_html( $description ) ); ?>
 					</div>
 				<?php endif; ?>
 
-				<?php if ( $has_cta ) : ?>
+				<?php if ( $has_code ) : ?>
+					<div class="jx-promotion-banner__code">
+						<?php echo esc_html( "CODE {$coupon_code}" ); ?>
+					</div>
+				<?php endif; ?>
+
+				<?php if ( $has_cta || $has_second_cta ) : ?>
 					<div class="jx-promotion-banner__cta">
-						<a
-							href="<?php echo esc_url( $cta_url ); ?>"
-							target="_blank"
-							rel="noopener noreferrer"
-							class="button"
-						>
-							<span class="cta-text"><?php echo esc_html( $cta_text ); ?></span>
-							<span class="cta-subtext"><?php echo esc_html( $cta_subtext ); ?></span>
-						</a>
+						<?php if ( $has_cta ) : ?>
+							<a
+								href="<?php echo esc_url( $cta_1_url ); ?>"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="button button-primary"
+								<?php echo ! empty( $primary_button_style ) ? 'style="' . esc_attr( $primary_button_style ) . '"' : ''; ?>
+							>
+								<span class="cta-text"><?php echo esc_html( $cta_1_text ); ?></span>
+							</a>
+						<?php endif; ?>
+
+						<?php if ( $has_second_cta ) : ?>
+							<a
+								href="<?php echo esc_url( $cta_2_url ); ?>"
+								target="_blank"
+								rel="noopener noreferrer"
+								class="button button-secondary"
+								<?php echo ! empty( $secondary_button_style ) ? 'style="' . esc_attr( $secondary_button_style ) . '"' : ''; ?>
+							>
+								<span class="cta-text"><?php echo esc_html( $cta_2_text ); ?></span>
+							</a>
+						<?php endif; ?>
 					</div>
 				<?php endif; ?>
 			</div>

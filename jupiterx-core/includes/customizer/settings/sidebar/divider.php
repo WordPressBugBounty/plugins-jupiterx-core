@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Sidebar > Styles > Widgets Container tab to the WordPress Customizer.
  *

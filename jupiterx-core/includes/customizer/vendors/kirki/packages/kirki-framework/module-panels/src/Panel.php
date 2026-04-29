@@ -11,6 +11,8 @@
 
 namespace Kirki;
 
+defined( 'ABSPATH' ) || die();
+
 /**
  * Panel.
  */

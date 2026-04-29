@@ -2,6 +2,10 @@
 
 namespace Sabberworm\CSS;
 
+defined( 'ABSPATH' ) || die();
+
+// phpcs:disable WordPress.Security.EscapeOutput.ExceptionNotEscaped -- Exception messages are escaped in SourceException::__construct().
+
 use Sabberworm\CSS\CSSList\CSSList;
 use Sabberworm\CSS\CSSList\Document;
 use Sabberworm\CSS\CSSList\KeyFrame;
@@ -618,7 +622,7 @@ class Parser {
 			$iLineCount = substr_count($mValue, "\n");
 			$iLength = $this->strlen($mValue);
 			if (!$this->streql($this->substr($this->iCurrentPosition, $iLength), $mValue)) {
-				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)), $this->iLineNo);
+				throw new UnexpectedTokenException($mValue, $this->peek(max($iLength, 5)), 'literal', $this->iLineNo);
 			}
 			$this->iLineNo += $iLineCount;
 			$this->iCurrentPosition += $this->strlen($mValue);

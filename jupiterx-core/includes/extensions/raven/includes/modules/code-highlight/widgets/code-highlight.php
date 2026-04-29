@@ -253,9 +253,18 @@ class Code_Highlight extends Base_Widget {
 		);
 
 		?>
-			<div <?php echo $this->get_render_attribute_string( 'wrapper' ); ?>>
-				<pre <?php echo $this->get_render_attribute_string( 'pre' ); ?>>
-					<code <?php echo $this->get_render_attribute_string( 'code' ); ?>><xmp><?php $this->print_unescaped_setting( 'code' ); ?></xmp></code>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( 'wrapper' );
+			?>>
+				<pre <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+				echo $this->get_render_attribute_string( 'pre' );
+				?>>
+					<code <?php
+					// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+					echo $this->get_render_attribute_string( 'code' );
+					?>><xmp><?php $this->print_unescaped_setting( 'code' ); ?></xmp></code>
 				</pre>
 			</div>
 		<?php

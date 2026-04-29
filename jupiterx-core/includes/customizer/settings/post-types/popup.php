@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add custom post type popups to the WordPress Customizer.
  *

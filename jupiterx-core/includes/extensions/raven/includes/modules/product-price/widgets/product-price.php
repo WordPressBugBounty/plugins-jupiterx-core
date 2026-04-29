@@ -220,6 +220,7 @@ class Product_Price extends Base_Widget {
 
 		$this->add_render_attribute( 'wrapper', 'class', $classes );
 
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
 		echo '<div ' . $this->get_render_attribute_string( 'wrapper' ) . ' >';
 	}
 

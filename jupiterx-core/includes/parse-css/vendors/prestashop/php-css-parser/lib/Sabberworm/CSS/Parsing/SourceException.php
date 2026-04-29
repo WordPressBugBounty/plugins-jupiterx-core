@@ -2,6 +2,8 @@
 
 namespace Sabberworm\CSS\Parsing;
 
+defined( 'ABSPATH' ) || die();
+
 class SourceException extends \Exception {
 	private $iLineNo;
 	public function __construct($sMessage, $iLineNo = 0) {
@@ -9,7 +11,7 @@ class SourceException extends \Exception {
 		if (!empty($iLineNo)) {
 			$sMessage .= " [line no: $iLineNo]";
 		}
-		parent::__construct($sMessage);
+		parent::__construct( esc_html( $sMessage ) );
 	}
 
 	public function getLineNo() {

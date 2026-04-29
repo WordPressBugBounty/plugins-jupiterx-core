@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * This class extends JupiterX_Core_Control_Panel_WXR_Importer.
  *

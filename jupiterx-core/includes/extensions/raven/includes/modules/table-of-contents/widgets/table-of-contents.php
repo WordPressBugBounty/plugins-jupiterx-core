@@ -791,13 +791,19 @@ class Table_Of_Contents extends Base_Widget {
 		?>
 
 		<div class="jupiterx-table-of-contents-widget">
-			<div <?php echo $this->get_render_attribute_string( 'header' ); ?> >
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( 'header' );
+			?> >
 				<?php $header_tag = ElementorUtils::validate_html_tag( $settings['header_html_tag'] ); ?>
 				<<?php echo esc_html( $header_tag ); ?> class="jupiterx-table-of-contents-native-exclude">
 					<?php echo esc_html( $settings['title'] ); ?>
 				</<?php echo esc_html( $header_tag ); ?>>
 			</div>
-			<div <?php echo $this->get_render_attribute_string( 'body' ); ?>></div>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( 'body' );
+			?>></div>
 		</div>
 		<div class="jupiterx-table-of-contents-hidden-section" >
 			<div class="jupiterx-table-of-contents-loader-icon">

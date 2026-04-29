@@ -266,13 +266,25 @@ class Text extends Marquee {
 
 		$content = $this->render_marquee_content( $items );
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'content-container' ); ?>>
-			<div <?php echo $this->get_render_attribute_string( 'content' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'content-container' );
+		?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( 'content' );
+			?>>
 				<?php $this->handle_left_gradient_overlay(); ?>
-				<div <?php echo $this->get_render_attribute_string( 'content-wrapper' ); ?>>
+				<div <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->get_render_attribute_string( 'content-wrapper' );
+				?>>
 					<?php Utils::print_unescaped_internal_string( $content ); ?>
 				</div>
-				<div <?php echo $this->get_render_attribute_string( 'duplicated-content-wrapper' ); ?>>
+				<div <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->get_render_attribute_string( 'duplicated-content-wrapper' );
+				?>>
 					<?php Utils::print_unescaped_internal_string( $content ); ?>
 				</div>
 				<?php $this->handle_right_gradient_overlay(); ?>

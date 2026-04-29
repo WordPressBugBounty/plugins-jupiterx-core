@@ -30,7 +30,7 @@ class Global_Widget extends Base_Widget {
 		] );
 
 		if ( is_wp_error( $template_data ) ) {
-			throw new \Exception( $template_data->get_error_message() );
+			throw new \Exception( esc_html( $template_data->get_error_message() ) );
 		}
 
 		if ( empty( $template_data['content'] ) ) {

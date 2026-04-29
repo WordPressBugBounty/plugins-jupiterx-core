@@ -10,8 +10,6 @@ namespace JupiterX_Core\Raven\Modules\Forms\Actions;
 
 defined( 'ABSPATH' ) || die();
 
-use Elementor\Settings;
-
 /**
  * Action Base.
  *
@@ -33,10 +31,6 @@ abstract class Action_Base {
 	public function __construct() {
 		add_action( 'elementor/element/raven-form/section_settings/after_section_end', [ $this, 'update_controls' ] );
 		add_action( 'elementor/element/raven-register/section_settings/after_section_end', [ $this, 'update_controls' ] );
-
-		if ( is_admin() ) {
-			add_action( 'elementor/admin/after_create_settings/' . Settings::PAGE_ID, [ $this, 'register_admin_fields' ], 20 );
-		}
 	}
 
 	/**

@@ -10,6 +10,7 @@
  */
 
 namespace Kirki\Module\Webfonts;
+defined( 'ABSPATH' ) || die();
 
 use Kirki\Module\Webfonts\Helper;
 

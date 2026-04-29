@@ -315,7 +315,10 @@ class Inline_Svg extends Base_Widget {
 		?>
 			<div class="jupiterx-inline-svg-wrapper" id="jupiterx-inline-svg-wrapper">
 				<?php echo $this->link_open; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>
-				<div <?php echo $this->get_render_attribute_string( 'inner_wrapper' ); ?>>
+				<div <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+				echo $this->get_render_attribute_string( 'inner_wrapper' );
+				?>>
 					<?php Utils::print_unescaped_internal_string( $svg_content ); ?>
 				</div>
 				<?php echo $this->link_close; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

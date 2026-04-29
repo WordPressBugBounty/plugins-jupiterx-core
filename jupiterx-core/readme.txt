@@ -3,10 +3,10 @@ Contributors: artbees
 Tags: jupiter, jupiterx
 Requires at least: 5.6
 Tested up to: 6.9
-Stable tag: 4.14.2
+Stable tag: 4.15.0
 Requires PHP: 7.0
-License: GPLv3
-License URI: https://www.gnu.org/licenses/gpl-3.0.html
+License: GPLv2
+License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
 Core functionalities for Jupiter X theme.
 
@@ -29,6 +29,23 @@ It's worth mentioning that, some of the features are disabled for the Jupiter X 
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= 4.15.0
+* Rebuilt the Jupiter X Control Panel for a seamless experience.
+* Manage and build everything from the Jupiter X Control Panel, including the Layout Builder, popups, and other templates.
+* Manage Roles, Integrations, and other settings from the Control Panel.
+* Added a Cache maintenance section to clear cache, upgrade the database, and clear Jupiter X, Elementor, and other bundled plugin assets on single-site and multisite installations.
+* Added blurred background options to several widgets, including Container, Section, Button, and more.
+* Enabled sticky header in Header settings when Simplicity mode is on.
+* Added support for variable webfonts in Jupiter X.
+* Fixed global widgets not displaying for logged-out users.
+* Added support for child term taxonomy for CPTs in the Layout Builder.
+* Fixed Shopping Cart widget behavior on sticky headers when Simplicity mode is off.
+* Enabled styling options for submenu items in the Dropdown layout of the Advanced Menu widget.
+* Fixed contact form auto-scroll when field errors are shown.
+* Fixed 500 error when exporting ready-made templates.
+* Fixed outdated WooCommerce templates in Jupiter X.
+
+
 = 4.14.2 =
 * Fixed security vulnerabilities.
 

@@ -1032,7 +1032,10 @@ class Tabs extends Base_Widget {
 		$this->add_render_attribute( 'tabs', 'class', 'raven-tabs raven-tabs-' . $this->get_settings( 'type' ) . ' raven-tabs-' . $this->get_settings( 'tabs_type' ) );
 		?>
 		<div class="raven-widget-wrapper">
-			<div <?php echo $this->get_render_attribute_string( 'tabs' ); ?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( 'tabs' );
+			?>>
 				<div class="raven-tabs-list" role="tablist">
 					<?php
 					$migration_allowed = Elementor::$instance->icons_manager->is_migration_allowed();
@@ -1064,7 +1067,10 @@ class Tabs extends Base_Widget {
 							$this->add_render_attribute( $tab_title_setting_key, 'class', 'raven-tabs-has-icon' );
 						}
 						?>
-						<div <?php echo $this->get_render_attribute_string( $tab_title_setting_key ); ?>>
+						<div <?php
+						// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+						echo $this->get_render_attribute_string( $tab_title_setting_key );
+						?>>
 							<?php $this->render_tab_icon( $tab_icon, $tab_icon_new, $migrated, $is_new ); ?>
 							<span class="raven-tabs-title-text"><?php echo wp_kses_post( $item['tab_title'] ); ?></span>
 						</div>
@@ -1170,12 +1176,18 @@ class Tabs extends Base_Widget {
 			?>
 
 			<?php if ( $settings['mobile_stacking'] ) : ?>
-			<div <?php echo $this->get_render_attribute_string( $tab_title_mobile_setting_key ); ?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( $tab_title_mobile_setting_key );
+			?>>
 				<?php $this->render_tab_icon( $tab_icon, $tab_icon_new, $migrated, $is_new ); ?>
 				<span class="raven-tabs-title-text"><?php echo wp_kses_post( $item['tab_title'] ); ?></span>
 			</div>
 			<?php endif; ?>
-			<div <?php echo $this->get_render_attribute_string( $tab_content_setting_key ); ?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->get_render_attribute_string( $tab_content_setting_key );
+			?>>
 				<div class="<?php echo esc_attr( $tabs_animation_class . $is_tempalte_content ); ?>">
 				<?php if ( ! empty( $item['tab_content'] ) ) {
 					// PHPCS - the method `parse_text_editor` is safe.

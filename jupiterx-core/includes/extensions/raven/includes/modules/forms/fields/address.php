@@ -9,7 +9,6 @@
 namespace JupiterX_Core\Raven\Modules\Forms\Fields;
 
 use Elementor\Plugin as Elementor;
-use Elementor\Settings;
 
 defined( 'ABSPATH' ) || die();
 
@@ -49,7 +48,10 @@ class Address extends Field_Base {
 		<input
 			oninput="onInvalidRavenFormField(event)"
 			oninvalid="onInvalidRavenFormField(event)"
-			<?php echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) ); ?>>
+			<?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor API returns escaped attributes.
+			echo $this->widget->get_render_attribute_string( 'field-' . esc_attr( $this->get_id() ) );
+			?>>
 		<?php
 	}
 
@@ -78,9 +80,9 @@ class Address extends Field_Base {
 				'name' => 'address_google_api_key_help',
 				'type' => 'raw_html',
 				'raw' => sprintf(
-					/* translators: %s: Settings page URL */
-					__( '<small>Set your Google API key in <a target="_blank" href="%s">JupiterX Settings <i class="fa fa-external-link-square"></i></a></small>.', 'jupiterx-core' ),
-					esc_url( Settings::get_settings_tab_url( 'raven' ) )
+					/* translators: %s: JupiterX Control Panel integrations settings URL */
+					__( '<small>Set your Google API key in <a target="_blank" href="%s">JupiterX Integrations <i class="fa fa-external-link-square"></i></a></small>.', 'jupiterx-core' ),
+					esc_url( jupiterx_core_get_integrations_settings_url() )
 				),
 				'condition' => [
 					'type' => 'address',

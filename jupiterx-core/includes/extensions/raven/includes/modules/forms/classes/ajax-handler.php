@@ -441,14 +441,15 @@ class Ajax_Handler {
 				$new_file       = trailingslashit( $uploads_dir ) . $filename;
 				// --- END SECURITY PATCH ---
 
-				if ( ! is_dir( $uploads_dir ) || ! is_writable( $uploads_dir ) ) {
+				if ( ! is_dir( $uploads_dir ) || ! wp_is_writable( $uploads_dir ) ) {
 					$this
 						->add_response( 'errors', __( 'Upload directory is not writable or does not exist.', 'jupiterx-core' ), $field['_id'] )
 						->set_success( false );
 					return $this;
 				}
 
-				$move_new_file = @move_uploaded_file( $file['tmp_name'], $new_file );
+				// phpcs:ignore Generic.PHP.ForbiddenFunctions.Found -- Validated path and extension; core has no direct equivalent for this flow.
+				$move_new_file = move_uploaded_file( $file['tmp_name'], $new_file );
 
 				if ( false === $move_new_file ) {
 					$this
@@ -458,7 +459,8 @@ class Ajax_Handler {
 				}
 
 				// Set correct file permissions.
-				@chmod( $new_file, 0644 );
+				// phpcs:ignore WordPress.WP.AlternativeFunctions.file_system_operations_chmod -- Standard permission on uploaded file in uploads directory.
+				chmod( $new_file, 0644 );
 
 				if ( ! isset( $this->uploaded_files[ $id ] ) ) {
 					$this->uploaded_files[ $id ] = [];

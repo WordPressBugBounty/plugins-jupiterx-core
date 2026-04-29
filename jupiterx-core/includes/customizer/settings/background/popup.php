@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter Backgrounds popup and tabs to the WordPress Customizer.
  *

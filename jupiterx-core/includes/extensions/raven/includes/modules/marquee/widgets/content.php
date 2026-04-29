@@ -480,13 +480,25 @@ class Content extends Marquee {
 
 		$content = $this->render_marquee_content( $items );
 		?>
-		<div <?php echo $this->get_render_attribute_string( 'content-container' ); ?>>
-			<div <?php echo $this->get_render_attribute_string( 'content' ); ?>>
+		<div <?php
+		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+		echo $this->get_render_attribute_string( 'content-container' );
+		?>>
+			<div <?php
+			// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+			echo $this->get_render_attribute_string( 'content' );
+			?>>
 				<?php $this->$before_gradient_function(); ?>
-				<div <?php echo $this->get_render_attribute_string( 'content-wrapper' ); ?>>
+				<div <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->get_render_attribute_string( 'content-wrapper' );
+				?>>
 					<?php \Elementor\Utils::print_unescaped_internal_string( $content ); ?>
 				</div>
-				<div <?php echo $this->get_render_attribute_string( 'duplicated-content-wrapper' ); ?>>
+				<div <?php
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->get_render_attribute_string( 'duplicated-content-wrapper' );
+				?>>
 					<?php \Elementor\Utils::print_unescaped_internal_string( $content ); ?>
 				</div>
 				<?php $this->$after_gradient_function(); ?>

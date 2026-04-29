@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 // phpcs:ignoreFile
 
 add_filter( 'kirki_config', function( $args ) {

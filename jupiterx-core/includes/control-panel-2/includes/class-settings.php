@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Settings API: JupiterX_Core_Control_Panel_Settings base class
  *
@@ -50,10 +51,6 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Settings' ) ) {
 				);
 			}
 
-			if ( 'flush' === $type ) {
-				$this->flush();
-			}
-
 			if ( 'save' === $type ) {
 				$this->save();
 			}
@@ -65,18 +62,6 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Settings' ) ) {
 		}
 
 		/**
-		 * Flush assets cache.
-		 *
-		 * @since 1.18.0
-		 */
-		public function flush() {
-
-			jupiterx_core_flush_cache();
-
-			wp_send_json_success( esc_html__( 'Assets flushed successfully.', 'jupiterx-core' ) );
-		}
-
-		/**
 		 * Save settings.
 		 *
 		 * @since 1.18.0
@@ -84,9 +69,11 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Settings' ) ) {
 		public function save() {
 			$fields = jupiterx_post( 'fields' );
 
-			if ( ! $fields ) {
+			if ( ! $fields || ! is_array( $fields ) ) {
 				wp_send_json_error( esc_html__( 'Fields param is missing.', 'jupiterx-core' ) );
 			}
+
+			$fields = (array) $fields;
 
 			if ( ! jupiterx_is_pro() ) {
 				$pro_fields = [
@@ -99,6 +86,45 @@ if ( ! class_exists( 'JupiterX_Core_Control_Panel_Settings' ) ) {
 
 				foreach ( $pro_fields as $name ) {
 					unset( $fields[ $name ] );
+				}
+			}
+
+			// Elementor settings below are stored as WordPress options, not JupiterX theme options.
+			if ( class_exists( '\Elementor\Plugin' ) ) {
+				$elementor_bridge = JupiterX_Core_Control_Panel_Elementor_Settings_Bridge::get_instance();
+
+				if ( isset( $fields['elementor_cpt_support'] ) ) {
+					$cpt_raw = $fields['elementor_cpt_support'];
+					unset( $fields['elementor_cpt_support'] );
+					if ( ! is_array( $cpt_raw ) ) {
+						$cpt_raw = [];
+					}
+					$elementor_bridge->persist_elementor_cpt_support( $cpt_raw );
+				}
+
+				$elementor_general_fields = [];
+				foreach (
+					[
+						'elementor_disable_color_schemes',
+						'elementor_disable_typography_schemes',
+						'elementor_editor_break_lines',
+						'elementor_unfiltered_files_upload',
+						'elementor_google_font',
+						'elementor_font_display',
+						'elementor_load_fa4_shim',
+						'elementor_meta_generator_tag',
+					] as $field_name
+				) {
+					if ( ! array_key_exists( $field_name, $fields ) ) {
+						continue;
+					}
+
+					$elementor_general_fields[ $field_name ] = $fields[ $field_name ];
+					unset( $fields[ $field_name ] );
+				}
+
+				if ( ! empty( $elementor_general_fields ) ) {
+					$elementor_bridge->persist_elementor_general_settings( $elementor_general_fields );
 				}
 			}
 

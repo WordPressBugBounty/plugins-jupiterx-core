@@ -7,6 +7,7 @@ use JupiterX_Core\Raven\Base\Module_base;
 use Elementor\Controls_Manager;
 use Elementor\Group_Control_Background;
 use Elementor\Plugin;
+use JupiterX_Core\Raven\Controls\Query;
 
 class Module extends Module_Base {
 
@@ -36,6 +37,24 @@ class Module extends Module_Base {
 
 		if ( empty( $current_header_data ) ) {
 			return $data;
+		}
+
+		$header_type            = isset( $current_header_data['header_behavior'] ) ? $current_header_data['header_behavior'] : '';
+		$header_sticky_template = isset( $current_header_data['header_sticky_template'] ) ? $current_header_data['header_sticky_template'] : '';
+
+		if ( 'sticky' === $header_type && $header_sticky_template ) {
+			//Update header classes
+			add_filter( 'jupiterx_header_classes', function( $classes ) {
+				$classes[] = 'jupiterx-header-sticky-custom';
+				$classes[] = 'jupiterx-header-custom';
+				return $classes;
+			} );
+
+			//Update Sticky template Id
+			add_filter( 'jupiterx_header_template_sticky_id', function( $id ) use ( $header_sticky_template ) {
+				$id = $header_sticky_template;
+				return $id;
+			} );
 		}
 
 		foreach ( $current_header_data as $key => $value ) {
@@ -287,6 +306,29 @@ class Module extends Module_Base {
 					'px' => [
 						'min' => 0,
 						'max' => 500,
+					],
+				],
+				'condition' => [
+					'header_behavior' => 'sticky',
+				],
+			]
+		);
+
+		$element->add_control(
+			'header_sticky_template',
+			[
+				'label' => esc_html__( 'Sticky Header', 'jupiterx-core' ),
+				'type' => 'raven_query',
+				'options' => [],
+				'query' => [
+					'source'    => Query::QUERY_SOURCE_POST,
+					'post_type' => 'elementor_library',
+					'post_status' => 'publish',
+					'meta_query' => [
+						[
+							'key'   => '_elementor_template_type',
+							'value' => 'header',
+						],
 					],
 				],
 				'condition' => [

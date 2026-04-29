@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 
 /**
  * Use to autoload needed classes without Composer.

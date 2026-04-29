@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter blog archive popup and tabs to the WordPress Customizer.
  *

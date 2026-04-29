@@ -10,6 +10,7 @@
  */
 
 namespace Kirki\Module;
+defined( 'ABSPATH' ) || die();
 
 /**
  * Handle selective refreshes introduced in WordPress 4.5.

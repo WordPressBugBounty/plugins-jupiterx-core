@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * JupiterX_Core manage custom widget areas.
  *

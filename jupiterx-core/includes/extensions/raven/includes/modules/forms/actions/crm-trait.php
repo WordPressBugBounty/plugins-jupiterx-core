@@ -3,7 +3,6 @@ namespace JupiterX_Core\Raven\Modules\Forms\Actions;
 
 use JupiterX_Core\Raven\Modules\Forms\Classes\Ajax_Handler;
 use Elementor\Repeater as Repeater;
-use Elementor\Settings;
 
 defined( 'ABSPATH' ) || die();
 
@@ -311,10 +310,10 @@ trait Raven_Form_CRM {
 				'type'      => 'raw_html',
 				'condition' => [ "{$action}_api_key_source" => 'default' ],
 				'raw'       => sprintf(
-					/* translators: 1: Action name ,2: Settings page URL */
-					__( 'Set your %1$s API in <a target="_blank" href="%2$s">JupiterX Settings <i class="fa fa-external-link-square"></i></a>', 'jupiterx-core' ),
+					/* translators: 1: Integration name. 2: JupiterX Control Panel integrations settings URL. */
+					__( 'Set your %1$s API in <a target="_blank" href="%2$s">JupiterX Integrations <i class="fa fa-external-link-square"></i></a>', 'jupiterx-core' ),
 					$this->get_title(),
-					esc_url( Settings::get_settings_tab_url( 'raven' ) )
+					esc_url( jupiterx_core_get_integrations_settings_url() )
 				),
 				'content_classes' => 'elementor-panel-alert elementor-panel-alert-danger',
 			] );
@@ -348,7 +347,7 @@ trait Raven_Form_CRM {
 					],
 				],
 			],
-		] );
+		], [ 'overwrite' => true ] );
 	}
 
 	/**

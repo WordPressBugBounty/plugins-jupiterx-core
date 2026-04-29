@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter Go to Top popup and tabs to the WordPress Customizer.
  *

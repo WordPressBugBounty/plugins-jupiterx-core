@@ -1,4 +1,5 @@
 <?php
+defined( 'ABSPATH' ) || die();
 /**
  * Add Jupiter settings for Fonts & Typography > Typography > Heading 6 popup to the WordPress Customizer.
  *

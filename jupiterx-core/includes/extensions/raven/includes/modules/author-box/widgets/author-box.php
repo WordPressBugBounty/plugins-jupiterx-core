@@ -592,12 +592,13 @@ class Author_Box extends Base_Widget {
 	}
 
 	protected function render() {
-		$user_id = get_post_field( 'post_author', get_the_ID() );
+		global $post;
+
+		$user_id = (int) get_post_field( 'post_author', get_the_ID() );
 
 		// Integrate with layout builder.
-		if ( empty( $user_id ) && ! empty( $post ) ) {
-			global $post;
-			$user_id = $post->post_author;
+		if ( empty( $user_id ) && $post instanceof \WP_Post ) {
+			$user_id = (int) $post->post_author;
 		}
 
 		$settings               = $this->get_active_settings();
