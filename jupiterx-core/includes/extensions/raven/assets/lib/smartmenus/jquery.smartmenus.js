@@ -188,8 +188,20 @@
 					initMouseDetection();
 				}
 
-				// init sub menus
-				this.$firstSub = this.$root.find('ul.submenu, ul.sub-menu').each(function() { self.menuInit($(this)); }).eq(0);
+				// init sub menus — only ULs that belong to this menu tree. Nested menus (e.g. Advanced
+				// Menu inside another menu's dropdown / saved section) also use ul.submenu; including
+				// them here makes menuInit() walk past the DOM and throw on null parentNode.
+				this.$firstSub = this.$root.find('ul.submenu, ul.sub-menu').filter(function() {
+					var root = self.$root[0],
+						par = this;
+					while (par !== root) {
+						if (!par.parentNode || !par.parentNode.parentNode) {
+							return false;
+						}
+						par = par.parentNode.parentNode;
+					}
+					return true;
+				}).each(function() { self.menuInit($(this)); }).eq(0);
 
 				this.$firstLink = this.$root.find('a').eq(0);
 

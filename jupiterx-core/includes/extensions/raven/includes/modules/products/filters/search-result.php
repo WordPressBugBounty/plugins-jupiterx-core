@@ -21,13 +21,15 @@ class Search_Result extends Filter_Base {
 	}
 
 	public static function get_filter_args() {
+		$search_query = filter_input( INPUT_GET, 's' );
+
 		//If it is editor or preview or not search archive page, it will return default query since we don't have queried object on these pages.
-		if ( Module::is_editor_or_preview() || ! is_search() ) {
+		if ( Module::is_editor_or_preview() || ! $search_query ) {
 			return [];
 		}
 
 		return [
-			's' => get_search_query(),
+			's' => $search_query,
 		];
 	}
 }

@@ -58,6 +58,8 @@ class Acceptance extends Field_Base {
 			$attributes['checked'] = '1';
 		}
 
+		$attributes = array_merge( $attributes, $this->get_data_custom_id_attributes() );
+
 		$this->widget->add_render_attribute( 'field-' . $this->get_id(), $attributes );
 	}
 

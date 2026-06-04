@@ -3,7 +3,7 @@ Contributors: artbees
 Tags: jupiter, jupiterx
 Requires at least: 5.6
 Tested up to: 6.9
-Stable tag: 4.15.0
+Stable tag: 4.50.0
 Requires PHP: 7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +29,42 @@ It's worth mentioning that, some of the features are disabled for the Jupiter X 
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+
+= v4.50.0
+* Added the Stock Status widget for single product pages.
+* Added the JupiterX Bar Chart widget.
+* Added the JupiterX Line Chart widget.
+* Added the JupiterX Pie Chart widget.
+* Added the JupiterX Timeline widget.
+* Added the Loop Grid widget.
+* Added the Loop Carousel widget.
+* Added the Loop Filter widget.
+* Added the Loop Term Title widget.
+* Added the Loop Term Description widget.
+* Added the Loop Term Count widget.
+* Improved the Portfolio feature, making it more modular and customizable.
+* Improved session handling for the JupiterX Popup User Type trigger.
+* Improved validation for required form fields.
+* Improved the installation process for ready-made templates.
+* Optimized the "Add Display Conditions" menu in the Elementor editor.
+* Added support for displaying post date meta based on the site's language.
+* Fixed a header issue when the behavior is set to "Fixed".
+* Fixed a layout issue involving the Product widget and the Sellkit Product Filter widget.
+* Fixed featured image hover effects in the Products widget when filters are applied using the Product Filter widget.
+* Fixed several issues related to the submenu arrow icon in the Advanced Menu widget.
+* Fixed custom ID rendering in the Form widget.
+* Fixed an issue related to the "jupiterx_license_checks" cron job.
+* Fixed the display of the out-of-stock label on shop pages when Simplicity Mode is enabled.
+* Fixed untranslated strings in JupiterX.
+* Fixed an issue related to reCAPTCHA v2 and WPML compatibility.
+* Fixed a scaling issue with the raven-content-switch-input-control.
+* Fixed a PHP warning related to recursive directory deletion.
+* Fixed a stretched image issue in Safari affecting the Media Carousel widget.
+* Fixed Marquee widget behavior on iPhone devices.
+* Updated the WooCommerce cart template.
+
+
+
 = 4.15.0
 * Rebuilt the Jupiter X Control Panel for a seamless experience.
 * Manage and build everything from the Jupiter X Control Panel, including the Layout Builder, popups, and other templates.

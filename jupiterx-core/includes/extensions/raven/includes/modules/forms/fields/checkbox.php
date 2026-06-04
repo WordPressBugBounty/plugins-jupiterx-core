@@ -63,20 +63,26 @@ class Checkbox extends Field_Base {
 			$option_value = $option;
 
 			if ( false !== strpos( $option, '|' ) ) {
-				list( $option_label, $option_value ) = explode( '|', $option );
+				list( $option_label, $option_value ) = explode( '|', $option, 2 );
 			}
+
+			$option_label = trim( (string) $option_label );
+			$option_value = trim( (string) $option_value );
 
 			$this->widget->add_render_attribute(
 				$element_id,
-				[
-					'type' => 'checkbox',
-					'value' => $option_value,
-					'id' => $html_id,
-					'name' => "fields[{$id}]" . ( count( $options ) > 1 ? '[]' : '' ),
-				]
+				array_merge(
+					[
+						'type' => 'checkbox',
+						'value' => $option_value,
+						'id' => $html_id,
+						'name' => "fields[{$id}]" . ( count( $options ) > 1 ? '[]' : '' ),
+					],
+					$this->get_data_custom_id_attributes()
+				)
 			);
 
-			$html .= '<span class="raven-field-option raven-field-option-checkbox"><input ' . $this->widget->get_render_attribute_string( $element_id ) . '  class="raven-field"> <label for="' . esc_attr( $html_id ) . '" class="raven-field-label">' . wp_kses_post( $option_label ) . '</label></span>';
+			$html .= '<span class="raven-field-option raven-field-option-checkbox"><input ' . $this->widget->get_render_attribute_string( $element_id ) . '  class="raven-field"> <label for="' . esc_attr( $html_id ) . '" class="raven-field-label">' . wp_kses_post( $this->translate_field_option_label( $option_label, $key ) ) . '</label></span>';
 		}
 
 		$html .= '</div>';

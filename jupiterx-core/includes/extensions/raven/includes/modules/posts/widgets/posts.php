@@ -223,6 +223,14 @@ class Posts extends Base_Widget {
 			$args['lang'] = $lang;
 		}
 
+		if (
+			class_exists( 'SitePress' ) &&
+			! empty( $lang ) &&
+			apply_filters( 'wpml_language_is_active', null, $lang )
+		) {
+			do_action( 'wpml_switch_language', $lang );
+		}
+
 		if ( $is_archive_template ) {
 			global $wp_query;
 

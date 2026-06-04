@@ -100,6 +100,10 @@ class Module {
 			return new \WP_Error( 'template_data_error', 'An invalid data was returned.' );
 		}
 
+		if ( isset( $template_content['templates'] ) && is_array( $template_content['templates'] ) ) {
+			return $template_content['templates'];
+		}
+
 		return $template_content;
 	}
 

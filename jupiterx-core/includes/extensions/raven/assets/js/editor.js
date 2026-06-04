@@ -29,35 +29,28 @@ const JupiterxConditionManager = function () {
   function addButton() {
     // Jupiterx condition button.
     const btn = $('#jupiterx-editor-condition-show-conditions-button').html();
-    if ('active' === elementor.config.jx_editor_top_bar || 'default' === elementor.config.jx_editor_top_bar) {
-      const editorHeader = $('.MuiBox-root'),
-        trigger = editorHeader.find('button');
-      trigger.parent().prev().addClass('layout_builder_publish_button');
-      let btnClass = 'jx-editor-modal-trigger-top jx-editor-modal-trigger-top-light';
-      if ('dark' === elementor.config.settings.editorPreferences.settings.ui_theme) {
-        btnClass = 'jx-editor-modal-trigger-top jx-editor-modal-trigger-top-dark';
-      }
-      trigger.on('click', function () {
-        setTimeout(() => {
-          const span = $('.MuiMenu-list[role="menu"]').find('span').filter(function () {
-            return $(this).text() === 'Display Conditions';
-          });
-          if (0 < span.length) {
-            span.parent().parent().remove();
-          }
-          const divider = $('.MuiMenu-list[role="menu"]').find('hr').first().clone();
-          $('.MuiMenu-list[role="menu"]').children().first().after(btn);
-          $('.MuiMenu-list[role="menu"]').find('#jupiterx-editor-conditions-trigger').attr('class', btnClass);
-          $('#jupiterx-editor-conditions-trigger').on('click', openModal);
-          $('.MuiMenu-list[role="menu"]').children().first().after(divider);
-        }, 300);
-      });
+    const editorHeader = $('.MuiBox-root'),
+      trigger = editorHeader.find('button');
+    trigger.parent().prev().addClass('layout_builder_publish_button');
+    let btnClass = 'jx-editor-modal-trigger-top jx-editor-modal-trigger-top-light';
+    if ('dark' === elementor.config.settings.editorPreferences.settings.ui_theme) {
+      btnClass = 'jx-editor-modal-trigger-top jx-editor-modal-trigger-top-dark';
     }
-    if ('inactive' === elementor.config.jx_editor_top_bar) {
-      // Place button in menu.
-      $(btn).insertBefore('#elementor-panel-footer-sub-menu-item-save-template');
-      $('#jupiterx-editor-conditions-trigger').on('click', openModal);
-    }
+    trigger.on('click', function () {
+      setTimeout(() => {
+        const span = $('.MuiMenu-list[role="menu"]').find('span').filter(function () {
+          return $(this).text() === 'Display Conditions';
+        });
+        if (0 < span.length) {
+          span.parent().parent().remove();
+        }
+        const divider = $('.MuiMenu-list[role="menu"]').find('hr').first().clone();
+        $('.MuiMenu-list[role="menu"]').children().first().after(btn);
+        $('.MuiMenu-list[role="menu"]').find('#jupiterx-editor-conditions-trigger').attr('class', btnClass);
+        $('#jupiterx-editor-conditions-trigger').on('click', openModal);
+        $('.MuiMenu-list[role="menu"]').children().first().after(divider);
+      }, 300);
+    });
   }
   function openModal() {
     // Create modal if isn't created already.
@@ -346,17 +339,15 @@ const JupiterxConditionManager = function () {
         elementor.config.jx_conditions = true;
       }
     });
-    if ('active' === elementor.config.jx_editor_top_bar || 'default' === elementor.config.jx_editor_top_bar) {
-      const editorHeader = $('.MuiBox-root'),
-        trigger = editorHeader.find('.MuiButtonGroup-root').last().find('button').first();
-      trigger.on('click', function () {
-        if (false === elementor.config.jx_conditions) {
-          $('#jupiterx-editor-conditions-trigger').trigger('click');
-          elementor.config.jx_conditions = true;
-          openModal();
-        }
-      });
-    }
+    const editorHeader = $('.MuiBox-root'),
+      trigger = editorHeader.find('.MuiButtonGroup-root').last().find('button').first();
+    trigger.on('click', function () {
+      if (false === elementor.config.jx_conditions) {
+        $('#jupiterx-editor-conditions-trigger').trigger('click');
+        elementor.config.jx_conditions = true;
+        openModal();
+      }
+    });
   }
 
   // Adding conflict check after adding& changing each select.
@@ -477,6 +468,9 @@ const JupiterxConditionManager = function () {
     if ('none' === elementor.config.jx_layout) {
       return;
     }
+    if (isLoopItemTemplate()) {
+      return;
+    }
     const urlParams = new URLSearchParams(window.location.search);
     const isLayoutBuilder = urlParams.get('layout-builder');
     if (null === isLayoutBuilder) {
@@ -486,13 +480,20 @@ const JupiterxConditionManager = function () {
     elementor.on('panel:init', initializeFunctions);
     elementor.on('document:loaded', onPreviewLoaded);
   }
+  function isLoopItemTemplate() {
+    const loopTypes = ['jupiterx-loop-item', 'loop-item'];
+    if (loopTypes.includes(elementor.config.jx_layout)) {
+      return true;
+    }
+    return loopTypes.includes(elementor.config.initial_document?.type);
+  }
   return {
     init
   };
 };
 var _default = exports.default = JupiterxConditionManager();
 
-},{"@wordpress/i18n":88}],2:[function(require,module,exports){
+},{"@wordpress/i18n":90}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -732,7 +733,7 @@ const sellkitPreview = function () {
 };
 var _default = exports.default = sellkitPreview();
 
-},{"@wordpress/i18n":88}],6:[function(require,module,exports){
+},{"@wordpress/i18n":90}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -891,7 +892,7 @@ const Templates = function () {
 };
 var _default = exports.default = Templates();
 
-},{"@wordpress/i18n":88}],7:[function(require,module,exports){
+},{"@wordpress/i18n":90}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1570,6 +1571,7 @@ var _default = exports.default = Query;
         'raven-advanced-nav-menu': checkWidgetIsActive('advanced-nav-menu') && require('./widgets/advanced-nav-menu').default,
         'raven-media-gallery': checkWidgetIsActive('media-gallery') && require('./widgets/media-gallery').default,
         'raven-shopping-cart': checkWidgetIsActive('shopping-cart') && require('./widgets/shopping-cart').default,
+        'raven-product-stock-status': checkWidgetIsActive('product-stock-status') && require('./widgets/product-stock-status').default,
         'raven-register': checkWidgetIsActive('forms') && require('./widgets/register').default,
         'raven-site-logo': checkWidgetIsActive('site-logo') && require('./widgets/site-logo').default
       };
@@ -1767,7 +1769,7 @@ var _default = exports.default = Query;
   window.ravenEditor = new RavenEditor();
 })(jQuery, window);
 
-},{"./components/conditions":1,"./components/custom-css":3,"./components/custom-css-widget":2,"./components/preview-settings":4,"./components/sellkit-preview":5,"./components/templates":6,"./components/woocommerce-settings":7,"./controls/checkbox":8,"./controls/file-uploader":9,"./controls/media":10,"./controls/presets":11,"./controls/query":12,"./global-widget/global-widget":20,"./utils/form/form":36,"./utils/module":41,"./utils/video-playlist/video-playlist":45,"./widgets/advanced-nav-menu":46,"./widgets/categories":47,"./widgets/flip-box":48,"./widgets/form":49,"./widgets/media-gallery":63,"./widgets/my-account":64,"./widgets/posts":65,"./widgets/register":66,"./widgets/shopping-cart":67,"./widgets/site-logo":68,"./widgets/stripe-button":69}],14:[function(require,module,exports){
+},{"./components/conditions":1,"./components/custom-css":3,"./components/custom-css-widget":2,"./components/preview-settings":4,"./components/sellkit-preview":5,"./components/templates":6,"./components/woocommerce-settings":7,"./controls/checkbox":8,"./controls/file-uploader":9,"./controls/media":10,"./controls/presets":11,"./controls/query":12,"./global-widget/global-widget":20,"./utils/form/form":36,"./utils/module":41,"./utils/video-playlist/video-playlist":45,"./widgets/advanced-nav-menu":46,"./widgets/categories":47,"./widgets/flip-box":48,"./widgets/form":49,"./widgets/media-gallery":64,"./widgets/my-account":65,"./widgets/posts":66,"./widgets/product-stock-status":67,"./widgets/register":68,"./widgets/shopping-cart":69,"./widgets/site-logo":70,"./widgets/stripe-button":71}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1949,7 +1951,7 @@ class Link extends window.$e.modules.editor.document.CommandHistoryBase {
 exports.Link = Link;
 var _default = exports.default = Link;
 
-},{"../../global-widget":20,"@wordpress/i18n":88}],18:[function(require,module,exports){
+},{"../../global-widget":20,"@wordpress/i18n":90}],18:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2008,7 +2010,7 @@ class Unlink extends window.$e.modules.editor.document.CommandHistoryBase {
 exports.Unlink = Unlink;
 var _default = exports.default = Unlink;
 
-},{"../../global-widget":20,"@wordpress/i18n":88}],19:[function(require,module,exports){
+},{"../../global-widget":20,"@wordpress/i18n":90}],19:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2235,7 +2237,7 @@ const GlobalWidget = elementorModules.editor.utils.Module.extend({
 const globalWidgetObject = new GlobalWidget();
 var _default = exports.default = globalWidgetObject;
 
-},{"./component":19,"./views/global-templates-view":30,"./views/panel-page":32,"./widget/model":33,"./widget/view":34,"@wordpress/i18n":88}],21:[function(require,module,exports){
+},{"./component":19,"./views/global-templates-view":30,"./views/panel-page":32,"./widget/model":33,"./widget/view":34,"@wordpress/i18n":90}],21:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2617,7 +2619,7 @@ module.exports = window.Marionette.ItemView.extend({
   }
 });
 
-},{"@wordpress/i18n":88}],33:[function(require,module,exports){
+},{"@wordpress/i18n":90}],33:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -2848,7 +2850,7 @@ class FormFieldsSanitizeCustomId extends window.$e.modules.hookData.Dependency {
     return 'repeater';
   }
   getConditions(args) {
-    return undefined !== args.settings.field_custom_id;
+    return Object.prototype.hasOwnProperty.call(args.settings || {}, 'field_custom_id');
   }
   apply(args) {
     const {
@@ -2972,21 +2974,44 @@ class FormFieldsUpdateShortCode extends window.$e.modules.hookUI.After {
   getContainerType() {
     return 'repeater';
   }
+
+  /**
+   * Elementor V1/V2/One: `isPartOf( 'panel/editor' )` is often false in newer editors, which
+   * blocked this hook and left the shortcode input stale while typing Custom ID.
+   */
+  isEditingContext() {
+    return Boolean(window.elementor?.config?.document);
+  }
   getConditions(args) {
-    if (!window.$e.routes.isPartOf('panel/editor') || undefined === args.settings.field_custom_id) {
+    if (!this.isEditingContext()) {
       return false;
     }
-    return true;
+    const settings = args.settings || {};
+    if (Object.prototype.hasOwnProperty.call(settings, 'field_custom_id')) {
+      return true;
+    }
+    return false;
   }
   apply(args) {
     const {
       containers = [args.container]
     } = args;
     containers.forEach(container => {
-      const panelView = container.panel.getControlView('fields'),
-        currentItemView = panelView.children.find(view => container.id === view.model.get('_id')),
-        shortcodeView = currentItemView.children.find(view => 'shortcode' === view.model.get('name'));
-      shortcodeView.render();
+      if (!container?.panel) {
+        return;
+      }
+      const panelView = container.panel.getControlView('fields');
+      if (!panelView?.children) {
+        return;
+      }
+      const currentItemView = panelView.children.find(view => container.id === view.model.get('_id'));
+      if (!currentItemView?.children) {
+        return;
+      }
+      const shortcodeView = currentItemView.children.find(view => 'shortcode' === view.model.get('name'));
+      if (shortcodeView) {
+        shortcodeView.render();
+      }
     });
   }
 }
@@ -3362,7 +3387,7 @@ function _default(panel, model, view) {
   });
 }
 
-},{"../utils/module":41,"@wordpress/i18n":88}],47:[function(require,module,exports){
+},{"../utils/module":41,"@wordpress/i18n":90}],47:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3468,7 +3493,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = _default;
+var _formShortcodeLiveSync = _interopRequireDefault(require("./forms/form-shortcode-live-sync"));
+function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
 function _default(panel, model, view) {
+  (0, _formShortcodeLiveSync.default)();
   const formActions = {
     mailchimp: require('./forms/mailchimp').default,
     activecampaign: require('./forms/activecampaign').default,
@@ -3488,7 +3516,7 @@ function _default(panel, model, view) {
   }
 }
 
-},{"./forms/activecampaign":50,"./forms/convertkit":51,"./forms/discord":53,"./forms/drip":54,"./forms/email":55,"./forms/email2":56,"./forms/getresponse":57,"./forms/hubspot":58,"./forms/mailchimp":59,"./forms/mailerlite":60,"./forms/steps":61,"./forms/tel-field":62}],50:[function(require,module,exports){
+},{"./forms/activecampaign":50,"./forms/convertkit":51,"./forms/discord":53,"./forms/drip":54,"./forms/email":55,"./forms/email2":56,"./forms/form-shortcode-live-sync":57,"./forms/getresponse":58,"./forms/hubspot":59,"./forms/mailchimp":60,"./forms/mailerlite":61,"./forms/steps":62,"./forms/tel-field":63}],50:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -3903,7 +3931,7 @@ var _default = exports.default = _module.default.extend({
   updateAdditionalControls() {}
 });
 
-},{"../../../utils/module":41,"@wordpress/i18n":88}],53:[function(require,module,exports){
+},{"../../../utils/module":41,"@wordpress/i18n":90}],53:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4067,6 +4095,55 @@ function _default(panel, model, view) {
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+exports.default = formShortcodeLiveSync;
+/**
+ * Sync the read-only Shortcode preview while typing Custom ID.
+ *
+ * shortcodeControl.render() is not enough on each keystroke: the RAW_HTML template uses
+ * view.container.settings.get('field_custom_id'), and Elementor updates that setting on debounce/blur,
+ * so re-rendering still shows the last saved value (often empty) while typing.
+ *
+ * We copy the live :input value into input.elementor-form-field-shortcode within the same repeater row.
+ */
+function formatFieldShortcode(idValue) {
+  const raw = String(idValue ?? '').replace(/\\/g, '').replace(/"/g, '');
+  return `[field id="${raw}"]`;
+}
+function updateShortcodeFromIdInput($idInput) {
+  const $row = $idInput.closest('.elementor-repeater-row-controls');
+  if (!$row.length) {
+    return;
+  }
+  const $shortcodeInput = $row.find('input.elementor-form-field-shortcode');
+  if (!$shortcodeInput.length) {
+    return;
+  }
+  const text = formatFieldShortcode($idInput.val());
+  $shortcodeInput.val(text);
+  $shortcodeInput.attr('value', text);
+}
+
+/**
+ * One delegated listener on document.body so it works for V1/V2 panel DOM and kit editor.
+ */
+function formShortcodeLiveSync() {
+  if (window._ravenFormFieldShortcodeLiveSync) {
+    return;
+  }
+  window._ravenFormFieldShortcodeLiveSync = true;
+  const ns = '.ravenFormFieldShortcodeLiveSync';
+  jQuery(document.body).off('input' + ns + ' change' + ns);
+  jQuery(document.body).on('input' + ns + ' change' + ns, '.elementor-control-field_custom_id :input', function () {
+    updateShortcodeFromIdInput(jQuery(this));
+  });
+}
+
+},{}],58:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 exports.default = _default;
 var _crmBase = _interopRequireDefault(require("./crm/crm-base"));
 function _interopRequireDefault(e) { return e && e.__esModule ? e : { default: e }; }
@@ -4089,7 +4166,7 @@ function _default(panel, model, view) {
   });
 }
 
-},{"./crm/crm-base":52}],58:[function(require,module,exports){
+},{"./crm/crm-base":52}],59:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4152,7 +4229,7 @@ function _default(panel, model, view) {
   });
 }
 
-},{"./../../utils/module":41}],59:[function(require,module,exports){
+},{"./../../utils/module":41}],60:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4302,7 +4379,7 @@ function _default(panel, model, view) {
   });
 }
 
-},{"../../utils/form/form":36}],60:[function(require,module,exports){
+},{"../../utils/form/form":36}],61:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4322,7 +4399,7 @@ function _default(panel, model, view) {
   });
 }
 
-},{"./crm/crm-base":52}],61:[function(require,module,exports){
+},{"./crm/crm-base":52}],62:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4442,7 +4519,7 @@ function _default(panel, model, view) {
   });
 }
 
-},{"../../utils/form/form":36}],62:[function(require,module,exports){
+},{"../../utils/form/form":36}],63:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4500,7 +4577,7 @@ function _default(panel, model, view) {
   });
 }
 
-},{"../../utils/form/form":36,"intl-tel-input":91}],63:[function(require,module,exports){
+},{"../../utils/form/form":36,"intl-tel-input":93}],64:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4620,7 +4697,7 @@ function _default(panel, model, view) {
   });
 }
 
-},{"../utils/module":41}],64:[function(require,module,exports){
+},{"../utils/module":41}],65:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4756,7 +4833,7 @@ function _default(panel, model, view) {
   });
 }
 
-},{"../utils/module":41}],65:[function(require,module,exports){
+},{"../utils/module":41}],66:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4791,7 +4868,58 @@ function _default(panel, model, view) {
   });
 }
 
-},{"../utils/module":41}],66:[function(require,module,exports){
+},{"../utils/module":41}],67:[function(require,module,exports){
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = _default;
+/**
+ * Sync editor preview when styling In stock / Out of stock sections (Display: Always).
+ */
+function _default(panel, model, view) {
+  const handler = function (activeSection, section) {
+    if (section.model.id !== model.get('id')) {
+      return;
+    }
+    let preview = null;
+    if ('section_style_in_stock' === activeSection) {
+      preview = 'in_stock';
+    } else if ('section_style_out_of_stock' === activeSection) {
+      preview = 'out_of_stock';
+    }
+    if (!preview) {
+      return;
+    }
+    const settings = view.getEditModel().get('settings');
+    if ('both' !== settings.get('visibility_mode')) {
+      return;
+    }
+    if (preview === settings.get('editor_preview_state')) {
+      return;
+    }
+    const container = view.getContainer ? view.getContainer() : null;
+    if (!container || typeof window.$e === 'undefined') {
+      return;
+    }
+    window.$e.run('document/elements/settings', {
+      container,
+      settings: {
+        editor_preview_state: preview
+      },
+      options: {
+        external: true
+      }
+    });
+  };
+  elementor.channels.editor.on('section:activated', handler);
+  view.on('destroy', () => {
+    elementor.channels.editor.off('section:activated', handler);
+  });
+}
+
+},{}],68:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4918,7 +5046,7 @@ function _default(panel, model, view) {
   });
 }
 
-},{"../utils/form/component":35,"../utils/module":41}],67:[function(require,module,exports){
+},{"../utils/form/component":35,"../utils/module":41}],69:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -4955,7 +5083,7 @@ function _default(panel, model, view) {
   });
 }
 
-},{"../utils/module":41}],68:[function(require,module,exports){
+},{"../utils/module":41}],70:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5082,7 +5210,7 @@ function _default(panel, model) {
   }
 }
 
-},{}],69:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5138,14 +5266,14 @@ function _default(panel, model, view) {
   });
 }
 
-},{"../utils/module":41}],70:[function(require,module,exports){
+},{"../utils/module":41}],72:[function(require,module,exports){
 function _interopRequireDefault(e) {
   return e && e.__esModule ? e : {
     "default": e
   };
 }
 module.exports = _interopRequireDefault, module.exports.__esModule = true, module.exports["default"] = module.exports;
-},{}],71:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -5182,7 +5310,7 @@ function compile( expression ) {
 
 module.exports = compile;
 
-},{"@tannin/evaluate":72,"@tannin/postfix":74}],72:[function(require,module,exports){
+},{"@tannin/evaluate":74,"@tannin/postfix":76}],74:[function(require,module,exports){
 'use strict';
 
 /**
@@ -5298,7 +5426,7 @@ function evaluate( postfix, variables ) {
 
 module.exports = evaluate;
 
-},{}],73:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -5324,7 +5452,7 @@ function pluralForms( expression ) {
 
 module.exports = pluralForms;
 
-},{"@tannin/compile":71}],74:[function(require,module,exports){
+},{"@tannin/compile":73}],76:[function(require,module,exports){
 'use strict';
 
 var PRECEDENCE, OPENERS, TERMINATORS, PATTERN;
@@ -5454,7 +5582,7 @@ function postfix( expression ) {
 
 module.exports = postfix;
 
-},{}],75:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -5555,7 +5683,7 @@ function createAddHook(hooks, storeKey) {
 }
 var _default = exports.default = createAddHook;
 
-},{"./validateHookName.js":84,"./validateNamespace.js":85,"@babel/runtime/helpers/interopRequireDefault":70}],76:[function(require,module,exports){
+},{"./validateHookName.js":86,"./validateNamespace.js":87,"@babel/runtime/helpers/interopRequireDefault":72}],78:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5581,7 +5709,7 @@ function createCurrentHook(hooks, storeKey) {
 }
 var _default = exports.default = createCurrentHook;
 
-},{}],77:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -5624,7 +5752,7 @@ function createDidHook(hooks, storeKey) {
 }
 var _default = exports.default = createDidHook;
 
-},{"./validateHookName.js":84,"@babel/runtime/helpers/interopRequireDefault":70}],78:[function(require,module,exports){
+},{"./validateHookName.js":86,"@babel/runtime/helpers/interopRequireDefault":72}],80:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5666,7 +5794,7 @@ function createDoingHook(hooks, storeKey) {
 }
 var _default = exports.default = createDoingHook;
 
-},{}],79:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -5707,7 +5835,7 @@ function createHasHook(hooks, storeKey) {
 }
 var _default = exports.default = createHasHook;
 
-},{}],80:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -5774,7 +5902,7 @@ function createHooks() {
 }
 var _default = exports.default = createHooks;
 
-},{"./createAddHook":75,"./createCurrentHook":76,"./createDidHook":77,"./createDoingHook":78,"./createHasHook":79,"./createRemoveHook":81,"./createRunHook":82,"@babel/runtime/helpers/interopRequireDefault":70}],81:[function(require,module,exports){
+},{"./createAddHook":77,"./createCurrentHook":78,"./createDidHook":79,"./createDoingHook":80,"./createHasHook":81,"./createRemoveHook":83,"./createRunHook":84,"@babel/runtime/helpers/interopRequireDefault":72}],83:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -5861,7 +5989,7 @@ function createRemoveHook(hooks, storeKey, removeAll = false) {
 }
 var _default = exports.default = createRemoveHook;
 
-},{"./validateHookName.js":84,"./validateNamespace.js":85,"@babel/runtime/helpers/interopRequireDefault":70}],82:[function(require,module,exports){
+},{"./validateHookName.js":86,"./validateNamespace.js":87,"@babel/runtime/helpers/interopRequireDefault":72}],84:[function(require,module,exports){
 (function (process){(function (){
 "use strict";
 
@@ -5926,7 +6054,7 @@ function createRunHook(hooks, storeKey, returnFirstArg = false) {
 var _default = exports.default = createRunHook;
 
 }).call(this)}).call(this,require('_process'))
-},{"_process":93}],83:[function(require,module,exports){
+},{"_process":95}],85:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -6019,7 +6147,7 @@ exports.removeAction = removeAction;
 exports.addFilter = addFilter;
 exports.addAction = addAction;
 
-},{"./createHooks":80,"@babel/runtime/helpers/interopRequireDefault":70}],84:[function(require,module,exports){
+},{"./createHooks":82,"@babel/runtime/helpers/interopRequireDefault":72}],86:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6055,7 +6183,7 @@ function validateHookName(hookName) {
 }
 var _default = exports.default = validateHookName;
 
-},{}],85:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6085,7 +6213,7 @@ function validateNamespace(namespace) {
 }
 var _default = exports.default = validateNamespace;
 
-},{}],86:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -6494,7 +6622,7 @@ const createI18n = (initialData, initialDomain, hooks) => {
 };
 exports.createI18n = createI18n;
 
-},{"@babel/runtime/helpers/interopRequireDefault":70,"tannin":95}],87:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":72,"tannin":97}],89:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6646,7 +6774,7 @@ const isRTL = exports.isRTL = i18n.isRTL.bind(i18n);
  */
 const hasTranslation = exports.hasTranslation = i18n.hasTranslation.bind(i18n);
 
-},{"./create-i18n":86,"@wordpress/hooks":83}],88:[function(require,module,exports){
+},{"./create-i18n":88,"@wordpress/hooks":85}],90:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -6778,7 +6906,7 @@ function _interopRequireWildcard(e, r) {
   return n.default = e, t && t.set(e, n), n;
 }
 
-},{"./create-i18n":86,"./default-i18n":87,"./sprintf":89}],89:[function(require,module,exports){
+},{"./create-i18n":88,"./default-i18n":89,"./sprintf":91}],91:[function(require,module,exports){
 "use strict";
 
 var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
@@ -6823,7 +6951,7 @@ function sprintf(format, ...args) {
   }
 }
 
-},{"@babel/runtime/helpers/interopRequireDefault":70,"memize":92,"sprintf-js":94}],90:[function(require,module,exports){
+},{"@babel/runtime/helpers/interopRequireDefault":72,"memize":94,"sprintf-js":96}],92:[function(require,module,exports){
 /*
  * International Telephone Input v17.0.21
  * https://github.com/jackocnr/intl-tel-input.git
@@ -8177,13 +8305,13 @@ function sprintf(format, ...args) {
         };
     }();
 });
-},{}],91:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 /**
  * Exposing intl-tel-input as a component
  */
 module.exports = require("./build/js/intlTelInput");
 
-},{"./build/js/intlTelInput":90}],92:[function(require,module,exports){
+},{"./build/js/intlTelInput":92}],94:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -8344,7 +8472,7 @@ function memize(fn, options) {
   return memoized;
 }
 
-},{}],93:[function(require,module,exports){
+},{}],95:[function(require,module,exports){
 // shim for using process in browser
 var process = module.exports = {};
 
@@ -8530,7 +8658,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],94:[function(require,module,exports){
+},{}],96:[function(require,module,exports){
 /* global window, exports, define */
 
 !function() {
@@ -8763,7 +8891,7 @@ process.umask = function() { return 0; };
     /* eslint-enable quote-props */
 }(); // eslint-disable-line
 
-},{}],95:[function(require,module,exports){
+},{}],97:[function(require,module,exports){
 'use strict';
 
 function _interopDefault (ex) { return (ex && (typeof ex === 'object') && 'default' in ex) ? ex['default'] : ex; }
@@ -8984,4 +9112,4 @@ Tannin.prototype.dcnpgettext = function( domain, context, singular, plural, n ) 
 
 module.exports = Tannin;
 
-},{"@tannin/plural-forms":73}]},{},[13]);
+},{"@tannin/plural-forms":75}]},{},[13]);

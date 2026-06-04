@@ -1267,7 +1267,7 @@ class Social_Login extends Form {
 						}
 						?>
 						<div class="facebook raven-social-medias btn btn-sm text-center" id="jupiterx-raven-social-login-widget-facebook">
-							<span><?php echo esc_html( $settings['facebook_label'] ); ?></span>
+							<span><?php echo esc_html( __( $settings['facebook_label'], 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting. ?></span>
 						</div>
 					</div>
 					<?php
@@ -1282,7 +1282,7 @@ class Social_Login extends Form {
 						}
 						?>
 						<div class="twitter raven-social-medias btn btn-sm text-center" id="jupiterx-raven-social-login-widget-twitter">
-							<span><?php echo esc_html( $settings['twitter_label'] ); ?></span>
+							<span><?php echo esc_html( __( $settings['twitter_label'], 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting. ?></span>
 						</div>
 					</div>
 					<?php

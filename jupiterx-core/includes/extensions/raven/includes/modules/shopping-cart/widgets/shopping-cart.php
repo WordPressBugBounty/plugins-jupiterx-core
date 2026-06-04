@@ -1870,7 +1870,7 @@ class Shopping_Cart extends Base_Widget {
 		$settings = $this->get_settings_for_display();
 
 		$wp_button_class = wc_wp_theme_get_element_class_name( 'button' ) ? ' ' . wc_wp_theme_get_element_class_name( 'button' ) : '';
-		echo '<a href="' . esc_url( wc_get_cart_url() ) . '" class="button view-cart wc-forward' . esc_attr( $wp_button_class ) . '">' . esc_html( $settings['view_cart_button_text'] ) . '</a>';
+		echo '<a href="' . esc_url( wc_get_cart_url() ) . '" class="button view-cart wc-forward' . esc_attr( $wp_button_class ) . '">' . esc_html( __( $settings['view_cart_button_text'], 'jupiterx-core' ) ) . '</a>'; // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
 	}
 
 	protected function render_quick_cart_view() {

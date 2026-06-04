@@ -951,7 +951,7 @@ class Post_Meta extends Base_Widget {
 		$item_data['type'] = $repeater_item['type'];
 
 		if ( ! empty( $repeater_item['text_prefix'] ) ) {
-			$item_data['text_prefix'] = esc_html( $repeater_item['text_prefix'] );
+			$item_data['text_prefix'] = __( $repeater_item['text_prefix'], 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
 		}
 
 		return $item_data;

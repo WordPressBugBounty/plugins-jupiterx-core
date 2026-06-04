@@ -442,11 +442,21 @@ class Countdown extends Base_Widget {
 		$this->add_render_attribute( 'wrapper', 'data-raven-countdown', $settings['due_date'] );
 
 		if ( 'yes' === $settings['custom_label'] ) {
-			$this->add_render_attribute( 'wrapper', 'data-raven-days', $settings['days_label'] );
-			$this->add_render_attribute( 'wrapper', 'data-raven-hours', $settings['hours_label'] );
-			$this->add_render_attribute( 'wrapper', 'data-raven-minutes', $settings['minutes_label'] );
-			$this->add_render_attribute( 'wrapper', 'data-raven-seconds', $settings['seconds_label'] );
+			$days_label    = __( $settings['days_label'], 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
+			$hours_label   = __( $settings['hours_label'], 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
+			$minutes_label = __( $settings['minutes_label'], 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
+			$seconds_label = __( $settings['seconds_label'], 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
+		} else {
+			$days_label    = __( 'Days', 'jupiterx-core' );
+			$hours_label   = __( 'Hours', 'jupiterx-core' );
+			$minutes_label = __( 'Minutes', 'jupiterx-core' );
+			$seconds_label = __( 'Seconds', 'jupiterx-core' );
 		}
+
+		$this->add_render_attribute( 'wrapper', 'data-raven-days', $days_label );
+		$this->add_render_attribute( 'wrapper', 'data-raven-hours', $hours_label );
+		$this->add_render_attribute( 'wrapper', 'data-raven-minutes', $minutes_label );
+		$this->add_render_attribute( 'wrapper', 'data-raven-seconds', $seconds_label );
 
 		foreach ( [ 'days', 'hours', 'minutes', 'seconds' ] as $box ) {
 			if ( 'yes' !== $settings[ $box ] ) {
@@ -474,6 +484,11 @@ class Countdown extends Base_Widget {
 			view.addRenderAttribute( 'wrapper', 'data-raven-hours', settings.hours_label );
 			view.addRenderAttribute( 'wrapper', 'data-raven-minutes', settings.minutes_label );
 			view.addRenderAttribute( 'wrapper', 'data-raven-seconds', settings.seconds_label );
+		} else {
+			view.addRenderAttribute( 'wrapper', 'data-raven-days', <?php echo wp_json_encode( __( 'Days', 'jupiterx-core' ) ); ?> );
+			view.addRenderAttribute( 'wrapper', 'data-raven-hours', <?php echo wp_json_encode( __( 'Hours', 'jupiterx-core' ) ); ?> );
+			view.addRenderAttribute( 'wrapper', 'data-raven-minutes', <?php echo wp_json_encode( __( 'Minutes', 'jupiterx-core' ) ); ?> );
+			view.addRenderAttribute( 'wrapper', 'data-raven-seconds', <?php echo wp_json_encode( __( 'Seconds', 'jupiterx-core' ) ); ?> );
 		}
 
 		[ 'days', 'hours', 'minutes', 'seconds' ].forEach(function(box) {

@@ -253,6 +253,7 @@ class Post_Navigation extends Base_Widget {
 			[
 				'label' => esc_html__( 'Link to All Posts Text', 'jupiterx-core' ),
 				'type' => 'text',
+				'default' => 'All Posts',
 				'dynamic' => [
 					'active' => true,
 				],
@@ -1131,7 +1132,7 @@ class Post_Navigation extends Base_Widget {
 			! empty( $settings['prev_label'] ) &&
 			'previous' === $type
 		) {
-			$label = '<span class="raven-post-navigation-prev-label raven-post-navigation-label">' . esc_html( $settings['prev_label'] ) . '</span>';
+			$label = '<span class="raven-post-navigation-prev-label raven-post-navigation-label">' . esc_html( __( $settings['prev_label'], 'jupiterx-core' ) ) . '</span>'; // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
 		}
 
 		if (
@@ -1139,7 +1140,7 @@ class Post_Navigation extends Base_Widget {
 			! empty( $settings['next_label'] ) &&
 			'next' === $type
 		) {
-			$label = '<span class="raven-post-navigation-next-label raven-post-navigation-label">' . esc_html( $settings['next_label'] ) . ' </span>';
+			$label = '<span class="raven-post-navigation-next-label raven-post-navigation-label">' . esc_html( __( $settings['next_label'], 'jupiterx-core' ) ) . ' </span>'; // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
 		}
 
 		return $label;
@@ -1206,8 +1207,11 @@ class Post_Navigation extends Base_Widget {
 			$all_posts = '<span class="raven-post-navigation-all-posts raven-post-navigation-all-posts-icon">' . $this->get_step_icon_render_string( $settings['link_all_posts_icon'] ) . '</span>';
 		}
 
-		if ( 'text' === $settings['link_all_posts'] && ! empty( $settings['link_all_posts_text'] ) ) {
-			$all_posts = '<span class="raven-post-navigation-all-posts raven-post-navigation-all-posts-text">' . esc_html( $settings['link_all_posts_text'] ) . '</span>';
+		if ( 'text' === $settings['link_all_posts'] ) {
+			$raw       = isset( $settings['link_all_posts_text'] ) ? trim( (string) $settings['link_all_posts_text'] ) : '';
+			$display   = '' === $raw ? __( 'All Posts', 'jupiterx-core' ) : __( $raw, 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
+
+			$all_posts = '<span class="raven-post-navigation-all-posts raven-post-navigation-all-posts-text">' . esc_html( $display ) . '</span>';
 		}
 
 		$this->add_render_attribute( 'all-posts-wrapper', 'class', 'raven-post-navigation-all-posts-wrapper' );

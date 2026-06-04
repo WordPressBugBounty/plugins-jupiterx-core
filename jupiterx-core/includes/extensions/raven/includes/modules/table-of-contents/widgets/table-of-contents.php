@@ -797,7 +797,7 @@ class Table_Of_Contents extends Base_Widget {
 			?> >
 				<?php $header_tag = ElementorUtils::validate_html_tag( $settings['header_html_tag'] ); ?>
 				<<?php echo esc_html( $header_tag ); ?> class="jupiterx-table-of-contents-native-exclude">
-					<?php echo esc_html( $settings['title'] ); ?>
+					<?php echo esc_html( __( $settings['title'], 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting. ?>
 				</<?php echo esc_html( $header_tag ); ?>>
 			</div>
 			<div <?php

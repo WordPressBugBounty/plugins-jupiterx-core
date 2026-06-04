@@ -76,6 +76,7 @@ class JupiterX_Core_Control_Panel_Layout_Builder
 			'footer'          => esc_html__('Footer', 'jupiterx-core'),
 			'single'          => esc_html__('Single', 'jupiterx-core'),
 			'archive'         => esc_html__('Archive', 'jupiterx-core'),
+			'jupiterx-loop-item' => esc_html__('Loop Item', 'jupiterx-core'),
 		];
 
 		if (class_exists('woocommerce')) {
@@ -99,7 +100,7 @@ class JupiterX_Core_Control_Panel_Layout_Builder
 	 */
 	public static function saved_library_type_slugs()
 	{
-		return ['page', 'section', 'container', 'e-flexbox', 'e-div-block', 'widget'];
+		return ['page', 'section', 'container', 'e-flexbox', 'e-div-block', 'widget', 'jupiterx-loop-item'];
 	}
 
 	/**
@@ -118,6 +119,7 @@ class JupiterX_Core_Control_Panel_Layout_Builder
 			'e-flexbox'   => esc_html__('Flexbox', 'jupiterx-core'),
 			'e-div-block' => esc_html__('Div Block', 'jupiterx-core'),
 			'widget'      => esc_html__('Global Widget', 'jupiterx-core'),
+			'jupiterx-loop-item' => esc_html__('Loop Item', 'jupiterx-core'),
 		];
 	}
 
@@ -549,6 +551,12 @@ class JupiterX_Core_Control_Panel_Layout_Builder
 
 		$data->conditions_string = get_post_meta($data->ID, 'jupiterx-condition-rules-string', true); // conditions string
 
+		if ('jupiterx-loop-item' === $type) {
+			$data->conditions        = [];
+			$data->conditions_string = '';
+			$data->priority          = 10;
+		}
+
 		$data = $this->filter_inactive_conditions($data);
 
 		if (empty($data->conditions_string)) {
@@ -651,7 +659,9 @@ class JupiterX_Core_Control_Panel_Layout_Builder
 			wp_send_json_error();
 		}
 
-		JupiterX_Core_Condition_Manager::get_instance()->add_posts_id_with_conditions($post_id, []);
+		if ('jupiterx-loop-item' !== get_post_meta($post_id, '_elementor_template_type', true)) {
+			JupiterX_Core_Condition_Manager::get_instance()->add_posts_id_with_conditions($post_id, []);
+		}
 
 		wp_send_json_success();
 	}
@@ -1038,6 +1048,13 @@ class JupiterX_Core_Control_Panel_Layout_Builder
 		}
 
 		update_post_meta($id, '_wp_page_template', $template);
+
+		if ('jupiterx-loop-item' === get_post_meta($id, '_elementor_template_type', true)) {
+			delete_post_meta($id, 'jupiterx-condition-rules');
+			delete_post_meta($id, JupiterX_Core_Condition_Manager::JUPITERX_CONDITIONS_COMPONENT_META_STRING);
+			JupiterX_Core_Condition_Manager::get_instance()->add_posts_id_with_conditions($id, []);
+			return $id;
+		}
 
 		// Update conditions for template.
 		update_post_meta($id, 'jupiterx-condition-rules', $conditions);

@@ -84,12 +84,48 @@ abstract class Field_Base {
 	}
 
 	/**
+	 * Raw custom field ID from editor settings (trimmed). Not the internal `_id` hash.
+	 *
+	 * @since 4.15.0
+	 * @return string Empty string when unset or whitespace-only.
+	 */
+	protected function get_field_custom_id_raw() {
+		if ( empty( $this->field['field_custom_id'] ) ) {
+			return '';
+		}
+
+		return trim( (string) $this->field['field_custom_id'] );
+	}
+
+	/**
 	 * Get custom field ID
 	 *
 	 * @since 4.14.0
 	 */
 	public function get_custom_id() {
-		return ! empty( $this->field['field_custom_id'] ) ? esc_attr( $this->field['field_custom_id'] ) : '';
+		$custom_id = $this->get_field_custom_id_raw();
+
+		return '' !== $custom_id ? esc_attr( $custom_id ) : '';
+	}
+
+	/**
+	 * Attributes carrying the editor-defined custom ID for front-end tracking (GTM, analytics).
+	 *
+	 * Uses `field_custom_id` so the value stays stable across saves; it does not use the internal `_id` hash.
+	 *
+	 * @since 4.15.0
+	 * @return array<string, string>
+	 */
+	protected function get_data_custom_id_attributes() {
+		$custom_id = $this->get_field_custom_id_raw();
+
+		if ( '' === $custom_id ) {
+			return [];
+		}
+
+		return [
+			'data-custom-id' => sanitize_text_field( $custom_id ),
+		];
 	}
 
 	/**
@@ -160,6 +196,40 @@ abstract class Field_Base {
 	 */
 	public function get_required() {
 		return $this->field['required'];
+	}
+
+	/**
+	 * Translate an option label from field_options (select / radio / checkbox) for front-end display.
+	 *
+	 * Decodes entities so msgids match .mo / translation plugins; passes through a filter for WPML-style hooks.
+	 *
+	 * @param string $label         Raw label text.
+	 * @param int    $option_index Zero-based option index.
+	 * @return string
+	 *
+	 * @since 4.14.0
+	 */
+	protected function translate_field_option_label( $label, $option_index = 0 ) {
+		$label = trim( (string) $label );
+
+		if ( '' === $label ) {
+			return '';
+		}
+
+		$decoded = wp_specialchars_decode( $label, ENT_QUOTES | ENT_HTML5 );
+
+		$translated = __( $decoded, 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- User-defined string from form field settings.
+
+		$field_id = isset( $this->field['_id'] ) ? $this->field['_id'] : '';
+
+		return apply_filters(
+			'jupiterx_core_raven_form_field_option_label',
+			$translated,
+			$decoded,
+			$field_id,
+			(int) $option_index,
+			$this->get_type()
+		);
 	}
 
 	/**
@@ -416,6 +486,8 @@ abstract class Field_Base {
 		) {
 			$attributes['value'] = $value;
 		}
+
+		$attributes = array_merge( $attributes, $this->get_data_custom_id_attributes() );
 
 		$this->widget->add_render_attribute( 'field-' . $this->get_id(), $attributes );
 	}

@@ -203,15 +203,20 @@ class JupiterX_Core_Control_Panel_Theme_Updrades_Downgrades
 
 		$raw_response = wp_remote_post($this->api_url . 'update-theme', $data);
 
-		if (! is_wp_error($raw_response) && (200 === intval($raw_response['response']['code']))) {
-			$response = $raw_response['body'];
-		}
-
 		if (is_wp_error($raw_response)) {
-			$response = is_wp_error($raw_response);
+			return false;
 		}
 
-		return json_decode($response);
+		if (200 !== (int) wp_remote_retrieve_response_code($raw_response)) {
+			return false;
+		}
+
+		$body = wp_remote_retrieve_body($raw_response);
+		if (! is_string($body) || '' === $body) {
+			return false;
+		}
+
+		return json_decode($body);
 	}
 
 	/**

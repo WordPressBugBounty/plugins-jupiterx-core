@@ -21,7 +21,7 @@ JupiterX_Customizer::add_field( [
 
 $post_types = [
 	'post'      => __( 'Post', 'jupiterx-core' ),
-	'portfolio' => __( 'Portfolio', 'jupiterx-core' ),
+	'portfolio' => jupiterx_core_get_portfolio_label( 'singular' ),
 	'page'      => __( 'Page', 'jupiterx-core' ),
 	'product'   => __( 'Product', 'jupiterx-core' ),
 ];

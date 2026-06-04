@@ -167,6 +167,40 @@ class Utils {
 	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 */
+	/**
+	 * Normalize Raven query / Select2 values to a list of positive integer IDs.
+	 *
+	 * @param mixed $value Saved control value.
+	 * @return int[]
+	 */
+	public static function normalize_query_ids( $value ) {
+		if ( empty( $value ) ) {
+			return [];
+		}
+
+		if ( ! is_array( $value ) ) {
+			$value = [ $value ];
+		}
+
+		$ids = [];
+
+		foreach ( $value as $item ) {
+			if ( is_array( $item ) && isset( $item['id'] ) ) {
+				$id = absint( $item['id'] );
+			} elseif ( is_object( $item ) && isset( $item->id ) ) {
+				$id = absint( $item->id );
+			} else {
+				$id = absint( $item );
+			}
+
+			if ( $id > 0 ) {
+				$ids[] = $id;
+			}
+		}
+
+		return array_values( array_unique( $ids ) );
+	}
+
 	public static function get_query_args( $settings ) {
 		$settings = array_merge(
 			[
@@ -189,9 +223,13 @@ class Utils {
 			'paged' => max( 1, get_query_var( 'paged' ), get_query_var( 'page' ) ),
 		];
 
-		// Only use offset on all category state.
-		if ( -1 === $settings['category'] && ! empty( $settings['query_offset'] ) ) {
-			$args['offset_proper'] = $settings['query_offset'];
+		// Only skip offset while a legacy sortable category tab filter is active.
+		if ( ( ! isset( $settings['category'] ) || (int) $settings['category'] <= 0 ) && isset( $settings['query_offset'] ) ) {
+			$offset = max( 0, (int) $settings['query_offset'] );
+
+			if ( $offset > 0 ) {
+				$args['offset_proper'] = $offset;
+			}
 		}
 
 		if ( ! empty( $settings['paged'] ) ) {
@@ -213,51 +251,64 @@ class Utils {
 			}
 		}
 
-		if ( ! empty( $settings[ 'query_' . $args['post_type'] . '_includes' ] ) ) {
-			$args['post__in'] = $settings[ 'query_' . $args['post_type'] . '_includes' ];
+		$post_type    = $args['post_type'];
+		$includes_key = 'query_' . $post_type . '_includes';
+		$includes     = self::normalize_query_ids( $settings[ $includes_key ] ?? [] );
+
+		if ( ! empty( $includes ) ) {
+			$args['post__in'] = $includes;
 		}
 
 		if ( ! empty( $settings['query_authors'] ) ) {
-			$args['author__in'] = $settings['query_authors'];
+			$args['author__in'] = self::normalize_query_ids( $settings['query_authors'] );
 		}
 
-		$taxonomies = get_object_taxonomies( $args['post_type'], 'names' );
+		$taxonomies   = get_object_taxonomies( $post_type, 'names' );
 
 		if ( ! empty( $settings['category'] ) && $settings['category'] > 0 && ! empty( $taxonomies ) ) {
 			$args['tax_query'] = [];
 
-			$taxonomies_length = count( $taxonomies );
+			foreach ( $taxonomies as $taxonomy ) {
+				$validate = false !== strpos( $taxonomy, 'cat' );
 
-			for ( $i = 0; $i < $taxonomies_length; $i++ ) {
-				$validate = false !== strpos( $taxonomies[ $i ], 'cat' );
-
-				$validate_taxonomy = apply_filters( 'jupitex_raven_valid_sortable_taxonomy', $validate, $taxonomies[ $i ], $settings );
+				$validate_taxonomy = apply_filters( 'jupitex_raven_valid_sortable_taxonomy', $validate, $taxonomy, $settings );
 
 				if ( ! $validate_taxonomy ) {
 					continue;
 				}
 
 				$args['tax_query'][] = [
-					'taxonomy' => $taxonomies[ $i ],
-					'field' => 'term_id',
-					'terms' => $settings['category'],
+					'taxonomy' => $taxonomy,
+					'field'    => 'term_id',
+					'terms'    => array_map( 'absint', (array) $settings['category'] ),
 				];
 
 				break;
 			}
-		} elseif ( empty( $settings[ 'query_' . $args['post_type'] . '_includes' ] ) && ! empty( $taxonomies ) ) {
-			$args['tax_query'] = [];
+		} elseif ( empty( $includes ) && ! empty( $taxonomies ) ) {
+			$tax_query = [];
 
 			foreach ( $taxonomies as $taxonomy ) {
 				$taxonomy_control_id = 'query_' . $taxonomy . '_ids';
+				$terms               = self::normalize_query_ids( $settings[ $taxonomy_control_id ] ?? [] );
 
-				if ( ! empty( $settings[ $taxonomy_control_id ] ) ) {
-					$args['tax_query'][] = [
-						'taxonomy' => $taxonomy,
-						'field' => 'term_id',
-						'terms' => $settings[ $taxonomy_control_id ],
-					];
+				if ( empty( $terms ) ) {
+					continue;
 				}
+
+				$tax_query[] = [
+					'taxonomy' => $taxonomy,
+					'field'    => 'term_id',
+					'terms'    => $terms,
+				];
+			}
+
+			if ( ! empty( $tax_query ) ) {
+				if ( count( $tax_query ) > 1 ) {
+					$tax_query['relation'] = 'AND';
+				}
+
+				$args['tax_query'] = $tax_query;
 			}
 		}
 

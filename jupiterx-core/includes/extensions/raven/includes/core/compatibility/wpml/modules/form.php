@@ -10,7 +10,7 @@ class Form extends \WPML_Elementor_Module_With_Items {
 	}
 
 	public function get_fields() {
-		return [ 'label', 'placeholder', 'step_previous_button', 'step_next_button' ];
+		return [ 'label', 'placeholder', 'field_options', 'step_previous_button', 'step_next_button' ];
 	}
 
 	protected function get_title( $field ) {
@@ -20,6 +20,9 @@ class Form extends \WPML_Elementor_Module_With_Items {
 
 			case 'placeholder':
 				return esc_html__( 'Raven Form: Form field placeholder', 'jupiterx-core' );
+
+			case 'field_options':
+				return esc_html__( 'Raven Form: Field options (select / radio / checkbox)', 'jupiterx-core' );
 
 			case 'step_previous_button':
 				return esc_html__( 'Raven Form: Step Previous Button', 'jupiterx-core' );
@@ -39,6 +42,9 @@ class Form extends \WPML_Elementor_Module_With_Items {
 
 			case 'placeholder':
 				return 'LINE';
+
+			case 'field_options':
+				return 'AREA';
 
 			case 'step_previous_button':
 				return 'LINE';

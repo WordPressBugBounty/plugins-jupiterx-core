@@ -52,7 +52,7 @@ class Categories extends Base_Widget {
 				'default' => 'blog',
 				'options' => [
 					'blog' => __( 'Blog', 'jupiterx-core' ),
-					'portfolio' => __( 'Portfolio', 'jupiterx-core' ),
+					'portfolio' => jupiterx_core_get_portfolio_label( 'singular' ),
 					'product' => __( 'Shop', 'jupiterx-core' ),
 				],
 				'frontend_available' => 'true',

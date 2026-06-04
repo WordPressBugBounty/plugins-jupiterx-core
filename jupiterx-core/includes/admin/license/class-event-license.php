@@ -58,6 +58,10 @@ class JupiterX_Core_Event_License {
 	 * @since 4.10.1
 	 */
 	public function validate_license() {
+		if ( class_exists( 'JupiterX_Core', false ) && ! JupiterX_Core::should_run_license_validation_on_this_blog() ) {
+			return;
+		}
+
 		if ( ! $this->has_api_key() || ! $this->has_access_token() ) {
 			return;
 		}
@@ -74,6 +78,10 @@ class JupiterX_Core_Event_License {
 		}
 
 		$body = json_decode( wp_remote_retrieve_body( $result ) );
+
+		if ( ! is_object( $body ) || ! isset( $body->status ) ) {
+			return;
+		}
 
 		if ( false === $body->status ) {
 			$this->update_option( self::IS_REGISTERED_ON_ANOTHER_DOMAIN_OPTION_NAME, true );

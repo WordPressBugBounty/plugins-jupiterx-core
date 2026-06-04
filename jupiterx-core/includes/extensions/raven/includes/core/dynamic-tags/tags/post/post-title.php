@@ -23,6 +23,13 @@ class Post_Title extends Tag {
 	}
 
 	public function render() {
+		$term = \JupiterX_Core\Raven\Modules\Loop_Grid\Widgets\Loop_Grid::get_current_loop_term();
+
+		if ( $term instanceof \WP_Term ) {
+			echo wp_kses_post( $term->name );
+			return;
+		}
+
 		echo wp_kses_post( get_the_title() );
 	}
 }

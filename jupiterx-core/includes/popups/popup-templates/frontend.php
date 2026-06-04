@@ -178,8 +178,10 @@ class Frontend extends Jupiterx_Popup_Template_Base {
 
 		// User type.
 		if ( ! empty( $triggers['user_type'] ) ) {
-			$user_type                       = JupiterX_Popups_Triggers_Manager::register_trigger( 'User_Type' );
-			$triggers['user_type']['result'] = $user_type->is_valid( $triggers );
+			if ( is_user_logged_in() ) {
+				$user_type                       = JupiterX_Popups_Triggers_Manager::register_trigger( 'User_Type' );
+				$triggers['user_type']['result'] = $user_type->is_valid( $triggers );
+			}
 		}
 
 		$popup_json_data = htmlspecialchars( wp_json_encode( $popup_json ) );

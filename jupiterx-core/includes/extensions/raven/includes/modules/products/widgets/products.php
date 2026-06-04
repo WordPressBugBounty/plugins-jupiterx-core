@@ -73,6 +73,7 @@ class Products extends Base_Widget {
 		$this->register_section_sorting_result_count();
 		$this->register_overlay_style();
 		$this->register_section_sale_badge();
+		$this->register_section_out_of_stock();
 		$this->register_section_wishlist();
 	}
 
@@ -116,6 +117,7 @@ class Products extends Base_Widget {
 								'ids',
 								'categories_tags',
 								'current_archive_query',
+								'search_result',
 							],
 						],
 					],
@@ -1291,7 +1293,7 @@ class Products extends Base_Widget {
 			'oos_badge',
 			[
 				'label' => esc_html__( 'Out of Stock Badge', 'jupiterx-core' ),
-				'type' => 'hidden',
+				'type' => 'switcher',
 				'default' => 'show',
 				'return_value' => 'show',
 				'label_on' => esc_html__( 'Show', 'jupiterx-core' ),
@@ -4657,6 +4659,180 @@ class Products extends Base_Widget {
 		$this->end_controls_section();
 	}
 
+	private function register_section_out_of_stock() {
+		$this->start_controls_section(
+			'section_style_out_of_stock',
+			[
+				'label' => esc_html__( 'Out Of Stock', 'jupiterx-core' ),
+				'tab' => 'style',
+				'conditions' => [
+					'terms' => [
+						[
+							'name' => 'layout',
+							'operator' => '==',
+							'value' => 'custom',
+						],
+						[
+							'name' => 'oos_badge',
+							'operator' => '==',
+							'value' => 'show',
+						],
+					],
+				],
+			]
+		);
+
+		$this->add_control(
+			'out_of_stock_position',
+			[
+				'label'  => esc_html__( 'Position', 'jupiterx-core' ),
+				'type' => 'choose',
+				'default' => 'left',
+				'options' => [
+					'left' => [
+						'title' => esc_html__( 'Left', 'jupiterx-core' ),
+						'icon' => 'eicon-h-align-left',
+					],
+					'right' => [
+						'title' => esc_html__( 'Right', 'jupiterx-core' ),
+						'icon' => 'eicon-h-align-right',
+					],
+				],
+				'selectors_dictionary' => [
+					'left' => 'left: 0; right: auto;',
+					'right' => '',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .raven-wc-products-custom ul.products .jupiterx-out-of-stock' => '{{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			'border',
+			[
+				'name' => 'out_of_stock_border',
+				'placeholder' => '1px',
+				'exclude' => [ 'color' ],
+				'fields_options' => [
+					'width' => [
+						'label' => esc_html__( 'Border Width', 'jupiterx-core' ),
+						'default' => [
+							'unit'   => 'px',
+							'top'    => '1',
+							'left'   => '1',
+							'right'  => '1',
+							'bottom' => '1',
+						],
+					],
+				],
+				'selector' => '{{WRAPPER}} .raven-wc-products-custom ul.products .jupiterx-out-of-stock',
+			]
+		);
+
+		$this->add_responsive_control(
+			'out_of_stock_border_radius',
+			[
+				'label' => esc_html__( 'Border Radius', 'jupiterx-core' ),
+				'type' => 'dimensions',
+				'size_units' => [ 'px', '%' ],
+				'default' => [
+					'unit' => 'px',
+					'top'    => '0',
+					'left'   => '0',
+					'right'  => '0',
+					'bottom' => '0',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .raven-wc-products-custom ul.products .jupiterx-out-of-stock' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'out_of_stock_padding',
+			[
+				'label' => esc_html__( 'Padding', 'jupiterx-core' ),
+				'type' => 'dimensions',
+				'size_units' => [ 'px', '%' ],
+				'default' => [
+					'unit' => 'px',
+					'top'    => '5',
+					'left'   => '10',
+					'right'  => '10',
+					'bottom' => '5',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .raven-wc-products-custom ul.products .jupiterx-out-of-stock' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_responsive_control(
+			'out_of_stock_spacing',
+			[
+				'label' => esc_html__( 'Spacing', 'jupiterx-core' ),
+				'type' => 'dimensions',
+				'size_units' => [ 'px', '%' ],
+				'default' => [
+					'unit' => 'px',
+					'top'    => '10',
+					'left'   => '10',
+					'right'  => '10',
+					'bottom' => '10',
+				],
+				'selectors' => [
+					'{{WRAPPER}} .raven-wc-products-custom ul.products .jupiterx-out-of-stock' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'out_of_stock_text_color',
+			[
+				'label' => esc_html__( 'Text Color', 'jupiterx-core' ),
+				'type' => 'color',
+				'selectors' => [
+					'{{WRAPPER}} .raven-wc-products-custom ul.products .jupiterx-out-of-stock' => 'color: {{VALUE}};border-color: transparent;',
+				],
+			]
+		);
+
+		$this->add_control(
+			'out_of_stock_border_color',
+			[
+				'label' => esc_html__( 'Border Color', 'jupiterx-core' ),
+				'type' => 'color',
+				'selectors' => [
+					'{{WRAPPER}} .raven-wc-products-custom ul.products .jupiterx-out-of-stock' => 'border-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_control(
+			'out_of_stock_background_color',
+			[
+				'label' => esc_html__( 'Background Color', 'jupiterx-core' ),
+				'type' => 'color',
+				'default' => '#000',
+				'selectors' => [
+					'{{WRAPPER}} .raven-wc-products-custom ul.products .jupiterx-out-of-stock' => 'background-color: {{VALUE}};',
+				],
+			]
+		);
+
+		$this->add_group_control(
+			'typography',
+			[
+				'name' => 'out_of_stock_typography',
+				'label' => esc_html__( 'Typography', 'jupiterx-core' ),
+				'selector' => '{{WRAPPER}} .raven-wc-products-custom ul.products .jupiterx-out-of-stock',
+			]
+		);
+
+		$this->end_controls_section();
+	}
+
 	private function register_section_wishlist() {
 		$this->start_controls_section(
 			'section_style_wishlist',
@@ -5058,6 +5234,7 @@ class Products extends Base_Widget {
 
 	/**
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
 	protected function render() {
 		$settings                 = $this->get_settings_for_display();
@@ -5067,7 +5244,12 @@ class Products extends Base_Widget {
 			return;
 		}
 
-		$query         = Module::query( $this, $settings );
+		$query = Module::query( $this, $settings );
+
+		if ( 'search_result' === $settings['query_filter'] && 'no_search_query' === $query ) {
+			return;
+		}
+
 		$products      = $query->get_content();
 		$query_results = $products['query_results'];
 		$layout        = empty( $settings['layout'] ) ? 'default' : $settings['layout'];

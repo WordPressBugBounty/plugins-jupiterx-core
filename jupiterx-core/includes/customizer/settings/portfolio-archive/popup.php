@@ -12,7 +12,7 @@ add_action( 'jupiterx_portfolio_pages_after_section', 'jupiterx_dependency_notic
 
 // Portfolio popup.
 JupiterX_Customizer::add_section( 'jupiterx_portfolio_pages', [
-	'title'    => __( 'Portfolio', 'jupiterx-core' ),
+	'title'    => jupiterx_core_get_portfolio_label( 'plural' ),
 	'type'     => 'container',
 	'tabs'     => [
 		'settings' => __( 'Settings', 'jupiterx-core' ),
@@ -20,11 +20,11 @@ JupiterX_Customizer::add_section( 'jupiterx_portfolio_pages', [
 	],
 	'boxes' => [
 		'settings_archive' => [
-			'label' => __( 'Portfolio Archive', 'jupiterx-core' ),
+			'label' => jupiterx_core_get_portfolio_label( 'archive' ),
 			'tab'   => 'settings',
 		],
 		'settings_single' => [
-			'label' => __( 'Portfolio Single', 'jupiterx-core' ),
+			'label' => jupiterx_core_get_portfolio_label( 'single' ),
 			'tab'   => 'settings',
 		],
 		'title' => array(

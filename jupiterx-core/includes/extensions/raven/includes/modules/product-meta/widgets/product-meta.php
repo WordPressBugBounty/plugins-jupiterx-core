@@ -458,8 +458,8 @@ class Product_Meta extends Base_Widget {
 
 	private function sku_to_display( $settings, $product ) {
 		$sku         = $product->get_sku();
-		$sku_caption = ! empty( $settings['sku_caption'] ) ? $settings['sku_caption'] : esc_html__( 'SKU', 'jupiterx-core' );
-		$sku_missing = ! empty( $settings['sku_missing_caption'] ) ? $settings['sku_missing_caption'] : esc_html__( 'N/A', 'jupiterx-core' );
+		$sku_caption = ! empty( $settings['sku_caption'] ) ? __( $settings['sku_caption'], 'jupiterx-core' ) : esc_html__( 'SKU', 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
+		$sku_missing = ! empty( $settings['sku_missing_caption'] ) ? __( $settings['sku_missing_caption'], 'jupiterx-core' ) : esc_html__( 'N/A', 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
 
 		if ( wc_product_sku_enabled() && ( $sku || $product->is_type( 'variable' ) ) ) : ?>
 			<span class="sku_wrapper detail-container">
@@ -470,8 +470,8 @@ class Product_Meta extends Base_Widget {
 	}
 
 	private function categories_to_display( $settings, $product ) {
-		$category_caption_single = ! empty( $settings['category_caption_single'] ) ? $settings['category_caption_single'] : esc_html__( 'Category', 'jupiterx-core' );
-		$category_caption_plural = ! empty( $settings['category_caption_plural'] ) ? $settings['category_caption_plural'] : esc_html__( 'Categories', 'jupiterx-core' );
+		$category_caption_single = ! empty( $settings['category_caption_single'] ) ? __( $settings['category_caption_single'], 'jupiterx-core' ) : esc_html__( 'Category', 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
+		$category_caption_plural = ! empty( $settings['category_caption_plural'] ) ? __( $settings['category_caption_plural'], 'jupiterx-core' ) : esc_html__( 'Categories', 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
 
 		if ( count( $product->get_category_ids() ) ) : ?>
 			<span class="posted_in categories detail-container">
@@ -482,8 +482,8 @@ class Product_Meta extends Base_Widget {
 	}
 
 	private function tags_to_display( $settings, $product ) {
-		$tag_caption_single = ! empty( $settings['tag_caption_single'] ) ? esc_html( $settings['tag_caption_single'] ) : esc_html__( 'Tag', 'jupiterx-core' );
-		$tag_caption_plural = ! empty( $settings['tag_caption_plural'] ) ? esc_html( $settings['tag_caption_plural'] ) : esc_html__( 'Tags', 'jupiterx-core' );
+		$tag_caption_single = ! empty( $settings['tag_caption_single'] ) ? __( $settings['tag_caption_single'], 'jupiterx-core' ) : esc_html__( 'Tag', 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
+		$tag_caption_plural = ! empty( $settings['tag_caption_plural'] ) ? __( $settings['tag_caption_plural'], 'jupiterx-core' ) : esc_html__( 'Tags', 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
 
 		if ( count( $product->get_tag_ids() ) ) : ?>
 			<span class="tagged_as tags detail-container">
@@ -494,8 +494,8 @@ class Product_Meta extends Base_Widget {
 	}
 
 	private function brands_to_display( $settings, $product ) {
-		$tag_caption_single = ! empty( $settings['brand_caption_single'] ) ? esc_html( $settings['brand_caption_single'] ) : esc_html__( 'Brand', 'jupiterx-core' );
-		$tag_caption_plural = ! empty( $settings['brand_caption_plural'] ) ? esc_html( $settings['brand_caption_plural'] ) : esc_html__( 'Brands', 'jupiterx-core' );
+		$tag_caption_single = ! empty( $settings['brand_caption_single'] ) ? __( $settings['brand_caption_single'], 'jupiterx-core' ) : esc_html__( 'Brand', 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
+		$tag_caption_plural = ! empty( $settings['brand_caption_plural'] ) ? __( $settings['brand_caption_plural'], 'jupiterx-core' ) : esc_html__( 'Brands', 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
 
 		$brands      = wp_get_post_terms( $product->get_id(), 'product_brand', [ 'fields' => 'names' ] );
 		$brand_count = count( $brands );

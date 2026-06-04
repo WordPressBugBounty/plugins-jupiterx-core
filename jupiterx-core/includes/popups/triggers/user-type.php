@@ -11,14 +11,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 3.7.0
  */
 class User_Type extends Triggers_Base {
-	public function __construct() {
-		if ( session_status() !== PHP_SESSION_ACTIVE && ! is_user_logged_in() && ! is_admin() && ! headers_sent() ) {
-			session_start( [
-				'read_and_close' => true,
-			] );
-		}
-	}
-
 	/**
 	 * Get trigger name.
 	 *
@@ -96,27 +88,7 @@ class User_Type extends Triggers_Base {
 	 * @param mixed $triggers triggers value.
 	 */
 	public function is_valid( $triggers ) {
-		if ( is_user_logged_in() ) {
-			// Save the user type in the user meta for logged-in users.
-			$current_user   = wp_get_current_user();
-			$user_id        = $current_user->ID;
-			$user_type_meta = get_user_meta( $user_id, 'jupiterx_popup_user_type', true );
-
-			if ( ! empty( $user_type_meta ) ) {
-				$user_type = $user_type_meta;
-			} else {
-				$user_type = 'logged_in';
-				update_user_meta( $user_id, 'jupiterx_popup_user_type', $user_type );
-			}
-		} else {
-			if ( isset( $_SESSION['jupiterx_popup_user_type'] ) ) {
-				$user_type = 'repeat';
-			} else {
-				$user_type = 'first_time';
-			}
-
-			$_SESSION['jupiterx_popup_user_type'] = $user_type;
-		}
+		$user_type = is_user_logged_in() ? 'logged_in' : 'first_time';
 
 		if ( 'is' === $triggers['user_type']['operator'] && $user_type === $triggers['user_type']['control'] ) {
 			return true;

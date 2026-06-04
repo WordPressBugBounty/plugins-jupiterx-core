@@ -1470,7 +1470,7 @@ class Flip_Box extends Base_Widget {
 					<?php if ( ! empty( $settings['button_text'] ) ) : ?>
 					<<?php Utils::print_validated_html_tag( $button_tag ); ?> <?php $this->print_render_attribute_string( 'button' ); ?>
 					>
-						<?php $this->print_unescaped_setting( 'button_text' ); ?>
+						<?php echo wp_kses_post( __( $settings['button_text'], 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting. ?>
 				</<?php Utils::print_validated_html_tag( $button_tag ); ?>>
 				<?php endif; ?>
 			</div>

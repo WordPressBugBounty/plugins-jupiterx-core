@@ -3092,7 +3092,7 @@ class Form extends Base_Widget {
 		echo $this->get_render_attribute_string( 'submit-button' );
 		?>>
 			<?php $this->render_submit_icon(); ?>
-			<span><?php echo esc_html( $settings['submit_button_text'] ); ?></span>
+			<span><?php echo esc_html( __( $settings['submit_button_text'], 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting. ?></span>
 		</button>
 		<?php
 }
@@ -3147,6 +3147,7 @@ class Form extends Base_Widget {
 			'class' => 'raven-form raven-flex raven-flex-wrap raven-flex-bottom',
 			'method' => 'post',
 			'name' => $settings['form_name'],
+			'novalidate' => 'novalidate',
 		] );
 
 		if ( empty( $settings['required_mark'] ) ) {
@@ -3437,8 +3438,16 @@ class Form extends Base_Widget {
 	 * @since 2.5.0
 	 */
 	private function render_step_buttons( $steps, $step_key, $hover_effect ) {
-		$next_label     = esc_html( $steps[ $step_key ]['step_next_button'] );
-		$previous_label = esc_html( $steps[ $step_key ]['step_previous_button'] );
+		$next_label_raw     = isset( $steps[ $step_key ]['step_next_button'] ) ? trim( (string) $steps[ $step_key ]['step_next_button'] ) : '';
+		$previous_label_raw = isset( $steps[ $step_key ]['step_previous_button'] ) ? trim( (string) $steps[ $step_key ]['step_previous_button'] ) : '';
+
+		$next_label = '' === $next_label_raw
+			? esc_html__( 'Proceed', 'jupiterx-core' )
+			: esc_html( __( $next_label_raw, 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- Step label from form settings.
+
+		$previous_label = '' === $previous_label_raw
+			? esc_html__( 'Previous', 'jupiterx-core' )
+			: esc_html( __( $previous_label_raw, 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- Step label from form settings.
 
 		$this->add_render_attribute(
 			'step_buttons-next-' . $step_key, [

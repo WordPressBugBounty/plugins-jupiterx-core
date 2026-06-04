@@ -2696,7 +2696,7 @@ abstract class Post_Base extends Action_Base {
 		$date_link = ( 'post' === get_post_type() ) ? get_month_link( get_the_time( 'Y' ), get_the_time( 'm' ) ) : get_permalink();
 
 		if ( empty( $this->skin->get_instance_value( 'date_type' ) ) ) {
-			return '<a class="raven-post-meta-item raven-post-date" href="' . esc_url( $date_link ) . '" rel="bookmark">' . esc_html( get_the_date() ) . '</a>';
+			return '<a class="raven-post-meta-item raven-post-date" href="' . esc_url( $date_link ) . '" rel="bookmark">' . esc_html( wp_date( get_option( 'date_format' ), get_post_time( 'U' ) ) ) . '</a>';
 		}
 
 		$format_options = [
@@ -2711,10 +2711,10 @@ abstract class Post_Base extends Action_Base {
 
 		$format = ! empty( $format_options[ $this->skin->get_instance_value( 'date_format' ) ] ) ? $format_options[ $this->skin->get_instance_value( 'date_format' ) ] : $this->skin->get_instance_value( 'custom_format' );
 
-		$date = get_the_date( $format );
+		$date = wp_date( $format, get_post_time( 'U' ) );
 
 		if ( 'last_modified' === $this->skin->get_instance_value( 'date_type' ) ) {
-			$date = get_the_modified_date( $format );
+			$date = wp_date( $format, get_post_modified_time( 'U' ) );
 		}
 
 		return '<a class="raven-post-meta-item raven-post-date" href="' . esc_url( $date_link ) . '" rel="bookmark">' . esc_html( $date ) . '</a>';

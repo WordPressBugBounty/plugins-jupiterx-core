@@ -74,8 +74,11 @@ class Select extends Field_Base {
 			$option_value = $option;
 
 			if ( false !== strpos( $option, '|' ) ) {
-				list( $option_label, $option_value ) = explode( '|', $option );
+				list( $option_label, $option_value ) = explode( '|', $option, 2 );
 			}
+
+			$option_label = trim( (string) $option_label );
+			$option_value = trim( (string) $option_value );
 
 			$option_args = [ 'value' => $option_value ];
 
@@ -88,7 +91,7 @@ class Select extends Field_Base {
 				$option_args
 			);
 
-			$html .= '<option ' . $this->widget->get_render_attribute_string( $option_id ) . '>' . wp_kses_post( $option_label ) . '</option>';
+			$html .= '<option ' . $this->widget->get_render_attribute_string( $option_id ) . '>' . wp_kses_post( $this->translate_field_option_label( $option_label, $key ) ) . '</option>';
 		}
 
 		$html .= '</select>';

@@ -62,6 +62,21 @@ class Frontend {
 	}
 
 	/**
+	 * Translated empty-query message (widget setting or plugin default).
+	 *
+	 * @return string
+	 */
+	private function get_translated_empty_message() {
+		$raw = isset( $this->settings['empty_state_text'] ) ? trim( (string) $this->settings['empty_state_text'] ) : '';
+
+		if ( '' === $raw ) {
+			return __( 'No results found.', 'jupiterx-core' );
+		}
+
+		return __( $raw, 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
+	}
+
+	/**
 	 * Render posts.
 	 *
 	 * @since 2.5.3
@@ -89,7 +104,7 @@ class Frontend {
 			remove_filter( 'excerpt_more', [ $this, 'excerpt_more' ], PHP_INT_MAX );
 		} else {
 			// Empty state for no results. Prefer user-defined message if present.
-			$empty_message      = ! empty( $this->settings['empty_state_text'] ) ? $this->settings['empty_state_text'] : esc_html__( 'No results found.', 'jupiterx-core' );
+			$empty_message      = $this->get_translated_empty_message();
 			$layout_item_class  = 'raven-' . $this->layout_type . '-item';
 			$additional_classes = ' raven-posts-empty-item';
 			// Styles for the empty item are handled in the stylesheet.
@@ -158,7 +173,7 @@ class Frontend {
 			remove_filter( 'excerpt_more', [ $this, 'excerpt_more' ], PHP_INT_MAX );
 		} else {
 			// Provide empty markup for AJAX consumers with translatable message.
-			$empty_message      = ! empty( $this->settings['empty_state_text'] ) ? $this->settings['empty_state_text'] : esc_html__( 'No results found.', 'jupiterx-core' );
+			$empty_message      = $this->get_translated_empty_message();
 			$layout_item_class  = 'raven-' . $this->layout_type . '-item';
 			$additional_classes = ' raven-posts-empty-item';
 			// Styles for empty state are defined in SCSS; no inline styles here.
@@ -443,7 +458,7 @@ class Frontend {
 			return PHP_EOL;
 		}
 
-		return PHP_EOL . '<span class="raven-post-meta-divider">' . esc_html( $this->settings['posts_meta_divider'] ) . '</span>' . PHP_EOL;
+		return PHP_EOL . '<span class="raven-post-meta-divider">' . esc_html( __( $this->settings['posts_meta_divider'], 'jupiterx-core' ) ) . '</span>' . PHP_EOL; // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
 	}
 
 	/**
@@ -763,7 +778,7 @@ class Frontend {
 		return sprintf(
 			'<div class="raven-post-read-more"><a class="raven-post-button" href="%1$s"><span class="raven-post-button-text">%2$s</span></a></div>',
 			esc_attr( get_the_permalink() ),
-			esc_html( $this->settings['posts_cta_button_text'] )
+			esc_html( __( $this->settings['posts_cta_button_text'], 'jupiterx-core' ) ) // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
 		);
 	}
 
@@ -891,10 +906,17 @@ class Frontend {
 			'maxNumPages' => $this->wp_query->max_num_pages,
 		];
 
+		$load_more_label = isset( $this->settings['load_more_text'] ) ? trim( (string) $this->settings['load_more_text'] ) : '';
+		if ( '' === $load_more_label ) {
+			$load_more_label = __( 'Load More', 'jupiterx-core' );
+		} else {
+			$load_more_label = __( $load_more_label, 'jupiterx-core' ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
+		}
+
 		$load_more = sprintf(
 			'<span class="raven-posts-preloader"></span><div class="raven-load-more" data-settings="%1$s"><a class="raven-load-more-button" href="#"><span class="raven-post-button-text">%2$s</span></a></div>',
 			esc_attr( wp_json_encode( $settings ) ),
-			wp_kses_post( $this->settings['load_more_text'] ?? '' )
+			wp_kses_post( $load_more_label )
 		);
 
 		return $load_more;

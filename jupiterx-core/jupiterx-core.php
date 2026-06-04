@@ -4,7 +4,7 @@
  * Plugin Name: Jupiter X Core
  * Plugin URI: https://jupiterx.com
  * Description: Adds core functionality to the Jupiter X theme.
- * Version: 4.15.0
+ * Version: 4.50.0
  * Author: Artbees
  * Author URI: https://artbees.net
  * Text Domain: jupiterx-core
@@ -184,15 +184,21 @@ if (! class_exists('JupiterX_Core')) {
 		}
 
 		/**
-		 * Check event transient.
+		 * Ensures the license cron exists once on the correct blog (main site when network-active).
 		 *
 		 * @since 4.10.1
 		 */
 		public function check_event_transient()
 		{
-			if (! get_transient('jupiterx_event_transient')) {
-				$this->licensing_schedules();
+			if ($this->license_checks_should_use_main_site_cron() && ! $this->is_current_blog_main_site()) {
+				if (wp_next_scheduled('jupiterx_license_checks')) {
+					wp_clear_scheduled_hook('jupiterx_license_checks');
+				}
+
+				return;
 			}
+
+			$this->ensure_license_check_cron_scheduled();
 		}
 
 		/**
@@ -593,9 +599,149 @@ if (! class_exists('JupiterX_Core')) {
 		 */
 		public function licensing_schedules()
 		{
-			wp_schedule_event(time(), 'weekly', 'jupiterx_license_checks');
+			$this->ensure_license_check_cron_scheduled();
+		}
 
-			set_transient('jupiterx_event_transient', true, 30 * DAY_IN_SECONDS);
+		/**
+		 * Whether Jupiter X Core is active for the entire multisite network.
+		 *
+		 * @since 4.15.1
+		 *
+		 * @return bool
+		 */
+		public static function is_active_for_network()
+		{
+			return is_multisite()
+				&& function_exists('is_plugin_active_for_network')
+				&& is_plugin_active_for_network(self::$plugin_basename);
+		}
+
+		/**
+		 * License validation / cron should run on this blog only (main site when network-active).
+		 *
+		 * @since 4.15.1
+		 *
+		 * @return bool
+		 */
+		public static function should_run_license_validation_on_this_blog()
+		{
+			if (! is_multisite()) {
+				return true;
+			}
+
+			if (! self::is_active_for_network()) {
+				return true;
+			}
+
+			$main_id = function_exists('get_main_site_id')
+				? (int) get_main_site_id()
+				: 1;
+
+			return (int) get_current_blog_id() === $main_id;
+		}
+
+		/**
+		 * True when license cron must be stored on the network main site (single recurring job).
+		 *
+		 * @since 4.15.1
+		 *
+		 * @return bool
+		 */
+		private function license_checks_should_use_main_site_cron()
+		{
+			return self::is_active_for_network();
+		}
+
+		/**
+		 * Whether the current blog is the network main site.
+		 *
+		 * @since 4.15.1
+		 *
+		 * @return bool
+		 */
+		private function is_current_blog_main_site()
+		{
+			if (function_exists('is_main_site')) {
+				return is_main_site();
+			}
+
+			$main_id = function_exists('get_main_site_id')
+				? (int) get_main_site_id()
+				: 1;
+
+			return (int) get_current_blog_id() === $main_id;
+		}
+
+		/**
+		 * Count scheduled `jupiterx_license_checks` events for the current blog.
+		 *
+		 * @since 4.15.1
+		 *
+		 * @return int
+		 */
+		private function count_scheduled_license_check_events()
+		{
+			$cron_array = get_option('cron', []);
+
+			if (! is_array($cron_array)) {
+				return 0;
+			}
+
+			if (empty($cron_array)) {
+				return 0;
+			}
+
+			$count = 0;
+
+			foreach ($cron_array as $events) {
+				if (! is_array($events)) {
+					continue;
+				}
+
+				if (empty($events['jupiterx_license_checks'])) {
+					continue;
+				}
+
+				$count += count($events['jupiterx_license_checks']);
+			}
+
+			return $count;
+		}
+
+		/**
+		 * Guarantee at most one weekly license cron on the appropriate blog.
+		 *
+		 * @since 4.15.1
+		 *
+		 * @return void
+		 */
+		private function ensure_license_check_cron_scheduled()
+		{
+			$switched = false;
+
+			if ($this->license_checks_should_use_main_site_cron()) {
+				$main_id = function_exists('get_main_site_id')
+					? (int) get_main_site_id()
+					: 1;
+
+				if ((int) get_current_blog_id() !== $main_id) {
+					switch_to_blog($main_id);
+					$switched = true;
+				}
+			}
+
+			$count = $this->count_scheduled_license_check_events();
+
+			if ($count > 1) {
+				wp_clear_scheduled_hook('jupiterx_license_checks');
+				wp_schedule_event(time(), 'weekly', 'jupiterx_license_checks');
+			} elseif (0 === $count) {
+				wp_schedule_event(time(), 'weekly', 'jupiterx_license_checks');
+			}
+
+			if ($switched) {
+				restore_current_blog();
+			}
 		}
 
 		/**

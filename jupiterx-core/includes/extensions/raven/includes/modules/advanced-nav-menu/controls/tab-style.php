@@ -160,13 +160,13 @@ class Tab_Style {
 			[
 				'name'     => 'menu_item_typography',
 				'scheme'   => '3',
-				'selector' => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.raven-menu-item span.link-label',
+				'selector' => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.raven-menu-item span.link-label',
 				'fields_options' => [
 					'font_size' => [
 						'selectors' => [
-							'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.raven-menu-item' => 'font-size: {{SIZE}}{{UNIT}}',
-							'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.raven-menu-item svg.sub-arrow' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
-							'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.raven-menu-item .sub-arrow svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+							'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.raven-menu-item' => 'font-size: {{SIZE}}{{UNIT}}',
+							'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.raven-menu-item svg.sub-arrow' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+							'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.raven-menu-item .sub-arrow svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
 						],
 					],
 				],
@@ -204,7 +204,7 @@ class Tab_Style {
 					'isLinked' => true,
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.raven-menu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.raven-menu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -235,8 +235,8 @@ class Tab_Style {
 					],
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-horizontal ul.raven-adnav-menu > li.menu-item > a.raven-link-item' => 'justify-content: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-vertical ul.raven-adnav-menu > li.menu-item > a.raven-link-item' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-horizontal > ul.raven-adnav-menu > li.menu-item > a.raven-link-item' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-vertical > ul.raven-adnav-menu > li.menu-item > a.raven-link-item' => 'justify-content: {{VALUE}};',
 				],
 				'conditions' => [
 					'relation' => 'or',
@@ -299,7 +299,8 @@ class Tab_Style {
 				],
 				'default'   => '#111111',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a:not(.active-link) > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}}',
 				],
 			]
 		);
@@ -308,7 +309,7 @@ class Tab_Style {
 		$this->add_blur_background_controls(
 			$widget,
 			'menu_item_background_color',
-			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a:not(.active-link)'
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a:not(.active-link)'
 		);
 
 		$widget->add_control( 'menu_item_background_color',
@@ -316,7 +317,7 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a:not(.active-link)' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a:not(.active-link)' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}}' => '--menu-items-bg-normal: {{VALUE}}',
 				],
 				'condition' => [
@@ -343,7 +344,7 @@ class Tab_Style {
 						'label' => esc_html__( 'Border Width', 'jupiterx-core' ),
 					],
 				],
-				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a:not(.active-link)',
+				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a:not(.active-link)',
 				'condition'      => [ 'pointer_type!' => 'framed' ],
 			]
 		);
@@ -357,12 +358,12 @@ class Tab_Style {
 					'unit' => 'px',
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item)' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item)::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item)::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item) > a:not(.active-link)' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item) > a:not(.active-link)::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item) > a:not(.active-link)::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item)' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item)::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item)::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item) > a:not(.active-link)' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item) > a:not(.active-link)::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item) > a:not(.active-link)::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -386,7 +387,8 @@ class Tab_Style {
 					'value' => '4',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:hover > a:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:hover > a:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:hover > a:not(.active-link) > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
 				],
 			]
 		);
@@ -395,7 +397,7 @@ class Tab_Style {
 		$this->add_blur_background_controls(
 			$widget,
 			'hover_menu_item_background_color',
-			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:hover > a:not(.active-link)'
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:hover > a:not(.active-link)'
 		);
 
 		$widget->add_control( 'hover_menu_item_background_color',
@@ -403,7 +405,7 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:hover > a:not(.active-link)' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:hover > a:not(.active-link)' => 'background-color: {{VALUE}};',
 				],
 				'condition' => [
 					'pointer_type!' => 'background',
@@ -448,7 +450,7 @@ class Tab_Style {
 						'label' => esc_html__( 'Border Width', 'jupiterx-core' ),
 					],
 				],
-				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:hover > a:not(.active-link)',
+				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:hover > a:not(.active-link)',
 				'condition'      => [ 'pointer_type!' => 'framed' ],
 			]
 		);
@@ -462,12 +464,12 @@ class Tab_Style {
 					'unit' => 'px',
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item):hover' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item):hover::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item):hover::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item):hover > a' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item):hover > a::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li:not(.current-menu-item):hover > a::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item):hover' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item):hover::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item):hover::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item):hover > a' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item):hover > a::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li:not(.current-menu-item):hover > a::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -491,7 +493,8 @@ class Tab_Style {
 					'value' => '4',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.active-link > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
 				],
 			]
 		);
@@ -500,7 +503,7 @@ class Tab_Style {
 		$this->add_blur_background_controls(
 			$widget,
 			'active_menu_item_background_color',
-			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.active-link'
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.active-link'
 		);
 
 		$widget->add_control( 'active_menu_item_background_color',
@@ -508,7 +511,7 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.active-link' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.active-link' => 'background-color: {{VALUE}};',
 				],
 				'condition' => [
 					'pointer_type!' => 'background',
@@ -553,7 +556,7 @@ class Tab_Style {
 						'label' => esc_html__( 'Border Width', 'jupiterx-core' ),
 					],
 				],
-				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.active-link',
+				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.active-link',
 				'condition'      => [ 'pointer_type!' => 'framed' ],
 			]
 		);
@@ -567,12 +570,12 @@ class Tab_Style {
 					'unit' => 'px',
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.active-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.active-link::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li > a.active-link::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li.current-menu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li.current-menu-item::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) .raven-adnav-menu > li.current-menu-item::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.active-link' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.active-link::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li > a.active-link::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li.current-menu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li.current-menu-item::before' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown):not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu > li.current-menu-item::after' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -709,7 +712,7 @@ class Tab_Style {
 			[
 				'name'     => 'submenu_item_typography',
 				'scheme'   => '3',
-				'selector' => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.raven-submenu-item span.link-label',
+				'selector' => '{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item span.link-label',
 				'condition'  => [ 'layout!' => 'offcanvas' ],
 			]
 		);
@@ -718,7 +721,7 @@ class Tab_Style {
 			[
 				'name'     => 'submenu_item_offcanvas_typography',
 				'scheme'   => '3',
-				'selector' => '{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.raven-submenu-item span.link-label',
+				'selector' => '{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item span.link-label',
 				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
 		);
@@ -749,10 +752,10 @@ class Tab_Style {
 					],
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-horizontal ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-vertical ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-dropdown ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-horizontal > ul.raven-adnav-menu ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-vertical > ul.raven-adnav-menu ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-dropdown > ul.raven-adnav-menu ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu > li > ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
 				],
 				'condition'  => [
 					'layout!' => [ 'offcanvas' ],
@@ -785,7 +788,7 @@ class Tab_Style {
 					],
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-offcanvas ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu a.raven-link-item' => 'justify-content: {{VALUE}};',
 				],
 				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
@@ -805,9 +808,9 @@ class Tab_Style {
 				'render_type' => 'ui',
 				'selectors'   => [
 					'{{WRAPPER}}' => '--submenu-spacing: {{SIZE}}',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'margin-bottom: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: calc({{SIZE}}{{UNIT}} / 2);',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu > li:not(:last-of-type)' => 'margin-bottom: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: calc({{SIZE}}{{UNIT}} / 2);',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'margin-bottom: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: calc({{SIZE}}{{UNIT}} / 2);',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'margin-bottom: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: calc({{SIZE}}{{UNIT}} / 2);',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'margin-bottom: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: calc({{SIZE}}{{UNIT}} / 2);',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'margin-bottom: calc({{SIZE}}{{UNIT}} / 2); padding-bottom: calc({{SIZE}}{{UNIT}} / 2);',
 				],
 			]
 		);
@@ -826,8 +829,8 @@ class Tab_Style {
 					'isLinked' => true,
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-offcanvas) ul.submenu > li > a.raven-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li > a.raven-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-offcanvas) > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu > li > ul.submenu > li > a.raven-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'condition'  => [ 'layout!' => 'offcanvas' ],
 			]
@@ -839,7 +842,7 @@ class Tab_Style {
 				'type'       => 'dimensions',
 				'size_units' => [ 'px', '%' ],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.raven-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
@@ -886,12 +889,12 @@ class Tab_Style {
 					'groove' => esc_html__( 'Groove', 'jupiterx-core' ),
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
-					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
-					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:first-of-type)' => 'border-top-style: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
+					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
+					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal > ul.raven-adnav-menu ul.submenu > li:not(:first-of-type)' => 'border-top-style: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'border-bottom-style: {{VALUE}};',
 				],
 			]
 		);
@@ -902,12 +905,12 @@ class Tab_Style {
 				'type'      => 'color',
 				'default'   => '#808080',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:first-of-type)' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal > ul.raven-adnav-menu ul.submenu > li:not(:first-of-type)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'border-color: {{VALUE}};',
 				],
 				'condition' => [
 					'submenu_item_divider_type!' => 'none',
@@ -928,12 +931,12 @@ class Tab_Style {
 					],
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal ul.submenu > li:not(:first-of-type)' => 'border-top-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-vertical > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.submenu-position-bottom  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}}.submenu-position-top  nav.raven-adnav-menu-main.raven-adnav-menu-horizontal > ul.raven-adnav-menu ul.submenu > li:not(:first-of-type)' => 'border-top-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu > li > ul.submenu > li:not(:last-of-type)' => 'border-bottom-width: {{SIZE}}{{UNIT}};',
 				],
 				'condition'  => [
 					'submenu_item_divider_type!' => 'none',
@@ -958,7 +961,7 @@ class Tab_Style {
 						'label' => esc_html__( 'Border Width', 'jupiterx-core' ),
 					],
 				],
-				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li.menu-item a.raven-submenu-item, {{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li.menu-item a.raven-submenu-item',
+				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-main > ul.raven-adnav-menu ul.submenu > li.menu-item a.raven-submenu-item, {{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li.menu-item a.raven-submenu-item',
 			]
 		);
 
@@ -969,8 +972,8 @@ class Tab_Style {
 				'size_units' => [ 'px', '%' ],
 				'default'    => [ 'unit' => 'px' ],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li.menu-item a.raven-submenu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li.menu-item a.raven-submenu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main > ul.raven-adnav-menu ul.submenu > li.menu-item a.raven-submenu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li.menu-item a.raven-submenu-item' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -979,7 +982,7 @@ class Tab_Style {
 			[
 				'name'      => 'submenu_box_shadow',
 				'separator' => 'before',
-				'selector'  => '{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li.menu-item a.raven-submenu-item, {{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container ul.raven-adnav-menu > li > ul.submenu > li.menu-item a.raven-submenu-item',
+				'selector'  => '{{WRAPPER}} nav.raven-adnav-menu-main > ul.raven-adnav-menu ul.submenu > li.menu-item a.raven-submenu-item, {{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu > li > ul.submenu > li.menu-item a.raven-submenu-item',
 			]
 		);
 
@@ -1002,8 +1005,8 @@ class Tab_Style {
 					'value' => '3',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
 				],
 				'condition'  => [ 'layout!' => 'offcanvas' ],
 			]
@@ -1018,8 +1021,8 @@ class Tab_Style {
 					'value' => '3',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item' => 'color: {{VALUE}};',
 				],
 				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
@@ -1033,7 +1036,7 @@ class Tab_Style {
 		$this->add_blur_background_controls(
 			$widget,
 			'submenu_item_background_color',
-			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.raven-submenu-item',
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item',
 			[ 'layout!' => 'offcanvas' ]
 		);
 
@@ -1043,8 +1046,8 @@ class Tab_Style {
 				'type'      => 'color',
 				'default'   => '#111111',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
 				],
 				'condition'  => [
 					'layout!' => 'offcanvas',
@@ -1061,7 +1064,7 @@ class Tab_Style {
 		$this->add_blur_background_controls(
 			$widget,
 			'submenu_item_offcanvas_background_color',
-			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.raven-submenu-item',
+			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item',
 			[ 'layout' => 'offcanvas' ]
 		);
 
@@ -1070,7 +1073,7 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li > a.raven-submenu-item' => 'background-color: {{VALUE}};',
 				],
 				'condition'  => [
 					'layout' => 'offcanvas',
@@ -1098,8 +1101,8 @@ class Tab_Style {
 					'value' => '4',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main > ul.raven-adnav-menu ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
 				],
 				'condition'  => [ 'layout!' => 'offcanvas' ],
 			]
@@ -1114,8 +1117,8 @@ class Tab_Style {
 					'value' => '4',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li > a:hover:not(.active-link)' => 'color: {{VALUE}};',
 				],
 				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
@@ -1125,7 +1128,7 @@ class Tab_Style {
 		$this->add_blur_background_controls(
 			$widget,
 			'hover_submenu_item_background_color',
-			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a:hover:not(.active-link)'
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) > ul.raven-adnav-menu ul.submenu > li > a:hover:not(.active-link)'
 		);
 
 		$widget->add_control( 'hover_submenu_item_background_color',
@@ -1133,8 +1136,8 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a:hover:not(.active-link)' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a:hover:not(.active-link)' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main > ul.raven-adnav-menu ul.submenu > li > a:hover:not(.active-link)' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li > a:hover:not(.active-link)' => 'background-color: {{VALUE}};',
 				],
 				'condition' => [
 					'hover_submenu_item_background_color_type!' => 'blur',
@@ -1161,8 +1164,8 @@ class Tab_Style {
 					'value' => '4',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main > ul.raven-adnav-menu ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
 				],
 				'condition'  => [ 'layout!' => 'offcanvas' ],
 			]
@@ -1177,8 +1180,8 @@ class Tab_Style {
 					'value' => '4',
 				],
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li > a.active-link' => 'color: {{VALUE}};',
 				],
 				'condition'  => [ 'layout' => 'offcanvas' ],
 			]
@@ -1188,7 +1191,7 @@ class Tab_Style {
 		$this->add_blur_background_controls(
 			$widget,
 			'active_submenu_item_background_color',
-			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) ul.submenu > li > a.active-link'
+			'{{WRAPPER}} nav.raven-adnav-menu-main:not(.raven-adnav-menu-dropdown) > ul.raven-adnav-menu ul.submenu > li > a.active-link'
 		);
 
 		$widget->add_control( 'active_submenu_item_background_color',
@@ -1196,8 +1199,8 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-main ul.submenu > li > a.active-link' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li > a.active-link' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main > ul.raven-adnav-menu ul.submenu > li > a.active-link' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li > a.active-link' => 'background-color: {{VALUE}};',
 				],
 				'condition' => [
 					'active_submenu_item_background_color_type!' => 'blur',
@@ -1694,22 +1697,22 @@ class Tab_Style {
 				'fields_options' => [
 					'font_size' => [
 						'selectors' => [
-							'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.raven-adnav-menu li.menu-item > a' => 'font-size: {{SIZE}}{{UNIT}};',
-							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.raven-adnav-menu li.menu-item > a' => 'font-size: {{SIZE}}{{UNIT}};',
-							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.raven-adnav-menu li.menu-item > a' => 'font-size: {{SIZE}}{{UNIT}};',
-							'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.raven-adnav-menu li > a svg.sub-arrow' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
-							'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.raven-adnav-menu li > a .sub-arrow svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
-							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.raven-adnav-menu li > a svg.sub-arrow' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
-							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.raven-adnav-menu li > a .sub-arrow svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
-							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.raven-adnav-menu li > a svg.sub-arrow' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
-							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.raven-adnav-menu li > a .sub-arrow svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+							'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu li.menu-item > a' => 'font-size: {{SIZE}}{{UNIT}};',
+							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li.menu-item > a' => 'font-size: {{SIZE}}{{UNIT}};',
+							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li.menu-item > a' => 'font-size: {{SIZE}}{{UNIT}};',
+							'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu li > a svg.sub-arrow' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+							'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu li > a .sub-arrow svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a svg.sub-arrow' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a .sub-arrow svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a svg.sub-arrow' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
+							'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a .sub-arrow svg' => 'width: {{SIZE}}{{UNIT}}; height: {{SIZE}}{{UNIT}};',
 						],
 					],
 				],
 				'selector'      => '
-					{{WRAPPER}} nav.raven-adnav-menu-mobile ul.raven-adnav-menu li > a span.link-label,
-					{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.raven-adnav-menu li > a span.link-label,
-					{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.raven-adnav-menu li > a span.link-label
+					{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu li > a span.link-label,
+					{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a span.link-label,
+					{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a span.link-label
 				',
 			]
 		);
@@ -1730,19 +1733,7 @@ class Tab_Style {
 				'selectors'  => [
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}}.dropdown-item-align-flex-end .raven-adnav-menu-dropdown .raven-menu-item.has-submenu .sub-arrow' => 'left: {{LEFT}}{{UNIT}};right:100%;margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
-					'{{WRAPPER}}.dropdown-item-align-flex-start .raven-adnav-menu-dropdown .raven-menu-item.has-submenu .sub-arrow' => 'right: {{RIGHT}}{{UNIT}};margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
-					'{{WRAPPER}}.dropdown-item-align-center .raven-adnav-menu-dropdown .raven-menu-item.has-submenu .sub-arrow' => 'right: {{RIGHT}}{{UNIT}};margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
 					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}}.dropdown-item-align-flex-end .raven-adnav-menu-offcanvas .raven-menu-item.has-submenu .sub-arrow' => 'left: {{LEFT}}{{UNIT}};right:100%;margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
-					'{{WRAPPER}}.dropdown-item-align-flex-start .raven-adnav-menu-offcanvas .raven-menu-item.has-submenu .sub-arrow' => 'right: {{RIGHT}}{{UNIT}};margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
-					'{{WRAPPER}}.dropdown-item-align-center .raven-adnav-menu-offcanvas .raven-menu-item.has-submenu .sub-arrow' => 'right: {{RIGHT}}{{UNIT}};margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
-					'{{WRAPPER}}.dropdown-item-align-flex-end .raven-adnav-menu-full-screen .raven-menu-item.has-submenu .sub-arrow' => 'left: {{LEFT}}{{UNIT}};right:100%;margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
-					'{{WRAPPER}}.dropdown-item-align-flex-start .raven-adnav-menu-full-screen .raven-menu-item.has-submenu .sub-arrow' => 'right: {{RIGHT}}{{UNIT}};margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
-					'{{WRAPPER}}.dropdown-item-align-center .raven-adnav-menu-full-screen .raven-menu-item.has-submenu .sub-arrow' => 'right: {{RIGHT}}{{UNIT}};margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
-					'{{WRAPPER}}.dropdown-item-align-flex-end .raven-adnav-menu-side .raven-menu-item.has-submenu .sub-arrow' => 'left: {{LEFT}}{{UNIT}};right:100%;margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
-					'{{WRAPPER}}.dropdown-item-align-flex-start .raven-adnav-menu-side .raven-menu-item.has-submenu .sub-arrow' => 'right: {{RIGHT}}{{UNIT}};margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
-					'{{WRAPPER}}.dropdown-item-align-center .raven-adnav-menu-side .raven-menu-item.has-submenu .sub-arrow' => 'right: {{RIGHT}}{{UNIT}};margin-top: calc( calc( {{TOP}}{{UNIT}} - {{BOTTOM}}{{UNIT}} ) / 2 );',
 				],
 			]
 		);
@@ -1760,9 +1751,9 @@ class Tab_Style {
 					],
 				],
 				'selectors'  => [
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.submenu > li.menu-item > a > *:first-child' => is_rtl() ? 'margin-right: {{SIZE}}{{UNIT}};' : 'margin-left: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.submenu > li.menu-item > a > *:first-child' => is_rtl() ? 'margin-right: {{SIZE}}{{UNIT}};' : 'margin-left: {{SIZE}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.submenu > li.menu-item > a > *:first-child' => is_rtl() ? 'margin-right: {{SIZE}}{{UNIT}};' : 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu ul.submenu > li.menu-item > a > *:first-child' => is_rtl() ? 'margin-right: {{SIZE}}{{UNIT}};' : 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu ul.submenu > li.menu-item > a > *:first-child' => is_rtl() ? 'margin-right: {{SIZE}}{{UNIT}};' : 'margin-left: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu ul.submenu > li.menu-item > a > *:first-child' => is_rtl() ? 'margin-right: {{SIZE}}{{UNIT}};' : 'margin-left: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -1917,7 +1908,7 @@ class Tab_Style {
 						'label' => esc_html__( 'Border Width', 'jupiterx-core' ),
 					],
 				],
-				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-mobile ul.raven-adnav-menu,{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.raven-adnav-menu,{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.raven-adnav-menu',
+				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu,{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu,{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu',
 			]
 		);
 
@@ -1929,9 +1920,9 @@ class Tab_Style {
 				'default'    => [ 'unit' => 'px' ],
 				'selectors'  => [
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile div.raven-container' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.raven-adnav-menu' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.raven-adnav-menu' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.raven-adnav-menu' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}};',
 				],
 			]
 		);
@@ -1945,7 +1936,7 @@ class Tab_Style {
 						'separator' => 'before',
 					],
 				],
-				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-mobile div.raven-container,{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.raven-adnav-menu,{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.raven-adnav-menu',
+				'selector'       => '{{WRAPPER}} nav.raven-adnav-menu-mobile div.raven-container,{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu,{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu',
 			]
 		);
 
@@ -1974,9 +1965,9 @@ class Tab_Style {
 					],
 				],
 				'selectors'   => [
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile ul.raven-adnav-menu li.menu-item > a' => 'justify-content: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown ul.raven-adnav-menu > li.menu-item > a' => 'justify-content: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas ul.raven-adnav-menu > li.menu-item > a' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-container > ul.raven-adnav-menu li.menu-item > a' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu > li.menu-item > a' => 'justify-content: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu > li.menu-item > a' => 'justify-content: {{VALUE}};',
 				],
 			]
 		);
@@ -2000,9 +1991,12 @@ class Tab_Style {
 				],
 				'default'   => '#111111',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.raven-menu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.raven-menu-item' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.raven-menu-item > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.raven-menu-item > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
 				],
 			]
 		);
@@ -2015,7 +2009,7 @@ class Tab_Style {
 		$this->add_blur_background_controls(
 			$widget,
 			'mobile_menu_item_background_color',
-			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link)',
+			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.raven-menu-item',
 			[ 'layout' => 'offcanvas' ]
 		);
 
@@ -2024,9 +2018,9 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link)' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.raven-menu-item' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.raven-menu-item' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}}' => '--adnav-scrollbar-bg-color: {{VALUE}};',
 				],
 				'conditions' => [
@@ -2067,11 +2061,17 @@ class Tab_Style {
 				'default'   => '#666666',
 				'selectors' => [
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover' => 'color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
 				],
 			]
 		);
@@ -2084,7 +2084,7 @@ class Tab_Style {
 		$this->add_blur_background_controls(
 			$widget,
 			'hover_mobile_menu_item_background_color',
-			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover',
+			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover',
 			[ 'layout' => 'offcanvas' ]
 		);
 
@@ -2094,11 +2094,11 @@ class Tab_Style {
 				'type'      => 'color',
 				'selectors' => [
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link):hover' => 'background-color: {{VALUE}};',
 					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.raven-menu-item:not(.active-link).highlighted' => 'background-color: {{VALUE}};',
 				],
 				'conditions' => [
 					'relation' => 'or',
@@ -2137,11 +2137,14 @@ class Tab_Style {
 				],
 				'default'   => '#666666',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.active-link.raven-menu-item' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.active-link' => 'color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .raven-adnav-menu-mobile ul.raven-adnav-menu li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.active-link' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .raven-adnav-menu-mobile ul.raven-adnav-menu li > a.active-link > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.active-link > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.active-link > svg.sub-arrow' => 'fill: {{VALUE}}; stroke: {{VALUE}};',
 				],
-			]
+			],
 		);
 
 		$this->add_blur_background_type_control(
@@ -2152,7 +2155,7 @@ class Tab_Style {
 		$this->add_blur_background_controls(
 			$widget,
 			'active_mobile_menu_item_background_color',
-			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.active-link',
+			'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.active-link',
 			[ 'layout' => 'offcanvas' ]
 		);
 
@@ -2161,9 +2164,9 @@ class Tab_Style {
 				'label'     => esc_html__( 'Background Color', 'jupiterx-core' ),
 				'type'      => 'color',
 				'selectors' => [
-					'{{WRAPPER}} nav.raven-adnav-menu-mobile .raven-adnav-menu li > a.active-link.raven-menu-item' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown .raven-adnav-menu li > a.active-link' => 'background-color: {{VALUE}};',
-					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas .raven-adnav-menu li > a.active-link' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .raven-adnav-menu-mobile .raven-adnav-menu li > a.active-link' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-dropdown > ul.raven-adnav-menu li > a.active-link' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} nav.raven-adnav-menu-main.raven-adnav-menu-offcanvas > ul.raven-adnav-menu li > a.active-link' => 'background-color: {{VALUE}};',
 				],
 				'conditions' => [
 					'relation' => 'or',

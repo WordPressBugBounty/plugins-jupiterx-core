@@ -91,7 +91,12 @@ class Recaptcha extends Field_Base {
 			$html .= '<div ' . $this->widget->get_render_attribute_string( 'recaptcha-' . $this->get_id() ) . '></div>';
 
 			if ( ! \Elementor\Plugin::instance()->preview->is_preview_mode() ) {
-				$html .= "<script src='https://www.google.com/recaptcha/api.js'></script>"; // @codingStandardsIgnoreLine
+				$api_url = add_query_arg(
+					'hl',
+					Recaptcha_Locale::get_hl(),
+					'https://www.google.com/recaptcha/api.js'
+				);
+				$html .= '<script src="' . esc_url( $api_url ) . '"></script>'; // @codingStandardsIgnoreLine
 			}
 		} else {
 			$html .= $this->render_fallback();

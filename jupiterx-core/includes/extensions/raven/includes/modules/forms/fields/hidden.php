@@ -47,12 +47,15 @@ class Hidden extends Field_Base {
 
 		$this->widget->add_render_attribute(
 			$field_id,
-			[
-				'type' => 'hidden',
-				'id' => 'field-' . $field_id,
-				'name' => 'fields[' . $field_id . ']',
-				'value' => $field['field_value'],
-			]
+			array_merge(
+				[
+					'type' => 'hidden',
+					'id' => 'field-' . $field_id,
+					'name' => 'fields[' . $field_id . ']',
+					'value' => $field['field_value'],
+				],
+				$this->get_data_custom_id_attributes()
+			)
 		);
 		?>
 		<input

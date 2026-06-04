@@ -1634,21 +1634,27 @@ class Image_Comparison extends Base_Widget {
 				data-startingposition="<?php echo esc_attr( $divider_location ); ?>%"
 			>
 				<img
-					class="raven-image-comparison-before-image no-lazy"
+					class="raven-image-comparison-before-image no-lazy skip-lazy"
 					src="<?php echo esc_url( $before_image['url'] ); ?>"
+					loading="eager"
+					data-no-lazy="1"
 					data-label="<?php echo esc_attr( $before_image['label'] ); ?>"
 					alt="<?php echo esc_attr( $before_image['alt'] ); ?>"
 				>
 				<img
-					class="raven-image-comparison-after-image no-lazy"
+					class="raven-image-comparison-after-image no-lazy skip-lazy"
 					src="<?php echo esc_url( $after_image['url'] ); ?>"
+					loading="eager"
+					data-no-lazy="1"
 					data-label="<?php echo esc_attr( $after_image['label'] ); ?>"
 					alt="<?php echo esc_attr( $after_image['alt'] ); ?>"
 				>
 			</div>
 			<img
-				class="placeholder-image no-lazy"
+				class="placeholder-image no-lazy skip-lazy"
 				src="<?php echo esc_url( $before_image['url'] ); ?>"
+				loading="eager"
+				data-no-lazy="1"
 				data-label="<?php echo esc_attr( $before_image['label'] ); ?>"
 				alt="<?php echo esc_attr( $before_image['alt'] ); ?>"
 			>

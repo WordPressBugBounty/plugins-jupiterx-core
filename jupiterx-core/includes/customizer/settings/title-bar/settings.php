@@ -127,7 +127,7 @@ JupiterX_Customizer::add_field( [
 $jupiterx_post_types = [
 	'post'      => __( 'Blog', 'jupiterx-core' ),
 	'page'      => __( 'Page', 'jupiterx-core' ),
-	'portfolio' => __( 'Portfolio', 'jupiterx-core' ),
+	'portfolio' => jupiterx_core_get_portfolio_label( 'singular' ),
 ];
 
 if ( function_exists( 'jupiterx_get_post_types' ) ) {

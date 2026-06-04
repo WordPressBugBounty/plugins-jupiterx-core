@@ -343,10 +343,6 @@ if ( ! function_exists( 'jupiterx_logic_message_helper' ) ) {
 				'user_msg' => __( '', 'jupiterx-core' ),
 			),
 			array(
-				'sys_msg'  => 'Backup created.',
-				'user_msg' => __( '', 'jupiterx-core' ),
-			),
-			array(
 				'sys_msg' => 'Not enough max_execution_time.',
 				'user_msg' => __( '' , 'jupiterx-core' ),
 			),
@@ -356,29 +352,7 @@ if ( ! function_exists( 'jupiterx_logic_message_helper' ) ) {
 			),
 		);
 
-		/*====================== DB MANAGEMENT ============================*/
-		$db_management_messages = array(
-			array(
-				'sys_msg'  => 'Can not create backup db file.',
-				'user_msg' => '',
-			),
-			array(
-				'sys_msg'  => 'Backup file is not created in right approach , try again.',
-				'user_msg' => '',
-			),
-			array(
-				'sys_msg'  => 'Backup Successfuly created',
-				'user_msg' => '',
-			),
-			array(
-				'sys_msg'  => 'Can not create index , Securesection',
-				'user_msg' => '',
-			),
-			array(
-				'sys_msg'  => 'Can not create htaccess , Securesection',
-				'user_msg' => '',
-			),
-		);
+		$db_management_messages = array();
 
 		/*====================== DECISION LOGIC ============================*/
 		switch ( $which_page ) {

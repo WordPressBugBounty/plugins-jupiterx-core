@@ -262,7 +262,7 @@ class JupiterX_Core_Condition_Generator {
 					1 => 'All',
 				],
 			],
-			'rule_string' => esc_html__( 'All Portfolios', 'jupiterx-core' ),
+			'rule_string' => sprintf( esc_html__( 'All %s', 'jupiterx-core' ), jupiterx_core_get_portfolio_label( 'plural' ) ),
 			'is_multi' => false,
 		];
 	}
@@ -305,7 +305,12 @@ class JupiterX_Core_Condition_Generator {
 					],
 				],
 			],
-			'rule_string' => esc_html__( 'Portfolios Archive, All archive of the Portfolio Categories, All archive of the Portfolio Tags', 'jupiterx-core' ),
+			'rule_string' => sprintf(
+				esc_html__( '%1$s, All archive of the %2$s, All archive of the %3$s', 'jupiterx-core' ),
+				jupiterx_core_get_portfolio_label( 'archive' ),
+				jupiterx_core_get_portfolio_label( 'categories' ),
+				jupiterx_core_get_portfolio_label( 'tags' )
+			),
 			'is_multi' => true,
 		];
 	}

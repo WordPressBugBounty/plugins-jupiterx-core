@@ -1788,13 +1788,17 @@ abstract class Base extends Skin_Base {
 			$archive_query = json_encode( $wp_query->query_vars );
 		}
 
-		$polylang_lang = '';
+		$current_lang = '';
 
 		if ( function_exists( 'pll_the_languages' ) ) {
-			$polylang_lang = pll_current_language();
+			$current_lang = pll_current_language();
+		}
+
+		if ( empty( $current_lang ) && class_exists( 'SitePress' ) ) {
+			$current_lang = apply_filters( 'wpml_current_language', null );
 		}
 		?>
-		<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" data-post-id="<?php echo Utils::get_current_post_id(); ?>" data-archive-query="<?php echo htmlspecialchars( $archive_query ); ?>" data-lang="<?php echo esc_attr( $polylang_lang ); ?>">
+		<div class="<?php echo esc_attr( implode( ' ', $classes ) ); ?>" data-post-id="<?php echo Utils::get_current_post_id(); ?>" data-archive-query="<?php echo htmlspecialchars( $archive_query ); ?>" data-lang="<?php echo esc_attr( $current_lang ); ?>">
 		<?php
 	}
 

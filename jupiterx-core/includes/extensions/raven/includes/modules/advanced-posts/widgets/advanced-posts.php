@@ -2752,6 +2752,11 @@ class Advanced_Posts extends Base_Widget {
 					'value' => 'yes',
 				],
 				[
+					'name' => 'show_reading_time',
+					'operator' => '===',
+					'value' => 'yes',
+				],
+				[
 					'name' => 'show_custom_field',
 					'operator' => '===',
 					'value' => 'yes',

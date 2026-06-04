@@ -56,6 +56,15 @@ class File extends Field_Base {
 			$this->widget->add_render_attribute( 'field-' . $this->get_id(), [ 'name' => 'fields[' . $this->get_id() . '][]' ] );
 		}
 
+		$choose_label = esc_attr__( 'Choose file', 'jupiterx-core' );
+		$this->widget->add_render_attribute(
+			'field-' . $this->get_id(),
+			[
+				'aria-label' => $choose_label,
+				'title'      => $choose_label,
+			]
+		);
+
 		?>
 		<div class="raven-field-subgroup <?php echo esc_attr( $field['inline_list'] ); ?>">
 			<span class="raven-field-option">

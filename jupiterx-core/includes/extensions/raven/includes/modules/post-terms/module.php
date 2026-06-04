@@ -17,8 +17,8 @@ class Module extends Module_Base {
 			'post_tag'           => esc_html__( 'Post Tags', 'jupiterx-core' ),
 			'product_cat'        => esc_html__( 'Product Categories', 'jupiterx-core' ),
 			'product_tag'        => esc_html__( 'Product Tags', 'jupiterx-core' ),
-			'portfolio_category' => esc_html__( 'Portfolio Categories', 'jupiterx-core' ),
-			'portfolio_tag'      => esc_html__( 'Portfolio Tags', 'jupiterx-core' ),
+			'portfolio_category' => jupiterx_core_get_portfolio_label( 'categories' ),
+			'portfolio_tag'      => jupiterx_core_get_portfolio_label( 'tags' ),
 		];
 
 		$post_types    = self::get_post_types();

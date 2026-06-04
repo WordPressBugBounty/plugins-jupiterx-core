@@ -30,9 +30,17 @@ class Source_Raven extends Source_Base {
 	public function get_items( $args = [] ) {
 		$templates_data = Module::get_templates();
 
+		if ( is_wp_error( $templates_data ) || ! is_array( $templates_data ) ) {
+			return [];
+		}
+
 		$templates = [];
 
 		foreach ( $templates_data as $template_data ) {
+			if ( ! is_array( $template_data ) || empty( $template_data['id'] ) ) {
+				continue;
+			}
+
 			$templates[] = $this->get_item( $template_data );
 		}
 
@@ -41,25 +49,27 @@ class Source_Raven extends Source_Base {
 
 	public function get_item( $template_data ) {
 		$favorite_templates = $this->get_user_meta( 'favorites' );
+		$template_id          = $template_data['id'] ?? '';
+		$subtype              = str_replace( 'Jupiter X ', '', (string) ( $template_data['subtype'] ?? '' ) );
 
 		return [
-			'template_id' => 'raven_' . $template_data['id'],
+			'template_id' => 'raven_' . $template_id,
 			'source' => 'remote',
-			'type' => $template_data['type'],
-			'subtype' => str_replace( 'Jupiter X ', '', $template_data['subtype'] ),
-			'title' => 'Jupiter X - ' . $template_data['title'], // Prepend name for searchable string
-			'thumbnail' => $template_data['thumbnail'],
-			'date' => $template_data['tmpl_created'],
-			'author' => $template_data['author'],
-			'tags' => $template_data['tags'],
+			'type' => $template_data['type'] ?? '',
+			'subtype' => $subtype,
+			'title' => 'Jupiter X - ' . ( $template_data['title'] ?? '' ), // Prepend name for searchable string
+			'thumbnail' => $template_data['thumbnail'] ?? '',
+			'date' => $template_data['tmpl_created'] ?? '',
+			'author' => $template_data['author'] ?? '',
+			'tags' => $template_data['tags'] ?? '',
 			'isPro' => 0,
 			'templatePro' => ( function_exists( 'jupiterx_is_pro' ) ) ? jupiterx_is_pro() : false,
-			'popularityIndex' => (int) $template_data['popularity_index'],
-			'trendIndex' => (int) $template_data['trend_index'],
-			'hasPageSettings' => ( '1' === $template_data['has_page_settings'] ),
-			'url' => $template_data['url'],
-			'accessLevel' => $template_data['access_level'],
-			'favorite' => ! empty( $favorite_templates[ $template_data['id'] ] ),
+			'popularityIndex' => (int) ( $template_data['popularity_index'] ?? 0 ),
+			'trendIndex' => (int) ( $template_data['trend_index'] ?? 0 ),
+			'hasPageSettings' => ( '1' === ( $template_data['has_page_settings'] ?? '' ) ),
+			'url' => $template_data['url'] ?? '',
+			'accessLevel' => $template_data['access_level'] ?? 0,
+			'favorite' => ! empty( $favorite_templates[ $template_id ] ),
 			'accessTier' => 'free',
 		];
 	}

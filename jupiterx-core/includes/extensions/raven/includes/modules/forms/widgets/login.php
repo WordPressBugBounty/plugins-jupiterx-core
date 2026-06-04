@@ -687,7 +687,7 @@ class Login extends Form {
 			?>>
 				<button type="submit" class="raven-submit-button">
 					<?php Elementor::$instance->icons_manager->render_icon( $settings['submit_button_icon_new'], [ 'aria-hidden' => 'true' ] ); ?>
-					<span><?php echo wp_kses_post( $settings['submit_button_text'] ); ?></span>
+					<span><?php echo wp_kses_post( __( $settings['submit_button_text'], 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting. ?></span>
 				</button>
 			</div>
 			<div class="raven-field-type-checkbox raven-flex-wrap raven-field-group elementor-column elementor-col-100 login-tools-wrapper">

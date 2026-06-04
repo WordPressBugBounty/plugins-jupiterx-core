@@ -72,7 +72,6 @@ class JupiterX_Control_Panel_2
 			'control-panel-2/includes/logic-messages',
 			'control-panel-2/includes/class-helpers',
 			'control-panel-2/includes/class-filesystem',
-			'control-panel-2/includes/class-db-manager',
 			'control-panel-2/includes/class-db-php-manager',
 			'control-panel-2/includes/class-export-import-content',
 			'control-panel-2/includes/class-install-template',
@@ -557,7 +556,6 @@ class JupiterX_Control_Panel_2
 			'isPremium' => jupiterx_is_premium(),
 			'isPro' => jupiterx_is_pro(),
 			'searchFilters' => $this->components['templates']->get_filters(),
-			'templateInstalled' => $this->components['templates']->get_installed(),
 			'adminAjaxURL' => admin_url('admin-ajax.php'),
 			'siteName' => get_bloginfo('name'),
 			'debug' => $this->components['logs']->get_info(),
@@ -594,6 +592,50 @@ class JupiterX_Control_Panel_2
 		);
 
 		return $data;
+	}
+
+	/**
+	 * Whether any tracking code fields are saved (non-whitespace).
+	 *
+	 * Used to keep the Tracking Codes settings subsection visible for sites that
+	 * already use snippets while Simplicity Mode hides it for empty installs.
+	 *
+	 * @since 4.18.0
+	 *
+	 * @return bool
+	 */
+	private function has_saved_tracking_codes()
+	{
+		$jx_settings = get_option('jupiterx', []);
+
+		if (! is_array($jx_settings)) {
+			return false;
+		}
+
+		$keys = [
+			'tracking_codes_after_head',
+			'tracking_codes_before_head',
+			'tracking_codes_after_body',
+			'tracking_codes_before_body',
+		];
+
+		foreach ($keys as $key) {
+			if (! isset($jx_settings[$key])) {
+				continue;
+			}
+
+			$value = $jx_settings[$key];
+
+			if (! is_scalar($value)) {
+				continue;
+			}
+
+			if ('' !== trim(stripslashes((string) $value))) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	/**
@@ -942,7 +984,12 @@ class JupiterX_Control_Panel_2
 		}
 
 		unset($tabs['settings']['subTabs']['post-types']);
-		unset($tabs['settings']['subTabs']['tracking-codes']);
+
+		// Hide Tracking Codes under Simplicity Mode unless snippets already exist.
+		if (jupiterx_core()->check_default_settings() && ! $this->has_saved_tracking_codes()) {
+			unset($tabs['settings']['subTabs']['tracking-codes']);
+		}
+
 		unset($tabs['settings']['subTabs']['image-sizes']);
 
 		if (! function_exists('WC')) {

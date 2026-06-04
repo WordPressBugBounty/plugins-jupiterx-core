@@ -510,7 +510,7 @@ class Post_Terms extends Base_Widget {
 			?>
 				<div class="jupiterx-post-term-with-title">
 					<div class="jupiter-post-term-title">
-						<?php echo esc_html( $settings['text_before'] ); ?>
+						<?php echo esc_html( __( $settings['text_before'], 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting. ?>
 					</div>
 			<?php
 		} else {

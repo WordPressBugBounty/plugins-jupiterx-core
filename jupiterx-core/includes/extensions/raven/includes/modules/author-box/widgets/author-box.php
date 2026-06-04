@@ -684,7 +684,7 @@ class Author_Box extends Base_Widget {
 
 				<?php if ( $print_link ) : ?>
 					<a <?php $this->print_render_attribute_string( 'button' ); ?>>
-						<?php $this->print_unescaped_setting( 'link_text' ); ?>
+						<?php echo wp_kses_post( __( $settings['link_text'], 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting. ?>
 					</a>
 				<?php endif; ?>
 			</div>

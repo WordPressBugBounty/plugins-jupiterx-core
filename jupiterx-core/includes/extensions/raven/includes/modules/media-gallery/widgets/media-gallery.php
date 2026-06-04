@@ -2103,7 +2103,7 @@ class Media_Gallery extends Base_Widget {
 			$active_tab_class = '';
 			$html            .= sprintf(
 				'<button data-raven-tab-index="0" class="tab-item active">%s</button>',
-				$settings['all_filter_label']
+				esc_html( __( $settings['all_filter_label'], 'jupiterx-core' ) ) // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting.
 			);
 		}
 

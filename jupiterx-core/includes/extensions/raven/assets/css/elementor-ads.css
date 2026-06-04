@@ -146,16 +146,17 @@ body.admin-bar div.e-admin-top-bar div.e-admin-top-bar__secondary-area {
 }
 
 /** Template library – remote Pro-only blocks (floating bars, etc.; “Go Pro” preview cards) */
-.elementor-template-library-pro-template {
+.elementor-template-library-template-remote.elementor-template-library-pro-template {
   display: none !important;
 }
 
-/** Template library – cloud source save option */
-#elementor-template-library-filter > div > div.source-option[data-source=cloud] {
-  visibility: hidden !important;
+/** Template library – hide Site/Cloud source filter (local remains default) */
+.elementor-template-library-filter-select-source {
+  display: none !important;
 }
 
-#elementor-template-library-save-template-form > div > div.source-selections > div.source-selections-input.cloud {
+/** Save modal – hide Cloud Templates row only */
+#elementor-template-library-save-template-form .source-selections-input.cloud {
   display: none !important;
 }
 

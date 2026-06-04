@@ -181,25 +181,6 @@ class JupiterX_Core_Control_Panel_Templates {
 	}
 
 	/**
-	 * Get installed template.
-	 *
-	 * @since 1.18.0
-	 *
-	 * @return array Template data.
-	 */
-	public function get_installed() {
-		$title = jupiterx_get_option( 'template_installed' );
-		if ( $title ) {
-			$title = ucwords( $title );
-		}
-
-		return [
-			'id'    => jupiterx_get_option( 'template_installed_id' ),
-			'title' => $title,
-		];
-	}
-
-	/**
 	 * Get API available filters.
 	 *
 	 * @since 1.18.0

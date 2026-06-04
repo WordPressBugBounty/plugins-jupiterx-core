@@ -25,12 +25,14 @@ class Recaptcha_V3 extends Field_Base {
 		parent::__construct();
 
 		wp_register_script(
-			'jupiterx-core-raven-recaptcha',
+			Recaptcha_Locale::SCRIPT_HANDLE,
 			'https://www.google.com/recaptcha/api.js?render=explicit',
 			[],
 			'1.0.0',
 			true
 		);
+
+		Recaptcha_Locale::register_script_loader_filter();
 	}
 
 	/**
@@ -104,7 +106,7 @@ class Recaptcha_V3 extends Field_Base {
 
 			$html .= '<div ' . $this->widget->get_render_attribute_string( 'recaptcha-' . $this->get_id() ) . '></div>';
 			if ( ! Elementor::instance()->preview->is_preview_mode() ) {
-				wp_enqueue_script( 'jupiterx-core-raven-recaptcha' );
+				wp_enqueue_script( Recaptcha_Locale::SCRIPT_HANDLE );
 			}
 		} elseif ( current_user_can( 'manage_options' ) ) {
 			$html .= $this->render_fallback();

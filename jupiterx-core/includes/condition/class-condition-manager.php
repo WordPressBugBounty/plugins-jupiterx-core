@@ -561,6 +561,13 @@ class JupiterX_Core_Condition_Manager {
 		$conditions = filter_input( INPUT_POST, 'conditions', FILTER_DEFAULT, FILTER_REQUIRE_ARRAY );
 		$conditions = $this->filter_condition_before_saving( $conditions );
 
+		if ( 'jupiterx-loop-item' === get_post_meta( $post, '_elementor_template_type', true ) ) {
+			delete_post_meta( $post, self::JUPITERX_CONDITIONS_COMPONENT_META_NAME );
+			delete_post_meta( $post, self::JUPITERX_CONDITIONS_COMPONENT_META_STRING );
+			$this->add_posts_id_with_conditions( $post, [] );
+			wp_send_json_success( esc_html__( 'Loop Item templates do not use display conditions.', 'jupiterx-core' ) );
+		}
+
 		$result = update_post_meta( $post, self::JUPITERX_CONDITIONS_COMPONENT_META_NAME, $conditions );
 
 		jupiterx_core()->load_files(
@@ -668,6 +675,12 @@ class JupiterX_Core_Condition_Manager {
 		}
 
 		$id = is_int( $id ) ? strval( $id ) : $id;
+
+		if ( 'jupiterx-loop-item' === get_post_meta( (int) $id, '_elementor_template_type', true ) ) {
+			$new_options = array_diff( $option, array( $id ) );
+			update_option( self::JUPITERX_POSTS_WITH_CONDITIONS, $new_options );
+			return;
+		}
 
 		// IF user deleted all conditions for post and/or empty condition array.
 		if ( empty( $conditions ) ) {

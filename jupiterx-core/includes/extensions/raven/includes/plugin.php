@@ -18,6 +18,7 @@ use JupiterX_Core\Raven\Utils;
 use Elementor\Core\Common\Modules\Connect\Apps\Base_App;
 use Elementor\Core\Base\Document;
 use Elementor\Core\Admin\Menu\Admin_Menu_Manager;
+use JupiterX_Core\Raven\Core\Document_Types\Type\Jupiterx_Loop_Item_Document;
 use JupiterX_Popups;
 
 /**
@@ -535,6 +536,7 @@ final class Plugin
 	 *
 	 * @since 2.5.0
 	 * @access public
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 */
 	public function disable_elementor_notices()
 	{
@@ -711,6 +713,7 @@ final class Plugin
 			'raven-product-meta',
 			'raven-product-price',
 			'raven-product-rating',
+			'raven-product-stock-status',
 			'raven-product-short-description',
 			'raven-product-add-to-cart',
 			'raven-woocommerce-breadcrumbs',
@@ -881,6 +884,8 @@ final class Plugin
 	 *
 	 * @since 1.20.0
 	 * @access public
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 */
 	public static function get_modules($primary = false)
 	{
@@ -910,6 +915,7 @@ final class Plugin
 			'image-accordion' => esc_html__('Image Accordion', 'jupiterx-core'),
 			'image-comparison' => esc_html__('Image Comparison', 'jupiterx-core'),
 			'image-gallery' => __('Image Gallery', 'jupiterx-core'),
+			'instagram-feed' => esc_html__('Instagram Feed', 'jupiterx-core'),
 			'inline-svg' => esc_html__('Inline SVG', 'jupiterx-core'),
 			'nav-menu' => __('Navigation Menu', 'jupiterx-core'),
 			'photo-album' => __('Photo Album', 'jupiterx-core'),
@@ -939,11 +945,15 @@ final class Plugin
 			'call-to-action' => esc_html__('Call To Action', 'jupiterx-core'),
 			'cart' => esc_html__('Cart', 'jupiterx-core'),
 			'carousel' => esc_html__('Carousel', 'jupiterx-core'),
+			'charts' => esc_html__('Charts', 'jupiterx-core'),
 			'content-switch' => esc_html__('Content switch', 'jupiterx-core'),
 			'custom-css' => esc_html__('Custom CSS', 'jupiterx-core'),
 			'flip-box' => esc_html__('Flip Box', 'jupiterx-core'),
 			'hotspot' => esc_html__('Hotspot', 'jupiterx-core'),
 			'lottie' => esc_html__('Lottie', 'jupiterx-core'),
+			'loop-carousel' => esc_html__('Loop Carousel', 'jupiterx-core'),
+			'loop-filter' => esc_html__('Loop Filter', 'jupiterx-core'),
+			'loop-grid' => esc_html__('Loop Grid', 'jupiterx-core'),
 			'product-data-tabs' => esc_html__('Product Data Tabs', 'jupiterx-core'),
 			'post-title' => esc_html__('Post Title', 'jupiterx-core'),
 			'post-terms' => esc_html__('Post Terms', 'jupiterx-core'),
@@ -957,10 +967,12 @@ final class Plugin
 			'product-gallery' => esc_html__('Product Gallery', 'jupiterx-core'),
 			'product-meta' => esc_html__('Product Meta', 'jupiterx-core'),
 			'product-short-description' => esc_html__('Product Short Description', 'jupiterx-core'),
+			'product-stock-status' => esc_html__('Stock Status', 'jupiterx-core'),
 			'product-price' => esc_html__('Product Price', 'jupiterx-core'),
 			'progress-tracker' => esc_html__('Progress Tracker', 'jupiterx-core'),
 			'site-title' => esc_html__('Site Title', 'jupiterx-core'),
 			'table-of-contents' => esc_html__('Table of Contents', 'jupiterx-core'),
+			'timeline' => esc_html__('Timeline', 'jupiterx-core'),
 			'slider' => esc_html__('Slider', 'jupiterx-core'),
 			'social-share' => esc_html__('Social Share', 'jupiterx-core'),
 			'tooltip' => esc_html__('Tooltip', 'jupiterx-core'),
@@ -997,6 +1009,52 @@ final class Plugin
 				$database_modules = $modules;
 			}
 
+			if (! in_array('charts', $database_modules, true) && ! jupiterx_get_option('charts_module_default_enabled')) {
+				$database_modules[] = 'charts';
+				jupiterx_update_option('elements', $database_modules);
+				jupiterx_update_option('charts_module_default_enabled', true);
+			}
+
+			if (
+				is_array($database_modules) &&
+				! in_array('loop-grid', $database_modules, true) &&
+				'yes' !== jupiterx_get_option('loop_grid_default_enabled', false)
+			) {
+				$database_modules[] = 'loop-grid';
+				jupiterx_update_option('elements', $database_modules);
+				jupiterx_update_option('loop_grid_default_enabled', 'yes');
+			}
+
+			if (
+				is_array($database_modules) &&
+				! in_array('loop-carousel', $database_modules, true) &&
+				'yes' !== jupiterx_get_option('loop_carousel_default_enabled', false)
+			) {
+				$database_modules[] = 'loop-carousel';
+				jupiterx_update_option('elements', $database_modules);
+				jupiterx_update_option('loop_carousel_default_enabled', 'yes');
+			}
+
+			if (
+				is_array($database_modules) &&
+				! in_array('loop-filter', $database_modules, true) &&
+				'yes' !== jupiterx_get_option('loop_filter_default_enabled', false)
+			) {
+				$database_modules[] = 'loop-filter';
+				jupiterx_update_option('elements', $database_modules);
+				jupiterx_update_option('loop_filter_default_enabled', 'yes');
+			}
+
+			foreach (['timeline', 'instagram-feed', 'product-stock-status'] as $module) {
+				$option_key = $module . '_module_default_enabled';
+
+				if (! in_array($module, $database_modules, true) && ! jupiterx_get_option($option_key)) {
+					$database_modules[] = $module;
+					jupiterx_update_option('elements', $database_modules);
+					jupiterx_update_option($option_key, true);
+				}
+			}
+
 			$modules = $database_modules;
 		}
 
@@ -1008,7 +1066,7 @@ final class Plugin
 			jupiterx_update_option('elements', $modules);
 		}
 
-		// Merge four special modules into modules.
+		// Merge special modules into modules.
 		$modules = array_merge($modules, ['custom-scripts', 'column', 'elementor-ads', 'scroll-snap', 'revamp-fields', 'blur-background']);
 
 		// Add group widgets module file.
@@ -1229,6 +1287,7 @@ final class Plugin
 	 * @param array $settings elementor config
 	 * @since 2.0.5
 	 * @return array
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 */
 	public function customize_elementor_localized_settings($settings)
 	{
@@ -1239,7 +1298,6 @@ final class Plugin
 		$new_settings['jx_conditions']        = false;
 		$new_settings['jx_nonce']             = wp_create_nonce('jupiterx_control_panel');
 		$new_settings['jx_assets_url']        = self::$plugin_assets_url;
-		$new_settings['jx_editor_top_bar']    = get_option('elementor_experiment-editor_v2', 'default');
 		$new_settings['jx_editor_first_load'] = false;
 
 		$template_id    = filter_input(INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT);
@@ -1258,6 +1316,11 @@ final class Plugin
 
 		if ('none' === $new_settings['jx_layout']) {
 			$new_settings['jx_layout'] = get_post_meta($template_id, '_elementor_template_type', true);
+		}
+
+		if ( in_array( $new_settings['jx_layout'], [ Jupiterx_Loop_Item_Document::SLUG, 'loop-item' ], true ) ) {
+			$new_settings['jx_layout']     = 'none';
+			$new_settings['jx_conditions'] = true;
 		}
 
 		// Check conditions.

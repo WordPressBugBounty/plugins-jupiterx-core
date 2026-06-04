@@ -19,8 +19,6 @@ defined('ABSPATH') || die();
 if (! class_exists('JupiterX_Core_Control_Panel_Install_Template')) {
 	class JupiterX_Core_Control_Panel_Install_Template
 	{
-
-
 		private $layer_slider_slug = 'layerslider';
 
 		private $theme_name;
@@ -261,15 +259,12 @@ if (! class_exists('JupiterX_Core_Control_Panel_Install_Template')) {
 
 			add_action('wp_ajax_jupiterx_core_cp_template_lazy_load', array(&$this, 'loadTemplatesFromApi'));
 			add_action('wp_ajax_abb_install_template_procedure', array(&$this, 'install_template_procedure'));
+			add_action('wp_ajax_jupiterx_core_cp_template_import_stats', array(&$this, 'get_template_import_stats'));
 
 			// Action only for importing theme content with Server-Sent Event.
 			add_action('wp_ajax_abb_install_template_sse', array(&$this, 'import_theme_content_sse'));
 
 			add_action('wp_ajax_abb_get_templates_categories', array(&$this, 'getTemplateCategoryListFromApi'));
-			add_action('wp_ajax_abb_restore_latest_db', array(&$this, 'restoreLatestDB'));
-			add_action('wp_ajax_abb_is_restore_db', array(&$this, 'isRestoreDB'));
-
-			add_action('wp_ajax_jupiterx_core_cp_uninstall_template', array(&$this, 'uninstallTemplate'));
 			add_action('wp_ajax_abb_get_template_psd_link', array(&$this, 'get_template_psd_link'));
 		}
 
@@ -286,7 +281,7 @@ if (! class_exists('JupiterX_Core_Control_Panel_Install_Template')) {
 			check_ajax_referer('jupiterx_control_panel', 'nonce');
 
 			if (! current_user_can('manage_options')) {
-				wp_send_json_error('You do not have access to this section.', 'jupiterx-core');
+				wp_send_json_error(__('You do not have access to this section.', 'jupiterx-core'));
 			}
 
 			$template_id    = (isset($_POST['template_id']) ? intval($_POST['template_id']) : 0);
@@ -328,16 +323,11 @@ if (! class_exists('JupiterX_Core_Control_Panel_Install_Template')) {
 				case 'preparation':
 					$this->preparation($template_name);
 					break;
-				case 'backup_db':
-					$this->backupDB();
-					break;
-				case 'backup_media_records':
-					$this->backup_media_records();
-					break;
-				case 'restore_media_records':
-					$this->restore_media_records();
-					break;
 				case 'reset_db':
+					if (! $partial_import && ! $this->validate_full_import_confirmation()) {
+						return false;
+					}
+
 					$this->resetDB();
 					break;
 				case 'upload':
@@ -378,6 +368,19 @@ if (! class_exists('JupiterX_Core_Control_Panel_Install_Template')) {
 					break;
 				case 'finalize':
 					$this->finalizeImporting($template_name, $partial_import);
+					break;
+				default:
+					$this->message(
+						sprintf(
+							/* translators: %s: import step key requested by the control panel */
+							__(
+								'Unsupported import step (%s). Update Jupiter X Core to the latest version. If the problem continues, contact support.',
+								'jupiterx-core'
+							),
+							(string) $type
+						),
+						false
+					);
 					break;
 			}
 		}
@@ -485,14 +488,11 @@ if (! class_exists('JupiterX_Core_Control_Panel_Install_Template')) {
 					}
 				}
 
-				$db_manager = new JupiterX_Core_Control_Panel_Database_Manager();
-				$backups    = $db_manager->is_restore_db();
 				$this->message(
 					'Successfull',
 					true,
 					array(
 						'templates' => $list_of_templates,
-						'backups'   => $backups,
 					)
 				);
 				return true;
@@ -511,100 +511,183 @@ if (! class_exists('JupiterX_Core_Control_Panel_Install_Template')) {
 				return false;
 			}
 		}
-		public function backupDB()
-		{
-			try {
-				$db_manager  = new JupiterX_Core_Control_Panel_Database_Manager();
-				$dm_response = $db_manager->backup_db();
-				if (false == $dm_response) {
-					throw new Exception($db_manager->get_error_message());
-				}
 
-				$this->message('Backup created.', true);
-				return true;
-			} catch (Exception $e) {
-				$this->message($e->getMessage(), false);
-				return false;
-			}
-		}
-		public function backup_media_records()
-		{
-			try {
-				$db_manager = new JupiterX_Core_Control_Panel_Database_Manager();
-
-				$dm_response = $db_manager->backup_media_records();
-
-				if (false == $dm_response) {
-					throw new Exception($db_manager->get_error_message());
-				}
-				$this->message('Media records backup created.', true);
-				return true;
-			} catch (Exception $e) {
-				$this->message($e->getMessage(), false);
-				return false;
-			}
-		}
-		public function restore_media_records()
-		{
-			try {
-				$db_manager = new JupiterX_Core_Control_Panel_Database_Manager();
-
-				$dm_response = $db_manager->restore_media_records();
-
-				if (false == $dm_response) {
-					throw new Exception($db_manager->get_error_message());
-				}
-				$this->message('Media records restored successfully', true);
-				return true;
-			} catch (Exception $e) {
-				$this->message($e->getMessage(), false);
-				return false;
-			}
-		}
-		public function isRestoreDB()
+		public function get_template_import_stats()
 		{
 			check_ajax_referer('jupiterx_control_panel', 'nonce');
 
 			if (! current_user_can('manage_options')) {
-				wp_send_json_error('You do not have access to this section.', 'jupiterx-core');
+				wp_send_json_error(__('You do not have access to this section.', 'jupiterx-core'));
 			}
 
 			try {
-				$db_manager = new JupiterX_Core_Control_Panel_Database_Manager();
-				$result     = $db_manager->is_restore_db();
-				if (is_array($result)) {
-					$this->message('Successfull', true, $result);
-					return true;
-				} else {
-					throw new Exception('Result is not what we expected');
-				}
-			} catch (Exception $e) {
-				$this->message($e->getMessage(), false);
-				return false;
-			}
-		}
-		public function restoreLatestDB()
-		{
-			check_ajax_referer('jupiterx_control_panel', 'nonce');
+				$this->message(
+					'Import impact stats retrieved.',
+					true,
+					array(
+						'database_size' => $this->get_database_size_data(),
+						'items'         => $this->get_full_import_loss_items(),
+					)
+				);
 
-			if (! current_user_can('manage_options')) {
-				wp_send_json_error('You do not have access to this section.', 'jupiterx-core');
-			}
-
-			try {
-				$db_manager = new JupiterX_Core_Control_Panel_Database_Manager();
-				$return     = $db_manager->restore_latest_db();
-				if (false == $return) {
-					throw new Exception($db_manager->get_error_message());
-				}
-				JupiterX_Core_Control_Panel_Helpers::prevent_cache_plugins();
-				$this->message('Restore completed!', true);
 				return true;
 			} catch (Exception $e) {
 				$this->message($e->getMessage(), false);
 				return false;
 			}
 		}
+
+		private function get_database_size_data()
+		{
+			global $wpdb;
+
+			$size = $wpdb->get_var(
+				$wpdb->prepare(
+					'SELECT SUM(data_length + index_length) FROM information_schema.TABLES WHERE table_schema = DATABASE() AND table_name LIKE %s',
+					$wpdb->esc_like($wpdb->prefix) . '%'
+				)
+			);
+
+			$bytes = (int) $size;
+
+			// Fallback when information_schema is restricted or returns NULL.
+			if ($bytes <= 0) {
+				$bytes = 0;
+				$prefix = $wpdb->prefix;
+				$tables = $wpdb->get_results('SHOW TABLE STATUS', ARRAY_A);
+
+				if (is_array($tables)) {
+					foreach ($tables as $row) {
+						$name = isset($row['Name']) ? $row['Name'] : '';
+
+						if ($name === '' || strpos($name, $prefix) !== 0) {
+							continue;
+						}
+
+						$bytes += (int) (isset($row['Data_length']) ? $row['Data_length'] : 0);
+						$bytes += (int) (isset($row['Index_length']) ? $row['Index_length'] : 0);
+					}
+				}
+			}
+
+			return array(
+				'bytes' => $bytes,
+				'label' => $bytes > 0 ? size_format($bytes, 2) : __('Unknown', 'jupiterx-core'),
+			);
+		}
+
+		private function get_full_import_loss_items()
+		{
+			global $wpdb;
+
+			$items = array(
+				array(
+					'key' => 'posts',
+					'label' => __('Posts', 'jupiterx-core'),
+					'count' => $this->count_posts_by_type('post'),
+				),
+				array(
+					'key' => 'pages',
+					'label' => __('Pages', 'jupiterx-core'),
+					'count' => $this->count_posts_by_type('page'),
+				),
+				array(
+					'key' => 'media',
+					'label' => __('Media library items', 'jupiterx-core'),
+					'count' => $this->count_posts_by_type('attachment'),
+				),
+				array(
+					'key' => 'comments',
+					'label' => __('Comments', 'jupiterx-core'),
+					'count' => (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->comments}"),
+				),
+				array(
+					'key' => 'terms',
+					'label' => __('Categories, tags, and terms', 'jupiterx-core'),
+					'count' => (int) $wpdb->get_var("SELECT COUNT(*) FROM {$wpdb->terms}"),
+				),
+				array(
+					'key' => 'menus',
+					'label' => __('Navigation menus', 'jupiterx-core'),
+					'count' => count(wp_get_nav_menus()),
+				),
+			);
+
+			if (post_type_exists('product')) {
+				$items[] = array(
+					'key' => 'products',
+					'label' => __('Products', 'jupiterx-core'),
+					'count' => $this->count_posts_by_type('product'),
+				);
+			}
+
+			$custom_content_count = $this->get_custom_content_count();
+
+			if ($custom_content_count > 0) {
+				$items[] = array(
+					'key' => 'custom_content',
+					'label' => __('Other custom content', 'jupiterx-core'),
+					'count' => $custom_content_count,
+				);
+			}
+
+			return $items;
+		}
+
+		private function count_posts_by_type($post_type)
+		{
+			global $wpdb;
+
+			return (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type = %s",
+					$post_type
+				)
+			);
+		}
+
+		private function get_custom_content_count()
+		{
+			global $wpdb;
+
+			$excluded_post_types = array(
+				'post',
+				'page',
+				'attachment',
+				'revision',
+				'nav_menu_item',
+				'custom_css',
+				'customize_changeset',
+				'oembed_cache',
+				'user_request',
+				'wp_global_styles',
+				'wp_navigation',
+				'product',
+			);
+
+			$placeholders = implode(',', array_fill(0, count($excluded_post_types), '%s'));
+
+			return (int) $wpdb->get_var(
+				$wpdb->prepare(
+					"SELECT COUNT(*) FROM {$wpdb->posts} WHERE post_type NOT IN ({$placeholders})",
+					$excluded_post_types
+				)
+			);
+		}
+
+		private function validate_full_import_confirmation()
+		{
+			$confirmed_site_url   = isset($_POST['confirmed_site_url']) ? esc_url_raw(wp_unslash($_POST['confirmed_site_url'])) : '';
+			$full_import_confirmed = isset($_POST['full_import_confirmed']) ? filter_var(wp_unslash($_POST['full_import_confirmed']), FILTER_VALIDATE_BOOLEAN) : false;
+
+			if (! $full_import_confirmed || untrailingslashit($confirmed_site_url) !== untrailingslashit(site_url())) {
+				$this->message('Please confirm the site URL before importing the template.', false);
+				return false;
+			}
+
+			return true;
+		}
+
 		public function resetDB()
 		{
 			try {
@@ -1573,54 +1656,6 @@ if (! class_exists('JupiterX_Core_Control_Panel_Install_Template')) {
 			}
 
 			return true;
-		}
-		public function uninstallTemplate()
-		{
-			check_ajax_referer('jupiterx_control_panel', 'nonce');
-
-			if (! current_user_can('manage_options')) {
-				wp_send_json_error('You do not have access to this section.', 'jupiterx-core');
-			}
-
-			try {
-				$tables = array(
-					'comments',
-					'commentmeta',
-					'links',
-					'options',
-					'postmeta',
-					'posts',
-					'term_relationships',
-					'termmeta',
-					'terms',
-					'term_taxonomy',
-				);
-
-				if (class_exists('WooCommerce')) {
-					$tables = array_merge($tables, ['woocommerce_attribute_taxonomies']);
-				}
-
-				$db_manager = new JupiterX_Core_Control_Panel_Database_Manager();
-
-				$db_manager->backup_db();
-
-				$db_manager->backup_media_records();
-
-				$reset = $this->resetWordpressDatabase($tables, array(), true);
-
-				$db_manager->restore_media_records();
-
-				if (! $reset) {
-					throw new Exception('Failed to uninstall template. Please try again.');
-				}
-
-				$this->message('Template uninstall success.', true);
-				return true;
-			} catch (Exception $e) {
-				$this->message($e->getMessage(), false);
-
-				return false;
-			}
 		}
 		public function availableWidgets()
 		{

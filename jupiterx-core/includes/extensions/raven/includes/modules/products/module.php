@@ -98,6 +98,7 @@ class Module extends Module_Base {
 
 	/**
 	 * @SuppressWarnings(PHPMD.NPathComplexity)
+	 * @SuppressWarnings(PHPMD.CyclomaticComplexity)
 	 */
 	public static function raven_before_shop_loop_item() {
 		global $product;
@@ -156,6 +157,12 @@ class Module extends Module_Base {
 		if ( get_theme_mod( 'jupiterx_product_list_custom_sale_badge', true ) && function_exists( 'jupiterx_wc_product_page_custom_sale_badge' ) ) {
 			add_filter( 'woocommerce_sale_flash', 'jupiterx_wc_product_page_custom_sale_badge' );
 		}
+
+		// hide out of stock badge
+		if ( isset( $settings['oos_badge'] ) && 'show' !== $settings['oos_badge'] ) {
+			remove_action( 'woocommerce_before_shop_loop_item', 'jupiterx_wc_template_loop_out_of_stock', 15 );
+		}
+
 	}
 
 	public static function raven_after_shop_loop_item() {
@@ -340,6 +347,10 @@ class Module extends Module_Base {
 				remove_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart' );
 				add_action( 'woocommerce_after_shop_loop_item', 'woocommerce_template_loop_add_to_cart', 999 );
 			}
+
+			if ( $is_custom_layout && 'overlay' !== $layout ) {
+				add_action( 'jupiterx_wc_loop_product_image_append_markup', [ __CLASS__, 'add_product_gallery' ], 9 );
+			}
 		}
 	}
 
@@ -432,6 +443,7 @@ class Module extends Module_Base {
 	public static function query( $widget, $settings ) {
 		$filter          = self::get_filter( $settings['query_filter'] );
 		$fallback_filter = self::get_filter( $settings['query_fallback_filter'] );
+		$search_query    = filter_input( INPUT_GET, 's' );
 
 		// Create and activate a rendering context for this widget
 		$widget_id  = isset( $widget ) && method_exists( $widget, 'get_id' ) ? $widget->get_id() : uniqid( 'query_widget_', true );
@@ -459,6 +471,14 @@ class Module extends Module_Base {
 
 		if ( ! $settings['query_order'] ) {
 			$settings['query_order'] = 'DESC';
+		}
+
+		if ( 'search_result' === $settings['query_filter'] && ! self::is_editor_or_preview() && empty( $search_query ) ) {
+			return 'no_search_query';
+		}
+
+		if ( 'search_result' === $settings['query_filter'] ) {
+			remove_action( 'pre_get_posts', 'jupiterx_modify_search_page_query', 10 );
 		}
 
 		$query = $filter::query( $widget, $settings );
@@ -503,12 +523,17 @@ class Module extends Module_Base {
 		$widget_settings = $widget_instance->get_settings_for_display();
 
 		$widget_settings['page']          = $paged;
-		$widget_settings['archive_query'] = ( is_string( $archive_query ) && $archive_query !== '' ) ? json_decode( $archive_query ) : '';
+		$widget_settings['archive_query'] = ( is_string( $archive_query ) && '' !== $archive_query ) ? json_decode( $archive_query ) : '';
 
 		self::get_pagination( $widget_settings );
 
 		// Query.
-		$query      = static::query( $widget_instance, $widget_settings );
+		$query = static::query( $widget_instance, $widget_settings );
+
+		if ( 'search_result' === $widget_settings['query_filter'] && 'no_search_query' === $query ) {
+			wp_send_json_error( new \WP_Error( 'no_search_query', __( 'No Search query defined.', 'jupiterx-core' ) ) );
+		}
+
 		$products   = $query->get_content();
 		$query_args = $query->get_query_args();
 

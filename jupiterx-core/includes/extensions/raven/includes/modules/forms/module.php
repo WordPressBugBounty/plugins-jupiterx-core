@@ -20,6 +20,8 @@ class Module extends Module_Base {
 	public function __construct() {
 		parent::__construct();
 
+		require_once __DIR__ . '/fields/recaptcha-locale.php';
+
 		$this->register_field_types();
 
 		$this->register_action_types();

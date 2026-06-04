@@ -54,6 +54,9 @@ class Module extends Module_Base {
 		$paged         = filter_input( INPUT_POST, 'paged' );
 		$category      = filter_input( INPUT_POST, 'category' );
 		$archive_query = filter_input( INPUT_POST, 'archive_query' );
+		$lang          = $this->get_ajax_language();
+
+		$this->maybe_switch_wpml_language( $lang );
 
 		if ( false !== $archive_query ) {
 			$archive_query          = $archive_query ? json_decode( $archive_query, true ) : [];
@@ -93,6 +96,50 @@ class Module extends Module_Base {
 		$queried_posts = $widget->ajax_get_queried_posts( $archive_query );
 
 		wp_send_json_success( $queried_posts );
+	}
+
+	private function get_ajax_language() {
+		if ( empty( $_POST['lang'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			return '';
+		}
+
+		return sanitize_key( wp_unslash( $_POST['lang'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
+	}
+
+	private function maybe_switch_wpml_language( $lang ) {
+		if ( empty( $lang ) || ! class_exists( 'SitePress' ) ) {
+			return;
+		}
+
+		if ( ! apply_filters( 'wpml_language_is_active', null, $lang ) ) {
+			return;
+		}
+
+		do_action( 'wpml_switch_language', $lang );
+		$this->maybe_switch_wp_locale( $lang );
+	}
+
+	private function maybe_switch_wp_locale( $lang ) {
+		$languages = apply_filters( 'wpml_active_languages', null, 'skip_missing=0' );
+		$locale    = '';
+
+		if ( ! empty( $languages[ $lang ]['default_locale'] ) ) {
+			$locale = $languages[ $lang ]['default_locale'];
+		}
+
+		if ( empty( $locale ) ) {
+			global $sitepress;
+
+			if ( is_object( $sitepress ) && method_exists( $sitepress, 'get_locale' ) ) {
+				$locale = $sitepress->get_locale( $lang );
+			}
+		}
+
+		if ( empty( $locale ) ) {
+			return;
+		}
+
+		switch_to_locale( $locale );
 	}
 
 	public function fix_query_offset( &$query ) {

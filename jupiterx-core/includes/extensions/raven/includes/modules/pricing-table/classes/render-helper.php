@@ -220,7 +220,7 @@ class Render_Helper {
 		<div class="raven-pricing-table__footer">
 			<?php if ( ! empty( $settings['button_text'] ) ) : ?>
 				<a <?php $this->widget->print_render_attribute_string( 'button_text' ); ?>>
-					<?php $this->widget->print_unescaped_setting( 'button_text' ); ?>
+					<?php echo wp_kses_post( __( $settings['button_text'], 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting. ?>
 				</a>
 			<?php endif; ?>
 

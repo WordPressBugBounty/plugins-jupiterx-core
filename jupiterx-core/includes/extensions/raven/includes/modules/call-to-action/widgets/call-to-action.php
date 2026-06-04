@@ -1672,7 +1672,7 @@ class Call_To_Action extends Base_Widget {
 				<?php if ( ! empty( $settings['button'] ) ) : ?>
 					<div class="raven-cta__button-wrapper raven-cta__content-item elementor-content-item <?php echo esc_attr( $animation_class ); ?>">
 					<<?php Utils::print_validated_html_tag( $button_tag ); ?> <?php $this->print_render_attribute_string( 'button' ); ?>>
-						<?php $this->print_unescaped_setting( 'button' ); ?>
+						<?php echo wp_kses_post( __( $settings['button'], 'jupiterx-core' ) ); // phpcs:ignore WordPress.WP.I18n.NonSingularStringLiteralText -- String from widget setting. ?>
 					</<?php Utils::print_unescaped_internal_string( $button_tag ); ?>>
 					</div>
 				<?php endif; ?>

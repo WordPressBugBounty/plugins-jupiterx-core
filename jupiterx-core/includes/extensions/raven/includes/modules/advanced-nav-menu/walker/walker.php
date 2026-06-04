@@ -259,20 +259,25 @@ class Walker {
 		ob_start();
 
 		?>
-		<a <?php
-		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
-		echo $this->widget->get_render_attribute_string( 'link_attrs' );
-		?>>
+		<a 
 			<?php
-			if ( ! empty( $item_data['icon'] ) && ! empty( $item_data['icon']['value'] ) ) {
-				ElementorUtils::print_unescaped_internal_string( $this->widget->render_icon( $item_data['icon'] ) );
-			}
+				// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
+				echo $this->widget->get_render_attribute_string( 'link_attrs' );
 			?>
+		>
+
 			<span class="link-text">
+				<?php
+					if ( ! empty( $item_data['icon'] ) && ! empty( $item_data['icon']['value'] ) ) {
+						ElementorUtils::print_unescaped_internal_string( $this->widget->render_icon( $item_data['icon'] ) );
+					}
+				?>
 				<span class="link-label">
 					<?php echo esc_html( $item_data['text'] ); ?>
 				</span>
-				<?php
+			</span>
+
+			<?php
 				if ( $has_submenu ) {
 					$icon_type = ! empty( $this->sub_indicator_icon['library'] ) ? $this->sub_indicator_icon['library'] : '';
 
@@ -288,8 +293,7 @@ class Walker {
 					ElementorUtils::print_unescaped_internal_string( $this->widget->render_icon( $this->sub_indicator_icon, [ 'class' => 'sub-arrow' ] ) );
 					ElementorUtils::print_unescaped_internal_string( $icon_wrapper_close );
 				}
-				?>
-			</span>
+			?>
 		</a>
 		<?php
 
