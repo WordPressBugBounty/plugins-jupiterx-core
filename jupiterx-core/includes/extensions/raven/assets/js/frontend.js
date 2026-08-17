@@ -4449,6 +4449,7 @@ const AdvancedNavMenu = _module.default.extend({
     }
     if ('dropdown' === mainLayout) {
       this.elements.$toggleButton.on('click', this.toggleDropdown.bind(this));
+      this.elements.$menus.on('select.smapi', this.onDropDownMenuItemClick.bind(this));
     }
     if ('offcanvas' === mainLayout) {
       this.elements.$toggleButton.on('click', this.toggleMenu.bind(this));
@@ -4906,12 +4907,38 @@ const AdvancedNavMenu = _module.default.extend({
     }
     this.elements.$menus.smartmenus('itemActivate', subMenuLink);
   },
+  onDropDownMenuItemClick(e, item) {
+    const $el = $(item);
+    const href = $el.attr('href');
+    if (href.length === 0) {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      $el.removeClass('highlighted submenu-opened');
+      $el.attr('aria-expanded', 'false');
+      $el.closest('li.menu-item').removeClass('submenu-opened');
+      $el.siblings('ul.submenu').attr('aria-expanded', 'false').attr('style', 'display: none');
+      return false;
+    }
+    if (href.search(/^#/) !== -1 || href.trim().length === 0) {
+      return;
+    }
+    this.elements.$closeButton.trigger('click');
+  },
   onSideMenuItemClick(e, item) {
     const $el = $(item);
     if ($el.closest('.raven-adnav-menu-side,.raven-adnav-menu-offcanvas').length === 0) {
       return;
     }
     const href = $el.attr('href');
+    if (href.length === 0) {
+      e.stopImmediatePropagation();
+      e.preventDefault();
+      $el.removeClass('highlighted submenu-opened');
+      $el.attr('aria-expanded', 'false');
+      $el.closest('li.menu-item').removeClass('submenu-opened');
+      $el.siblings('ul.submenu').attr('aria-expanded', 'false').attr('style', 'display: none');
+      return false;
+    }
     if (href.search(/^#/) !== -1 || href.trim().length === 0) {
       return;
     }
@@ -4920,6 +4947,7 @@ const AdvancedNavMenu = _module.default.extend({
   onMobileSideMenuItemClick(e, item) {
     const $el = $(item);
     const isSubMenuOpend = $el.hasClass('submenu_opend');
+    const isHighlighted = $el.hasClass('highlighted');
     const href = $el.attr('href')?.trim();
     if (href !== undefined && !href.startsWith('#') && href !== 'javascript:void(0)') {
       if (isSubMenuOpend) {
@@ -4927,9 +4955,21 @@ const AdvancedNavMenu = _module.default.extend({
         e.stopImmediatePropagation();
         e.preventDefault();
         if (href?.length !== 0) {
-          setTimeout(() => {
-            window.location.href = href;
-          }, 50);
+          this.redirectToHref(href);
+        } else {
+          $el.siblings('ul.submenu').attr('aria-expanded', 'false').attr('style', 'display: none');
+          return false;
+        }
+      } else if (isHighlighted) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+        $el.removeClass('highlighted');
+        $el.attr('aria-expanded', 'false');
+        if (href?.length !== 0) {
+          this.redirectToHref(href);
+        } else {
+          $el.siblings('ul.submenu').attr('aria-expanded', 'false').attr('style', 'display: none');
+          return false;
         }
       } else {
         /* eslint-disable no-lonely-if */
@@ -4946,6 +4986,11 @@ const AdvancedNavMenu = _module.default.extend({
       return;
     }
     this.elements.$closeButton.trigger('click');
+  },
+  redirectToHref(href) {
+    setTimeout(() => {
+      window.location.href = href;
+    }, 50);
   },
   onHorizontalOrVerticalParentItemClick(e, item) {
     const $el = $(item);
@@ -14407,6 +14452,13 @@ const ShoppingCart = _module.default.extend({
       const ajaxData = {};
       const formData = new FormData($form[0]);
       if ($form.hasClass('grouped_form') || $form.hasClass('bundle_form')) {
+        return;
+      }
+
+      // For external product.
+      const action = $form.attr('action');
+      if ($form.hasClass('external_form') && action && action !== '') {
+        window.location = action;
         return;
       }
       for (const [key, value] of formData.entries()) {

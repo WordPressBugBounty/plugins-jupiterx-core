@@ -9,6 +9,7 @@ use Elementor\Utils as ElementorUtils;
 
 /**
  * Walker class for turning the data of the menu repeater control to HTML.
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class Walker {
 
@@ -341,6 +342,6 @@ class Walker {
 
 		// Otherwise the dynamic tag is set to a normal\content page\post.
 		global $post;
-		return ! empty( $settings['post_id'] ) && intval( $settings['post_id'] ) === $post->ID;
+		return ! empty( $settings['post_id'] ) && $post && intval( $settings['post_id'] ) === $post->ID;
 	}
 }

@@ -76,7 +76,7 @@ class Instagram_Feed extends Base_Widget {
 			'api_notice',
 			[
 				'type' => Controls_Manager::RAW_HTML,
-				'raw' => esc_html__( 'This native widget uses the official Instagram Graph API. Crocoblock proxy/license requests are intentionally not used.', 'jupiterx-core' ),
+				'raw' => esc_html__( 'This native widget uses the official Instagram Graph API.', 'jupiterx-core' ),
 				'content_classes' => 'elementor-descriptor',
 			]
 		);
@@ -164,7 +164,7 @@ class Instagram_Feed extends Base_Widget {
 					'standard' => esc_html__( 'Standard', 'jupiterx-core' ),
 					'high' => esc_html__( 'High', 'jupiterx-core' ),
 				],
-				'description' => esc_html__( 'Official Graph API returns the best available media URL; this setting is kept for Jet-equivalent editor UX.', 'jupiterx-core' ),
+				'description' => esc_html__( 'Official Graph API returns the best available media URL.', 'jupiterx-core' ),
 			]
 		);
 

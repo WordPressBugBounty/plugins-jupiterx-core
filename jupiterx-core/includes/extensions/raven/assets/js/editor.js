@@ -159,7 +159,7 @@ const JupiterxConditionManager = function () {
   }
   function removeRow() {
     $(document).on('click', '.jupiterx-editor-conditions-remove-row', function () {
-      $(this).parent().remove();
+      $(this).parent().parent().remove();
     });
   }
   function closeModal() {
@@ -389,8 +389,8 @@ const JupiterxConditionManager = function () {
       conditions.forEach(condition => {
         if (_.isEqual(toCheck, condition)) {
           const text = (0, _i18n.__)('JupiterX recognized that you have set this condition for other templates', 'jupiterx-core') + ' : ' + object.post_title;
-          parent.find('.jx-editor-row-show-conflict-error').css('display', 'block').text(text);
-          parent.find('.jupiterx-editor-single-row-inner-wrapper').addClass('jupiterx-row-has-error');
+          parent.closest('.jupiterx-editor-condition-single-row-wrapper').find('.jx-editor-row-show-conflict-error').css('display', 'block').text(text);
+          parent.closest('.jupiterx-editor-condition-single-row-wrapper').find('.jupiterx-editor-single-row-inner-wrapper').addClass('jupiterx-row-has-error');
           conflict = true;
         }
       });
@@ -398,8 +398,8 @@ const JupiterxConditionManager = function () {
     if (true === conflict) {
       return;
     }
-    parent.find('.jx-editor-row-show-conflict-error').css('display', 'none');
-    parent.find('.jupiterx-editor-single-row-inner-wrapper').removeClass('jupiterx-row-has-error');
+    parent.closest('.jupiterx-editor-condition-single-row-wrapper').find('.jx-editor-row-show-conflict-error').css('display', 'none');
+    parent.closest('.jupiterx-editor-condition-single-row-wrapper').find('.jupiterx-editor-single-row-inner-wrapper').removeClass('jupiterx-row-has-error');
   }
   function initializeFunctions() {
     checkDarkMode();

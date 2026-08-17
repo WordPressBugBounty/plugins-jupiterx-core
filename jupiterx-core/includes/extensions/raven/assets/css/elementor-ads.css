@@ -432,3 +432,15 @@ body.elementor-editor-active #elementor-editor-wrapper-v2 .MuiMenu-list[role=men
 body.elementor-editor-active #elementor-editor-wrapper-v2 .MuiMenu-list[role=menu] > hr.MuiDivider:has(+ a[href*="go.elementor.com/editor-top-bar-learn"]) {
   display: none !important;
 }
+
+.elementor-panel-editor-sticky-promotion {
+  display: none !important;
+}
+
+#elementor-panel-elements-notice-area {
+  display: none !important;
+}
+
+#e-conversion-banner {
+  display: none !important;
+}

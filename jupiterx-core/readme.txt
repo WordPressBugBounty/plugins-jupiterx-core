@@ -3,7 +3,7 @@ Contributors: artbees
 Tags: jupiter, jupiterx
 Requires at least: 5.6
 Tested up to: 6.9
-Stable tag: 4.50.0
+Stable tag: 4.60.0
 Requires PHP: 7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +29,26 @@ It's worth mentioning that, some of the features are disabled for the Jupiter X 
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+= v4.60.0
+  * Added a hover image swap effect for WooCommerce product categories.
+  * Added product attribute condition to Layout builder.
+  * Added post type options to filter archive query results in the Advanced Posts widget.
+  * Improved the display of the Checkout and Cart steps when Simplify mode is enabled.
+  * Improved widget list rendering in the Manage Elements view on the JupiterX Dashboard.
+  * Fixed the External Affiliate product link on the single product template.
+  * Fixed a mobile UI issue where the Advanced menu item wouldn’t close correctly when using a submenu display template.
+  * Fixed a UI issue related to Layout Builder conditions.
+  * Fixed a warning related to the Slack action in the Form widget.
+  * Fixed an issue related to “Customer Previously Visited Product.”
+  * Fixed an issue related to Ally plugin settings.
+  * Fixed cart widget thumbnails to reflect the selected product variation.
+  * Fixed warning related to Advanced Menu.
+  * Layout Builder: Excluded “Template Post Types” from search results.
+  * Rendered post date metadata in the Advanced Posts widget using the site’s local timezone.
+  * Re-enabled taxonomy fields for the Advanced Posts widget and the Post Carousel.
+  * Update WooCommerce Product Variable Template.
+  * Removed the deprecated Manage Element modal.
+
 
 = v4.50.0
 * Added the Stock Status widget for single product pages.

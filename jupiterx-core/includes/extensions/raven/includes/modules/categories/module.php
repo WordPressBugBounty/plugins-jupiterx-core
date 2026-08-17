@@ -8,6 +8,8 @@ use JupiterX_Core\Raven\Base\Module_base;
 
 class Module extends Module_Base {
 
+	const PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY = 'jupiterx_product_category_hover_thumbnail_id';
+
 	public function get_widgets() {
 		return [ 'categories' ];
 	}

@@ -563,6 +563,7 @@ class Loop_Grid extends Base_Widget
 			[
 				'name'      => 'query',
 				'post_type' => $this->get_loop_post_type_options(),
+				'exclude' => [ 'taxonomies' ],
 				'condition' => [
 					'is_archive_template' => '',
 					'loop_source'         => 'posts',

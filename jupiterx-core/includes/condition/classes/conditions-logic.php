@@ -678,6 +678,9 @@ class Conditions_Logic {
 			case 'product_brand_archive':
 				$this->woocommerce_product_brand_archive();
 				break;
+			case 'product_attribute_archive':
+				$this->woocommerce_product_attribute_archive();
+				break;
 			case 'single_product':
 				$this->woocommerce_single_product();
 				break;
@@ -692,6 +695,9 @@ class Conditions_Logic {
 				break;
 			case 'in_product_brand':
 				$this->woocommerce_in_product_brand();
+				break;
+			case 'in_product_attribute':
+				$this->woocommerce_in_product_attribute();
 				break;
 			case 'product_by_author':
 				$this->woocommerce_product_by_author();
@@ -741,6 +747,21 @@ class Conditions_Logic {
 		}
 
 		$string = esc_html__( 'Product brand archive id', 'jupiterx-core' ) . ' #' . $this->condition['conditionD'][0];
+		$this->attach_comma_separator( $string );
+	}
+
+	/**
+	 * Convert product attribute archive condition to proper string.
+	 *
+	 * @since 4.60.0
+	 */
+	private function woocommerce_product_attribute_archive() {
+		if ( 'all' === $this->condition['conditionD'][0] ) {
+			$this->attach_comma_separator( esc_html__( 'Product attribute archive', 'jupiterx-core' ) );
+			return;
+		}
+
+		$string = esc_html__( 'Product attribute archive id', 'jupiterx-core' ) . ' #' . $this->condition['conditionD'][0];
 		$this->attach_comma_separator( $string );
 	}
 
@@ -818,9 +839,24 @@ class Conditions_Logic {
 	}
 
 	/**
+	 * Convert products in attribute condition to proper string.
+	 *
+	 * @since 4.60.0
+	 */
+	private function woocommerce_in_product_attribute() {
+		if ( 'all' === $this->condition['conditionD'][0] ) {
+			$this->attach_comma_separator( esc_html__( 'All products by attribute', 'jupiterx-core' ) );
+			return;
+		}
+
+		$string = esc_html__( 'Products by attribute id', 'jupiterx-core' ) . ' #' . $this->condition['conditionD'][0];
+		$this->attach_comma_separator( $string );
+	}
+
+	/**
 	 * Convert product by author condition to proper string.
 	 *
-	 * @since next.
+	 * @since 4.60.0
 	 */
 	private function woocommerce_product_by_author() {
 		if ( 'all' === $this->condition['conditionD'][0] ) {

@@ -71,8 +71,47 @@ class Skin_Outer_Content extends Skin_Base {
 					'blur' => __( 'Blur', 'jupiterx-core' ),
 					'grayscale-reverse' => __( 'Grayscale to Color', 'jupiterx-core' ),
 					'grayscale' => __( 'Color to Grayscale', 'jupiterx-core' ),
+					'swap' => __( 'Swap Image', 'jupiterx-core' ),
 				],
 				'prefix_class' => 'raven-hover-',
+				'render_type' => 'template',
+			]
+		);
+
+		$this->add_control(
+			'image_hover_swap_animation',
+			[
+				'label' => __( 'Swap Animation', 'jupiterx-core' ),
+				'type' => 'select',
+				'default' => 'zoom-in',
+				'options' => [
+					'' => __( 'None', 'jupiterx-core' ),
+					'zoom-in' => __( 'Zoom In', 'jupiterx-core' ),
+					'zoom-out' => __( 'Zoom Out', 'jupiterx-core' ),
+				],
+				'prefix_class' => 'raven-hover-swap-animation-',
+				'render_type' => 'template',
+				'condition' => [
+					$this->get_control_id( 'image_hover_effect' ) => 'swap',
+				],
+			]
+		);
+
+		$this->add_control(
+			'image_hover_swap_duration',
+			[
+				'label' => __( 'Transition Duration (s)', 'jupiterx-core' ),
+				'type' => 'number',
+				'default' => 0.35,
+				'min' => 0.1,
+				'max' => 2,
+				'step' => 0.05,
+				'selectors' => [
+					'{{WRAPPER}} .raven-categories-img-has-hover' => '--raven-categories-image-swap-duration: {{VALUE}}s;',
+				],
+				'condition' => [
+					$this->get_control_id( 'image_hover_effect' ) => 'swap',
+				],
 			]
 		);
 
@@ -168,9 +207,20 @@ class Skin_Outer_Content extends Skin_Base {
 	}
 
 	protected function render_skin_image( $settings ) {
+		$has_hover_image = ! empty( $settings['hover_image']['id'] );
+		$image_classes   = [ 'raven-categories-img' ];
+
+		if ( $has_hover_image ) {
+			$image_classes[] = 'raven-categories-img-has-hover';
+		}
 		?>
-		<a href="<?php echo esc_url( get_term_link( $this->term->term_id ) ); ?>" class="raven-categories-img">
+		<a href="<?php echo esc_url( get_term_link( $this->term->term_id ) ); ?>" class="<?php echo esc_attr( implode( ' ', $image_classes ) ); ?>">
 			<?php echo wp_kses_post( Group_Control_Image_Size::get_attachment_image_html( $settings ) ); ?>
+			<?php if ( $has_hover_image ) : ?>
+				<span class="raven-categories-img-hover">
+					<?php echo wp_kses_post( Group_Control_Image_Size::get_attachment_image_html( $settings, 'hover_image' ) ); ?>
+				</span>
+			<?php endif; ?>
 		</a>
 		<?php
 	}

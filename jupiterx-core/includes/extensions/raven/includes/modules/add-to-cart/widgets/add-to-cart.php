@@ -79,6 +79,7 @@ class Add_To_Cart extends Base_Widget {
 
 	/**
 	 * @return void
+	 * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
 	 */
 	public function add_style_button_controls() {
 		$this->start_controls_section(
@@ -125,6 +126,7 @@ class Add_To_Cart extends Base_Widget {
 				'selectors' => [
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button .elementor-icon' => 'font-size: {{SIZE}}{{UNIT}};',
 					'{{WRAPPER}} .raven-product-add-to-cart .woocommerce-grouped-product-list .add_to_cart_button .elementor-icon' => 'font-size: {{SIZE}}{{UNIT}};',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button .elementor-icon' => 'font-size: {{SIZE}}{{UNIT}};',
 				],
 			]
 		);
@@ -187,6 +189,7 @@ class Add_To_Cart extends Base_Widget {
 				],
 				'selectors' => [
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button[type=submit]' => 'width: {{SIZE}}{{UNIT}}',
+					'{{WRAPPER}} .raven-product-add-to-cart button[type=submit]' => 'width: {{SIZE}}{{UNIT}}',
 				],
 			]
 		);
@@ -196,6 +199,7 @@ class Add_To_Cart extends Base_Widget {
 			[
 				'name' => 'button_typography',
 				'selector' => '{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button',
+				'selector' => '{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button',
 			]
 		);
 
@@ -204,6 +208,7 @@ class Add_To_Cart extends Base_Widget {
 			[
 				'name' => 'button_text_shadow',
 				'selector' => '{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button',
+				'selector' => '{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button',
 			]
 		);
 
@@ -223,9 +228,12 @@ class Add_To_Cart extends Base_Widget {
 				'type' => 'color',
 				'selectors' => [
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button i' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .raven-product-add-to-cart .woocommerce-grouped-product-list .add_to_cart_button i' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button svg' => 'fill: {{VALUE}};',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button svg' => 'fill: {{VALUE}};',
 					'{{WRAPPER}} .raven-product-add-to-cart .woocommerce-grouped-product-list .add_to_cart_button svg' => 'fill: {{VALUE}};',
 				],
 			]
@@ -238,6 +246,7 @@ class Add_To_Cart extends Base_Widget {
 				'type' => 'color',
 				'selectors' => [
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button' => 'background-color: {{VALUE}};',
 				],
 			]
 		);
@@ -258,9 +267,12 @@ class Add_To_Cart extends Base_Widget {
 				'type' => 'color',
 				'selectors' => [
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button:hover' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button:hover' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button:hover i' => 'color: {{VALUE}};',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button:hover i' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .raven-product-add-to-cart .woocommerce-grouped-product-list .add_to_cart_button:hover i' => 'color: {{VALUE}};',
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button:hover svg' => 'fill: {{VALUE}};',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button:hover svg' => 'fill: {{VALUE}};',
 					'{{WRAPPER}} .raven-product-add-to-cart .woocommerce-grouped-product-list .add_to_cart_button:hover svg' => 'fill: {{VALUE}};',
 				],
 			]
@@ -273,6 +285,7 @@ class Add_To_Cart extends Base_Widget {
 				'type' => 'color',
 				'selectors' => [
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button:hover' => 'background-color: {{VALUE}};',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button:hover' => 'background-color: {{VALUE}};',
 				],
 			]
 		);
@@ -293,6 +306,7 @@ class Add_To_Cart extends Base_Widget {
 				],
 				'selectors' => [
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button' => 'transition: all {{SIZE}}s',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button' => 'transition: all {{SIZE}}s',
 				],
 			]
 		);
@@ -313,6 +327,7 @@ class Add_To_Cart extends Base_Widget {
 			[
 				'name' => 'button_border_type',
 				'selector' => '{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button',
+				'selector' => '{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button',
 			]
 		);
 
@@ -328,6 +343,7 @@ class Add_To_Cart extends Base_Widget {
 				],
 				'selectors' => [
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button' => 'border-radius: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				],
 			]
 		);
@@ -337,7 +353,7 @@ class Add_To_Cart extends Base_Widget {
 			[
 				'name' => 'button_box_shadow',
 				'label' => esc_html__( 'Box Shadow', 'jupiterx-core' ),
-				'selector' => '{{WRAPPER}} .raven-product-add-to-cart form.cart .raven-qty-button-holder .button[type=submit]',
+				'selector' => '{{WRAPPER}} .raven-product-add-to-cart form.cart .raven-qty-button-holder .button[type=submit], {{WRAPPER}} .raven-product-add-to-cart .button[type=submit]',
 			]
 		);
 
@@ -356,6 +372,7 @@ class Add_To_Cart extends Base_Widget {
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button' => 'padding: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}}',
 				],
 			]
 		);
@@ -368,6 +385,7 @@ class Add_To_Cart extends Base_Widget {
 				'size_units' => [ 'px', 'em', '%' ],
 				'selectors' => [
 					'{{WRAPPER}} .raven-product-add-to-cart .raven-qty-button-holder button.single_add_to_cart_button' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important',
+					'{{WRAPPER}} .raven-product-add-to-cart button.single_add_to_cart_button' => 'margin: {{TOP}}{{UNIT}} {{RIGHT}}{{UNIT}} {{BOTTOM}}{{UNIT}} {{LEFT}}{{UNIT}} !important',
 				],
 			]
 		);
@@ -1775,6 +1793,9 @@ class Add_To_Cart extends Base_Widget {
 		add_filter( 'jupiterx_add_to_cart_variation_button', [ $this, 'variation_product_custom_add_to_cart_button' ] );
 		add_filter( 'jupiterx_add_to_cart_simple_button', [ $this, 'simple_product_custom_add_to_cart_button' ] );
 
+		//external product
+		add_filter( 'jupiterx_add_to_cart_external_button', [ $this, 'external_product_custom_add_to_cart_button' ] );
+
 		// Group product.
 		add_filter( 'jupiterx_add_to_cart_group_button', [ $this, 'group_product_custom_add_to_cart_button' ] );
 		add_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'group_product_custom_add_to_cart_args' ], 10, 3 );
@@ -1805,10 +1826,12 @@ class Add_To_Cart extends Base_Widget {
 		}
 		?>
 
-		<div <?php
+		<div
+		<?php
 		// phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Elementor attribute string is safe.
 		echo $this->get_render_attribute_string( 'wrapper' );
-		?>>
+		?>
+		>
 			<?php woocommerce_template_single_add_to_cart(); ?>
 		</div>
 
@@ -1821,6 +1844,8 @@ class Add_To_Cart extends Base_Widget {
 		// Group product.
 		remove_filter( 'jupiterx_add_to_cart_group_button', [ $this, 'group_product_custom_add_to_cart_button' ] );
 		remove_filter( 'woocommerce_loop_add_to_cart_link', [ $this, 'group_product_custom_add_to_cart_args' ], 10, 3 );
+		// External Product.
+		remove_filter( 'jupiterx_add_to_cart_external_button', [ $this, 'external_product_custom_add_to_cart_button' ] );
 
 		if ( in_array( $cart_view, [ 'stacked', 'inline' ], true ) ) {
 			//Group product.
@@ -1912,6 +1937,24 @@ class Add_To_Cart extends Base_Widget {
 			esc_html( $product->add_to_cart_text() ),
 			$icon
 		);
+	}
+
+	public function external_product_custom_add_to_cart_button( $data ) {
+
+		$icon = '<div class="elementor-icon">' . $this->render_icon( 'button_icon' ) . '</div>';
+
+		$button = sprintf(
+			'<button type="submit" value="%1$s" class="single_add_to_cart_button button alt">%2$s %3$s</button>',
+			esc_attr( $data['id'] ),
+			$icon,
+			esc_html( $data['text'] )
+		);
+
+		return [
+			'text' => $data['text'],
+			'id' => $data['id'],
+			'button' => $button,
+		];
 	}
 
 	public function render_icon( $name ) {

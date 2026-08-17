@@ -161,7 +161,8 @@ function jx_editor_conditions_create_condition_row($value1, $value2, $value3, $v
 
 ?>
 	<div class="jupiterx-editor-condition-single-row-wrapper">
-		<div class="jupiterx-editor-single-row-inner-wrapper">
+		<div class="jupiterx-editor-single-input-wrapper">
+			<div class="jupiterx-editor-single-row-inner-wrapper">
 			<div class="jupiterx-editor-conditions-first-condition-wrapper">
 				<i class="elementor-icon left-icon <?php echo esc_attr($icon); ?>" aria-hidden="true"></i>
 				<select class="jx-first-condition">
@@ -174,8 +175,8 @@ function jx_editor_conditions_create_condition_row($value1, $value2, $value3, $v
 					?>
 				</select>
 				<i class="elementor-icon eicon-caret-down" aria-hidden="true"></i>
-			</div>
-			<div class="jupiterx-editor-conditions-second-condition-wrapper">
+				</div>
+				<div class="jupiterx-editor-conditions-second-condition-wrapper">
 				<select class="jx-second-condition white-select">
 					<?php
 					foreach ($second_condition as $key => $value) {
@@ -186,8 +187,8 @@ function jx_editor_conditions_create_condition_row($value1, $value2, $value3, $v
 					?>
 				</select>
 				<i class="elementor-icon eicon-caret-down" aria-hidden="true"></i>
-			</div>
-			<div class="jupiterx-editor-conditions-third-condition-wrapper <?php echo esc_attr($hidden3); ?>">
+				</div>
+				<div class="jupiterx-editor-conditions-third-condition-wrapper <?php echo esc_attr($hidden3); ?>">
 				<select class="jx-third-condition white-select">
 					<?php
 					if (! empty($third_data)) :
@@ -196,8 +197,8 @@ function jx_editor_conditions_create_condition_row($value1, $value2, $value3, $v
 					?>
 				</select>
 				<i class="elementor-icon eicon-caret-down" aria-hidden="true"></i>
-			</div>
-			<div class="jupiterx-editor-conditions-fourth-condition-wrapper <?php echo esc_attr($hidden4); ?>">
+				</div>
+				<div class="jupiterx-editor-conditions-fourth-condition-wrapper <?php echo esc_attr($hidden4); ?>">
 				<select class="jx-fourth-condition white-select">
 					<?php if (empty($hidden4)) : ?>
 						<option value="<?php echo esc_attr($value4[0]); ?>"><?php echo esc_html($value4[1]); ?></option>
@@ -220,10 +221,11 @@ function jx_editor_conditions_create_condition_row($value1, $value2, $value3, $v
 					</ul>
 				</div>
 			</div>
-		</div>
-		<div class="elementor-repeater-row-tool elementor-repeater-tool-remove jupiterx-editor-conditions-remove-row">
+			</div>
+			<div class="elementor-repeater-row-tool elementor-repeater-tool-remove jupiterx-editor-conditions-remove-row">
 			<i class="eicon-close" aria-hidden="true"></i>
 			<span class="elementor-screen-only"><?php echo esc_html__('Remove this item', 'jupiterx-core'); ?> </span>
+			</div>
 		</div>
 		<div class="jx-editor-row-show-conflict-error"></div>
 	</div>

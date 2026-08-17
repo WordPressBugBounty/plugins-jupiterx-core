@@ -55,7 +55,7 @@ class Register extends Action_Base {
 	 *
 	 * @since 2.0.0
 	 * @access public
-	 *
+	 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
 	 * @param object $widget Widget instance.
 	 */
 	public function update_controls( $widget ) {}
@@ -193,7 +193,7 @@ class Register extends Action_Base {
 			}
 
 			if ( 'newsletter' === $field['map_to'] ) {
-				$newsletter = $form['fields']['register_acceptance'];
+				$newsletter = isset( $form['fields']['register_acceptance'] ) ? $form['fields']['register_acceptance'] : '';
 			}
 		}
 
@@ -257,10 +257,10 @@ class Register extends Action_Base {
 		}
 
 		foreach ( $fields as $field ) {
-			if ( 'custom_meta' === $field['map_to'] ) {
-				$meta_id  = $field['meta_id'];
-				$field_id = $field['_id'];
-				$value    = $form['fields'][ $field_id ];
+			$field_id = $field['_id'];
+			if ( 'custom_meta' === $field['map_to'] && isset( $form['fields'][ $field_id ] ) ) {
+				$meta_id = $field['meta_id'];
+				$value   = $form['fields'][ $field_id ];
 
 				update_user_meta( $user_id, $meta_id, $value );
 			}

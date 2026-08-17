@@ -332,6 +332,7 @@ class JupiterX_Core_Condition_Manager {
 				'in_product_cat_children' => esc_html__( 'In Child Product categories', 'jupiterx-core' ),
 				'in_product_tag'          => esc_html__( 'In Product Tags', 'jupiterx-core' ),
 				'in_product_brand'        => esc_html__( 'In Product Brands', 'jupiterx-core' ),
+				'in_product_attribute'    => esc_html__( 'In Product Attributes', 'jupiterx-core' ),
 				'product_by_author'       => esc_html__( 'Products By Author', 'jupiterx-core' ),
 			];
 		}
@@ -345,6 +346,7 @@ class JupiterX_Core_Condition_Manager {
 				'product_cat_archive'   => esc_html__( 'Products Categories', 'jupiterx-core' ),
 				'product_tag_archive'   => esc_html__( 'Products Tags', 'jupiterx-core' ),
 				'product_brand_archive' => esc_html__( 'Products Brands', 'jupiterx-core' ),
+				'product_attribute_archive' => esc_html__( 'Products Attributes', 'jupiterx-core' ),
 			];
 		}
 
@@ -367,6 +369,7 @@ class JupiterX_Core_Condition_Manager {
 					'product_cat_archive'   => esc_html__( 'Products Categories', 'jupiterx-core' ),
 					'product_tag_archive'   => esc_html__( 'Products Tags', 'jupiterx-core' ),
 					'product_brand_archive' => esc_html__( 'Products Brands', 'jupiterx-core' ),
+					'product_attribute_archive' => esc_html__( 'Products Attributes', 'jupiterx-core' ),
 				],
 				'Products'        => [
 					'single_product'          => esc_html__( 'Products', 'jupiterx-core' ),
@@ -374,6 +377,7 @@ class JupiterX_Core_Condition_Manager {
 					'in_product_cat_children' => esc_html__( 'In Child Product categories', 'jupiterx-core' ),
 					'in_product_tag'          => esc_html__( 'In Product Tags', 'jupiterx-core' ),
 					'in_product_brand'        => esc_html__( 'In Product Brands', 'jupiterx-core' ),
+					'in_product_attribute'    => esc_html__( 'In Product Attributes', 'jupiterx-core' ),
 					'product_by_author'       => esc_html__( 'Products By Author', 'jupiterx-core' ),
 				],
 			];
@@ -993,7 +997,7 @@ class JupiterX_Core_Condition_Manager {
 			if ( 'number' === $string ) {
 				$posts = $wpdb->get_results( // phpcs:ignore
 					$wpdb->prepare(
-						"SELECT * FROM $wpdb->posts WHERE `post_status` NOT IN( 'auto-draft', 'inherit' ) AND ID = %s",
+						"SELECT * FROM $wpdb->posts WHERE `post_status` NOT IN( 'auto-draft', 'inherit' ) AND `post_type` <> 'elementor_library' AND ID = %s",
 						$input
 					)
 				);
@@ -1005,7 +1009,7 @@ class JupiterX_Core_Condition_Manager {
 
 				$posts = $wpdb->get_results( // phpcs:ignore
 					$wpdb->prepare(
-						"SELECT * FROM $wpdb->posts WHERE `post_status` NOT IN( 'auto-draft', 'inherit' ) AND ID = %s",
+						"SELECT * FROM $wpdb->posts WHERE `post_status` NOT IN( 'auto-draft', 'inherit' ) AND `post_type` <> 'elementor_library' AND ID = %s",
 						$post_id
 					)
 				);
@@ -1014,7 +1018,7 @@ class JupiterX_Core_Condition_Manager {
 			if ( 'slug' === $string ) {
 				$posts = $wpdb->get_results( // phpcs:ignore
 					$wpdb->prepare(
-						"SELECT * FROM $wpdb->posts WHERE `post_status` NOT IN( 'auto-draft', 'inherit' ) AND post_name LIKE %s",
+						"SELECT * FROM $wpdb->posts WHERE `post_status` NOT IN( 'auto-draft', 'inherit' ) AND `post_type` <> 'elementor_library' AND post_name LIKE %s",
 						'%' . $wpdb->esc_like( $input ) . '%'
 					)
 				);
@@ -1023,7 +1027,7 @@ class JupiterX_Core_Condition_Manager {
 			if ( 'string' === $string ) {
 				$posts = $wpdb->get_results( // phpcs:ignore
 					$wpdb->prepare(
-						"SELECT * FROM $wpdb->posts WHERE `post_status` NOT IN( 'auto-draft', 'inherit' ) AND post_title LIKE %s",
+						"SELECT * FROM $wpdb->posts WHERE `post_status` NOT IN( 'auto-draft', 'inherit' ) AND `post_type` <> 'elementor_library' AND post_title LIKE %s",
 						'%' . $wpdb->esc_like( $input ) . '%'
 					)
 				);
@@ -1032,7 +1036,7 @@ class JupiterX_Core_Condition_Manager {
 			if ( empty( $posts ) ) {
 				$posts = $wpdb->get_results( // phpcs:ignore
 					$wpdb->prepare(
-						"SELECT * FROM $wpdb->posts WHERE `post_status` NOT IN( 'auto-draft', 'inherit' ) AND post_title LIKE %s",
+						"SELECT * FROM $wpdb->posts WHERE `post_status` NOT IN( 'auto-draft', 'inherit' ) AND `post_type` <> 'elementor_library' AND post_title LIKE %s",
 						'%' . $wpdb->esc_like( $input ) . '%'
 					)
 				);
@@ -1383,6 +1387,17 @@ class JupiterX_Core_Condition_Manager {
 	}
 
 	/**
+	 * Return attributes list on user input
+	 *
+	 * @param string $value
+	 *
+	 * @since 4.60.0
+	 */
+	private function woocommerce_in_product_attribute( $value ) {
+		wp_send_json_success( $this->get_attributes( $value ) );
+	}
+
+	/**
 	 * Return categories of products.
 	 *
 	 * @param string $value
@@ -1451,6 +1466,43 @@ class JupiterX_Core_Condition_Manager {
 	 */
 	private function woocommerce_product_brand_archive( $value ) {
 		$this->get_terms( 'product_brand', $value );
+	}
+
+	/**
+	 * Return attributes list on user input
+	 *
+	 * @param string $value
+	 *
+	 * @since 4.60.0
+	 */
+	private function woocommerce_product_attribute_archive( $value ) {
+
+		wp_send_json_success( $this->get_attributes( $value ) );
+
+	}
+
+	/**
+	 * Filter attributes based of user input
+	 *
+	 * @param string $value
+	 *
+	 * @since 4.60.0
+	 */
+	private function get_attributes( $value ) {
+		$items      = [];
+		$attributes = wc_get_attribute_taxonomies();
+
+		foreach ( $attributes as $attribute ) {
+			if ( $attribute->attribute_public && stripos( $attribute->attribute_name, $value ) !== false ) {
+				$items[] = [
+					'value' => $attribute->attribute_id,
+					'label' => $attribute->attribute_name,
+					'link'  => '',
+				];
+			}
+		}
+
+		return $items;
 	}
 }
 

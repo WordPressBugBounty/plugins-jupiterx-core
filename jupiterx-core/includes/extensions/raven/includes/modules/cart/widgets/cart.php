@@ -3204,12 +3204,17 @@ class Cart extends Base_Widget {
 			$image_settings = [
 				'image_size' => $settings['cart_thumbnails_image_size'],
 				'image' => [
-					'id' => get_post_thumbnail_id( $cart_item['product_id'] ),
+					'id' => get_post_thumbnail_id( $cart_item['variation_id'] ) > 0 ? get_post_thumbnail_id( $cart_item['variation_id'] ) : get_post_thumbnail_id( $cart_item['product_id'] ),
 				],
 				'image_custom_dimension' => $settings['cart_thumbnails_image_custom_dimension'],
 			];
 
 			$image = \Elementor\Group_Control_Image_Size::get_attachment_image_html( $image_settings );
+
+			// Render WooCommerce Placeholder if product has not any image.
+			if ( ! $image ) {
+				$image = wc_placeholder_img( 'thumbnail' );
+			}
 
 			return $image;
 		}
@@ -3281,12 +3286,17 @@ class Cart extends Base_Widget {
 			$image_settings = [
 				'image_size' => $settings['cart_thumbnails_image_size'],
 				'image' => [
-					'id' => get_post_thumbnail_id( $cart_item['product_id'] ),
+					'id' => get_post_thumbnail_id( $cart_item['variation_id'] ) > 0 ? get_post_thumbnail_id( $cart_item['variation_id'] ) : get_post_thumbnail_id( $cart_item['product_id'] ),
 				],
 				'image_custom_dimension' => $settings['cart_thumbnails_image_custom_dimension'],
 			];
 
 			$image = \Elementor\Group_Control_Image_Size::get_attachment_image_html( $image_settings );
+
+			// Render WooCommerce Placeholder if product has not any image.
+			if ( ! $image ) {
+				$image = wc_placeholder_img( 'thumbnail' );
+			}
 		}
 
 		$html = sprintf(

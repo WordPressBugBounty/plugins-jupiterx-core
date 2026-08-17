@@ -15,6 +15,7 @@ use JupiterX_Core\Raven\Plugin as Raven;
  * Some of features will be disabled if Elementor pro is activated.
  *
  * @since 2.5.0
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 class Module extends Module_Base
 {
@@ -618,6 +619,17 @@ class Module extends Module_Base
 				esc_html__( 'Tools', 'jupiterx-core' ),
 			],
 		];
+
+		//Enable Elementor -> Accessibility sub-menu
+		if ( class_exists( 'EA11y\Plugin' ) ) {
+			$submenu['elementor-home'][] =  // phpcs:ignore
+			[
+				esc_html__( 'Accessibility', 'jupiterx-core' ),
+				$cap_manage,
+				'accessibility-settings',
+				esc_html__( 'Accessibility', 'jupiterx-core' ),
+			];
+		}
 	}
 
 	/**

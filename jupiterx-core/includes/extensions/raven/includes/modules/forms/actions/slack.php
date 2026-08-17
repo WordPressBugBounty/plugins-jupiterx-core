@@ -321,7 +321,7 @@ class Slack extends Action_Base {
 					continue;
 				}
 
-				$field_value = $ajax_handler->record['fields'][ $field['_id'] ];
+				$field_value = isset( $ajax_handler->record['fields'][ $field['_id'] ] ) ? $ajax_handler->record['fields'][ $field['_id'] ] : '';
 				$label       = isset( $field['label'] ) ? $field['label'] : '';
 
 				if ( 'acceptance' === $field['type'] ) {
@@ -330,7 +330,7 @@ class Slack extends Action_Base {
 					$field_value    = 'on' === $newsletter ? __( 'Yes', 'jupiterx-core' ) : __( 'No', 'jupiterx-core' );
 				}
 
-				if ( 'newsletter' === $field['map_to'] && 'acceptance' === $field['type'] ) {
+				if ( isset( $field['map_to'] ) && 'newsletter' === $field['map_to'] && 'acceptance' === $field['type'] ) {
 					$label = empty( $label ) ? __( 'Newsletter', 'jupiterx-core' ) : $label;
 				}
 

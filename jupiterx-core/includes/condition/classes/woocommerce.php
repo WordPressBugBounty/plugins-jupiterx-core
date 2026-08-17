@@ -108,6 +108,19 @@ class Jupiterx_Woocommerce_Condition {
 			}
 		}
 
+		// Product attribute archive.
+		if ( 'product_attribute_archive' === $condition[1] && isset( $query->taxonomy ) ) {
+			if ( 'all' === $condition[2][0] && strpos( $query->taxonomy, 'pa_' ) !== false ) {
+				return true;
+			}
+
+			$attribute_name = 'pa_' . $condition[2][1];
+
+			if ( $attribute_name === $query->taxonomy ) {
+				return true;
+			}
+		}
+
 		// Woocommerce Single Product Section.
 		if ( ! is_product() ) {
 			return false;
@@ -169,6 +182,21 @@ class Jupiterx_Woocommerce_Condition {
 
 			// Certain brand selected.
 			if ( has_term( $condition[2][0], 'product_brand', $query->ID ) ) {
+				return true;
+			}
+		}
+
+		// Product Attribute.
+		if ( 'in_product_attribute' === $condition[1] ) {
+			$attributes = get_post_meta( $query->ID, '_product_attributes', true );
+
+			if ( 'all' === $condition[2][0] && ! empty( $attributes ) ) {
+				return true;
+			}
+
+			$attribute_name = 'pa_' . $condition[2][1];
+
+			if ( has_term( '', $attribute_name, $query->ID ) ) {
 				return true;
 			}
 		}

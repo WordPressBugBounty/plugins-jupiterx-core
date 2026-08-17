@@ -32,6 +32,8 @@ use JupiterX_Popups;
  */
 final class Plugin
 {
+	const PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY = 'jupiterx_product_category_hover_thumbnail_id';
+
 	/**
 	 * Plugin instance.
 	 *
@@ -339,6 +341,14 @@ final class Plugin
 
 		add_action('wp_ajax_raven_sync_libraries', [$this, 'sync_libraries']);
 		add_action('admin_enqueue_scripts', [$this, 'register_admin_scripts']);
+
+		if (is_admin()) {
+			add_action('product_cat_add_form_fields', [$this, 'render_product_category_hover_image_add_field']);
+			add_action('product_cat_edit_form_fields', [$this, 'render_product_category_hover_image_edit_field']);
+			add_action('created_product_cat', [$this, 'save_product_category_hover_image']);
+			add_action('edited_product_cat', [$this, 'save_product_category_hover_image']);
+			add_action('admin_enqueue_scripts', [$this, 'enqueue_product_category_hover_image_assets']);
+		}
 
 		if (function_exists('WC')) {
 			add_action('elementor/frontend/the_content', [$this, 'layout_builder_wc_add_wrapper']);
@@ -1758,6 +1768,166 @@ final class Plugin
 			self::$plugin_version,
 			true
 		);
+	}
+
+	public function render_product_category_hover_image_add_field()
+	{
+		wp_nonce_field('jupiterx_product_category_hover_image', 'jupiterx_product_category_hover_image_nonce');
+		?>
+		<div class="form-field term-jupiterx-hover-thumbnail-wrap">
+			<label for="<?php echo esc_attr(self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY); ?>"><?php esc_html_e('Hover Image', 'jupiterx-core'); ?></label>
+			<div class="jupiterx-product-category-hover-image-preview">
+				<img src="" alt="" style="display:none; max-width:60px; height:auto;" />
+			</div>
+			<input
+				type="hidden"
+				id="<?php echo esc_attr(self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY); ?>"
+				name="<?php echo esc_attr(self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY); ?>"
+				class="jupiterx-product-category-hover-image-id"
+				value=""
+			/>
+			<button type="button" class="button jupiterx-product-category-hover-image-upload"><?php esc_html_e('Upload/Add image', 'jupiterx-core'); ?></button>
+			<button type="button" class="button jupiterx-product-category-hover-image-remove" style="display:none;"><?php esc_html_e('Remove image', 'jupiterx-core'); ?></button>
+			<p><?php esc_html_e('Used by the Jupiter X Categories widget when the featured image hover effect is set to Swap Image.', 'jupiterx-core'); ?></p>
+		</div>
+		<?php
+	}
+
+	public function render_product_category_hover_image_edit_field($term)
+	{
+		$hover_image_id  = absint(get_term_meta($term->term_id, self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY, true));
+		$hover_image_url = $hover_image_id ? wp_get_attachment_thumb_url($hover_image_id) : '';
+
+		wp_nonce_field('jupiterx_product_category_hover_image', 'jupiterx_product_category_hover_image_nonce');
+		?>
+		<tr class="form-field term-jupiterx-hover-thumbnail-wrap">
+			<th scope="row">
+				<label for="<?php echo esc_attr(self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY); ?>"><?php esc_html_e('Hover Image', 'jupiterx-core'); ?></label>
+			</th>
+			<td>
+				<div class="jupiterx-product-category-hover-image-preview">
+					<img
+						src="<?php echo esc_url($hover_image_url); ?>"
+						alt=""
+						style="<?php echo esc_attr($hover_image_url ? '' : 'display:none;'); ?> max-width:60px; height:auto;"
+					/>
+				</div>
+				<input
+					type="hidden"
+					id="<?php echo esc_attr(self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY); ?>"
+					name="<?php echo esc_attr(self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY); ?>"
+					class="jupiterx-product-category-hover-image-id"
+					value="<?php echo esc_attr($hover_image_id); ?>"
+				/>
+				<button type="button" class="button jupiterx-product-category-hover-image-upload"><?php esc_html_e('Upload/Add image', 'jupiterx-core'); ?></button>
+				<button type="button" class="button jupiterx-product-category-hover-image-remove" style="<?php echo esc_attr($hover_image_id ? '' : 'display:none;'); ?>"><?php esc_html_e('Remove image', 'jupiterx-core'); ?></button>
+				<p class="description"><?php esc_html_e('Used by the Jupiter X Categories widget when the featured image hover effect is set to Swap Image.', 'jupiterx-core'); ?></p>
+			</td>
+		</tr>
+		<?php
+	}
+
+	public function save_product_category_hover_image($term_id)
+	{
+		if (
+			empty($_POST['jupiterx_product_category_hover_image_nonce']) ||
+			! wp_verify_nonce(sanitize_text_field(wp_unslash($_POST['jupiterx_product_category_hover_image_nonce'])), 'jupiterx_product_category_hover_image')
+		) {
+			return;
+		}
+
+		$taxonomy = get_taxonomy('product_cat');
+
+		if ($taxonomy && ! current_user_can($taxonomy->cap->edit_terms)) {
+			return;
+		}
+
+		$hover_image_id = 0;
+
+		if (isset($_POST[self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY]) && ! is_array($_POST[self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY])) {
+			$hover_image_id = absint(wp_unslash($_POST[self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY]));
+		}
+
+		if ($hover_image_id && wp_attachment_is_image($hover_image_id)) {
+			update_term_meta($term_id, self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY, $hover_image_id);
+			return;
+		}
+
+		delete_term_meta($term_id, self::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY);
+	}
+
+	public function enqueue_product_category_hover_image_assets()
+	{
+		$screen = get_current_screen();
+
+		if (empty($screen) || 'edit-product_cat' !== $screen->id) {
+			return;
+		}
+
+		wp_enqueue_media();
+		wp_enqueue_script('jquery');
+		wp_add_inline_script('jquery', $this->get_product_category_hover_image_script());
+	}
+
+	private function get_product_category_hover_image_script()
+	{
+		$choose_title = esc_js(__('Choose hover image', 'jupiterx-core'));
+		$button_text  = esc_js(__('Use image', 'jupiterx-core'));
+
+		return <<<JS
+( function( $ ) {
+	'use strict';
+
+	$( document ).on( 'click', '.jupiterx-product-category-hover-image-upload', function( event ) {
+		var frame;
+		var field = $( this ).closest( '.form-field, tr' );
+		var input = field.find( '.jupiterx-product-category-hover-image-id' );
+		var preview = field.find( '.jupiterx-product-category-hover-image-preview img' );
+
+		event.preventDefault();
+
+		frame = wp.media( {
+			title: '{$choose_title}',
+			button: {
+				text: '{$button_text}'
+			},
+			library: {
+				type: 'image'
+			},
+			multiple: false
+		} );
+
+		frame.on( 'select', function() {
+			var attachment = frame.state().get( 'selection' ).first().toJSON();
+			var thumbnail = attachment.sizes && attachment.sizes.thumbnail ? attachment.sizes.thumbnail.url : attachment.url;
+
+			input.val( attachment.id ).trigger( 'change' );
+			preview.attr( 'src', thumbnail ).show();
+			field.find( '.jupiterx-product-category-hover-image-remove' ).show();
+		} );
+
+		frame.open();
+	} );
+
+	$( document ).on( 'click', '.jupiterx-product-category-hover-image-remove', function( event ) {
+		var field = $( this ).closest( '.form-field, tr' );
+
+		event.preventDefault();
+
+		field.find( '.jupiterx-product-category-hover-image-id' ).val( '' ).trigger( 'change' );
+		field.find( '.jupiterx-product-category-hover-image-preview img' ).attr( 'src', '' ).hide();
+		$( this ).hide();
+	} );
+
+	$( document ).ajaxComplete( function( event, xhr, settings ) {
+		if ( 'string' === typeof settings.data && settings.data.indexOf( 'action=add-tag' ) !== -1 ) {
+			$( '.jupiterx-product-category-hover-image-id' ).val( '' );
+			$( '.jupiterx-product-category-hover-image-preview img' ).attr( 'src', '' ).hide();
+			$( '.jupiterx-product-category-hover-image-remove' ).hide();
+		}
+	} );
+} )( jQuery );
+JS;
 	}
 
 	/**

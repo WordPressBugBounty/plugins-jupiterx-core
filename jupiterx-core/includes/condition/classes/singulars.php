@@ -85,7 +85,7 @@ class Jupiterx_Singular_Condition {
 
 		if ( 'any_child_of' === $condition[1] ) {
 			$parent  = (int) $condition[2][0];
-			$child   = $query->ID;
+			$child   = $query ? $query->ID : '';
 			$parents = get_post_ancestors( $child );
 
 			if ( empty( $parents ) || empty( $parent ) ) {
@@ -112,7 +112,7 @@ class Jupiterx_Singular_Condition {
 				'post_parent' => (int) $parent,
 				'fields'      => 'ids',
 			];
-			$child    = $query->ID;
+			$child    = $query ? $query->ID : '';
 			$children = get_children( $args );
 			$parents  = get_post_ancestors( $child );
 

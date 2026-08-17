@@ -455,18 +455,6 @@ class JupiterX_Control_Panel_2
 	}
 
 	/**
-	 * Add enable widget modal root.
-	 *
-	 * @since 2.5.0
-	 */
-	public function enable_widget_root()
-	{
-	?>
-		<div id="jx-enable-widget-root" class="jx-cp"></div>
-	<?php
-	}
-
-	/**
 	 * Add theme update modal root.
 	 *
 	 * @since 4.0.0
@@ -1107,17 +1095,6 @@ class JupiterX_Control_Panel_2
 
 		if (! is_array(jupiterx_get_option('elements'))) {
 			jupiterx_update_option('first_installation_after_250', true);
-		}
-
-		if (
-			function_exists('jupiterx_get_option') &&
-			'deleted' !== jupiterx_get_option('enable_widgets_reminder') &&
-			time() > jupiterx_get_option('enable_widgets_reminder') &&
-			! jupiterx_get_option('first_installation_after_250')
-		) {
-			add_action('admin_footer', [$this, 'enable_widget_root']);
-
-			return true;
 		}
 
 		if ('show' === get_option('jupiterx_theme_update_modal', '')) {

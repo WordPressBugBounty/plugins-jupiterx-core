@@ -1205,6 +1205,26 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 			'image_size' => $this->get_instance_value( 'image_size' ),
 		];
 
+		if ( ! empty( $this->get_instance_value( 'image_custom_dimension' ) ) ) {
+			$settings['image_custom_dimension'] = $this->get_instance_value( 'image_custom_dimension' );
+		}
+
+		if ( 'product' === $this->post_type && 'swap' === $this->get_instance_value( 'image_hover_effect' ) ) {
+			$hover_image_id = absint( get_term_meta( $this->term->term_id, Module::PRODUCT_CATEGORY_HOVER_IMAGE_META_KEY, true ) );
+
+			if ( ! empty( $hover_image_id ) ) {
+				$settings['hover_image'] = [
+					'id' => $hover_image_id,
+				];
+
+				$settings['hover_image_size'] = $settings['image_size'];
+
+				if ( ! empty( $settings['image_custom_dimension'] ) ) {
+					$settings['hover_image_custom_dimension'] = $settings['image_custom_dimension'];
+				}
+			}
+		}
+
 		$this->render_skin_image( $settings );
 	}
 
@@ -1326,6 +1346,16 @@ abstract class Skin_Base extends Elementor_Skin_Base {
 				'raven-categories-skin-' . $settings['_skin'],
 			]
 		);
+
+		if ( 'swap' === $this->get_instance_value( 'image_hover_effect' ) ) {
+			$this->parent->add_render_attribute( 'wrapper', 'class', 'raven-hover-swap' );
+
+			$swap_animation = $this->get_instance_value( 'image_hover_swap_animation' );
+
+			if ( ! empty( $swap_animation ) ) {
+				$this->parent->add_render_attribute( 'wrapper', 'class', 'raven-hover-swap-animation-' . sanitize_html_class( $swap_animation ) );
+			}
+		}
 
 		if ( 'masonry' === $layout ) {
 			$masonry_columns = Utils::get_responsive_class(

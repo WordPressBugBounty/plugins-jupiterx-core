@@ -42,7 +42,9 @@ class Skin_Inner_Content extends Skin_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}} .raven-categories-img' => 'background-position: {{VALUE}};',
+					'{{WRAPPER}} .raven-categories-img-layer' => 'object-position: {{VALUE}};',
 				],
+				'render_type' => 'template',
 			]
 		);
 
@@ -59,7 +61,9 @@ class Skin_Inner_Content extends Skin_Base {
 				],
 				'selectors' => [
 					'{{WRAPPER}} .raven-categories-img' => 'background-size: {{VALUE}};',
+					'{{WRAPPER}} .raven-categories-img-layer' => 'object-fit: {{VALUE}};',
 				],
+				'render_type' => 'template',
 			]
 		);
 
@@ -78,8 +82,47 @@ class Skin_Inner_Content extends Skin_Base {
 					'blur' => __( 'Blur', 'jupiterx-core' ),
 					'grayscale-reverse' => __( 'Grayscale to Color', 'jupiterx-core' ),
 					'grayscale' => __( 'Color to Grayscale', 'jupiterx-core' ),
+					'swap' => __( 'Swap Image', 'jupiterx-core' ),
 				],
 				'prefix_class' => 'raven-hover-',
+				'render_type' => 'template',
+			]
+		);
+
+		$this->add_control(
+			'image_hover_swap_animation',
+			[
+				'label' => __( 'Swap Animation', 'jupiterx-core' ),
+				'type' => 'select',
+				'default' => 'zoom-in',
+				'options' => [
+					'' => __( 'None', 'jupiterx-core' ),
+					'zoom-in' => __( 'Zoom In', 'jupiterx-core' ),
+					'zoom-out' => __( 'Zoom Out', 'jupiterx-core' ),
+				],
+				'prefix_class' => 'raven-hover-swap-animation-',
+				'render_type' => 'template',
+				'condition' => [
+					$this->get_control_id( 'image_hover_effect' ) => 'swap',
+				],
+			]
+		);
+
+		$this->add_control(
+			'image_hover_swap_duration',
+			[
+				'label' => __( 'Transition Duration (s)', 'jupiterx-core' ),
+				'type' => 'number',
+				'default' => 0.35,
+				'min' => 0.1,
+				'max' => 2,
+				'step' => 0.05,
+				'selectors' => [
+					'{{WRAPPER}} .raven-categories-img-has-hover' => '--raven-categories-image-swap-duration: {{VALUE}}s;',
+				],
+				'condition' => [
+					$this->get_control_id( 'image_hover_effect' ) => 'swap',
+				],
 			]
 		);
 
@@ -176,8 +219,92 @@ class Skin_Inner_Content extends Skin_Base {
 
 
 	protected function render_skin_image( $settings ) {
+		if ( empty( $settings['hover_image']['id'] ) ) {
+			?>
+			<div class="raven-categories-img" style="background-image: url('<?php echo esc_url( Group_Control_Image_Size::get_attachment_image_src( $settings['image']['id'], 'image', $settings ) ); ?>')"></div>
+			<?php
+			return;
+		}
+
+		$normal_image = $this->add_image_layer_attributes(
+			Group_Control_Image_Size::get_attachment_image_html( $settings ),
+			'raven-categories-img-layer raven-categories-img-layer-normal'
+		);
+
+		$hover_image = $this->add_image_layer_attributes(
+			Group_Control_Image_Size::get_attachment_image_html( $settings, 'hover_image' ),
+			'raven-categories-img-layer raven-categories-img-layer-hover'
+		);
+
 		?>
-		<div class="raven-categories-img" style="background-image: url('<?php echo esc_url( Group_Control_Image_Size::get_attachment_image_src( $settings['image']['id'], 'image', $settings ) ); ?>')"></div>
+		<div class="raven-categories-img raven-categories-img-has-hover">
+			<?php echo wp_kses_post( $normal_image ); ?>
+			<?php echo wp_kses_post( $hover_image ); ?>
+		</div>
 		<?php
+	}
+
+	private function add_image_layer_attributes( $image, $class ) {
+		$object_position = $this->get_instance_value( 'image_background_position' );
+		$object_fit      = $this->get_instance_value( 'image_background_size' );
+
+		if ( empty( $object_position ) ) {
+			$object_position = 'center center';
+		}
+
+		if ( 'auto' === $object_fit ) {
+			$object_fit = 'none';
+		}
+
+		if ( ! in_array( $object_fit, [ 'cover', 'contain', 'none' ], true ) ) {
+			$object_fit = 'cover';
+		}
+
+		$layer_style = sprintf(
+			'object-position:%s;object-fit:%s;',
+			esc_attr( $object_position ),
+			esc_attr( $object_fit )
+		);
+
+		$image = preg_replace_callback(
+			'/<img\b([^>]*)>/i',
+			function( $matches ) use ( $class, $layer_style ) {
+				$attributes = $matches[1];
+				$closing    = '';
+
+				if ( preg_match( '/\s*\/\s*$/', $attributes ) ) {
+					$attributes = preg_replace( '/\s*\/\s*$/', '', $attributes );
+					$closing    = ' /';
+				}
+
+				if ( preg_match( '/\bclass=(["\'])(.*?)\1/i', $attributes ) ) {
+					$attributes = preg_replace(
+						'/\bclass=(["\'])(.*?)\1/i',
+						'class=$1$2 ' . esc_attr( $class ) . '$1',
+						$attributes,
+						1
+					);
+				} else {
+					$attributes .= ' class="' . esc_attr( $class ) . '"';
+				}
+
+				if ( preg_match( '/\bstyle=(["\'])(.*?)\1/i', $attributes ) ) {
+					$attributes = preg_replace(
+						'/\bstyle=(["\'])(.*?)\1/i',
+						'style=$1$2' . esc_attr( $layer_style ) . '$1',
+						$attributes,
+						1
+					);
+				} else {
+					$attributes .= ' style="' . esc_attr( $layer_style ) . '"';
+				}
+
+				return '<img' . $attributes . $closing . '>';
+			},
+			$image,
+			1
+		);
+
+		return null === $image ? '' : $image;
 	}
 }

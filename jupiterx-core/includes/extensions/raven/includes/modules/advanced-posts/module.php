@@ -134,11 +134,11 @@ class Module extends Module_Base {
 		return $found_posts;
 	}
 
-	public static function get_post_types() {
+	public static function get_post_types( $is_archive = false ) {
 		$post_types = get_post_types( [ 'show_in_nav_menus' => true ], 'objects' );
 
 		foreach ( $post_types as $post_type ) {
-			if ( 'product' === $post_type->name ) {
+			if ( 'product' === $post_type->name && ! $is_archive ) {
 				continue;
 			}
 

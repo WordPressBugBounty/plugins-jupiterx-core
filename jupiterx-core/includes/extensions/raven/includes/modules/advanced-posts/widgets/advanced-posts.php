@@ -997,6 +997,22 @@ class Advanced_Posts extends Base_Widget {
 		);
 
 		$this->add_control(
+			'archive_post_types',
+			[
+				'label' => esc_html__( 'Post Types', 'jupiterx-core' ),
+				'description' => esc_html__( 'Selecting a post type will filter the archive query results to that type.', 'jupiterx-core' ),
+				'type' => 'select2',
+				'label_block' => true,
+				'multiple' => true,
+				'options' => Module::get_post_types( true ),
+				'frontend_available' => true,
+				'condition' => [
+					'is_archive_template' => 'true',
+				],
+			],
+		);
+
+		$this->add_control(
 			'related_to_current_post', [
 				'label'              => esc_html__( 'Related to current post', 'jupiterx-core' ),
 				'description'        => esc_html__( 'Display related posts based on the post type taxonomy. While this option is enabled, the Source option is ignored.', 'jupiterx-core' ),
@@ -5560,6 +5576,10 @@ class Advanced_Posts extends Base_Widget {
 			$wp_query->set( 'posts_per_page', 9999 );
 		} else {
 			$wp_query->set( 'posts_per_page', $query_posts_per_page );
+		}
+
+		if ( 'true' === $settings['is_archive_template'] && ! empty( $settings['archive_post_types'] ) ) {
+			$wp_query->set( 'post_type', $settings['archive_post_types'] );
 		}
 
 		$featured_image_hover  = ! empty( $settings['featured_image_hover'] ) ? $settings['featured_image_hover'] : '';

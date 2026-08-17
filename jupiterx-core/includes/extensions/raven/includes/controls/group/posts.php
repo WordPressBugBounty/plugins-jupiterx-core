@@ -287,13 +287,13 @@ class Posts extends Group_Control_Base {
 					'terms' => [
 						[
 							'name' => 'post_type',
-							'operator' => 'in',
+							'operator' => '==',
 							'value' => $taxonomy_object->object_type,
 						],
 						[
 							'name' => $taxonomy_object->object_type[0] . '_includes',
 							'operator' => '==',
-							'value' => [],
+							'value' => '',
 						],
 					],
 				],

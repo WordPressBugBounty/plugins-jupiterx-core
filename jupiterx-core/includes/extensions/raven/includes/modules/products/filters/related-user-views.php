@@ -21,9 +21,12 @@ class Related_User_Views extends Filter_Base {
 	}
 
 	public static function get_filter_args() {
-		$product_ids = [];
+		$product_ids     = [];
+		$viewed_products = [];
 
-		$viewed_products = wp_parse_id_list( (array) explode( '|', wp_unslash( $_COOKIE['woocommerce_recently_viewed'] ) ) ); // phpcs:ignore
+		if ( isset( $_COOKIE['woocommerce_recently_viewed'] ) ) {
+			$viewed_products = wp_parse_id_list( (array) explode( '|', wp_unslash( $_COOKIE['woocommerce_recently_viewed'] ) ) ); // phpcs:ignore
+		}
 
 		if ( empty( $viewed_products ) ) {
 			return static::force_no_result();

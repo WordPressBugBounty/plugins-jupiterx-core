@@ -227,6 +227,10 @@ class Frontend {
 			$args                        = $wp_query->query_vars;
 			$args['ignore_sticky_posts'] = true;
 
+			if ( ! empty( $this->settings['archive_post_types'] ) ) {
+				$args['post_type'] = $this->settings['archive_post_types'];
+			}
+
 			if ( $this->archive_query ) {
 				$this->archive_query['ignore_sticky_posts'] = true;
 				$args                                       = $this->archive_query;
@@ -484,10 +488,10 @@ class Frontend {
 
 		$format = ! empty( $format_options[ $this->settings['date_format'] ] ) ? $format_options[ $this->settings['date_format'] ] : $this->settings['custom_format'];
 
-		$date = get_the_date( $format );
+		$date = wp_date( $format, get_post_time( 'U' ) );
 
 		if ( 'last_modified' === $this->settings['date_type'] ) {
-			$date = get_the_modified_date( $format );
+			$date = wp_date( $format, get_the_modified_date( 'U' ) );
 		}
 
 		$date_link = ( 'post' === get_post_type() ) ? get_month_link( get_the_time( 'Y' ), get_the_time( 'm' ) ) : get_permalink();
