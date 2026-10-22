@@ -4156,7 +4156,7 @@ const AddToCart = _module.default.extend({
   detectPlusMinus() {
     this.elements.$plusMinus.on('click', event => {
       const $target = $(event.currentTarget);
-      const qty = $target.closest('form.cart').find('.qty');
+      const qty = $target.closest('.raven-qty-button-holder').find('.qty');
       const max = parseFloat(qty.attr('max'));
       const min = parseFloat(qty.attr('min'));
       const step = parseFloat(qty.attr('step'));

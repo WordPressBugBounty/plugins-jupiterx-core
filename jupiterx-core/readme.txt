@@ -2,8 +2,8 @@
 Contributors: artbees
 Tags: jupiter, jupiterx
 Requires at least: 5.6
-Tested up to: 6.9
-Stable tag: 4.60.0
+Tested up to: 7.1.3
+Stable tag: 4.62.0
 Requires PHP: 7.0
 License: GPLv2
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
@@ -29,6 +29,26 @@ It's worth mentioning that, some of the features are disabled for the Jupiter X 
 2. Activate the plugin through the 'Plugins' menu in WordPress.
 
 == Changelog ==
+
+= v4.62.0
+  * Added Site Review Feature to JupiterX.
+  * Fixed Security issue.
+  * Fixed Functionality of Author condition on single Post Template.
+  * Fixed Warnings related to Social Login widget.
+  * Fixed issue related to increasing/decreasing quantity of Grouped product.
+  * Fixed post widgets to support local Time.
+  * Fixed control-panel modals not scrolling when taller than the viewport.
+
+= v4.61.0
+  * Improved WooCommerce Condition On Layout Builder To Support Custom Taxonomy.
+  * Improved Archive conditions for Custom Post Type.
+  * Improved JupiterX to regenerate cache after updates.
+  * Improved the PHP CSS Parser library to work with newer versions.
+  * Improved Layout Builder conditions to support custom taxonomy for Posts.
+  * Fixed security issue.
+  * Fixed conflict between ACF plugin and Elementor dynamic tag on Loop builder.
+  * Fixed conflict of Elementor Site mailer Plugin and JupiterX.
+
 = v4.60.0
   * Added a hover image swap effect for WooCommerce product categories.
   * Added product attribute condition to Layout builder.

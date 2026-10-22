@@ -1,12 +1,12 @@
 <?php
-namespace PrestaShop\RtlCss\Transformation;
+namespace JupiterX_Core\PrestaShop\RtlCss\Transformation;
 
-use PrestaShop\RtlCss\FlipOptions;
-use PrestaShop\RtlCss\Transformation\Value\TransformableStringValue;
-use Sabberworm\CSS\Rule\Rule;
-use Sabberworm\CSS\Value\CSSFunction;
-use Sabberworm\CSS\Value\RuleValueList;
-use Sabberworm\CSS\Value\Size;
+use JupiterX_Core\PrestaShop\RtlCss\FlipOptions;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\Value\TransformableStringValue;
+use JupiterX_Core\Sabberworm\CSS\Rule\Rule;
+use JupiterX_Core\Sabberworm\CSS\Value\CSSFunction;
+use JupiterX_Core\Sabberworm\CSS\Value\RuleValueList;
+use JupiterX_Core\Sabberworm\CSS\Value\Size;
 
 /**
  * Flips values of background

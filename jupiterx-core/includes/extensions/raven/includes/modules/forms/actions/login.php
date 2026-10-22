@@ -131,6 +131,12 @@ class Login extends Action_Base {
 			$login_url = $ajax_handler->form['settings']['redirect_to']['url'];
 		}
 
+		$login_url = esc_url( $login_url, array( 'http', 'https' ) );
+
+		if ( ! $login_url ) {
+			$login_url = home_url();
+		}
+
 		$ajax_handler->add_response( 'redirect_to', $login_url );
 
 		// Set logout url cookie.

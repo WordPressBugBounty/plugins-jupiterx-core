@@ -1,10 +1,10 @@
 <?php
-namespace PrestaShop\RtlCss\Transformation;
+namespace JupiterX_Core\PrestaShop\RtlCss\Transformation;
 
-use PrestaShop\RtlCss\Transformation\Operation\SizeFlipper;
-use Sabberworm\CSS\Rule\Rule;
-use Sabberworm\CSS\Value\CSSFunction;
-use Sabberworm\CSS\Value\RuleValueList;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\Operation\SizeFlipper;
+use JupiterX_Core\Sabberworm\CSS\Rule\Rule;
+use JupiterX_Core\Sabberworm\CSS\Value\CSSFunction;
+use JupiterX_Core\Sabberworm\CSS\Value\RuleValueList;
 
 /**
  * Flips values of transform

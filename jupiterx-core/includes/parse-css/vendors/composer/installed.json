@@ -1,99 +1,131 @@
-[
-    {
-        "name": "prestashop/php-css-parser",
-        "version": "8.2.0",
-        "version_normalized": "8.2.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/PrestaShop/PHP-CSS-Parser.git",
-            "reference": "4fc2af16da00dd954b41a7d754a9a0b1fccadc1d"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/PrestaShop/PHP-CSS-Parser/zipball/4fc2af16da00dd954b41a7d754a9a0b1fccadc1d",
-            "reference": "4fc2af16da00dd954b41a7d754a9a0b1fccadc1d",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.2"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "~4.8"
-        },
-        "time": "2017-12-28T13:36:06+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Sabberworm\\CSS": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Raphael Schweikert"
-            }
-        ],
-        "description": "Parser for CSS Files written in PHP",
-        "homepage": "http://www.sabberworm.com/blog/2010/6/10/php-css-parser",
-        "keywords": [
-            "css",
-            "parser",
-            "stylesheet"
-        ]
-    },
-    {
-        "name": "prestashop/rtlcss-php",
-        "version": "v2.0.0",
-        "version_normalized": "2.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/PrestaShop/rtlcss-php.git",
-            "reference": "eb26a4c5651ccaddc9e7eecc725367954c6bd1c4"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/PrestaShop/rtlcss-php/zipball/eb26a4c5651ccaddc9e7eecc725367954c6bd1c4",
-            "reference": "eb26a4c5651ccaddc9e7eecc725367954c6bd1c4",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.4",
-            "prestashop/php-css-parser": "^8.2"
-        },
-        "require-dev": {
-            "phpunit/phpunit": "*"
-        },
-        "time": "2017-12-28T14:27:03+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "PrestaShop\\RtlCss\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Frédéric Massart",
-                "homepage": "https://github.com/FMCorz"
+{
+    "packages": [
+        {
+            "name": "prestashop/rtlcss-php",
+            "version": "v2.0.0",
+            "version_normalized": "2.0.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/PrestaShop/rtlcss-php.git",
+                "reference": "eb26a4c5651ccaddc9e7eecc725367954c6bd1c4"
             },
-            {
-                "name": "Pablo Borowicz",
-                "email": "pablo.borowicz@prestashop.com",
-                "homepage": "https://github.com/eternoendless"
-            }
-        ],
-        "description": "Converts CSS to Right-to-Left",
-        "keywords": [
-            "css",
-            "rtl"
-        ]
-    }
-]
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/PrestaShop/rtlcss-php/zipball/eb26a4c5651ccaddc9e7eecc725367954c6bd1c4",
+                "reference": "eb26a4c5651ccaddc9e7eecc725367954c6bd1c4",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.4",
+                "prestashop/php-css-parser": "^8.2"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "*"
+            },
+            "time": "2017-12-28T14:27:03+00:00",
+            "type": "library",
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "JupiterX_Core\\PrestaShop\\RtlCss\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frédéric Massart",
+                    "homepage": "https://github.com/FMCorz"
+                },
+                {
+                    "name": "Pablo Borowicz",
+                    "email": "pablo.borowicz@prestashop.com",
+                    "homepage": "https://github.com/eternoendless"
+                }
+            ],
+            "description": "Converts CSS to Right-to-Left",
+            "keywords": [
+                "css",
+                "rtl"
+            ],
+            "support": {
+                "source": "https://github.com/PrestaShop/rtlcss-php/tree/v2.0.0"
+            },
+            "abandoned": true,
+            "install-path": "../prestashop/rtlcss-php"
+        },
+        {
+            "name": "sabberworm/php-css-parser",
+            "version": "v8.9.0",
+            "version_normalized": "8.9.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/MyIntervals/PHP-CSS-Parser.git",
+                "reference": "d8e916507b88e389e26d4ab03c904a082aa66bb9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/MyIntervals/PHP-CSS-Parser/zipball/d8e916507b88e389e26d4ab03c904a082aa66bb9",
+                "reference": "d8e916507b88e389e26d4ab03c904a082aa66bb9",
+                "shasum": ""
+            },
+            "require": {
+                "ext-iconv": "*",
+                "php": "^5.6.20 || ^7.0.0 || ~8.0.0 || ~8.1.0 || ~8.2.0 || ~8.3.0 || ~8.4.0"
+            },
+            "require-dev": {
+                "phpunit/phpunit": "5.7.27 || 6.5.14 || 7.5.20 || 8.5.41",
+                "rawr/cross-data-providers": "^2.0.0"
+            },
+            "suggest": {
+                "ext-mbstring": "for parsing UTF-8 CSS"
+            },
+            "time": "2025-07-11T13:20:48+00:00",
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-main": "9.0.x-dev"
+                }
+            },
+            "installation-source": "dist",
+            "autoload": {
+                "psr-4": {
+                    "JupiterX_Core\\Sabberworm\\CSS\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Raphael Schweikert"
+                },
+                {
+                    "name": "Oliver Klee",
+                    "email": "github@oliverklee.de"
+                },
+                {
+                    "name": "Jake Hotson",
+                    "email": "jake.github@qzdesign.co.uk"
+                }
+            ],
+            "description": "Parser for CSS Files written in PHP",
+            "homepage": "https://www.sabberworm.com/blog/2010/6/10/php-css-parser",
+            "keywords": [
+                "css",
+                "parser",
+                "stylesheet"
+            ],
+            "support": {
+                "issues": "https://github.com/MyIntervals/PHP-CSS-Parser/issues",
+                "source": "https://github.com/MyIntervals/PHP-CSS-Parser/tree/v8.9.0"
+            },
+            "install-path": "../sabberworm/php-css-parser"
+        }
+    ],
+    "dev": false,
+    "dev-package-names": []
+}

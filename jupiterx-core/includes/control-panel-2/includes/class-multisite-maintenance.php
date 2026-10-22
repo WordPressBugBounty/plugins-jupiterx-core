@@ -16,6 +16,8 @@ defined( 'ABSPATH' ) || die();
  * @package JupiterX_Core\Framework\Control_Panel\Multisite_Maintenance
  *
  * @since 4.8.0
+ *
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  */
 
 if ( ! class_exists( 'JupiterX_Core_Multisite_Maintenance' ) ) {
@@ -39,6 +41,7 @@ if ( ! class_exists( 'JupiterX_Core_Multisite_Maintenance' ) ) {
 
 		public function __construct() {
 			add_action( 'wp_ajax_' . self::AJAX_ACTION, [ $this, 'ajax_handler' ] );
+			add_action( 'upgrader_process_complete', [ $this, 'clear_cache_after_update' ], 10, 2 );
 		}
 
 		/**
@@ -78,6 +81,11 @@ if ( ! class_exists( 'JupiterX_Core_Multisite_Maintenance' ) ) {
 			return current_user_can( 'manage_options' );
 		}
 
+		/**
+		 * Handle ajax request.
+		 *
+		 * @SuppressWarnings(PHPMD.NPathComplexity)
+		 */
 		public function ajax_handler() {
 			check_ajax_referer( 'jupiterx_control_panel', 'nonce' );
 
@@ -212,6 +220,8 @@ if ( ! class_exists( 'JupiterX_Core_Multisite_Maintenance' ) ) {
 		 * Avoids generate_css() which times out on large sites.
 		 *
 		 * POST: site_id (int), step (files|finalize), chunk_size (optional).
+		 *
+		 * @SuppressWarnings(PHPMD.NPathComplexity)
 		 */
 		private function handle_elementor_css_chunk() {
 			$site_id = isset( $_POST['site_id'] ) ? (int) $_POST['site_id'] : 0;
@@ -669,6 +679,11 @@ if ( ! class_exists( 'JupiterX_Core_Multisite_Maintenance' ) ) {
 			];
 		}
 
+		/**
+		 * Clear page cache.
+		 *
+		 * @SuppressWarnings(PHPMD.NPathComplexity)
+		 */
 		private function op_page_cache_flush() {
 			$flushed = [];
 
@@ -820,6 +835,39 @@ if ( ! class_exists( 'JupiterX_Core_Multisite_Maintenance' ) ) {
 			return array_values( array_filter( $ops, function ( $op ) {
 				return $op['available'];
 			} ) );
+		}
+
+		/**
+		 * Clear cache after update jupiterx-core plugin.
+		 *
+		 * @since 4.61.0
+		 *
+		 * @param object $upgrader_object The upgrader object instance.
+		 * @param array $options The upgrade options array containing action, type, and plugins keys.
+		 *
+		 * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+		 */
+		public function clear_cache_after_update( $upgrader_object, $options ) {
+
+			if ( 'update' !== $options['action'] || 'plugin' !== $options['type'] ) {
+				return;
+			}
+
+			if ( ! empty( $options['plugins'] ) && in_array( 'jupiterx-core/jupiterx-core.php', $options['plugins'], true ) ) {
+				$this->boost_memory_limit();
+
+				$sites         = $this->get_all_sites();
+				$operations    = $this->detect_available_operations();
+				$operation_ids = array_column( $operations, 'id' );
+
+				if ( empty( $operation_ids ) ) {
+					return;
+				}
+
+				foreach ( $sites as $site ) {
+					$this->process_single_site( $site['id'], $operation_ids );
+				}
+			}
 		}
 	}
 

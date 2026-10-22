@@ -63,7 +63,7 @@ final class _JupiterX_Parse_CSS {
 	 * @since 1.0.0
 	 */
 	public function parse() {
-		$parser       = new Sabberworm\CSS\Parser( $this->content );
+		$parser       = new JupiterX_Core\Sabberworm\CSS\Parser( $this->content );
 		$this->parser = @$parser->parse();
 
 		$this->format();
@@ -182,7 +182,7 @@ final class _JupiterX_Parse_CSS {
 			$value = $this->rule->getValue();
 		}
 
-		$new_rule = new Sabberworm\CSS\Rule\Rule( $property );
+		$new_rule = new JupiterX_Core\Sabberworm\CSS\Rule\Rule( $property );
 		$new_rule->setIsImportant( $this->rule->getIsImportant() );
 		$new_rule->setValue( $value );
 		$this->all_rule_sets->addRule( $new_rule, $this->rule );
@@ -198,7 +198,7 @@ final class _JupiterX_Parse_CSS {
 			return;
 		}
 
-		$parser_rtl = new PrestaShop\RtlCss\RtlCss( $this->parser );
+		$parser_rtl = new JupiterX_Core\PrestaShop\RtlCss\RtlCss( $this->parser );
 
 		return $parser_rtl->flip();
 	}

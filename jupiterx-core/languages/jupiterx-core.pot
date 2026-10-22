@@ -1,14 +1,14 @@
 # Copyright (c) 2026 Jupiter X Core.
 msgid ""
 msgstr ""
-"Project-Id-Version: Jupiter X Core 4.60.0\n"
+"Project-Id-Version: Jupiter X Core 4.62.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/jupiterx-core\n"
 "Last-Translator: Artbees Team <info@artbees.net>\n"
 "Language-Team: Artbees Team <info@artbees.net>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-08-17T07:43:23+00:00\n"
+"POT-Creation-Date: 2026-10-22T04:36:40+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: jupiterx-core\n"
@@ -511,61 +511,60 @@ msgstr ""
 msgid "Thanks for your contribution by reporting this issue. We hope to hear from you again."
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:230
-#: includes/condition/class-condition-manager.php:302
-#: includes/condition/class-condition-manager.php:317
-#: includes/condition/class-condition-manager.php:329
-#: includes/condition/class-condition-manager.php:342
-#: includes/condition/class-condition-manager.php:357
+#: includes/condition/class-condition-manager.php:231
+#: includes/condition/class-condition-manager.php:306
+#: includes/condition/class-condition-manager.php:321
+#: includes/condition/class-condition-manager.php:335
+#: includes/condition/class-condition-manager.php:349
+#: includes/condition/class-condition-manager.php:373
 #: includes/condition/class-condition-manager.php:395
 msgid "Select One"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:231
+#: includes/condition/class-condition-manager.php:232
 msgid "All Singulars"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:232
+#: includes/condition/class-condition-manager.php:233
 #: includes/popups/conditions/front-page.php:46
 msgid "Front Page"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:233
+#: includes/condition/class-condition-manager.php:234
 msgid "Not Found 404"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:234
+#: includes/condition/class-condition-manager.php:235
 #: includes/extensions/raven/includes/core/dynamic-tags/tags/author/author-url.php:38
 #: includes/extensions/raven/includes/modules/preview-settings/module.php:636
 #: includes/popups/conditions/author.php:36
 msgid "Author Archive"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:234
+#: includes/condition/class-condition-manager.php:235
 #: includes/condition/class-condition-manager.php:500
 #: includes/popups/conditions/by-author.php:46
 msgid "By Author"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:235
+#: includes/condition/class-condition-manager.php:236
 #: includes/popups/conditions/any-child-of.php:46
 msgid "Any Child Of"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:236
+#: includes/condition/class-condition-manager.php:237
 #: includes/popups/conditions/child-of.php:46
 msgid "Direct Child Of"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:237
+#: includes/condition/class-condition-manager.php:238
 #: includes/extensions/raven/includes/modules/preview-settings/module.php:635
 #: includes/popups/conditions/date.php:36
 msgid "Date Archive"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:238
-#: includes/condition/class-condition-manager.php:345
-#: includes/condition/class-condition-manager.php:368
+#: includes/condition/class-condition-manager.php:239
+#: includes/condition/class-condition-manager.php:352
 #: includes/extensions/raven/includes/modules/preview-settings/module.php:637
 #: includes/extensions/raven/includes/modules/preview-settings/module.php:644
 #: includes/popups/conditions/search.php:46
@@ -573,11 +572,11 @@ msgstr ""
 msgid "Search Results"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:240
+#: includes/condition/class-condition-manager.php:241
 msgid "Post Archive( Blog )"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:240
+#: includes/condition/class-condition-manager.php:241
 #: includes/customizer/settings/search/settings.php:23
 #: includes/extensions/raven/includes/core/dynamic-tags/module.php:72
 #: includes/extensions/raven/includes/core/dynamic-tags/tags/site/request-parameter.php:37
@@ -586,80 +585,79 @@ msgstr ""
 msgid "Post"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:241
+#: includes/condition/class-condition-manager.php:242
 msgid "In Category"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:242
+#: includes/condition/class-condition-manager.php:243
 msgid "In Category Children"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:243
+#: includes/condition/class-condition-manager.php:244
 msgid "In Post Tag"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:244
+#: includes/condition/class-condition-manager.php:245
 msgid "Post By Author"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:247
+#: includes/condition/class-condition-manager.php:248
 #: includes/control-panel-2/includes/class-install-template.php:591
 msgid "Pages"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:248
+#: includes/condition/class-condition-manager.php:249
 msgid "Page By Author"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:251
+#: includes/condition/class-condition-manager.php:252
 #: includes/extensions/raven/includes/core/dynamic-tags/module.php:66
 #: includes/extensions/raven/includes/modules/sticky-media-scroller/widgets/sticky-media-scroller.php:64
 #: includes/extensions/raven/includes/modules/sticky-media-scroller/widgets/sticky-media-scroller.php:649
 msgid "Media"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:252
+#: includes/condition/class-condition-manager.php:253
 msgid "Media By Author"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:303
-#: includes/condition/classes/conditions-logic.php:880
+#: includes/condition/class-condition-manager.php:307
+#: includes/condition/classes/conditions-logic.php:937
 #: includes/extensions/raven/includes/modules/code-highlight/widgets/code-highlight.php:67
 msgid "Language"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:318
-#: includes/condition/class-condition-manager.php:359
+#: includes/condition/class-condition-manager.php:322
+#: includes/condition/class-condition-manager.php:375
 msgid "Checkout Page"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:319
-#: includes/condition/class-condition-manager.php:360
+#: includes/condition/class-condition-manager.php:323
+#: includes/condition/class-condition-manager.php:376
 msgid "Cart Page"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:320
-#: includes/condition/class-condition-manager.php:361
+#: includes/condition/class-condition-manager.php:324
+#: includes/condition/class-condition-manager.php:377
 msgid "Empty Cart Page"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:321
-#: includes/condition/class-condition-manager.php:362
+#: includes/condition/class-condition-manager.php:325
+#: includes/condition/class-condition-manager.php:378
 msgid "Order Received Page"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:322
-#: includes/condition/class-condition-manager.php:363
+#: includes/condition/class-condition-manager.php:326
+#: includes/condition/class-condition-manager.php:379
 msgid "My Account Page"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:323
-#: includes/condition/class-condition-manager.php:364
+#: includes/condition/class-condition-manager.php:327
+#: includes/condition/class-condition-manager.php:380
 msgid "My Account Login Page"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:330
-#: includes/condition/class-condition-manager.php:375
+#: includes/condition/class-condition-manager.php:336
 #: includes/condition/documents/products.php:18
 #: includes/condition/documents/products.php:22
 #: includes/control-panel-2/includes/class-install-template.php:619
@@ -670,74 +668,62 @@ msgstr ""
 msgid "Products"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:331
-#: includes/condition/class-condition-manager.php:376
+#: includes/condition/class-condition-manager.php:337
 msgid "In Product Category"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:332
-#: includes/condition/class-condition-manager.php:377
+#: includes/condition/class-condition-manager.php:338
 msgid "In Child Product categories"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:333
-#: includes/condition/class-condition-manager.php:378
+#: includes/condition/class-condition-manager.php:339
 msgid "In Product Tags"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:334
-#: includes/condition/class-condition-manager.php:379
+#: includes/condition/class-condition-manager.php:340
 msgid "In Product Brands"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:335
-#: includes/condition/class-condition-manager.php:380
+#: includes/condition/class-condition-manager.php:341
 msgid "In Product Attributes"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:336
-#: includes/condition/class-condition-manager.php:381
+#: includes/condition/class-condition-manager.php:342
 msgid "Products By Author"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:343
-#: includes/condition/class-condition-manager.php:366
+#: includes/condition/class-condition-manager.php:350
 msgid "All Products Archive"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:344
-#: includes/condition/class-condition-manager.php:367
+#: includes/condition/class-condition-manager.php:351
 #: includes/popups/conditions/woocommerce/product-search.php:46
 msgid "Shop Page"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:346
-#: includes/condition/class-condition-manager.php:369
+#: includes/condition/class-condition-manager.php:353
 msgid "Products Categories"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:347
-#: includes/condition/class-condition-manager.php:370
+#: includes/condition/class-condition-manager.php:354
 msgid "Products Tags"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:348
-#: includes/condition/class-condition-manager.php:371
+#: includes/condition/class-condition-manager.php:355
 msgid "Products Brands"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:349
-#: includes/condition/class-condition-manager.php:372
+#: includes/condition/class-condition-manager.php:356
 msgid "Products Attributes"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:358
+#: includes/condition/class-condition-manager.php:374
 #: includes/popups/conditions/woo-commerce.php:46
 msgid "Entire Shop"
 msgstr ""
 
 #: includes/condition/class-condition-manager.php:396
-#: includes/condition/classes/conditions-logic.php:621
+#: includes/condition/classes/conditions-logic.php:627
 msgid "All users"
 msgstr ""
 
@@ -759,7 +745,7 @@ msgid "All Archives"
 msgstr ""
 
 #: includes/condition/class-condition-manager.php:487
-#: includes/condition/classes/conditions-logic.php:603
+#: includes/condition/classes/conditions-logic.php:609
 #: includes/condition/templates/condition-templates.php:42
 #: includes/condition/templates/condition-templates.php:61
 #: includes/control-panel-2/includes/class-layout-builder.php:78
@@ -786,15 +772,35 @@ msgstr ""
 msgid "Any child"
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:572
+#. translators: %s is the product taxonomy label.
+#: includes/condition/class-condition-manager.php:578
+#, php-format
+msgid "In Product %s"
+msgstr ""
+
+#. translators: %s is the product taxonomy label.
+#: includes/condition/class-condition-manager.php:581
+#, php-format
+msgid "Products %s"
+msgstr ""
+
+#. translators: %s is the taxonomy label.
+#. translators: %s: Taxonomy label.
+#: includes/condition/class-condition-manager.php:622
+#: includes/popups/conditions/in-taxonomy.php:55
+#, php-format
+msgid "In %s"
+msgstr ""
+
+#: includes/condition/class-condition-manager.php:643
 msgid "Loop Item templates do not use display conditions."
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:588
+#: includes/condition/class-condition-manager.php:659
 msgid "Conditions has not been set successfully."
 msgstr ""
 
-#: includes/condition/class-condition-manager.php:593
+#: includes/condition/class-condition-manager.php:664
 msgid "Conditions has been set successfully."
 msgstr ""
 
@@ -935,7 +941,7 @@ msgid "Date archive"
 msgstr ""
 
 #: includes/condition/classes/conditions-logic.php:454
-#: includes/condition/classes/conditions-logic.php:670
+#: includes/condition/classes/conditions-logic.php:684
 #: includes/control-panel-2/includes/setup-wizard/class-condition-generator.php:336
 msgid "Search result"
 msgstr ""
@@ -992,159 +998,183 @@ msgstr ""
 msgid "Child of the archive id"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:592
+#: includes/condition/classes/conditions-logic.php:598
 msgid "All archive of the "
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:597
-#: includes/condition/classes/conditions-logic.php:607
+#: includes/condition/classes/conditions-logic.php:603
+#: includes/condition/classes/conditions-logic.php:613
 msgid "archive id"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:624
+#: includes/condition/classes/conditions-logic.php:630
 msgid "Guest users"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:627
+#: includes/condition/classes/conditions-logic.php:633
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Logged in users"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:630
+#: includes/condition/classes/conditions-logic.php:636
 msgid "Users by"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:630
+#: includes/condition/classes/conditions-logic.php:636
 msgid "role"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:643
+#: includes/condition/classes/conditions-logic.php:657
 msgid "Entire shop"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:646
+#: includes/condition/classes/conditions-logic.php:660
 #: includes/control-panel-2/includes/setup-wizard/class-condition-generator.php:499
 msgid "Checkout page"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:649
+#: includes/condition/classes/conditions-logic.php:663
 #: includes/control-panel-2/includes/setup-wizard/class-condition-generator.php:476
 msgid "Cart page"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:652
+#: includes/condition/classes/conditions-logic.php:666
 msgid "Empty cart page"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:655
+#: includes/condition/classes/conditions-logic.php:669
 #: includes/control-panel-2/includes/setup-wizard/class-condition-generator.php:522
 msgid "Order received page"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:658
+#: includes/condition/classes/conditions-logic.php:672
 #: includes/control-panel-2/includes/setup-wizard/class-condition-generator.php:453
 msgid "User my account page"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:661
+#: includes/condition/classes/conditions-logic.php:675
 msgid "Guest my account page"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:664
+#: includes/condition/classes/conditions-logic.php:678
 #: includes/control-panel-2/includes/setup-wizard/class-condition-generator.php:407
 msgid "All product archive"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:667
+#: includes/condition/classes/conditions-logic.php:681
 #: includes/control-panel-2/includes/setup-wizard/class-condition-generator.php:185
 msgid "Shop page"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:715
+#: includes/condition/classes/conditions-logic.php:735
 #: includes/control-panel-2/includes/setup-wizard/class-condition-generator.php:430
 msgid "Product category archive"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:719
+#: includes/condition/classes/conditions-logic.php:739
 msgid "Product category archive id"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:730
+#: includes/condition/classes/conditions-logic.php:750
 msgid "Product tag archive"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:734
+#: includes/condition/classes/conditions-logic.php:754
 msgid "Product tag archive id"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:745
+#: includes/condition/classes/conditions-logic.php:765
 msgid "Product brand archive"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:749
+#: includes/condition/classes/conditions-logic.php:769
 msgid "Product brand archive id"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:760
+#: includes/condition/classes/conditions-logic.php:780
 msgid "Product attribute archive"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:764
+#: includes/condition/classes/conditions-logic.php:784
 msgid "Product attribute archive id"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:775
-#: includes/condition/classes/conditions-logic.php:790
-#: includes/condition/classes/conditions-logic.php:863
+#. translators: %s is the product taxonomy name.
+#: includes/condition/classes/conditions-logic.php:798
+#, php-format
+msgid "Product %s archive"
+msgstr ""
+
+#. translators: %s is the product taxonomy name.
+#: includes/condition/classes/conditions-logic.php:803
+#, php-format
+msgid "Product %s archive id"
+msgstr ""
+
+#: includes/condition/classes/conditions-logic.php:815
+#: includes/condition/classes/conditions-logic.php:830
+#: includes/condition/classes/conditions-logic.php:920
 #: includes/control-panel-2/includes/setup-wizard/class-condition-generator.php:382
 msgid "All products"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:779
+#: includes/condition/classes/conditions-logic.php:819
 msgid "Single product id"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:794
+#: includes/condition/classes/conditions-logic.php:834
 msgid "Products by category id"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:805
+#: includes/condition/classes/conditions-logic.php:845
 msgid "All products of sub categories"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:809
+#: includes/condition/classes/conditions-logic.php:849
 msgid "Sub categories of"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:820
+#: includes/condition/classes/conditions-logic.php:860
 msgid "All products by tag"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:824
+#: includes/condition/classes/conditions-logic.php:864
 msgid "Products by tag id"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:833
+#: includes/condition/classes/conditions-logic.php:873
 msgid "All products by brand"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:837
+#: includes/condition/classes/conditions-logic.php:877
 msgid "Products by brand id"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:848
+#: includes/condition/classes/conditions-logic.php:888
 msgid "All products by attribute"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:852
+#: includes/condition/classes/conditions-logic.php:892
 msgid "Products by attribute id"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:867
+#. translators: %s is the product taxonomy name.
+#: includes/condition/classes/conditions-logic.php:904
+#, php-format
+msgid "All products by %s"
+msgstr ""
+
+#. translators: %s is the product taxonomy name.
+#: includes/condition/classes/conditions-logic.php:909
+#, php-format
+msgid "Products by %s id"
+msgstr ""
+
+#: includes/condition/classes/conditions-logic.php:924
 msgid "Products by author"
 msgstr ""
 
-#: includes/condition/classes/conditions-logic.php:873
+#: includes/condition/classes/conditions-logic.php:930
 msgid "All Languages"
 msgstr ""
 
@@ -1279,65 +1309,65 @@ msgstr ""
 msgid "Add Condition"
 msgstr ""
 
-#: includes/control-panel-2/class.php:205
 #: includes/control-panel-2/class.php:206
-#: includes/control-panel-2/class.php:647
+#: includes/control-panel-2/class.php:207
+#: includes/control-panel-2/class.php:649
 #: includes/extensions/raven/includes/modules/breadcrumbs/widgets/breadcrumbs.php:316
 msgid "Home"
 msgstr ""
 
-#: includes/control-panel-2/class.php:220
 #: includes/control-panel-2/class.php:221
-#: includes/control-panel-2/class.php:656
+#: includes/control-panel-2/class.php:222
+#: includes/control-panel-2/class.php:658
 #: includes/control-panel-2/includes/class-promotion-banner.php:2439
 #: includes/customizer/settings/settings.php:107
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Layout Builder"
 msgstr ""
 
-#: includes/control-panel-2/class.php:231
 #: includes/control-panel-2/class.php:232
+#: includes/control-panel-2/class.php:233
 #: includes/control-panel-2/includes/class-promotion-banner.php:2440
 #: includes/post-type/custom-snippets.php:35
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Custom Snippets"
 msgstr ""
 
-#: includes/control-panel-2/class.php:243
 #: includes/control-panel-2/class.php:244
+#: includes/control-panel-2/class.php:245
 #: includes/control-panel-2/includes/class-promotion-banner.php:2441
 #: includes/post-type/custom-fonts.php:31
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Custom Fonts"
 msgstr ""
 
-#: includes/control-panel-2/class.php:254
 #: includes/control-panel-2/class.php:255
+#: includes/control-panel-2/class.php:256
 #: includes/control-panel-2/includes/class-promotion-banner.php:2442
 #: includes/post-type/custom-icons.php:31
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Custom Icons"
 msgstr ""
 
-#: includes/control-panel-2/class.php:266
 #: includes/control-panel-2/class.php:267
-#: includes/control-panel-2/class.php:684
+#: includes/control-panel-2/class.php:268
+#: includes/control-panel-2/class.php:686
 #: includes/control-panel-2/includes/class-promotion-banner.php:2443
 #: includes/popups/class.php:154
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Popups"
 msgstr ""
 
-#: includes/control-panel-2/class.php:280
 #: includes/control-panel-2/class.php:281
-#: includes/control-panel-2/class.php:695
+#: includes/control-panel-2/class.php:282
+#: includes/control-panel-2/class.php:697
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Floating Elements"
 msgstr ""
 
-#: includes/control-panel-2/class.php:294
 #: includes/control-panel-2/class.php:295
-#: includes/control-panel-2/class.php:761
+#: includes/control-panel-2/class.php:296
+#: includes/control-panel-2/class.php:763
 #: includes/customizer/settings/404/popup.php:20
 #: includes/customizer/settings/blog-archive/popup.php:18
 #: includes/customizer/settings/cart-quick-view/popup.php:16
@@ -1413,54 +1443,54 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: includes/control-panel-2/class.php:305
 #: includes/control-panel-2/class.php:306
+#: includes/control-panel-2/class.php:307
 #: includes/control-panel-2/includes/class-promotion-banner.php:2444
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Setup Wizard"
 msgstr ""
 
-#: includes/control-panel-2/class.php:316
 #: includes/control-panel-2/class.php:317
-#: includes/control-panel-2/class.php:902
+#: includes/control-panel-2/class.php:318
+#: includes/control-panel-2/class.php:904
 #: includes/control-panel-2/dist/control-panel.js:69
 #: includes/control-panel-2/dist/control-panel.js:73
 msgid "License"
 msgstr ""
 
-#: includes/control-panel-2/class.php:328
 #: includes/control-panel-2/class.php:329
+#: includes/control-panel-2/class.php:330
 #: includes/control-panel-2/includes/class-promotion-banner.php:2445
 msgid "Help"
 msgstr ""
 
-#: includes/control-panel-2/class.php:340
 #: includes/control-panel-2/class.php:341
+#: includes/control-panel-2/class.php:342
 msgid "Upgrade"
 msgstr ""
 
-#: includes/control-panel-2/class.php:394
+#: includes/control-panel-2/class.php:395
 msgid "Activate Product"
 msgstr ""
 
-#: includes/control-panel-2/class.php:706
+#: includes/control-panel-2/class.php:708
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Saved Templates"
 msgstr ""
 
-#: includes/control-panel-2/class.php:714
+#: includes/control-panel-2/class.php:716
 msgid "Website Templates"
 msgstr ""
 
-#: includes/control-panel-2/class.php:726
+#: includes/control-panel-2/class.php:728
 msgid "Custom Elements"
 msgstr ""
 
-#: includes/control-panel-2/class.php:735
+#: includes/control-panel-2/class.php:737
 msgid "Snippets"
 msgstr ""
 
-#: includes/control-panel-2/class.php:743
+#: includes/control-panel-2/class.php:745
 #: includes/extensions/raven/includes/modules/advanced-nav-menu/controls/tab-style.php:590
 #: includes/extensions/raven/includes/modules/advanced-nav-menu/controls/tab-style.php:2196
 #: includes/extensions/raven/includes/modules/forms/widgets/social-login.php:1010
@@ -1471,34 +1501,34 @@ msgstr ""
 msgid "Icons"
 msgstr ""
 
-#: includes/control-panel-2/class.php:751
+#: includes/control-panel-2/class.php:753
 msgid "Fonts"
 msgstr ""
 
-#: includes/control-panel-2/class.php:770
+#: includes/control-panel-2/class.php:772
 msgid "Site Settings"
 msgstr ""
 
-#: includes/control-panel-2/class.php:778
+#: includes/control-panel-2/class.php:780
 #: includes/extensions/raven/includes/plugin.php:253
 msgid "Elementor"
 msgstr ""
 
-#: includes/control-panel-2/class.php:786
+#: includes/control-panel-2/class.php:788
 msgid "Manage Elements"
 msgstr ""
 
-#: includes/control-panel-2/class.php:794
+#: includes/control-panel-2/class.php:796
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Custom Post Types"
 msgstr ""
 
-#: includes/control-panel-2/class.php:802
+#: includes/control-panel-2/class.php:804
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "White Label"
 msgstr ""
 
-#: includes/control-panel-2/class.php:810
+#: includes/control-panel-2/class.php:812
 #: includes/customizer/settings/settings.php:24
 #: includes/extensions/raven/includes/core/dynamic-tags/module.php:106
 #: includes/extensions/raven/includes/modules/woocommerce-settings/controls.php:26
@@ -1507,77 +1537,77 @@ msgstr ""
 msgid "WooCommerce"
 msgstr ""
 
-#: includes/control-panel-2/class.php:818
+#: includes/control-panel-2/class.php:820
 msgid "Integrations"
 msgstr ""
 
-#: includes/control-panel-2/class.php:826
+#: includes/control-panel-2/class.php:828
 #: includes/extensions/raven/includes/plugin.php:990
 msgid "Role Manager"
 msgstr ""
 
-#: includes/control-panel-2/class.php:834
+#: includes/control-panel-2/class.php:836
 msgid "Third-Party Integration"
 msgstr ""
 
-#: includes/control-panel-2/class.php:842
+#: includes/control-panel-2/class.php:844
 msgid "Tracking Codes"
 msgstr ""
 
-#: includes/control-panel-2/class.php:850
+#: includes/control-panel-2/class.php:852
 msgid "Image Sizes"
 msgstr ""
 
-#: includes/control-panel-2/class.php:861
+#: includes/control-panel-2/class.php:863
 #: includes/customizer/settings/maintenance/popup.php:15
 #: includes/customizer/settings/maintenance/popup.php:57
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Maintenance"
 msgstr ""
 
-#: includes/control-panel-2/class.php:870
+#: includes/control-panel-2/class.php:872
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Cache"
 msgstr ""
 
-#: includes/control-panel-2/class.php:878
+#: includes/control-panel-2/class.php:880
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Performance"
 msgstr ""
 
-#: includes/control-panel-2/class.php:886
+#: includes/control-panel-2/class.php:888
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Maintenance mode"
 msgstr ""
 
-#: includes/control-panel-2/class.php:894
+#: includes/control-panel-2/class.php:896
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Replace URL"
 msgstr ""
 
-#: includes/control-panel-2/class.php:910
+#: includes/control-panel-2/class.php:912
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Updates"
 msgstr ""
 
-#: includes/control-panel-2/class.php:918
+#: includes/control-panel-2/class.php:920
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Version Rollback"
 msgstr ""
 
-#: includes/control-panel-2/class.php:926
+#: includes/control-panel-2/class.php:928
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Logs"
 msgstr ""
 
-#: includes/control-panel-2/class.php:934
+#: includes/control-panel-2/class.php:936
 #: includes/popups/class.php:239
 #: includes/control-panel-2/dist/control-panel.js:73
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Export"
 msgstr ""
 
-#: includes/control-panel-2/class.php:944
+#: includes/control-panel-2/class.php:946
 msgid "Free Vs Pro"
 msgstr ""
 
@@ -2090,6 +2120,7 @@ msgstr ""
 
 #: includes/control-panel-2/includes/class-install-template.php:873
 #: includes/extensions/raven/includes/modules/forms/widgets/form.php:2695
+#: includes/control-panel-2/dist/control-panel.js:69
 msgid "Completed"
 msgstr ""
 
@@ -2300,167 +2331,167 @@ msgstr ""
 msgid "The log file is cleared."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:111
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:239
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:119
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:249
 msgid "Only network super administrators can run network maintenance."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:112
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:240
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:120
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:250
 msgid "You do not have permission to run site maintenance."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:132
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:140
 msgid "Invalid request type."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:171
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:179
 msgid "Missing site IDs or operations."
 msgstr ""
 
 #. translators: %s: error message
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:201
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:209
 #, php-format
 msgid "Maintenance request failed: %s"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:221
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:252
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:231
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:262
 msgid "Invalid site ID."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:225
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:235
 msgid "Invalid chunk step."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:247
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:257
 msgid "Site not found."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:259
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:546
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:269
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:556
 msgid "Elementor not active on this site."
 msgstr ""
 
 #. translators: %s: error message
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:300
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:310
 #, php-format
 msgid "Chunk request failed: %s"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:400
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:410
 msgid "Elementor CSS files, post meta, and related caches cleared. CSS will regenerate when pages are viewed."
 msgstr ""
 
 #. translators: %s: error message
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:452
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:462
 #, php-format
 msgid "Fatal error processing site: %s"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:508
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:518
 msgid "Unknown operation."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:521
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:531
 msgid "JupiterX functions not available."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:538
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:548
 msgid "JupiterX assets cleared."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:561
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:571
 msgid "Elementor CSS cache cleared."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:571
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:581
 msgid "Elementor CSS cache cleared (full regenerate was removed; use “Clear Elementor CSS & data (chunked)” in the panel for detailed logs)."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:581
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:591
 msgid "Elementor upgrade manager not available."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:599
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:609
 msgid "Elementor Pro upgrade manager not available."
 msgstr ""
 
 #. translators: %s: plugin label
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:628
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:638
 #, php-format
 msgid "%s DB already up to date."
 msgstr ""
 
 #. translators: 1: plugin label, 2: number of migrations
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:646
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:656
 #, php-format
 msgid "%1$s DB updated (%2$d migrations)."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:660
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:670
 msgid "Additional style cache flush is not available on this site."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:668
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:678
 msgid "Style caches cleared."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:713
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:728
 msgid "No page cache plugin was detected that can be purged from here."
 msgstr ""
 
 #. translators: %s: comma-separated cache plugin names
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:720
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:735
 #, php-format
 msgid "Page caches flushed: %s."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:775
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:790
 msgid "Clear JupiterX Assets"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:776
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:791
 msgid "Removes compiled CSS, JS and image caches from the JupiterX compiler, and clears related generated style data when supported."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:782
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:797
 msgid "Clear Elementor CSS"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:783
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:798
 msgid "Deletes all cached Elementor CSS files. New CSS is generated on next page visit."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:789
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:804
 msgid "Clear Elementor CSS & data (chunked)"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:790
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:805
 msgid "Removes Elementor CSS files in small server batches (each step is logged), then clears Elementor CSS-related post meta and caches. Does not pre-build CSS for every page — files are recreated on page view. Safer than the old “regenerate all” on large sites."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:799
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:814
 msgid "Upgrade Elementor Database"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:800
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:815
 msgid "Runs pending Elementor database migrations (e.g. after an Elementor version update). Not a cache clear — enable only when migrations are pending."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:806
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:821
 msgid "Upgrade Elementor Pro Database"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:807
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:822
 msgid "Runs pending Elementor Pro database migrations. Not a cache clear — enable only when migrations are pending."
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:813
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:828
 msgid "Flush Page Cache Plugins"
 msgstr ""
 
-#: includes/control-panel-2/includes/class-multisite-maintenance.php:814
+#: includes/control-panel-2/includes/class-multisite-maintenance.php:829
 msgid "Purges WP Rocket, W3TC, WP Super Cache, LiteSpeed and other page caches."
 msgstr ""
 
@@ -3323,6 +3354,49 @@ msgstr ""
 
 #: includes/control-panel-2/includes/class-settings.php:137
 msgid "Settings saved successfully."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-site-reviews.php:39
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Could not hide this card. Please try again."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-site-reviews.php:77
+msgid "Site Reviews is not available."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-site-reviews.php:85
+msgid "Connect your Jupiter X license, or log in to myArtbees to request a review."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-site-reviews.php:89
+msgid "Configure the Site Reviews endpoint for this environment."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-site-reviews.php:98
+msgid "The request service could not be reached. Please retry with the same form."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-site-reviews.php:104
+#: includes/control-panel-2/includes/class-site-reviews.php:109
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Site Reviews is temporarily unavailable."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-site-reviews.php:112
+msgid "The response could not be confirmed. Please retry with the same form."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-site-reviews.php:126
+msgid "Please give consent before sending your request."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-site-reviews.php:130
+msgid "Invalid form value."
+msgstr ""
+
+#: includes/control-panel-2/includes/class-site-reviews.php:131
+msgid "Form value is too long."
 msgstr ""
 
 #: includes/control-panel-2/includes/class-templates.php:111
@@ -8345,7 +8419,7 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-carousel.php:193
 #: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:798
 #: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:1023
-#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2639
+#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2657
 #: includes/extensions/raven/includes/modules/posts/carousel/skins/base.php:178
 #: includes/extensions/raven/includes/modules/posts/carousel/skins/base.php:740
 #: includes/extensions/raven/includes/modules/posts/post/skins/base.php:131
@@ -8393,12 +8467,12 @@ msgid "Page Based"
 msgstr ""
 
 #: includes/customizer/settings/product-list/settings.php:44
-#: includes/extensions/raven/includes/modules/advanced-posts/functionality/frontend.php:915
+#: includes/extensions/raven/includes/modules/advanced-posts/functionality/frontend.php:916
 #: includes/extensions/raven/includes/modules/advanced-posts/widgets/advanced-posts.php:898
 #: includes/extensions/raven/includes/modules/advanced-posts/widgets/advanced-posts.php:4049
 #: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:816
 #: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:827
-#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2583
+#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2601
 #: includes/extensions/raven/includes/modules/posts/post/skins/base.php:148
 #: includes/extensions/raven/includes/modules/posts/post/skins/base.php:873
 #: includes/extensions/raven/includes/modules/products/widgets/products.php:1412
@@ -13861,7 +13935,7 @@ msgstr ""
 msgid "No results found."
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/advanced-posts/functionality/frontend.php:669
+#: includes/extensions/raven/includes/modules/advanced-posts/functionality/frontend.php:670
 #: includes/extensions/raven/includes/modules/posts/classes/post-base.php:2494
 msgid "By"
 msgstr ""
@@ -16062,8 +16136,8 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/forms/widgets/form.php:3449
 #: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-carousel.php:536
 #: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:853
-#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2506
-#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2606
+#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2524
+#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2624
 #: includes/extensions/raven/includes/modules/post-navigation/widgets/post-navigation.php:139
 #: includes/extensions/raven/includes/modules/slider/widgets/slider.php:1440
 #: includes/extensions/raven/includes/modules/slider/widgets/slider.php:1511
@@ -16074,8 +16148,8 @@ msgstr ""
 #: includes/extensions/raven/includes/modules/carousel/widgets/base.php:722
 #: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-carousel.php:540
 #: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:865
-#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2510
-#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2607
+#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2528
+#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2625
 #: includes/extensions/raven/includes/modules/post-navigation/widgets/post-navigation.php:155
 #: includes/extensions/raven/includes/modules/slider/widgets/slider.php:1444
 #: includes/extensions/raven/includes/modules/slider/widgets/slider.php:1515
@@ -17479,6 +17553,11 @@ msgstr ""
 msgid "Accessibility"
 msgstr ""
 
+#: includes/extensions/raven/includes/modules/elementor-ads/module.php:638
+#: includes/extensions/raven/includes/modules/elementor-ads/module.php:641
+msgid "Email Deliverability"
+msgstr ""
+
 #: includes/extensions/raven/includes/modules/flex-spacer/widgets/flex-spacer.php:15
 #: includes/extensions/raven/includes/plugin.php:916
 msgid "Flex Spacer"
@@ -17976,7 +18055,7 @@ msgstr ""
 msgid "Username or Password field is empty."
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/actions/login.php:142
+#: includes/extensions/raven/includes/modules/forms/actions/login.php:148
 msgid "Login successful, redirecting..."
 msgstr ""
 
@@ -18179,21 +18258,21 @@ msgstr ""
 msgid "Organization name"
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:245
+#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:249
 msgid "There's something wrong. The form is not valid."
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:408
-#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:415
-#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:456
+#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:412
+#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:419
+#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:460
 msgid "There was an error while trying to upload your file."
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:433
+#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:437
 msgid "Sorry, this file type is not permitted for security reasons."
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:446
+#: includes/extensions/raven/includes/modules/forms/classes/ajax-handler.php:450
 msgid "Upload directory is not writable or does not exist."
 msgstr ""
 
@@ -18250,41 +18329,54 @@ msgstr ""
 msgid "Verify process has failed."
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:46
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:47
 msgid "X API Details"
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:50
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:51
 msgid "API KEY"
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:56
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:57
 msgid "API Secret Key"
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:62
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:63
 #: includes/extensions/raven/includes/modules/instagram-feed/widgets/instagram-feed.php:65
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Access Token"
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:68
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:69
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "Access Token Secret"
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:96
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:97
 msgid "Not valid api credentials."
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:102
-#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:106
-msgid "Twitter Api Error."
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:103
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:107
+msgid "X.com Api Error."
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:153
-#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:173
-msgid "Twitter Api Error"
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:111
+msgid "Unable to start X.com OAuth. Please try again."
+msgstr ""
+
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:136
+msgid "X.com OAuth request could not be verified. Please try again."
+msgstr ""
+
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:159
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:186
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:211
+msgid "X.com Api Error"
+msgstr ""
+
+#: includes/extensions/raven/includes/modules/forms/classes/social-login-handler/twitter.php:191
+msgid "X.com account verification failed."
 msgstr ""
 
 #: includes/extensions/raven/includes/modules/forms/fields/acceptance.php:128
@@ -18984,7 +19076,7 @@ msgid "Redirect After Logout URL"
 msgstr ""
 
 #: includes/extensions/raven/includes/modules/forms/widgets/login.php:366
-#: includes/extensions/raven/includes/modules/forms/widgets/login.php:719
+#: includes/extensions/raven/includes/modules/forms/widgets/login.php:728
 msgid "Remember me"
 msgstr ""
 
@@ -19030,7 +19122,7 @@ msgstr ""
 msgid "Forgot Password"
 msgstr ""
 
-#: includes/extensions/raven/includes/modules/forms/widgets/login.php:704
+#: includes/extensions/raven/includes/modules/forms/widgets/login.php:713
 #: includes/extensions/raven/includes/modules/forms/widgets/register.php:917
 #: includes/extensions/raven/includes/modules/forms/widgets/reset-password.php:471
 msgid "This element is hidden for logged-in users and visible only to logged-out users and also administrator for demo purposes."
@@ -20063,7 +20155,7 @@ msgid "Border radius"
 msgstr ""
 
 #: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-carousel.php:493
-#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2663
+#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2681
 msgid "Select a published JupiterX Loop Item template."
 msgstr ""
 
@@ -20325,7 +20417,7 @@ msgid "Opens a new tab. After creating and publishing the template, return here 
 msgstr ""
 
 #. translators: %d: Placeholder item number.
-#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2459
+#: includes/extensions/raven/includes/modules/loop-grid/widgets/loop-grid.php:2477
 #, php-format
 msgid "Loop Item Preview %d"
 msgstr ""
@@ -22402,21 +22494,21 @@ msgstr ""
 
 #: includes/extensions/raven/includes/modules/post-meta/widgets/post-meta.php:242
 #: includes/extensions/raven/includes/modules/post-meta/widgets/post-meta.php:245
-#: includes/extensions/raven/includes/modules/post-meta/widgets/post-meta.php:820
+#: includes/extensions/raven/includes/modules/post-meta/widgets/post-meta.php:822
 #: includes/widgets/widget-posts.php:437
 msgid "No Comments"
 msgstr ""
 
 #: includes/extensions/raven/includes/modules/post-meta/widgets/post-meta.php:256
 #: includes/extensions/raven/includes/modules/post-meta/widgets/post-meta.php:259
-#: includes/extensions/raven/includes/modules/post-meta/widgets/post-meta.php:821
+#: includes/extensions/raven/includes/modules/post-meta/widgets/post-meta.php:823
 msgid "One Comment"
 msgstr ""
 
 #. translators: %s: No. of comments.
 #. translators: %s: Comment count.
 #: includes/extensions/raven/includes/modules/post-meta/widgets/post-meta.php:274
-#: includes/extensions/raven/includes/modules/post-meta/widgets/post-meta.php:823
+#: includes/extensions/raven/includes/modules/post-meta/widgets/post-meta.php:825
 #, php-format
 msgid "%s Comments"
 msgstr ""
@@ -25350,12 +25442,6 @@ msgstr ""
 msgid "In Child %s"
 msgstr ""
 
-#. translators: %s: Taxonomy label.
-#: includes/popups/conditions/in-taxonomy.php:55
-#, php-format
-msgid "In %s"
-msgstr ""
-
 #: includes/popups/conditions/in-taxonomy.php:97
 msgid "Categories: "
 msgstr ""
@@ -26024,6 +26110,222 @@ msgid "Maintenance Mode On"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:69
+msgid "Received"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "In review"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Reply sent"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Declined"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Cancelled"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Site Reviews in myArtbees"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "(opens in a new tab)"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Card hidden for 20 days."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Request a homepage concept"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Request a review + concept"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Request a free review"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Request homepage concept"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Request review + concept"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Request free review"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Hide for 20 days"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Site Reviews"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+#, js-format
+msgid "%d free request available"
+msgid_plural "%d free requests available"
+msgstr[0] ""
+msgstr[1] ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "See what your website could do better."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Get practical recommendations on your site’s design, usability and performance from the Artbees WPDone team. Delivered by email."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Request in myArtbees"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "View my requests"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Request received. The team will follow up by email."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+#, js-format
+msgid "Your latest request: %s"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Working locally? Request a review of your public website, or a homepage concept, in myArtbees. Your available requests are shown there."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Checking your request credits…"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+#: includes/control-panel-2/dist/control-panel.js:87
+msgid "Retry"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "New requests are temporarily paused."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "A qualifying Artbees license or admin-granted credits are required. Manage your licenses in myArtbees."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "You have used your available request credits."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Provided by"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "by Artbees"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "The Artbees WPDone team will review your public website and email you practical recommendations."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "The Artbees WPDone team will explore an initial homepage direction and follow up by email. A concept includes one direction, with no revisions or implementation."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Please retry with the same form."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Request type"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Website review"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Homepage concept"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Website review + homepage concept"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Website URL (optional)"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Website URL"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "This looks like a local development address. Please enter the public website you’d like us to review."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Contact email"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "We’ll send your review or concept to this address."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Anything you’d like us to focus on? (optional)"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Tell us about your project (required)"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "For example: mobile navigation, loading speed, or the homepage."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Tell us about your business, audience and the direction you have in mind."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Please add at least 10 characters so we have a starting point."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "I agree to share this website URL, contact email and any project details with Artbees WPDone to prepare my review or concept and contact me about it."
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Uses 1 free request"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+#: includes/control-panel-2/dist/control-panel.js:73
+#: includes/control-panel-2/dist/control-panel.js:87
+#: includes/extensions/raven/assets/js/editor.js:2591
+msgid "Cancel"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
+msgid "Sending…"
+msgstr ""
+
+#: includes/control-panel-2/dist/control-panel.js:69
 #: includes/control-panel-2/dist/control-panel.js:73
 msgid "License Active"
 msgstr ""
@@ -26161,13 +26463,6 @@ msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:69
 msgid "Latest posts are temporarily unavailable."
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:69
-#: includes/control-panel-2/dist/control-panel.js:73
-#: includes/control-panel-2/dist/control-panel.js:87
-#: includes/extensions/raven/assets/js/editor.js:2591
-msgid "Cancel"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:69
@@ -29335,10 +29630,6 @@ msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:87
 msgid "the \"Complete Setup\" button to wrap up the process."
-msgstr ""
-
-#: includes/control-panel-2/dist/control-panel.js:87
-msgid "Retry"
 msgstr ""
 
 #: includes/control-panel-2/dist/control-panel.js:87

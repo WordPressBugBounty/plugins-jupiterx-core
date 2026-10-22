@@ -1,6 +1,6 @@
 <?php
 
-namespace PrestaShop\RtlCss;
+namespace JupiterX_Core\PrestaShop\RtlCss;
 
 /**
  * Options for RTL CSS

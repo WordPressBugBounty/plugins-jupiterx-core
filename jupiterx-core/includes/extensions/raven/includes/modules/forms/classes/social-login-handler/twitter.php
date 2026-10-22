@@ -14,10 +14,11 @@ use Abraham\TwitterOAuth\TwitterOAuth;
  * @since 2.0.0
 */
 class Twitter {
-	const APP_KEY       = 'elementor_raven_twitter_api_key';
-	const APP_SECRET    = 'elementor_raven_twitter_api_secret';
-	const ACCESS_TOKEN  = 'elementor_raven_twitter_access_token';
-	const ACCESS_SECRET = 'elementor_raven_twitter_access_token_secret';
+	const APP_KEY            = 'elementor_raven_twitter_api_key';
+	const APP_SECRET         = 'elementor_raven_twitter_api_secret';
+	const ACCESS_TOKEN       = 'elementor_raven_twitter_access_token';
+	const ACCESS_SECRET      = 'elementor_raven_twitter_access_token_secret';
+	const OAUTH_TOKEN_COOKIE = 'jupiterx-twitter-oauth-token';
 
 	public function __construct() {
 		add_action( 'init', [ $this, 'check_user_details_on_twitter_callback' ] );
@@ -99,11 +100,15 @@ class Twitter {
 		$response = $connection->oauth( 'oauth/request_token', [ 'oauth_callback' => site_url() ] );
 
 		if ( ! is_array( $response ) ) {
-			wp_send_json_error( __( 'Twitter Api Error.', 'jupiterx-core' ) );
+			wp_send_json_error( __( 'X.com Api Error.', 'jupiterx-core' ) );
 		}
 
 		if ( ! array_key_exists( 'oauth_token', $response ) ) {
-			wp_send_json_error( __( 'Twitter Api Error.', 'jupiterx-core' ) );
+			wp_send_json_error( __( 'X.com Api Error.', 'jupiterx-core' ) );
+		}
+
+		if ( ! setcookie( self::OAUTH_TOKEN_COOKIE, $response['oauth_token'], time() + 900, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true ) ) {
+			wp_send_json_error( __( 'Unable to start X.com OAuth. Please try again.', 'jupiterx-core' ) );
 		}
 
 		$sign_in_url = $connection->url( 'oauth/authorize', [ 'oauth_token' => $response['oauth_token'] ] );
@@ -114,20 +119,48 @@ class Twitter {
 	 * Twitter callback screen
 	 */
 	public function check_user_details_on_twitter_callback() {
-		if ( ! isset( $_GET['oauth_verifier'] ) ) { // phpcs:ignore
+		if ( empty( $_GET['oauth_verifier'] ) || empty( $_GET['oauth_token'] ) ) { // phpcs:ignore
 			return;
 		}
 
 		$oauth_verifier = filter_input( INPUT_GET, 'oauth_verifier', FILTER_SANITIZE_SPECIAL_CHARS );
 		$oauth_token    = filter_input( INPUT_GET, 'oauth_token', FILTER_SANITIZE_SPECIAL_CHARS );
-		$connection     = $this->connection();
-		$access_token   = $connection->oauth(
+
+		if (
+			empty( $oauth_verifier ) ||
+			empty( $oauth_token ) ||
+			! isset( $_COOKIE[ self::OAUTH_TOKEN_COOKIE ] ) ||
+			! is_string( $_COOKIE[ self::OAUTH_TOKEN_COOKIE ] ) ||
+			! hash_equals( wp_unslash( $_COOKIE[ self::OAUTH_TOKEN_COOKIE ] ), $oauth_token )
+		) {
+			echo '<script>alert( ' . esc_html__( 'X.com OAuth request could not be verified. Please try again.', 'jupiterx-core' ) . ' );</script>';
+			return;
+		}
+
+		setcookie( self::OAUTH_TOKEN_COOKIE, '', time() - HOUR_IN_SECONDS, COOKIEPATH, COOKIE_DOMAIN, is_ssl(), true );
+		unset( $_COOKIE[ self::OAUTH_TOKEN_COOKIE ] );
+
+		$connection   = $this->connection();
+		$access_token = $connection->oauth(
 			'oauth/access_token',
 			[
 				'oauth_verifier' => $oauth_verifier,
 				'oauth_token'    => $oauth_token,
 			]
 		);
+
+		if (
+			! is_array( $access_token ) ||
+			empty( $access_token['oauth_token'] ) ||
+			empty( $access_token['oauth_token_secret'] ) ||
+			empty( $access_token['user_id'] ) ||
+			empty( $access_token['screen_name'] )
+		) {
+			echo '<script>alert( ' . esc_html__( 'X.com Api Error', 'jupiterx-core' ) . ' );</script>';
+			return;
+		}
+
+		$connection->setOauthToken( $access_token['oauth_token'], $access_token['oauth_token_secret'] );
 
 		$this->verify_twitter_callback( $connection, $access_token );
 	}
@@ -150,7 +183,12 @@ class Twitter {
 			);
 
 			if ( 200 !== $connection->getLastHttpCode() ) {
-				echo '<script>alert( ' . esc_html__( 'Twitter Api Error', 'jupiterx-core' ) . ' );</script>';
+				echo '<script>alert( ' . esc_html__( 'X.com Api Error', 'jupiterx-core' ) . ' );</script>';
+				return;
+			}
+
+			if ( ! isset( $user_twitter_info->id ) || (string) $user_twitter_info->id !== (string) $access_token['user_id'] ) {
+				echo '<script>alert( ' . esc_html__( 'X.com account verification failed.', 'jupiterx-core' ) . ' );</script>';
 				return;
 			}
 
@@ -170,7 +208,7 @@ class Twitter {
 
 			$this->sign_in_user( $user_id );
 		} else {
-			echo '<script>alert( ' . esc_html__( 'Twitter Api Error', 'jupiterx-core' ) . ' );</script>';
+			echo '<script>alert( ' . esc_html__( 'X.com Api Error', 'jupiterx-core' ) . ' );</script>';
 		}
 	}
 

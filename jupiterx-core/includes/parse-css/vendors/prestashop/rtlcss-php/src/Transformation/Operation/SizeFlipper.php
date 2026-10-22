@@ -1,7 +1,7 @@
 <?php
-namespace PrestaShop\RtlCss\Transformation\Operation;
+namespace JupiterX_Core\PrestaShop\RtlCss\Transformation\Operation;
 
-use Sabberworm\CSS\Value\Size;
+use JupiterX_Core\Sabberworm\CSS\Value\Size;
 
 /**
  * Flips sizes

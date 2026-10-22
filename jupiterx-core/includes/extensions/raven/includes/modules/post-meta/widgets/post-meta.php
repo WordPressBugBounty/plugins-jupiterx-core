@@ -752,7 +752,9 @@ class Post_Meta extends Base_Widget {
 			'custom'  => $custom_date_format,
 		];
 
-		$item_data['text']     = get_the_time( $format_options[ $repeater_item['date_format'] ] );
+		$format                = $format_options[ $repeater_item['date_format'] ];
+		$timestamp             = get_post_time( 'U', true );
+		$item_data['text']     = wp_date( $format, $timestamp );
 		$item_data['icon_new'] = [
 			'value' => 'fas fa-calendar',
 			'library' => 'fa-solid',
@@ -761,7 +763,7 @@ class Post_Meta extends Base_Widget {
 
 		if ( 'yes' === $repeater_item['link'] ) {
 			$item_data['url'] = [
-				'url' => get_day_link( get_post_time( 'Y' ), get_post_time( 'm' ), get_post_time( 'j' ) ),
+				'url' => get_day_link( wp_date( 'Y', $timestamp ), wp_date( 'm', $timestamp ), wp_date( 'j', $timestamp ) ),
 			];
 		}
 

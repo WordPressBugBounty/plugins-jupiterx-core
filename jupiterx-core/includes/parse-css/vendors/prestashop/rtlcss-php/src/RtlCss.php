@@ -6,29 +6,29 @@
  * @license   https://opensource.org/licenses/MIT MIT
  */
 
-namespace PrestaShop\RtlCss;
+namespace JupiterX_Core\PrestaShop\RtlCss;
 
-use PrestaShop\RtlCss\Transformation\FlipBackground;
-use PrestaShop\RtlCss\Transformation\FlipBorderRadius;
-use PrestaShop\RtlCss\Transformation\FlipCursor;
-use PrestaShop\RtlCss\Transformation\FlipDirection;
-use PrestaShop\RtlCss\Transformation\FlipLeftProperty;
-use PrestaShop\RtlCss\Transformation\FlipLeftValue;
-use PrestaShop\RtlCss\Transformation\FlipMarginPaddingBorder;
-use PrestaShop\RtlCss\Transformation\FlipRightProperty;
-use PrestaShop\RtlCss\Transformation\FlipShadow;
-use PrestaShop\RtlCss\Transformation\FlipTransform;
-use PrestaShop\RtlCss\Transformation\FlipTransformOrigin;
-use PrestaShop\RtlCss\Transformation\FlipTransition;
-use PrestaShop\RtlCss\Transformation\TransformationInterface;
-use Sabberworm\CSS\Comment\Comment;
-use Sabberworm\CSS\CSSList\CSSBlockList;
-use Sabberworm\CSS\CSSList\CSSList;
-use Sabberworm\CSS\CSSList\Document;
-use Sabberworm\CSS\Parser;
-use Sabberworm\CSS\Rule\Rule;
-use Sabberworm\CSS\RuleSet\DeclarationBlock;
-use Sabberworm\CSS\RuleSet\RuleSet;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipBackground;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipBorderRadius;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipCursor;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipDirection;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipLeftProperty;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipLeftValue;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipMarginPaddingBorder;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipRightProperty;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipShadow;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipTransform;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipTransformOrigin;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\FlipTransition;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\TransformationInterface;
+use JupiterX_Core\Sabberworm\CSS\Comment\Comment;
+use JupiterX_Core\Sabberworm\CSS\CSSList\CSSBlockList;
+use JupiterX_Core\Sabberworm\CSS\CSSList\CSSList;
+use JupiterX_Core\Sabberworm\CSS\CSSList\Document;
+use JupiterX_Core\Sabberworm\CSS\Parser;
+use JupiterX_Core\Sabberworm\CSS\Rule\Rule;
+use JupiterX_Core\Sabberworm\CSS\RuleSet\DeclarationBlock;
+use JupiterX_Core\Sabberworm\CSS\RuleSet\RuleSet;
 
 /**
  * Converts CSS to RTL
@@ -73,7 +73,7 @@ class RtlCss {
      * @param Document $tree
      * @param FlipOptions $options [default=null]
      */
-    public function __construct(Document $tree, FlipOptions $options = null) {
+    public function __construct(Document $tree, ?FlipOptions $options = null) {
         $this->tree = $tree;
         $this->options = ($options !== null) ? $options : new FlipOptions();
         $this->transformationQueue = [

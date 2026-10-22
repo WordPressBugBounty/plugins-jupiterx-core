@@ -1,8 +1,8 @@
 <?php
-namespace PrestaShop\RtlCss\Transformation;
+namespace JupiterX_Core\PrestaShop\RtlCss\Transformation;
 
-use PrestaShop\RtlCss\Transformation\Value\TransformableStringValue;
-use Sabberworm\CSS\Rule\Rule;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\Value\TransformableStringValue;
+use JupiterX_Core\Sabberworm\CSS\Rule\Rule;
 
 /**
  * Transforms 'direction' rules from 'ltr' to 'rtl'

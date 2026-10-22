@@ -1,7 +1,7 @@
 <?php
-namespace PrestaShop\RtlCss\Transformation;
+namespace JupiterX_Core\PrestaShop\RtlCss\Transformation;
 
-use Sabberworm\CSS\Rule\Rule;
+use JupiterX_Core\Sabberworm\CSS\Rule\Rule;
 
 /**
  * Interface for CSS transformations

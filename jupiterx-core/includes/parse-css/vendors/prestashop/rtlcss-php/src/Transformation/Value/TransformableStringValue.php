@@ -25,9 +25,9 @@
  * International Registered Trademark & Property of PrestaShop SA
  */
 
-namespace PrestaShop\RtlCss\Transformation\Value;
+namespace JupiterX_Core\PrestaShop\RtlCss\Transformation\Value;
 
-use PrestaShop\RtlCss\Transformation\TransformationException;
+use JupiterX_Core\PrestaShop\RtlCss\Transformation\TransformationException;
 
 class TransformableStringValue
 {
@@ -45,7 +45,7 @@ class TransformableStringValue
             throw new \Exception(
                 sprintf(
                     "Invalid value: %s should be a string",
-                    esc_html( print_r( $value, true ) )
+                    print_r($value, true)
                 )
             );
         }
@@ -110,7 +110,7 @@ class TransformableStringValue
         );
 
         if ($return === null && PREG_NO_ERROR !== $pregErrorCode = preg_last_error()) {
-            throw new TransformationException( "Swap failed. Preg error code:" . esc_html( $pregErrorCode ) );
+            throw new TransformationException("Swap failed. Preg error code: $pregErrorCode");
         }
 
         return $return;

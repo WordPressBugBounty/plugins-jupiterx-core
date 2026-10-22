@@ -486,15 +486,16 @@ class Frontend {
 			'7' => 'm.d.Y',
 		];
 
-		$format = ! empty( $format_options[ $this->settings['date_format'] ] ) ? $format_options[ $this->settings['date_format'] ] : $this->settings['custom_format'];
+		$timestamp = get_post_time( 'U', true );
+		$format    = ! empty( $format_options[ $this->settings['date_format'] ] ) ? $format_options[ $this->settings['date_format'] ] : $this->settings['custom_format'];
 
-		$date = wp_date( $format, get_post_time( 'U' ) );
+		$date = wp_date( $format, $timestamp );
 
 		if ( 'last_modified' === $this->settings['date_type'] ) {
-			$date = wp_date( $format, get_the_modified_date( 'U' ) );
+			$date = wp_date( $format, get_post_modified_time( 'U', true ) );
 		}
 
-		$date_link = ( 'post' === get_post_type() ) ? get_month_link( get_the_time( 'Y' ), get_the_time( 'm' ) ) : get_permalink();
+		$date_link = ( 'post' === get_post_type() ) ? get_month_link( wp_date( 'Y', $timestamp ), wp_date( 'm', $timestamp ) ) : get_permalink();
 
 		return '<a class="raven-post-meta-item raven-post-date" href="' . esc_url( $date_link ) . '" rel="bookmark">' . esc_html( $date ) . '</a>';
 	}

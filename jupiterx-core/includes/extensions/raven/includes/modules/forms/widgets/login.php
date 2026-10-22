@@ -644,8 +644,17 @@ class Login extends Form {
 
 		$this->add_render_attribute( 'forget_pass', 'class', 'forgot-pass-label' );
 
+		$forgot_password_url = '';
+
 		if ( ! empty( $settings['forget_password_link']['url'] ) ) {
-			$this->add_render_attribute( 'forget_pass', 'href', $settings['forget_password_link']['url'] );
+			$forgot_password_url = esc_url(
+				$settings['forget_password_link']['url'],
+				array( 'http', 'https' )
+			);
+		}
+
+		if ( ! empty( $forgot_password_url ) ) {
+			$this->add_render_attribute( 'forget_pass', 'href', $forgot_password_url );
 		}
 
 		if ( $settings['forget_password_link']['is_external'] ) {

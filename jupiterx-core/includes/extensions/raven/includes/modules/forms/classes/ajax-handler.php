@@ -117,10 +117,12 @@ class Ajax_Handler {
 		$form_id      = filter_input( INPUT_POST, 'form_id' );
 		$this->record = $_POST; // @codingStandardsIgnoreLine
 
-		// Convert array data to string. Used for checkbox.
-		foreach ( $this->record['fields'] as $_id => $field ) {
-			if ( is_array( $field ) ) {
-				$this->record['fields'][ $_id ] = implode( ', ', $field );
+		if ( ! empty( $this->record['fields'] ) ) {
+			// Convert array data to string. Used for checkbox.
+			foreach ( $this->record['fields'] as $_id => $field ) {
+				if ( is_array( $field ) ) {
+					$this->record['fields'][ $_id ] = implode( ', ', $field );
+				}
 			}
 		}
 
@@ -145,9 +147,11 @@ class Ajax_Handler {
 	 * @since 2.5.0
 	 */
 	private function clear_step_fields() {
-		foreach ( $this->form['settings']['fields'] as $id => $field ) {
-			if ( isset( $field['type'] ) && 'step' === $field['type'] ) {
-				unset( $this->form['settings']['fields'][ $id ] );
+		if ( ! empty( $this->form['settings']['fields'] ) ) {
+			foreach ( $this->form['settings']['fields'] as $id => $field ) {
+				if ( isset( $field['type'] ) && 'step' === $field['type'] ) {
+					unset( $this->form['settings']['fields'][ $id ] );
+				}
 			}
 		}
 
@@ -258,21 +262,21 @@ class Ajax_Handler {
 	 * @access public
 	 */
 	private function validate_fields() {
-		$form_fields = $this->form['settings']['fields'];
+		$form_fields = isset( $this->form['settings']['fields'] ) ? $this->form['settings']['fields'] : '';
 
-		foreach ( $form_fields as $field ) {
-			if (
-				( isset( $field['_enable'] ) && 'false' === $field['_enable'] ) &&
-				empty( $field['enable'] )
-			) {
-				continue;
+		if ( ! empty( $form_fields ) ) {
+			foreach ( $form_fields as $field ) {
+				if (
+					( isset( $field['_enable'] ) && 'false' === $field['_enable'] ) &&
+					empty( $field['enable'] )
+				) {
+					continue;
+				}
+				$field['type'] = empty( $field['type'] ) ? 'text' : $field['type'];
+				$class_name    = 'JupiterX_Core\Raven\Modules\Forms\Fields\\' . ucfirst( $field['type'] );
+				$class_name::validate_required( $this, $field );
+				$class_name::validate( $this, $field );
 			}
-
-			$field['type'] = empty( $field['type'] ) ? 'text' : $field['type'];
-			$class_name    = 'JupiterX_Core\Raven\Modules\Forms\Fields\\' . ucfirst( $field['type'] );
-
-			$class_name::validate_required( $this, $field );
-			$class_name::validate( $this, $field );
 		}
 
 		if ( ! empty( $this->response['errors'] ) ) {

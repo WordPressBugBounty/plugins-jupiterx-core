@@ -21,6 +21,7 @@ use Elementor\Plugin;
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.TooManyMethods)
  * @SuppressWarnings(PHPMD.NPathComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
 */
 class JupiterX_Core_Condition_Manager {
 
@@ -278,6 +279,9 @@ class JupiterX_Core_Condition_Manager {
 		// If there is some post types, attach them and their taxonomies to list.
 		$list = $this->attach_post_types_to_list( $post_types, $type, $list );
 
+		// Add custom taxonomy to post post_type.
+		$list = $this->attach_custom_taxonomy_to_specific_post_type( 'post', $type, $list );
+
 		$data = [
 			'list' => $list,
 			'type' => $type,
@@ -324,8 +328,10 @@ class JupiterX_Core_Condition_Manager {
 			];
 		}
 
-		if ( 'product' === $section ) {
-			return [
+		$custom_tax = $this->add_product_custom_taxonomies();
+
+		$single_conditions = array_merge(
+			[
 				''                        => esc_html__( 'Select One', 'jupiterx-core' ),
 				'single_product'          => esc_html__( 'Products', 'jupiterx-core' ),
 				'in_product_cat'          => esc_html__( 'In Product Category', 'jupiterx-core' ),
@@ -334,11 +340,12 @@ class JupiterX_Core_Condition_Manager {
 				'in_product_brand'        => esc_html__( 'In Product Brands', 'jupiterx-core' ),
 				'in_product_attribute'    => esc_html__( 'In Product Attributes', 'jupiterx-core' ),
 				'product_by_author'       => esc_html__( 'Products By Author', 'jupiterx-core' ),
-			];
-		}
+			],
+			$custom_tax['single']
+		);
 
-		if ( 'product-archive' === $section ) {
-			return [
+		$archive_conditions = array_merge(
+			[
 				''                      => esc_html__( 'Select One', 'jupiterx-core' ),
 				'all_product_archive'   => esc_html__( 'All Products Archive', 'jupiterx-core' ),
 				'shop_archive'          => esc_html__( 'Shop Page', 'jupiterx-core' ),
@@ -347,7 +354,16 @@ class JupiterX_Core_Condition_Manager {
 				'product_tag_archive'   => esc_html__( 'Products Tags', 'jupiterx-core' ),
 				'product_brand_archive' => esc_html__( 'Products Brands', 'jupiterx-core' ),
 				'product_attribute_archive' => esc_html__( 'Products Attributes', 'jupiterx-core' ),
-			];
+			],
+			$custom_tax['archive']
+		);
+
+		if ( 'product' === $section ) {
+			return $single_conditions;
+		}
+
+		if ( 'product-archive' === $section ) {
+			return $archive_conditions;
 		}
 
 		$global_types = [ 'header', 'footer', 'page-title-bar', 'custom-snippet' ];
@@ -362,24 +378,8 @@ class JupiterX_Core_Condition_Manager {
 				'thankyou-page'    => esc_html__( 'Order Received Page', 'jupiterx-core' ),
 				'my-account-user'  => esc_html__( 'My Account Page', 'jupiterx-core' ),
 				'my-account-guest' => esc_html__( 'My Account Login Page', 'jupiterx-core' ),
-				'Products Archive' => [
-					'all_product_archive'   => esc_html__( 'All Products Archive', 'jupiterx-core' ),
-					'shop_archive'          => esc_html__( 'Shop Page', 'jupiterx-core' ),
-					'woo_search'            => esc_html__( 'Search Results', 'jupiterx-core' ),
-					'product_cat_archive'   => esc_html__( 'Products Categories', 'jupiterx-core' ),
-					'product_tag_archive'   => esc_html__( 'Products Tags', 'jupiterx-core' ),
-					'product_brand_archive' => esc_html__( 'Products Brands', 'jupiterx-core' ),
-					'product_attribute_archive' => esc_html__( 'Products Attributes', 'jupiterx-core' ),
-				],
-				'Products'        => [
-					'single_product'          => esc_html__( 'Products', 'jupiterx-core' ),
-					'in_product_cat'          => esc_html__( 'In Product Category', 'jupiterx-core' ),
-					'in_product_cat_children' => esc_html__( 'In Child Product categories', 'jupiterx-core' ),
-					'in_product_tag'          => esc_html__( 'In Product Tags', 'jupiterx-core' ),
-					'in_product_brand'        => esc_html__( 'In Product Brands', 'jupiterx-core' ),
-					'in_product_attribute'    => esc_html__( 'In Product Attributes', 'jupiterx-core' ),
-					'product_by_author'       => esc_html__( 'Products By Author', 'jupiterx-core' ),
-				],
+				'Products Archive' => $archive_conditions,
+				'Products'         => $single_conditions,
 			];
 		}
 	}
@@ -550,6 +550,77 @@ class JupiterX_Core_Condition_Manager {
 				);
 			}
 		}
+
+		return $list;
+	}
+
+	/**
+	 * Return list of product taxonomy.
+	 *
+	 * @since 4.61.0
+	 */
+	private function add_product_custom_taxonomies() {
+		$taxonomies = get_object_taxonomies( 'product', 'objects' );
+		$excluded   = [ 'product_brand', 'product_cat', 'product_tag' ];
+
+		$list            = [];
+		$list['single']  = [];
+		$list['archive'] = [];
+
+		foreach ( $taxonomies as $tax ) {
+			// “Archive page on frontend” usually means it’s public + show in menu.
+			if ( ! empty( $tax->show_in_menu ) && ! empty( $tax->public ) && ! in_array( $tax->name, $excluded, true ) ) {
+
+				$single_key  = 'in_product_CUSTOMTAX_' . $tax->name;
+				$archive_key = 'archive_product_CUSTOMTAX_' . $tax->name;
+
+				// translators: %s is the product taxonomy label.
+				$list['single'][ $single_key ] = sprintf( esc_html__( 'In Product %s', 'jupiterx-core' ), $tax->label );
+
+				// translators: %s is the product taxonomy label.
+				$list['archive'][ $archive_key ] = sprintf( esc_html__( 'Products %s', 'jupiterx-core' ), $tax->label );
+			}
+		}
+		return $list;
+	}
+
+	/**
+	 * Update the list of conditions by adding custom taxonomy.
+	 *
+	 * @param array  $post_types list of post types.
+	 * @param string $type type of section like archive, singular.
+	 * @param array  $list list of conditions.
+	 * @return array
+	 *
+	 * @since 4.61.0
+	 */
+	private function attach_custom_taxonomy_to_specific_post_type( $post_type, $type, $list ) {
+			$post_type = (string) $post_type;
+
+			// Check post type has archive page or not.
+			if ( 'archive' === $type ) {
+				$pt = get_post_type_object( $post_type );
+				if ( empty( $pt->has_archive ) ) {
+					return $list;
+				}
+			}
+
+			$taxonomies = get_object_taxonomies( $post_type, 'objects' );
+
+			foreach ( $taxonomies as $tax ) {
+				if ( empty( $tax->show_in_menu ) || empty( $tax->public ) || ! empty( $tax->_builtin ) ) {
+					continue;
+				}
+
+				if ( strpos( $tax->name, '_' ) === false ) {
+					$tax->name = 'CUSTOMPOSTTYPETERM_' . $tax->name;
+				}
+
+				$key = $post_type . '@' . $tax->name;
+
+				// translators: %s is the taxonomy label.
+				$list[ $post_type ][ $key ] = sprintf( esc_html__( 'In %s', 'jupiterx-core' ), $tax->label );
+			}
 
 		return $list;
 	}
@@ -872,6 +943,10 @@ class JupiterX_Core_Condition_Manager {
 		$taxonomy = str_replace( 'direct_child_of_', '', $taxonomy );
 		$taxonomy = str_replace( 'any_child_of_', '', $taxonomy );
 
+		if ( strpos( $taxonomy, 'CUSTOMPOSTTYPETERM_' ) !== false ) {
+			$taxonomy = str_replace( 'CUSTOMPOSTTYPETERM_', '', $taxonomy );
+		}
+
 		// $taxonomy is now taxonomy slug. we can retrieve requested terms of taxonomy based on user search.
 		$this->get_terms( $taxonomy, $value );
 	}
@@ -884,7 +959,11 @@ class JupiterX_Core_Condition_Manager {
 	 * @since 2.0.0
 	 */
 	private function manage_woocommerce( $sub, $value ) {
-		call_user_func_array( [ $this, "woocommerce_$sub" ], [ $value ] );
+		if ( strpos( $sub, 'product_CUSTOMTAX' ) !== false ) {
+			$this->woocommerce_custom_taxonomy( $sub, $value );
+		} else {
+			call_user_func_array( [ $this, "woocommerce_$sub" ], [ $value ] );
+		}
 	}
 
 	/**
@@ -1466,6 +1545,28 @@ class JupiterX_Core_Condition_Manager {
 	 */
 	private function woocommerce_product_brand_archive( $value ) {
 		$this->get_terms( 'product_brand', $value );
+	}
+
+	/**
+	 * Return term of product's custom taxonomy.
+	 *
+	 * @param string $sub type of filter.
+	 * @param string $value value of condition.
+	 *
+	 * @since 4.61.0
+	 */
+	private function woocommerce_custom_taxonomy( $sub, $value ) {
+		$tax_name = '';
+
+		if ( strpos( $sub, 'in_product_CUSTOMTAX' ) !== false ) {
+			$tax_name = str_replace( 'in_product_CUSTOMTAX_', '', $sub );
+		}
+
+		if ( strpos( $sub, 'archive_product_CUSTOMTAX' ) !== false ) {
+			$tax_name = str_replace( 'archive_product_CUSTOMTAX_', '', $sub );
+		}
+
+		$this->get_terms( $tax_name, $value );
 	}
 
 	/**

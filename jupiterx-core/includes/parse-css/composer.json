@@ -1,0 +1,57 @@
+{
+  "name": "jupiterx/parse-css",
+  "description": "Isolated CSS parser vendors for Jupiter X Core. Run `composer update` in this directory to bump versions, then Strauss prefixes namespaces into vendors/.",
+  "license": "GPL-2.0-or-later",
+  "require": {
+    "php": ">=7.0",
+    "ext-iconv": "*",
+    "prestashop/rtlcss-php": "^2.0",
+    "sabberworm/php-css-parser": "^8.9"
+  },
+  "replace": {
+    "prestashop/php-css-parser": "*"
+  },
+  "config": {
+    "platform": {
+      "php": "7.0.0"
+    },
+    "sort-packages": true,
+    "vendor-dir": "vendor"
+  },
+  "extra": {
+    "strauss": {
+      "target_directory": "vendors",
+      "namespace_prefix": "JupiterX_Core\\",
+      "classmap_prefix": "JupiterX_Core_",
+      "constant_prefix": "JUPITERX_CORE_",
+      "packages": [
+        "sabberworm/php-css-parser",
+        "prestashop/rtlcss-php"
+      ],
+      "update_call_sites": false,
+      "delete_vendor_packages": false,
+      "delete_vendor_files": false,
+      "exclude_from_copy": {
+        "file_patterns": [
+          "/\\/tests\\//",
+          "/phpunit\\.xml/",
+          "/\\.gitignore$/"
+        ]
+      }
+    }
+  },
+  "scripts": {
+    "prefix-namespaces": [
+      "rm -rf vendors",
+      "sh -c 'test -f ./bin/strauss.phar || (mkdir -p bin && curl -fsSL -o bin/strauss.phar -L https://github.com/BrianHenryIE/strauss/releases/latest/download/strauss.phar)'",
+      "@php bin/strauss.phar",
+      "@php bin/patch-vendors.php"
+    ],
+    "post-install-cmd": [
+      "@prefix-namespaces"
+    ],
+    "post-update-cmd": [
+      "@prefix-namespaces"
+    ]
+  }
+}

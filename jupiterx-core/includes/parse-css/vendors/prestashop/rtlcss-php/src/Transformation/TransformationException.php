@@ -1,5 +1,5 @@
 <?php
-namespace PrestaShop\RtlCss\Transformation;
+namespace JupiterX_Core\PrestaShop\RtlCss\Transformation;
 
 class TransformationException extends \Exception
 {

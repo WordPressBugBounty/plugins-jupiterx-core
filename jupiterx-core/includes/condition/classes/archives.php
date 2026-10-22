@@ -97,6 +97,10 @@ class Jupiterx_Archives_Condition {
 		$taxonomy  = $type[1];
 		$term      = $condition[2][0];
 
+		if ( strpos( $taxonomy, 'CUSTOMPOSTTYPETERM_' ) !== false ) {
+			$taxonomy = str_replace( 'CUSTOMPOSTTYPETERM_', '', $taxonomy );
+		}
+
 		//1. Certain taxonomy of post type selected and all terms of taxonomy selected.
 		if ( is_tax( $taxonomy ) && 'all' === $term ) {
 			return true;

@@ -1,5 +1,5 @@
 <?php
-namespace PrestaShop\RtlCss\Transformation;
+namespace JupiterX_Core\PrestaShop\RtlCss\Transformation;
 
 /**
  * Flips values that are exactly 'left' to 'right'

@@ -630,6 +630,17 @@ class Module extends Module_Base
 				esc_html__( 'Accessibility', 'jupiterx-core' ),
 			];
 		}
+
+		//Enable Elementor -> Site Mailer sub-menu
+		if ( class_exists( 'SiteMailer\Plugin' ) ) {
+			$submenu['elementor-home'][] = // phpcs:ignore
+			[
+				esc_html__( 'Email Deliverability', 'jupiterx-core' ),
+				$cap_manage,
+				'site-mailer-settings',
+				esc_html__( 'Email Deliverability', 'jupiterx-core' ),
+			];
+		}
 	}
 
 	/**

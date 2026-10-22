@@ -2300,11 +2300,17 @@ class Loop_Grid extends Base_Widget
 	 */
 	protected function render_loop_items($query, $settings, $template_id, $before_item = '', $after_item = '')
 	{
-		$frontend    = \Elementor\Plugin::$instance->frontend;
-		$item_number = $this->get_item_number_offset($settings);
+		global $wp_query;
+
+		$frontend                   = \Elementor\Plugin::$instance->frontend;
+		$item_number                = $this->get_item_number_offset( $settings );
+		$previous_queried_object    = isset( $wp_query->queried_object ) ? $wp_query->queried_object : null;
+		$previous_queried_object_id = isset( $wp_query->queried_object_id ) ? $wp_query->queried_object_id : null;
 
 		while ($query->have_posts()) {
 			$query->the_post();
+			$wp_query->queried_object    = get_post();
+			$wp_query->queried_object_id = get_the_ID();
 			++$item_number;
 
 			$item_template_id = $template_id;
@@ -2346,6 +2352,18 @@ class Loop_Grid extends Base_Widget
 		}
 
 		wp_reset_postdata();
+
+		if ( null === $previous_queried_object ) {
+			unset( $wp_query->queried_object );
+		} else {
+			$wp_query->queried_object = $previous_queried_object;
+		}
+
+		if ( null === $previous_queried_object_id ) {
+			unset( $wp_query->queried_object_id );
+		} else {
+			$wp_query->queried_object_id = $previous_queried_object_id;
+		}
 	}
 
 	protected function render_loop_terms($term_result, array $settings, $template_id, $before_item = '', $after_item = '')

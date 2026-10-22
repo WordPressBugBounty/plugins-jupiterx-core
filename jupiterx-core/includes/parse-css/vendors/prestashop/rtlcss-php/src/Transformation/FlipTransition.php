@@ -1,5 +1,5 @@
 <?php
-namespace PrestaShop\RtlCss\Transformation;
+namespace JupiterX_Core\PrestaShop\RtlCss\Transformation;
 
 /**
  * Transforms 'transition' rules from 'left' to 'right'

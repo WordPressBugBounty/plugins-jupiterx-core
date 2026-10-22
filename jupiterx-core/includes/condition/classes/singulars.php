@@ -151,10 +151,41 @@ class Jupiterx_Singular_Condition {
 		}
 
 		// Check if current post belongs author by id cmd[2] : post_by_author || page_by_author || product_by_author || portfolio_by_author.
-		if ( false !== strpos( $condition[1], 'author' ) && $query->post_author === $condition[2][0] ) {
-			$type = explode( '@by_author', $condition[1] );
-			if ( is_singular( $type[0] ) ) {
-				return true;
+		if ( false !== strpos( $condition[1], 'author' ) ) {
+
+			if ( 'by_author' === $condition[1] ) {
+
+				if ( 'all' === $condition[2][0] ) {
+					return true;
+				}
+
+				if ( $query->post_author === $condition[2][0] ) {
+					return true;
+				}
+			}
+
+			if ( false !== strpos( $condition[1], '_by_author' ) ) {
+				$type = explode( '_', $condition[1] );
+
+				if ( is_singular( $type[0] ) && 'all' === $condition[2][0] && $query->post_type === $type[0] ) {
+					return true;
+				}
+
+				if ( is_singular( $type[0] ) && $query->post_author === $condition[2][0] && $query->post_type === $type[0] ) {
+					return true;
+				}
+			}
+
+			if ( false !== strpos( $condition[1], '@by_author' ) ) {
+				$type = explode( '@', $condition[1] );
+
+				if ( is_singular( $type[0] ) && 'all' === $condition[2][0] && $query->post_type === $type[0] ) {
+					return true;
+				}
+
+				if ( is_singular( $type[0] ) && $query->post_author === $condition[2][0] && $query->post_type === $type[0] ) {
+					return true;
+				}
 			}
 		}
 

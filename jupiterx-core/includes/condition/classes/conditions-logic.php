@@ -395,7 +395,7 @@ class Conditions_Logic {
 			$taxonomy  = $case[1];
 
 			if ( strpos( $taxonomy, 'CUSTOMPOSTTYPETERM_' ) !== false ) {
-				$taxonomy = ucfirst( str_replace( 'CUSTOMPOSTTYPETERM_', '', $taxonomy ) );
+				$taxonomy = str_replace( 'CUSTOMPOSTTYPETERM_', '', $taxonomy );
 			}
 
 			if ( 'all' === $this->condition['conditionD'][0] ) {
@@ -548,12 +548,12 @@ class Conditions_Logic {
 
 	/**
 	 * Convert remaining archive conditions to proper string.
-	 *
+	 * @SuppressWarnings(PHPMD.NPathComplexity)
 	 * @since 2.5.0
 	 */
 	private function manage_remaining_archive_condition() {
 		$case  = $this->condition['conditionC'];
-		$child = $this->condition['conditionD'][0];
+		$child = isset( $this->condition['conditionD'][0] ) ? $this->condition['conditionD'][0] : '';
 
 		if ( strpos( $case, 'direct_child_of_' ) !== false ) {
 			$case = explode( '@', $case );
@@ -588,13 +588,19 @@ class Conditions_Logic {
 		if ( strpos( $case, '@' ) !== false ) {
 			$case = explode( '@', $case );
 
+			if ( strpos( $case[1], 'CUSTOMPOSTTYPETERM_' ) !== false ) {
+				$case[1] = str_replace( 'CUSTOMPOSTTYPETERM_', '', $case[1] );
+			}
+
+			$taxonomy_string = isset( $this->archives[ $case[0] ] ) ? $this->archives[ $case[0] ][ $case[1] ] : $case[1];
+
 			if ( 'all' === $child ) {
-				$string = esc_html__( 'All archive of the ', 'jupiterx-core' ) . $this->archives[ $case[0] ][ $case[1] ];
+				$string = esc_html__( 'All archive of the ', 'jupiterx-core' ) . $taxonomy_string;
 				$this->attach_comma_separator( $string );
 				return;
 			}
 
-			$string = $this->archives[ $case[0] ][ $case[1] ] . ' ' . esc_html__( 'archive id', 'jupiterx-core' ) . ' #' . $this->condition['conditionD'][0];
+			$string = $taxonomy_string . ' ' . esc_html__( 'archive id', 'jupiterx-core' ) . ' #' . $this->condition['conditionD'][0];
 			$this->attach_comma_separator( $string );
 			return;
 		}
@@ -637,6 +643,14 @@ class Conditions_Logic {
 	*/
 	private function woocommerce() {
 		$case = $this->condition['conditionC'];
+
+		if ( strpos( $case, 'in_product_CUSTOMTAX' ) !== false ) {
+			$case = 'single_custom_tax';
+		}
+
+		if ( strpos( $case, 'archive_product_CUSTOMTAX' ) !== false ) {
+			$case = 'archive_custom_tax';
+		}
 
 		switch ( $case ) {
 			case 'entire-shop':
@@ -702,6 +716,12 @@ class Conditions_Logic {
 			case 'product_by_author':
 				$this->woocommerce_product_by_author();
 				break;
+			case 'single_custom_tax':
+				$this->woocommerce_in_product_custom_tax();
+				break;
+			case 'archive_custom_tax':
+				$this->woocommerce_product_custom_tax_archive();
+				break;
 		}
 	}
 
@@ -764,6 +784,26 @@ class Conditions_Logic {
 		$string = esc_html__( 'Product attribute archive id', 'jupiterx-core' ) . ' #' . $this->condition['conditionD'][0];
 		$this->attach_comma_separator( $string );
 	}
+
+	/**
+	 * Convert product custom taxonomy archive condition to proper string.
+	 *
+	 * @since 4.61.0
+	 */
+	private function woocommerce_product_custom_tax_archive() {
+		$tax_name = str_replace( 'archive_product_CUSTOMTAX_', '', $this->condition['conditionC'] );
+
+		if ( 'all' === $this->condition['conditionD'][0] ) {
+			// translators: %s is the product taxonomy name.
+			$this->attach_comma_separator( sprintf( esc_html__( 'Product %s archive', 'jupiterx-core' ), $tax_name ) );
+			return;
+		}
+
+		// translators: %s is the product taxonomy name.
+		$string = sprintf( esc_html__( 'Product %s archive id', 'jupiterx-core' ), $tax_name ) . ' #' . $this->condition['conditionD'][0];
+		$this->attach_comma_separator( $string );
+	}
+
 
 	/**
 	 * Convert woocommerce single product conditions to proper string.
@@ -850,6 +890,23 @@ class Conditions_Logic {
 		}
 
 		$string = esc_html__( 'Products by attribute id', 'jupiterx-core' ) . ' #' . $this->condition['conditionD'][0];
+		$this->attach_comma_separator( $string );
+	}
+
+	/**
+	 * Convert products in custom taxonomy condition to proper string.
+	 */
+	private function woocommerce_in_product_custom_tax() {
+		$tax_name = str_replace( 'in_product_CUSTOMTAX_', '', $this->condition['conditionC'] );
+
+		if ( 'all' === $this->condition['conditionD'][0] ) {
+			// translators: %s is the product taxonomy name.
+			$this->attach_comma_separator( sprintf( esc_html__( 'All products by %s', 'jupiterx-core' ), $tax_name ) );
+			return;
+		}
+
+		// translators: %s is the product taxonomy name.
+		$string = sprintf( esc_html__( 'Products by %s id', 'jupiterx-core' ), $tax_name ) . ' #' . $this->condition['conditionD'][0];
 		$this->attach_comma_separator( $string );
 	}
 
